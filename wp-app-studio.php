@@ -187,7 +187,7 @@ add_action( 'admin_init', 'wpas_update' );
 
 function wpas_plugin_menu() {
 	global $hook_app_list, $hook_app_new;
-	$icon_url = plugin_dir_url( __FILE__ ) . "assets/wpas-icon.png";
+	$icon_url = plugin_dir_url( __FILE__ ) . "img/wpas-icon.png";
 	
 	$hook_app_list = add_menu_page('WP App Studio', __('WP App Studio','wpas'), 'administrator', 'wpas_app_list', 'wpas_app_list',$icon_url);
 	$hook_app_new = add_submenu_page( 'wpas_app_list', __('Add New App','wpas'), __('Add New App','wpas'), 'administrator', 'wpas_add_new_app', 'wpas_add_new_app');
