@@ -15,17 +15,19 @@ Wp App Studio is easy to learn and use design tool for creating fully featured, 
 
 Wp App Studio is a SaaS platform that creates fully featured Wordpress based applications in the form of a plugin.
 
-*"By creating Wp App Studio, we wanted to make ever expanding features of WordPress as a CMS accessible to both programmers and non-programmers alike without spending thousands or countless hours in development. It is simple to use, easy to learn, and full of advanced features to meet your needs. Try it, you will not be disappointed." * -- *eMarket Design*
+*"By creating Wp App Studio, we wanted to make ever expanding features of WordPress as a CMS accessible to both programmers and non-programmers alike without spending thousands or countless hours in development. It is simple to use, easy to learn, and full of advanced features to meet your needs. Try it, you will not be disappointed."*
+--*eMarket Design*
 
-== How it works ==
+
+= How it works =
 
 1. Download, install, and activate Wp App Studio plugin.
 2. Design and generate your App in Wp App Studio.
 3. Download, install, and activate your App plugin.
 
-== Features ==
+= Features =
 
- = Create Entities = 
+ *Create Entities* 
  
 * Collect data about things, persons, places, or concepts.
 * Supports all of Wordpress Custom Post Type API and more
@@ -35,7 +37,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-web-app-entities/ "Creating Wp App Studio Entities")
 
- = Create Taxonomies =
+ *Create Taxonomies*
   
 * Group, tag, categorize your data with custom taxonomies.
 * Attach taxonomies one to many entities including the built-in entities such as posts or pages.
@@ -45,7 +47,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-taxonomies/ "Creating Wp App Studio Taxonomies")
 
- = Create Relationships =
+ *Create Relationships*
   
 * Create connections between entities with Relationships.
 * Create One-to-many(1-M), many-to-many(M-M), or self relationships.
@@ -56,7 +58,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-relationships-between-entities/ "Creating Wp App Studio Relationships")
 
- = Create Attributes = 
+ *Create Attributes*
  
 * Easy to use and intuitive interface for creating entity attribute
 * 37 different types of attribute types
@@ -69,7 +71,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/adding-attributes-to-entities/ "Creating Wp App Studio Attributes")
 
- = Create Help Screens =
+ *Create Help Screens*
  
 * Provide additional information such as instructions to users using help screen.
 * Organize your help information with one to many tabs.
@@ -79,7 +81,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/adding-help-content-to-app-screens/ "Creating Wp App Studio Help Screens")
 
- = App Permissions = 
+ *App Permissions* 
  
 * Ability to define custom roles through permissions.
 * Ability to disable built-in capabilities of built-in roles.
@@ -88,7 +90,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/limiting-access-to-data-through-permissions/ "Creating Wp App Studio Permissions")
 
- = App Meta Data Migration = 
+ *App Meta Data Migration*
  
 * Export and/or import your App meta data from Wp App Studio to another.
 * Upgrades are taken care of automatically when migrating through different versions.
@@ -98,7 +100,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/importing-and-exporting-web-apps/ "Wp App Studio App Meta Data Migration")
 
- = App Data Import/Export = 
+ *App Data Import/Export*
  
 * Visually import all your entity and taxonomy data.
 * Export all your entity and taxonomy data.
@@ -107,7 +109,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/using-web-apps/ "Wp App Studio App Data Migration")
 
- = Create Shortcodes = 
+ *Create Shortcodes* 
  
 * Create macros called shortcodes without coding.
 * Design your shortcode layout with tags of most built-in data retrieval functions using WYSIWYG editor.
@@ -121,7 +123,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-shortcodes/ "Creating Wp App Studio Shortcodes")
 
- = Fully Translatable = 
+ *Fully Translatable* 
  
 * Each app is provided with an App POT file for easy translation.
 * Just create a PO and MO file as you normally would.
@@ -132,7 +134,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/translating-apps-into-your-language/ "Translating Wp App Studio Apps")
 
- = Create Widgets = 
+ *Create Widgets* 
  
 * Ability to create and configure dashboard widgets.
 * Ability to create and configure sidebar widgets.
@@ -144,7 +146,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-widgets/ "Creating Wp App Studio Widgets")
 
- = App Settings = 
+ *App Settings* 
  
 * Ability to configure App related info such as license, Author name, url etc.
 * Set an App wide theme selecting one of the available Jquery UI themes.
@@ -161,7 +163,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/defining-initial-app-settings/ "Wp App Studio App Settings")
 
- = Create and Save Filters = 
+ *Create and Save Filters* 
  
 * Drag-and-drop interface for choosing, sorting, and ordering entity attributes(columns) to be displayed.
 * An intuitive interface for adding and saving complex filters.
@@ -171,7 +173,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/using-web-apps/ "Creating and Saving Wp App Studio App Filters")
 
- = Create Forms =  *Under Development *
+ *Create Forms*  *Under Development *
  
 * Quickly generate beautiful, standards compliant forms within Wp App Studio.
 * Leverages the latest techniques in web design.
@@ -183,7 +185,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/designing-and-creating-forms/ "Creating Wp App Studio App Forms")
 
- = Create Pointers =  *Under Development *
+ *Create Pointers*  *Under Development *
  
 * Ability to create website and app tours within Wp App Studio.
 * Highlight or draw attention to the certain sections of your app.
