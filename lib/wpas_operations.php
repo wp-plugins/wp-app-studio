@@ -236,7 +236,7 @@ function wpas_generate_app()
 			{
 				foreach($myapp['help'] as $myhelp)
 				{
-					if(!is_array($myhelp['field']) && empty($myhelp['field']))
+					if(!isset($myhelp['field']) || (!is_array($myhelp['field']) && empty($myhelp['field'])))
 					{
 						$empty_help = 1;
 						$empty_help_name = $myhelp['help-object_name'];
