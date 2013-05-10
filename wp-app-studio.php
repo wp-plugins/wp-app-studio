@@ -3,7 +3,7 @@
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 1.0.0
+   Version: 1.0.1
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later

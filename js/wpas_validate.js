@@ -277,6 +277,10 @@ jQuery(document).ready(function() {
 			maxlength:16,
 			checkAlphaNum: true,
 			},
+			'ent-display-idx':{
+			maxlength:2,
+			checkInt: true,
+			}
 			},
 			success: function(label) {
 				 label.addClass('valid');

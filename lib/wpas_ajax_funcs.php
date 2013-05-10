@@ -433,6 +433,7 @@ function wpas_get_app_options()
 }
 function wpas_entity_types($app_id,$type,$values="")
 {
+	$return = "";
 	if(!is_array($values))
 	{
 		$values= Array("$values");
@@ -444,16 +445,36 @@ function wpas_entity_types($app_id,$type,$values="")
 	}
 	foreach($app['entity'] as $myent)
 	{
-		$return .= "<option value='" . $myent['ent-label'] . "'"; 
-		if($type == 'help')
+		$show_ent = 0;
+		if($type == 'relationship_to')
 		{
-			$return .= " style='padding-left:2em;'";
+			$show_ent = 1;
 		}
-		if(in_array($myent['ent-label'],$values))
+		elseif(in_array($myent['ent-label'],Array('Posts','Pages')))
 		{
-			$return .= " selected";
+			if(isset($myent['field']) && !empty($myent['field']))
+			{
+				$show_ent = 1;
+			}
 		}
-		$return .= ">" . $myent['ent-label'] . "</option>";
+		else
+		{
+			$show_ent =1;
+		}
+
+		if($show_ent == 1)
+		{
+			$return .= "<option value='" . $myent['ent-label'] . "'"; 
+			if($type == 'help')
+			{
+				$return .= " style='padding-left:2em;'";
+			}
+			if(in_array($myent['ent-label'],$values))
+			{
+				$return .= " selected";
+			}
+			$return .= ">" . $myent['ent-label'] . "</option>";
+		}
 	}
 	if($type == 'help')
 	{
