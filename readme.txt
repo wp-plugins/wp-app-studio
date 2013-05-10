@@ -301,6 +301,10 @@ Updates to objects other than entities use 1 update credit per generation even i
 19. App Taxonomy View
 20. App Entity Operations View
 
+== Upgrade Notice ==
+= 1.0.1 =
+Frontend display has been improved. Added Entity Menu Display index.
+
 == Changelog ==
 
 = 1.0.1 =
