@@ -3,7 +3,7 @@ Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -302,10 +302,15 @@ Updates to objects other than entities use 1 update credit per generation even i
 20. App Entity Operations View
 
 == Upgrade Notice ==
-= 1.0.1 =
-Frontend display has been improved. Added Entity Menu Display index.
+= 1.0.2 =
+Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+
+= 1.0.2 =
+* Fixed a minor bug related to entity layout
+* Fixed a minor bug related to entity capabilities
+* Added additional error check for xml parsing
 
 = 1.0.1 =
 * Frontend display has been improved. You can just add a link to your entity content from Appearance > Menus and the content will be displayed at the frontend.

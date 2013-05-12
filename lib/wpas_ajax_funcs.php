@@ -685,13 +685,17 @@ function wpas_save_field()
 		$field['modified_date'] = date("Y-m-d H:i:s");
 	}
 
+	if($type =='entity')
+	{
+		$flabel_old = $app[$type][$comp_id]['field'][$field_id]['fld_label'];
+	}
+
 	$app[$type][$comp_id]['modified_date'] = date("Y-m-d H:i:s");
 	$app[$type][$comp_id]['field'][$field_id] = $field;
 	if($type == 'entity')
 	{
 		//update layout also
 		$flabel = $field['fld_label'];
-		$flabel_old = $app[$type][$comp_id]['field'][$field_id]['fld_label'];
 		if(isset($app[$type][$comp_id]['layout']))
 		{
 			foreach($app[$type][$comp_id]['layout'] as $lkey => $mylayout)
@@ -1505,6 +1509,17 @@ function wpas_save_option_form()
 				$comp['role-label'] = $app[$comp_type][$comp_id]['role-label'];
 			}
 		}
+
+		if($comp_type == 'entity' && $comp['ent-capability_type'] != 'post')
+		{
+			$label = $comp['ent-name'];
+			$label = strtolower($label);
+			$label = $label . "s";
+
+			$admin_new_entity_arr = wpas_admin_entity($label);
+			$app['role'][0] = array_merge($admin_new_entity_arr,$app['role'][0]);
+		}
+
 		$app[$comp_type][$comp_id] = $comp;
 		wpas_update_app($app,$app_id);
 		echo wpas_list($type,$app[$comp_type],$app_id,$app['app_name'],1);

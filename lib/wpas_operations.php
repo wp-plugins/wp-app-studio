@@ -25,7 +25,16 @@ function wpas_curl_request($method,$fields)
 	curl_close($c);
 	if($result)
 	{
+		libxml_use_internal_errors(true);
 		$xml = simplexml_load_string($result);
+		if(count(libxml_get_errors()) > 0) {
+      			// There has been XML errors
+      			return false;
+    		} 
+		if($xml === false)
+		{
+			return false;
+		}
 		return $xml;
 	}
 	return false;
