@@ -21,8 +21,8 @@ echo wpas_entity_types($app_id,'relationship');
                    <div class="control-group row-fluid">
 				<label class="control-label span3">From Entity Title</label>
 				<div class="controls span9">
-				<input name="rel-from-title" id="rel-from-title" type="text" placeholder="e.g. manager">
-<a href="#" title="Default is set to class label." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
+				<input name="rel-from-title" id="rel-from-title" type="text" placeholder="e.g. Manager (To Entity)">
+<a href="#" title="Default is set to To Entity label." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 							</div>
 						<div class="control-group row-fluid">
 							<label class="control-label span3">To Entity Name</label>
@@ -38,8 +38,8 @@ echo wpas_entity_types($app_id,'relationship');
                    <div class="control-group row-fluid">
 				<label class="control-label span3">To Entity Title</label>
 				<div class="controls span9">
-				<input name="rel-to-title" id="rel-to-title" type="text" placeholder="e.g. employee">
-<a href="#" title="Default is set to class label." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
+				<input name="rel-to-title" id="rel-to-title" type="text" placeholder="e.g. Employee (From Entity)">
+<a href="#" title="Default is set to From Entity label." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 							</div>
 				<div class="control-group row-fluid">
 							<label class="control-label span3">Type</label>

@@ -678,10 +678,13 @@ jQuery(document).ready(function() {
                         {
 				$('#add-rel-field-div input#app').val(app_id);
 				$('#add-rel-field-div input#rel').val(rel_id);
-                                $.get(ajaxurl,{action:'wpas_get_entities',type:button,app_id:app_id}, function(response)
+                                $.get(ajaxurl,{action:'wpas_get_entities',type:button+'_from',app_id:app_id}, function(response)
                                 {
-                                        $('#add-relationship-div #rel-to-name').html(response);
-                                        $('#add-relationship-div #rel-from-name').html(response);
+                                        $('#add-relationship-div #rel-from-name').html('<option value="">Please select</option>'+response);
+                                });
+                                $.get(ajaxurl,{action:'wpas_get_entities',type:button+'_to',app_id:app_id}, function(response)
+                                {
+                                        $('#add-relationship-div #rel-to-name').html('<option value="">Please select</option>'+response);
                                 });
                         }
 			else if(button == 'help')
@@ -1182,7 +1185,8 @@ jQuery(document).ready(function() {
 								{
 									response = '<option value="">Please select</option>' + response;
 								}
-								else if(key == 'help-object_name')
+                                        			$('#add-'+myclass+'-div #'+ key).html(response);
+								if(key == 'help-object_name')
 								{
 									if(value.indexOf('txn-') == 0)
 									{
@@ -1193,9 +1197,22 @@ jQuery(document).ready(function() {
 										jQuery('#help-screen_type-div').show();
 									}
 								}
-                                        			$('#add-'+myclass+'-div #'+ key).html(response);
                                 			});
 						}
+						else if(key == 'rel-from-name')
+						{
+							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass+'_from',values:value}, function(response)
+                                                        {
+								$('#add-'+myclass+'-div #'+ key).html(response);
+							});
+						}	
+						else if(key == 'rel-to-name')
+						{
+							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass+'_to',values:value}, function(response)
+                                                        {
+								$('#add-'+myclass+'-div #'+ key).html(response);
+							});
+						}	
 						else if(value == 1)
 						{
 							$('#add-'+myclass+'-div #'+key).attr('checked', true);

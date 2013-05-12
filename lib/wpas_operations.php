@@ -25,7 +25,16 @@ function wpas_curl_request($method,$fields)
 	curl_close($c);
 	if($result)
 	{
+		libxml_use_internal_errors(true);
 		$xml = simplexml_load_string($result);
+		if(count(libxml_get_errors()) > 0) {
+      			// There has been XML errors
+      			return false;
+    		} 
+		if($xml === false)
+		{
+			return false;
+		}
 		return $xml;
 	}
 	return false;
@@ -236,7 +245,7 @@ function wpas_generate_app()
 			{
 				foreach($myapp['help'] as $myhelp)
 				{
-					if(!is_array($myhelp['field']) && empty($myhelp['field']))
+					if(!isset($myhelp['field']) || (!is_array($myhelp['field']) && empty($myhelp['field'])))
 					{
 						$empty_help = 1;
 						$empty_help_name = $myhelp['help-object_name'];

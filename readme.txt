@@ -1,9 +1,9 @@
- ===  Wp App Studio  === 
+===  Wp App Studio  === 
 Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,10 +13,14 @@ Wp App Studio is easy to learn and use design tool for creating fully featured, 
 
  ==  Description  == 
 
-Wp App Studio is a SaaS platform that creates fully featured Wordpress based applications in the form of a plugin.
+Wp App Studio is a SaaS platform that creates fully featured Wordpress based applications in the form of a plugin. You must purchase credits to be able to generate your app plugin.
+
+You App's design data will be sent to SaaS backend servers and the code will be generated there. After the plugin code generated, you will be provided with a link to your plugin's zip file. We keep your plugin data for 6 months.
+
 
 *"By creating Wp App Studio, we wanted to make ever expanding features of WordPress as a CMS accessible to both programmers and non-programmers alike without spending thousands or countless hours in development. It is simple to use, easy to learn, and full of advanced features to meet your needs. Try it, you will not be disappointed."*
---*eMarket Design*
+--
+*eMarket Design*
 
 
 = How it works =
@@ -27,7 +31,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 = Features =
 
- *Create Entities* 
+ *Create Entities*
  
 * Collect data about things, persons, places, or concepts.
 * Supports all of Wordpress Custom Post Type API and more
@@ -297,7 +301,22 @@ Updates to objects other than entities use 1 update credit per generation even i
 19. App Taxonomy View
 20. App Entity Operations View
 
+== Upgrade Notice ==
+= 1.0.2 =
+Fixed minor bugs related to entity layout and capabilities.
+
 == Changelog ==
+
+= 1.0.2 =
+* Fixed a minor bug related to entity layout
+* Fixed a minor bug related to entity capabilities
+* Added additional error check for xml parsing
+
+= 1.0.1 =
+* Frontend display has been improved. You can just add a link to your entity content from Appearance > Menus and the content will be displayed at the frontend.
+* Added frontend custom css. You can change the default content display.
+* Added Entity Menu Display index. You will be able to sort your entities and display them accordingly in the navigation menu.
+* Quick Start process has been expanded for the post capabilities. Operations menu link will display even if you do not define a custom role for your entity.
 
 = 1.0.0 =
 * Initial release with fireworks.

@@ -53,7 +53,7 @@ function wpas_branding_footer()
 		<li><a target="_blank" href="//' . WPAS_URL . '">&copy; 2013 eMarket Design</a></li>
 		</ul>
 		</div>
-		<div id="footer-version" class="span1 pull-right">Version 1.0.0</div>
+		<div id="footer-version" class="span1 pull-right">Version '. WPAS_VERSION . '</div>
 		</div>
 		</div>';
 }
