@@ -13,23 +13,52 @@ Wp App Studio is easy to learn and use design tool for creating fully featured, 
 
  ==  Description  == 
 
-Wp App Studio is a SaaS platform that creates fully featured Wordpress based applications in the form of a plugin. You must purchase credits to be able to generate your app plugin.
+Wp App Studio (WPAS) is a cost-effective REST API based software as a service (SaaS) platform that creates fully featured Wordpress apps(plugins). Saas is a software delivery model commonly used by companies such as Google, Yahoo, Amazon etc. In SaaS delivery model all processing takes place outside of your computer.
 
-You App's design data will be sent to SaaS backend servers and the code will be generated there. After the plugin code generated, you will be provided with a link to your plugin's zip file. We keep your plugin data for 6 months.
+WPAS as a SaaS application does not require the deployment of a complex processing infrastructure and algorithms to generate code at your computer. It eliminates or drastically reduces the upfront commitment of resources at your end. WPAS also allows us to meet more complex and advanced requirements without being limited to any client computer profile.
 
-
-*"By creating Wp App Studio, we wanted to make ever expanding features of WordPress as a CMS accessible to both programmers and non-programmers alike without spending thousands or countless hours in development. It is simple to use, easy to learn, and full of advanced features to meet your needs. Try it, you will not be disappointed."*
---
-*eMarket Design*
+Wp App Studio plugin is a development tool used to design and send app metadata to WPAS servers. After app (plugin) metadata is sent, WPAS Servers generate the code and send you a link to your plugin's zip file. No coding is necessary to design your own custom plugins. To be able to use this premium service, you must purchase API credits.
 
 
-= How it works =
+= What comes in and out of my computer? =
 
-1. Download, install, and activate Wp App Studio plugin.
-2. Design and generate your App in Wp App Studio.
-3. Download, install, and activate your App plugin.
+*What comes out*
 
-= Features =
+* API Keys (WPAS userid and password)
+* App (plugin) metadata
+
+*What comes in*
+
+* WPAS account balance and available\used credits info
+* Development status messages (success, failure etc.)
+* Plugin download link
+
+All communication to WPAS servers are implemented through token based secure HTTPS REST requests using XML files. No other format is allowed.
+
+[See WPAS Delivery diagram for more detailed information](http://www.wpappstudio.com.s3.amazonaws.com/wpas_platform.png "WPAS Delivery Diagram")
+
+= Should I install Wp App Studio plugin to my production server? =
+
+You can install it anywhere you like. However, Wp App Studio is a development tool and we recommend you to install it to your laptop or development computer.
+
+= Who should use this service? =
+
+Wp App Studio is designed for the users with no coding experience. The generated plugin code is based on open source software and is completely open source. You can modify, whitelabel, and resell your plugin without any limitation.
+
+= What are the features? =
+
+See Other Notes tab or project links below.
+
+*Project Links*
+
+* [Wp App Studio Demo](http://demo.emarketdesign.com/ "Wp App Studio Demo")
+* [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
+* [Wp App Studio Forums](http://emarketdesign.com/forums/forum/wp-app-studio-forums/ "Wp App Studio Forums")
+* [Paid Support](http://emarketdesign.com/support "Wp App Studio Paid Support")
+* [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
+* [Pricing](http://emarketdesign.com/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+
+== Features ==
 
  *Create Entities*
  
@@ -196,12 +225,7 @@ You App's design data will be sent to SaaS backend servers and the code will be 
 * Easy to use interface.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-web-app-tours-through-pointers/ "Creating Wp App Studio App Tours")
-* [Wp App Studio Demo](http://demo.emarketdesign.com/ "Wp App Studio Demo")
-* [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
-* [Wp App Studio Forums](http://emarketdesign.com/forums/forum/wp-app-studio-forums/ "Wp App Studio Forums")
-* [Paid Support](http://emarketdesign.com/support "Wp App Studio Paid Support")
-* [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
-* [Pricing](http://emarketdesign.com/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+
 
  ==  Installation  == 
 
