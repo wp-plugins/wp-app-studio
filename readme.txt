@@ -19,6 +19,7 @@ WPAS as a SaaS application does not require the deployment of a complex processi
 
 Wp App Studio plugin is a development tool used to design and send app metadata to WPAS servers. After app (plugin) metadata is sent, WPAS Servers generate the code and send you a link to your plugin's zip file. No coding is necessary to design your own custom plugins. To be able to use this premium service, you must purchase API credits.
 
+[youtube http://youtu.be/od4UuGuA0FA]
 
 = What comes in and out of my computer? =
 
@@ -35,7 +36,7 @@ Wp App Studio plugin is a development tool used to design and send app metadata 
 
 All communication to WPAS servers are implemented through token based secure HTTPS REST requests using XML files. No other format is allowed.
 
-[See WPAS Delivery diagram for more detailed information](http://www.wpappstudio.com.s3.amazonaws.com/wpas_platform.png "WPAS Delivery Diagram")
+[See Wp App Studio Platform documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/ "WPAS Delivery Diagram")
 
 = Should I install Wp App Studio plugin to my production server? =
 
