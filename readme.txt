@@ -330,13 +330,13 @@ Updates to objects other than entities use 1 update credit per generation even i
 
 == Upgrade Notice ==
 = 1.1.0 =
-Hardended overall plugin security and added connected/related relationship type creation/display feature.(UPGRADE RECOMMENDED)
+Hardened overall plugin security and added connected/related relationship type creation/display feature.(UPGRADE RECOMMENDED)
 = 1.0.2 =
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
 = 1.1.0 =
-* Hardended overall plugin security by adding extra nonces, data sanitization/validation rules and Wordpress HTTP API calls.
+* Hardened overall plugin security by adding extra nonces, data sanitization/validation rules and Wordpress HTTP API calls.
 * Added connected/related relationship display types features in the relationship module. For example, on a product page, you will be able to display the orders that include a certain product(connected) or products which are also ordered with the product(related) i.e. "customers who purchased this also purchased" type(See demo.emarketdesign.com)
 * Added frontend display of connected and/or related relationship data. You will be able to display relationship data with different title on the from and to entity pages.(See demo.emarketdesign.com)
 * Added search filtering based on user roles. Users only can search data they are allowed to view.
