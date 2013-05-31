@@ -3,13 +3,13 @@ Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 
-Wp App Studio is easy to learn and use design tool for creating fully featured, advanced web apps based on WordPress platform. No coding required.
+Wp App Studio is easy to learn and use design tool for creating fully featured, advanced custom apps(plugins) based on WordPress platform. No coding required.
 
  ==  Description  == 
 
@@ -18,6 +18,8 @@ Wp App Studio (WPAS) is a cost-effective REST API based software as a service (S
 WPAS as a SaaS application does not require the deployment of a complex processing infrastructure and algorithms to generate code at your computer. It eliminates or drastically reduces the upfront commitment of resources at your end. WPAS also allows us to meet more complex and advanced requirements without being limited to any client computer profile.
 
 Wp App Studio plugin is a development tool used to design and send app metadata to WPAS servers. After app (plugin) metadata is sent, WPAS Servers generate the code and send you a link to your plugin's zip file. No coding is necessary to design your own custom plugins. To be able to use this premium service, you must purchase API credits.
+
+= Create your own plugin using Wp App Studio =
 
 [youtube http://www.youtube.com/watch?v=od4UuGuA0FA]
 
@@ -327,10 +329,17 @@ Updates to objects other than entities use 1 update credit per generation even i
 20. App Entity Operations View
 
 == Upgrade Notice ==
+= 1.1.0 =
+Hardended overall plugin security and added connected/related relationship type creation/display feature.(UPGRADE RECOMMENDED)
 = 1.0.2 =
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 1.1.0 =
+* Hardended overall plugin security by adding extra nonces, data sanitization/validation rules and Wordpress HTTP API calls.
+* Added connected/related relationship display types features in the relationship module. For example, on a product page, you will be able to display the orders that include a certain product(connected) or products which are also ordered with the product(related) i.e. "customers who purchased this also purchased" type(See demo.emarketdesign.com)
+* Added frontend display of connected and/or related relationship data. You will be able to display relationship data with different title on the from and to entity pages.(See demo.emarketdesign.com)
+* Added search filtering based on user roles. Users only can search data they are allowed to view.
 
 = 1.0.2 =
 * Fixed a minor bug related to entity layout

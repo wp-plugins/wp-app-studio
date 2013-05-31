@@ -521,19 +521,19 @@ function wpas_view_entity($ent,$ent_id)
 		<button class="btn  btn-danger pull-left" id="cancel" name="cancel" type="button">
 		<i class="icon-off"></i>Close</button>
 		<div class="entity">'; 
-	$ret .= '<button class="btn  btn-primary pull-right" id="edit-entity" name="Edit" type="submit" href="#' . $ent_id . '" ' . $style . '>
+	$ret .= '<button class="btn  btn-primary pull-right" id="edit-entity" name="Edit" type="submit" href="#' . esc_attr($ent_id) . '" ' . $style . '>
 		<i class="icon-edit"></i>Edit</button>';
 	$ret .= '</div>
 		</div>
 		<fieldset>
 		<div class="control-group row-fluid">
 		<label class="control-label span3">Name </label>
-		<div class="controls span9"><span id="ent-name" class="input-xlarge uneditable-input">' . $ent['ent-name'] . '</span>
+		<div class="controls span9"><span id="ent-name" class="input-xlarge uneditable-input">' . esc_html($ent['ent-name']) . '</span>
 		</div>
 		</div>
 		<div class="control-group row-fluid">
 		<label class="control-label span3">Plural Label</label>
-		<div class="controls span9"><span id="ent-label" class="input-xlarge uneditable-input">' . $ent['ent-label'] . '</span>
+		<div class="controls span9"><span id="ent-label" class="input-xlarge uneditable-input">' . esc_html($ent['ent-label']) . '</span>
 		</div>
 		</div>
 		</fieldset>

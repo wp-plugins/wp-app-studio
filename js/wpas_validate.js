@@ -450,6 +450,18 @@ jQuery(document).ready(function() {
 			'rel-from-title':{
 			maxlength:50,
 			},              
+			'rel-connected-display-from-title':{
+			maxlength:50,
+			},              
+			'rel-related-display-from-title':{
+			maxlength:50,
+			},              
+			'rel-connected-display-to-title':{
+			maxlength:50,
+			},              
+			'rel-related-display-to-title':{
+			maxlength:50,
+			},              
 			},
 			success: function(label) {
 			label.addClass('valid');

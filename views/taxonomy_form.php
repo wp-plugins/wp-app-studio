@@ -1,5 +1,5 @@
 <?php
-function wpas_add_taxonomy_form($app_id)
+function wpas_add_taxonomy_form()
 {
 ?>
 <script type="text/javascript">
