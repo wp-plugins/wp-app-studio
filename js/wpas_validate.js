@@ -277,6 +277,10 @@ jQuery(document).ready(function() {
 			maxlength:16,
 			checkAlphaNum: true,
 			},
+			'ent-display-idx':{
+			maxlength:2,
+			checkInt: true,
+			}
 			},
 			success: function(label) {
 				 label.addClass('valid');
@@ -444,6 +448,18 @@ jQuery(document).ready(function() {
 			maxlength:50,
 			},
 			'rel-from-title':{
+			maxlength:50,
+			},              
+			'rel-connected-display-from-title':{
+			maxlength:50,
+			},              
+			'rel-related-display-from-title':{
+			maxlength:50,
+			},              
+			'rel-connected-display-to-title':{
+			maxlength:50,
+			},              
+			'rel-related-display-to-title':{
 			maxlength:50,
 			},              
 			},

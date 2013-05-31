@@ -72,7 +72,7 @@ font-style:italic;
 		<div class="control-group row-fluid">
 		<label class="control-label span3" >Css </label>
 		<div class="controls span9">
-		<textarea class="input-xlarge" id="shc-sc_css" name="shc-sc_css" class="tinymce" placeholder="<?php echo $default_css; ?>"></textarea>
+		<textarea class="input-xlarge" id="shc-sc_css" name="shc-sc_css" class="tinymce" placeholder="<?php echo esc_attr($default_css); ?>"></textarea>
 		<a href="#" style="cursor: help;" title="The custom css code to be used when displaying the content. You can leave this field blank and use a common css file for all.">
 		<i class="icon-info-sign"></i></a>
 		</div>
