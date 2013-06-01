@@ -9,7 +9,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 
-Wp App Studio is easy to learn and use design tool for creating fully featured, advanced custom apps(plugins) based on WordPress platform. No coding required.
+Wp App Studio is easy to learn and use design tool for creating fully featured custom apps(plugins) based on WordPress platform. No coding required.
 
  ==  Description  == 
 
