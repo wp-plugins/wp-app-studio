@@ -5,7 +5,7 @@ add_action( 'admin_init', 'wpas_export');
 function wpas_is_allowed()
 {
 	//for now wpas only is allowed to administrator , will add a role and cap next version
-	if (!current_user_can('manage_options'))
+	if (!current_user_can('design_wpas'))
 	{
 		wp_die('You do not have permission to access.');
 	}

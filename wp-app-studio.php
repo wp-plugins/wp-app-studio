@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 1.1.0
+   Version: 1.1.5
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
 define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "1.1.0");
+define('WPAS_VERSION', "1.1.5");
 
 function wpas_activate () 
 {
@@ -22,6 +22,9 @@ function wpas_activate ()
       {
 		return;
       }
+
+      $admin = get_role('administrator');
+      $admin->add_cap('design_wpas');
       $default_entities = get_option('wpas_default_entities');
       $default_roles = get_option('wpas_default_roles');
       if(empty($default_entities))
@@ -150,7 +153,9 @@ function wpas_activate ()
 }
 function wpas_deactivate ()
 {
-//do nothing for now , deletes of options are done in uninstall, delete of plugin
+      $admin = get_role('administrator');
+      $admin->remove_cap('design_wpas');
+      //deletes of options are done in uninstall, delete of plugin
 }
 
 require_once("lib/wpas_wysiwyg_fields.php");
@@ -183,8 +188,8 @@ function wpas_plugin_menu() {
 	global $hook_app_list, $hook_app_new;
 	$icon_url = plugin_dir_url( __FILE__ ) . "img/wpas-icon.png";
 	
-	$hook_app_list = add_menu_page('WP App Studio', __('WP App Studio','wpas'), 'administrator', 'wpas_app_list', 'wpas_app_list',$icon_url);
-	$hook_app_new = add_submenu_page( 'wpas_app_list', __('Add New App','wpas'), __('Add New App','wpas'), 'administrator', 'wpas_add_new_app', 'wpas_add_new_app');
+	$hook_app_list = add_menu_page('WP App Studio', __('WP App Studio','wpas'), 'design_wpas', 'wpas_app_list', 'wpas_app_list',$icon_url);
+	$hook_app_new = add_submenu_page( 'wpas_app_list', __('Add New App','wpas'), __('Add New App','wpas'), 'design_wpas', 'wpas_add_new_app', 'wpas_add_new_app');
 	add_action( 'admin_enqueue_scripts', 'wpas_enqueue_scripts' );
 
 }
@@ -192,6 +197,7 @@ function wpas_enqueue_scripts($hook_suffix){
 	global $hook_app_list, $hook_app_new;
 	if($hook_suffix == $hook_app_list || $hook_suffix == $hook_app_new)
 	{
+		add_filter('user_can_richedit', '__return_true');
 		$local_vars = array();
 		$local_vars['nonce_update_field_order'] = wp_create_nonce( 'wpas_update_field_order_nonce' );
 		$local_vars['nonce_delete_field'] = wp_create_nonce( 'wpas_delete_field_nonce' );

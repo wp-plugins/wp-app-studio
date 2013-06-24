@@ -13,7 +13,7 @@ echo '
 		<table border="0" cellspacing="1px" cellpadding="4px" style="background-color:#222222 !important;"><tr>
 		<td><a target="_blank" href="//' . WPAS_URL . '/wp-app-studio/wp-app-studio-pricing/" class="btn btn-primary">Buy Credits</a></td>
 		<td><a target="_blank" href="//' . WPAS_URL . '/marketplace/" class="btn btn-success">Buy Designs</a></td>
-		<td><a target="_blank" href="//' . WPAS_URL . '/wp-app-studio-playground/" class="btn btn-danger">Playground</a></td>
+		<td><a target="_blank" href="//' . WPAS_URL . '/wp-app-studio-playground/" class="btn btn-danger">Free Trial</a></td>
 		</tr></table>
 		</div>
 		<div class="span5">

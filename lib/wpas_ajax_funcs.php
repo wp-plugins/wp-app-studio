@@ -23,8 +23,56 @@ add_action('wp_ajax_wpas_check_rel', 'wpas_check_rel');
 add_action('wp_ajax_wpas_check_help', 'wpas_check_help');
 add_action('wp_ajax_wpas_check_widg', 'wpas_check_widg');
 add_action('wp_ajax_wpas_check_status_generate', 'wpas_check_status_generate');
+add_action('wp_ajax_wpas_get_ent_attrs','wpas_get_ent_attrs');
 
-
+function wpas_get_ent_attrs()
+{
+	wpas_is_allowed();
+	$ent_attrs = Array();
+	$tax_attrs = Array();
+	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+	$ent_name = isset($_GET['ent_name']) ? $_GET['ent_name'] : '';
+	if(empty($app_id) || empty($ent_name))
+	{
+		die(-1);
+	}
+	$app = wpas_get_app($app_id);
+	if(!empty($app['entity']))
+	{
+		foreach($app['entity'] as $key => $myent)
+		{
+			if($ent_name == $myent['ent-label'])
+			{
+				$ent_attrs[0] = $ent_name;
+				foreach($myent['field'] as $myfield)
+				{
+					$ent_attrs['ent_'.$myfield['fld_name']] =  $myfield['fld_label'];
+				}
+			}
+		}
+	}
+	if(!empty($app['taxonomy']))
+	{
+		foreach($app['taxonomy'] as $tkey => $mytax)
+		{
+			foreach($mytax['txn-attach'] as $mytxn_attach)
+			{
+				if($mytxn_attach == $ent_name)
+				{
+					$tax_attrs['tax_'.$mytax['txn-name']] =  $mytax['txn-label'];
+				}
+			}
+		}
+	}
+	if(!empty($tax_attrs))
+	{
+		$tax_attrs = array_merge(Array('tax' => 'Taxonomies'),$tax_attrs);
+		$ent_attrs= array_merge($ent_attrs,$tax_attrs);
+	}
+			
+	echo json_encode($ent_attrs);
+	die();
+}
 function wpas_check_status_generate()
 {
 	wpas_is_allowed();

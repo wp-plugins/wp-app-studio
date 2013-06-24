@@ -47,7 +47,7 @@ echo wpas_entity_types($app_id,'help');
 				<label class="control-label">Help SideBar</label>
 				<div class="controls">
 <?php
-$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent';
+$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
 $buttons['theme_advanced_buttons2'] = 'tablecontrols';
 
 

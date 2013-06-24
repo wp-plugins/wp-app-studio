@@ -38,8 +38,8 @@ function wpas_add_shortcode_form($app_id)
 		<?php
 		$initial_data='<table class="content-table" border=0 cellpadding=1 cellspacing=1><tbody><tr><td class="content-cell featured-image">!#featured_img_thumb#</td><td class="content-cell content-title">!#title#</td></tr><tr><td class="content-cell content-excerpt" colspan=2>!#excerpt#</td></tr></tbody></table>';
 
-	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,mylistbox';
-	$buttons['theme_advanced_buttons2'] = 'tablecontrols,code';
+	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
+	$buttons['theme_advanced_buttons2'] = 'tablecontrols,code,mylistbox';
 
 	$settings = array(
 			'text_area_name'=>'shc-sc_layout',//name you want for the textarea

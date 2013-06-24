@@ -45,7 +45,7 @@ function wpas_add_help_tab_form($app_id)
 		<div class="controls">
 		<?php
 
-	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent';
+	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
 	$buttons['theme_advanced_buttons2'] = 'tablecontrols';
 
 		$settings = array(

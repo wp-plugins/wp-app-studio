@@ -1187,10 +1187,12 @@ jQuery(document).ready(function() {
 				else if(myclass == 'shortcode')
 				{
 					$('input#shc').val(response[1]);
+					layout_id= 'shc-sc_layout';
 				}
 				else if(myclass == 'widget')
 				{
 					$('input#widget').val(response[1]);
+					layout_id= 'widg-layout';
 				}
 				$.each(response[0],function (key,value) {
 					if(value != undefined)
@@ -1220,6 +1222,9 @@ jQuery(document).ready(function() {
 									}
 								}
                                 			});
+							//for insert entity attributes 
+                					app_id = $('input#app').val();	
+							jQuery.fn.getAddons(layout_id,app_id,value);
 						}
 						else if(key == 'rel-from-name')
 						{
