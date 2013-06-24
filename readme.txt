@@ -1,33 +1,73 @@
- ===  Wp App Studio  === 
+===  Wp App Studio  === 
 Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.0.0
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 
-Wp App Studio is easy to learn and use design tool for creating fully featured, advanced web apps based on WordPress platform. No coding required.
+Wp App Studio is easy to learn and use design tool for creating fully featured custom apps(plugins) based on WordPress platform. No coding required.
 
  ==  Description  == 
 
-Wp App Studio is a SaaS platform that creates fully featured Wordpress based applications in the form of a plugin.
+Wp App Studio (WPAS) is a cost-effective REST API based software as a service (SaaS) platform that creates fully featured Wordpress apps(plugins). Saas is a software delivery model commonly used by companies such as Google, Yahoo, Amazon etc. In SaaS delivery model all processing takes place outside of your computer.
 
-*"By creating Wp App Studio, we wanted to make ever expanding features of WordPress as a CMS accessible to both programmers and non-programmers alike without spending thousands or countless hours in development. It is simple to use, easy to learn, and full of advanced features to meet your needs. Try it, you will not be disappointed."*
---*eMarket Design*
+WPAS as a SaaS application does not require the deployment of complex processing infrastructure and algorithms to generate code at your computer. It eliminates or drastically reduces the upfront commitment of resources at your end. WPAS also allows us to meet more complex and advanced requirements without being limited to any client computer profile.
 
+Wp App Studio plugin is a development tool used to design and send app metadata to WPAS servers. After app (plugin) metadata is sent, WPAS Servers generate the code and send you a link to your plugin's zip file. No coding is necessary to design your own custom plugins. To be able to use this premium service, you must purchase API credits.
 
-= How it works =
+[TRY IT FOR FREE](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
 
-1. Download, install, and activate Wp App Studio plugin.
-2. Design and generate your App in Wp App Studio.
-3. Download, install, and activate your App plugin.
+= Create your own plugin using Wp App Studio =
 
-= Features =
+[youtube http://www.youtube.com/watch?v=od4UuGuA0FA]
 
- *Create Entities* 
+= What comes in and out of my computer? =
+
+*What comes out*
+
+* API Keys (WPAS userid and password)
+* App (plugin) metadata
+
+*What comes in*
+
+* WPAS account balance and available\used credits info
+* Development status messages (success, failure etc.)
+* Plugin download link
+
+All communication to WPAS servers are implemented through token based secure HTTPS REST requests using XML files. No other format is allowed.
+
+[See Wp App Studio Platform documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/ "WPAS Delivery Diagram")
+
+= Should I install Wp App Studio plugin to my production server? =
+
+You can install it anywhere you like. However, Wp App Studio is a development tool and we recommend you to install it to your laptop or development computer.
+
+= Who should use this service? =
+
+Wp App Studio is designed for the users with no coding experience. The generated plugin code is based on open source software and is completely open source. You can modify, whitelabel, and resell your plugin without any limitation.
+
+= What are the features? =
+
+See Other Notes tab or project links below.
+
+*Project Links*
+
+* [Wp App Studio Demo](http://demo.emarketdesign.com/ "Wp App Studio Demo")
+* [Wp App Studio Playground](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
+* [Video Tutorials](http://emarketdesign.com/videos "Wp App Studio Video Tutorials")
+* [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
+* [Wp App Studio Forums](http://emarketdesign.com/forums/forum/wp-app-studio-forums/ "Wp App Studio Forums")
+* [Paid Support](http://emarketdesign.com/support "Wp App Studio Paid Support")
+* [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
+* [Pricing](http://emarketdesign.com/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+
+== Features ==
+
+ *Create Entities*
  
 * Collect data about things, persons, places, or concepts.
 * Supports all of Wordpress Custom Post Type API and more
@@ -192,12 +232,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 * Easy to use interface.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-web-app-tours-through-pointers/ "Creating Wp App Studio App Tours")
-* [Wp App Studio Demo](http://demo.emarketdesign.com/ "Wp App Studio Demo")
-* [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
-* [Wp App Studio Forums](http://emarketdesign.com/forums/forum/wp-app-studio-forums/ "Wp App Studio Forums")
-* [Paid Support](http://emarketdesign.com/support "Wp App Studio Paid Support")
-* [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
-* [Pricing](http://emarketdesign.com/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+
 
  ==  Installation  == 
 
@@ -297,7 +332,39 @@ Updates to objects other than entities use 1 update credit per generation even i
 19. App Taxonomy View
 20. App Entity Operations View
 
-== Changelog ==
+== Upgrade Notice ==
+= 1.1.5 =
+Added attribute and taxonomy selectors for widgets and short codes. Playground is open for free trial of WPAS platform.
+= 1.1.0 =
+Hardened overall plugin security and added connected/related relationship type creation/display feature.(UPGRADE RECOMMENDED)
+= 1.0.2 =
+Fixed minor bugs related to entity layout and capabilities.
 
-= 1.0.0 =
+== Changelog ==
+= 1.1.5 (6/24/13) =
+* Added Entity attribute and taxonomy selectors in shortcode and widgets layouts. You will be able to use entity attributes and taxonomies in shortcodes and widgets.
+* Added link/unlink button Help Sidebar and Help Tab editor screens.
+* Added "Design WPAS" capability so that admins will be able to give designers wpas design permission without assigning them to an admin role.
+* Added visual editor display option independent of user profile for all wpas screens.
+* Wp App Studio Playground is open for designing, building, and testing your plugins without incurring API charges.
+
+= 1.1.0 (6/01/13) =
+* Hardened overall plugin security by adding extra nonces, data sanitization/validation rules and Wordpress HTTP API calls.
+* Added connected/related relationship display types features in the relationship module. For example, on a product page, you will be able to display the orders that include a certain product(connected) or products which are also ordered with the product(related) i.e. "customers who purchased this also purchased" type(See demo.emarketdesign.com)
+* Added frontend display of connected and/or related relationship data. You will be able to display relationship data with different title on the from and to entity pages.(See demo.emarketdesign.com)
+* Added search filtering based on user roles. Users only can search data they are allowed to view.
+
+= 1.0.2 (5/12/13) =
+* Fixed a minor bug related to entity layout
+* Fixed a minor bug related to entity capabilities
+* Added additional error check for xml parsing
+
+= 1.0.1 (5/10/13) =
+* Frontend display has been improved. You can just add a link to your entity content from Appearance > Menus and the content will be displayed at the frontend.
+* Added frontend custom css. You can change the default content display.
+* Added Entity Menu Display index. You will be able to sort your entities and display them accordingly in the navigation menu.
+* Quick Start process has been expanded for the post capabilities. Operations menu link will display even if you do not define a custom role for your entity.
+
+= 1.0.0 (5/2/13) =
 * Initial release with fireworks.
+
