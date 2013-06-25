@@ -84,7 +84,7 @@ if(isset($mylayout['tabs']) && is_array($mylayout['tabs']))
 {
 $layout_html .= "<div id=\"tabgrp".$grp_count . "\" class=\"tabgrp-ctr ui-sortable\">
 	<div id=\"tabgrp" . $grp_count . "-row\" class=\"row-fluid\">
-	<div id=\"tabgrp" . $grp_count . "-title\" class=\"tabgrp-title layout-title span11 pull-left\">" . $mylayout['gr_title'] . "</div>
+	<div id=\"tabgrp" . $grp_count . "-title\" class=\"tabgrp-title layout-title span11 pull-left\">" . esc_html($mylayout['gr_title']) . "</div>
 	<div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
 	<a class=\"delete\"><i class=\"icon-trash\"></i></a></div>
 	</div><div class=\"multitab-ctr ui-droppable ui-sortable\">";
@@ -93,7 +93,7 @@ elseif(is_array($mylayout['accs']))
 {
 $layout_html .= "<div id=\"accgrp".$grp_count . "\" class=\"accgrp-ctr ui-sortable\">
         <div id=\"accgrp" . $grp_count . "-row\" class=\"row-fluid\">
-        <div id=\"accgrp" . $grp_count . "-title\" class=\"accgrp-title layout-title span11 pull-left\">" . $mylayout['gr_title'] . "</div>
+        <div id=\"accgrp" . $grp_count . "-title\" class=\"accgrp-title layout-title span11 pull-left\">" . esc_html($mylayout['gr_title']) . "</div>
         <div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
         <a class=\"delete\"><i class=\"icon-trash\"></i></a></div>
         </div><div class=\"multiacc-ctr ui-droppable ui-sortable\">";
@@ -115,7 +115,7 @@ if(isset($mylayout['tabs']))
 			$attrs = explode(",",$mytab['attr']);
 			foreach($attrs as $myattr)
 			{
-				$layout_html .= "<div class=\"tabattr ui-draggable\" style=\"position: relative; left: 0px; top: 0px;\">" . $myattr . 
+				$layout_html .= "<div class=\"tabattr ui-draggable\" style=\"position: relative; left: 0px; top: 0px;\">" . esc_html($myattr) . 
 					"<div class=\"pull-right layout-edit-icons\"><a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>";
 			}
 		}
@@ -129,7 +129,7 @@ if(isset($mylayout['accs']))
 	$acc_count++;
 	$layout_html .= "<div id=\"acc-ctr" . $acc_count . "\" class=\"acc-ctr\">
 			<div id=\"acc-ctr". $acc_count . "-row\" class=\"row-fluid\">
-			<div id=\"acc-ctr" . $acc_count . "-title\" class=\"accctr-title layout-title span10 pull-left\">" . $myacc['acc_title'] . "</div>
+			<div id=\"acc-ctr" . $acc_count . "-title\" class=\"accctr-title layout-title span10 pull-left\">" . esc_html($myacc['acc_title']) . "</div>
 			<div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
 			<a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>
 			<div id=\"multiattr-ctr\" class=\"multiattr-ctr ui-droppable\">";
@@ -138,7 +138,7 @@ if(isset($mylayout['accs']))
 	$attrs = explode(",",$myacc['attr']);
 	foreach($attrs as $myattr)
 	{
-	$layout_html .= "<div class=\"tabattr ui-draggable\" style=\"position: relative; left: 0px; top: 0px;\">" . $myattr . 
+	$layout_html .= "<div class=\"tabattr ui-draggable\" style=\"position: relative; left: 0px; top: 0px;\">" . esc_html($myattr) . 
 			"<div class=\"pull-right layout-edit-icons\"><a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>";
 	}
 	}

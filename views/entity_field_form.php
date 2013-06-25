@@ -3,7 +3,7 @@ function wpas_view_ent_fields($ent_name)
 {
 return '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>Attributes</h3></div>
                 <div class="span9 field" id="add_field_entity">
-<a class="btn btn-info  pull-right" href="#ent'. $ent_name . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
+<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
 </div></div></div>';
 }
 function wpas_view_ent_fields_list($ent_field)
@@ -27,14 +27,14 @@ function wpas_view_ent_fields_list($ent_field)
 		{
 			$required = 'N';
 		}
-                $ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
+                $ret .= '<li id="' . esc_attr($key) . '"><div id="field-row"><div class="row-fluid">
                                 <div class="span1"><i class="icon-sort"></i></div>
-                                <div class="span3" id="field-name">' . $myfield['fld_name'] . '</div>
-                                <div class="span3" id="field-label">' . $myfield['fld_label'] . '</div>
-                                <div class="span2">' . $myfield['fld_type'] . '</div>
+                                <div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
+                                <div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
+                                <div class="span2">' . esc_html($myfield['fld_type']) . '</div>
                                 <div class="span1">' . $required . '</div>
-                                <div class="span1" id="edit-field"><a href="#' . $key . '">Edit</a></div>
-                                <div class="span1" id="delete-field"><a href="#' . $key . '">Delete</a></div></div></div></li>';
+                                <div class="span1" id="edit-field"><a href="#' . esc_attr($key) . '">Edit</a></div>
+                                <div class="span1" id="delete-field"><a href="#' . esc_attr($key) . '">Delete</a></div></div></div></li>';
         }
         $ret .= '</ul>';
 	return $ret;
@@ -84,7 +84,7 @@ if(isset($app['entity'][$ent_id]['field']) && is_array($app['entity'][$ent_id]['
 	{
 		if(!in_array($myfield['fld_label'],$attrs))
 		{
-		$response .= "<li class=\"ui-draggable\"><div class=\"tabattr\">" . $myfield['fld_label'] . "</div></li>";
+		$response .= "<li class=\"ui-draggable\"><div class=\"tabattr\">" . esc_html($myfield['fld_label']) . "</div></li>";
 		}
 
 	}

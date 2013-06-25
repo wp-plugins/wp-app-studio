@@ -3,7 +3,7 @@ function wpas_view_rel_fields($rel_name)
 {
 return '<div id="title-bar"><div class="row-fluid"><h4 class="span3"><i class="icon-columns"></i>Attributes</h3>
                 <div class="span9 field" id="add_field_rel">
-<a class="btn btn-info  pull-right" href="#rel'. $rel_name . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
+<a class="btn btn-info  pull-right" href="#rel'. esc_attr($rel_name) . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
 </div></div></div>';
 }
 function wpas_view_rel_fields_list($rel_field)
@@ -30,12 +30,12 @@ function wpas_view_rel_fields_list($rel_field)
 
                 $ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
                         <div class="span1"><i class="icon-sort"></i></div>
-			<div class="span3" id="field-name">' . $myfield['rel_fld_name'] . '</div>
-                        <div class="span3" id="field-label">' . $myfield['rel_fld_label'] . '</div>
-                        <div class="span2">' . $myfield['rel_fld_type'] . '</div>
+			<div class="span3" id="field-name">' . esc_html($myfield['rel_fld_name']) . '</div>
+                        <div class="span3" id="field-label">' . esc_html($myfield['rel_fld_label']) . '</div>
+                        <div class="span2">' . esc_html($myfield['rel_fld_type']) . '</div>
 			<div class="span1">' . $required . '</div>
-                        <div class="span1" id="edit-rel-field"><a href="#' . $key . '">Edit</a></div>
-                        <div class="span1" id="delete-rel-field"><a href="#' . $key . '">Delete</a></div></div></div></li>';
+                        <div class="span1" id="edit-rel-field"><a href="#' . esc_attr($key) . '">Edit</a></div>
+                        <div class="span1" id="delete-rel-field"><a href="#' . esc_attr($key) . '">Delete</a></div></div></div></li>';
         }
         $ret .= '</ul>';
 	return $ret;
@@ -69,7 +69,7 @@ jQuery(document).ready(function() {
 </script>
 
 <form action="" method="post" id="rel-field-form" class="form-horizontal">
-<input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
+<input type="hidden" id="app" name="app" value="<?php echo esc_attr($app_id); ?>">
 <input type="hidden" id="rel" name="rel" value="0">
 <input type="hidden" id="rel_field" name="rel_field" value="">
 
