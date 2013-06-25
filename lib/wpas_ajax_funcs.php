@@ -1232,6 +1232,11 @@ function wpas_save_option_form()
 		{
 			$comp_form_value = sanitize_text_field($comp_form_value);
 		}
+		else
+		{
+			$comp_form_value = wpautop($comp_form_value);
+		}
+
 		if($pos !== false && $comp_form_value != "")
 		{
 			$comp[$comp_form[0]] = $comp_form_value;
@@ -1291,10 +1296,10 @@ function wpas_save_form()
 		$comp_form = explode("=",$mypost);
 		$pos = strpos($comp_form[0],$search_str);
 		$comp_form_value = urldecode(str_replace($comp_form[0]."=","",$mypost));
-		if(in_array($comp_form[0], Array('shc-sc_layout','widg-layout')))
+		if(in_array($comp_form[0], Array('shc-sc_layout','widg-layout','help-screen_sidebar','help_fld_content')))
 		{
 			//tinymce field
-			$comp_form_value_sanitized = $comp_form_value;
+			$comp_form_value_sanitized = wpautop($comp_form_value);
 		}
 		else
 		{
@@ -1414,10 +1419,10 @@ function wpas_update_form()
 		}
 		$pos = strpos($comp_form[0],$search_str);
 		$comp_form_value = urldecode(str_replace($comp_form[0]."=","",$mypost));
-		if(in_array($comp_form[0], Array('shc-sc_layout','widg-layout')))
+		if(in_array($comp_form[0], Array('shc-sc_layout','widg-layout','help-screen_sidebar','help_fld_content')))
 		{
 			//tinymce field
-			$comp_form_value_sanitized = $comp_form_value;
+			$comp_form_value_sanitized = wpautop($comp_form_value);
 		}
 		else
 		{
