@@ -3,7 +3,7 @@ Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 1.1.6
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,10 @@ WPAS as a SaaS application does not require the deployment of complex processing
 Wp App Studio plugin is a development tool used to design and send app metadata to WPAS servers. After app (plugin) metadata is sent, WPAS Servers generate the code and send you a link to your plugin's zip file. No coding is necessary to design your own custom plugins. To be able to use this premium service, you must purchase API credits.
 
 [TRY IT FOR FREE](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
+
+= What's in store for the next release? =
+
+The next WPAS release will cover long-awaited forms feature. Forms will allow ajax powered data entry from frontend to entities, taxonomies, and relationships. 
 
 = Create your own plugin using Wp App Studio =
 
@@ -333,6 +337,8 @@ Updates to objects other than entities use 1 update credit per generation even i
 20. App Entity Operations View
 
 == Upgrade Notice ==
+= 1.1.8 =
+Added relationship attribute display option and relationship widget feature. Fixed misc. bugs.
 = 1.1.6 =
 Fixed upgrade bug. Playground is open for free trial of WPAS platform.
 = 1.1.5 =
@@ -343,9 +349,19 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 1.1.8 (7/05/13) =
+* Removed filterable option for attribute image types.
+* Fixed p and br tag deletion issue in Help Tab editor.
+* Fixed required option not working in relationship attribute create screen.
+* Removed create relationship attribute option from one-to-many relationships since relationship attributes are only applicable to many-to-many relationships.
+* Added relationship attribute frontend display option.
+* Add relationship widget feature. You will be able to display entity relationship data on frontend using relationship widgets.
+* Fixed misc. advanced options screen data entry issues related to entities and taxonomies.
+ 
 = 1.1.6 (6/25/13) =
 * Fixed upgrade bug. 
 * Fixed p and br tags deletion in shortcode and widget layouts.
+
 = 1.1.5 (6/24/13) =
 * Added Entity attribute and taxonomy selectors in shortcode and widgets layouts. You will be able to use entity attributes and taxonomies in shortcodes and widgets.
 * Added link/unlink button Help Sidebar and Help Tab editor screens.

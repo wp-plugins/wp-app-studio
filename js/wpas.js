@@ -673,12 +673,19 @@ jQuery(document).ready(function() {
 				{
 					$('#add-widget-div #widg-attach').html('<option value="">Please select</option>'+response);
 				}); 
+                		$.get(ajaxurl,{action:'wpas_get_rels',app_id:app_id}, function(response)
+				{
+					$('#add-widget-div #widg-attach-rel').html('<option value="">Please select</option>'+response);
+				}); 
 				jQuery('#widg-dash_subtype_div').hide();
 				jQuery('#widg-side_subtype_div').hide();
 				jQuery('#widg-label_div').hide();
                                 jQuery('#widg-wdesc_div').hide();
 				jQuery('#widg-html_div').hide();
 				jQuery('#widg-attach_div').hide();
+				jQuery('#widg-attach-rel_div').hide();
+				jQuery('#widg-rel-conn-type_div').hide();
+				jQuery('#widg-rel-to-title_div').hide();
 				jQuery('#widg-layout_div').hide();
 				jQuery('#widg-css_div').hide();
 				jQuery('#widg-post_per_page_div').hide();
@@ -1168,6 +1175,7 @@ jQuery(document).ready(function() {
                 $.get(ajaxurl,{action:'wpas_edit',type:myclass,app_id:app_id,comp_id:comp_id}, function(response)
                         {
 			if(response) {
+				layout_id = "";
 				if(myclass == 'entity')
 				{
 					$('input#ent').val(response[1]);
@@ -1194,6 +1202,10 @@ jQuery(document).ready(function() {
 					$('input#widget').val(response[1]);
 					layout_id= 'widg-layout';
 				}
+				menu_selected = "";
+				show_ui = "";
+				rel_type = "";
+				widg_rel_name = "";
 				$.each(response[0],function (key,value) {
 					if(value != undefined)
 					{
@@ -1222,9 +1234,30 @@ jQuery(document).ready(function() {
 									}
 								}
                                 			});
-							//for insert entity attributes 
-                					app_id = $('input#app').val();	
-							jQuery.fn.getAddons(layout_id,app_id,value);
+							if(key == 'shc-attach' || key == 'widg-attach')
+							{
+								//for insert entity attributes 
+								app_id = $('input#app').val();	
+								jQuery.fn.getAddons(layout_id,app_id,'entity',value,'');
+							}
+						}
+						else if(key == 'widg-attach-rel')
+						{
+							$.get(ajaxurl,{action:'wpas_get_rels',app_id:app_id,value:value}, function(response)
+							{
+								response = '<option value="">Please select</option>'+response;
+								$('#add-'+myclass+'-div #'+ key).html(response);
+							});
+							widg_rel_name = value; 
+
+
+						}
+						else if(key == 'widg-rel-conn-type')
+						{
+							$.get(ajaxurl,{action:'wpas_get_rel_conn_types',app_id:app_id,rel_name:widg_rel_name,value:value},function(response){
+                                				$('#widg-rel-conn-type').html(response);
+                        				});
+							jQuery.fn.getAddons(layout_id,app_id,'relationship',widg_rel_name,value);
 						}
 						else if(key == 'rel-from-name')
 						{
@@ -1260,6 +1293,11 @@ jQuery(document).ready(function() {
 								jQuery('#ent-menu_icon_32_div').show();
 								jQuery('#ent-menu_position_div').show();
 								jQuery('#ent-top_level_page_div').show();
+								show_ui = 1;
+							}
+							else if(key == 'ent-show_in_menu')
+							{
+								menu_selected = 1;
 							}
 							else if(key == 'ent-hierarchical')
 							{
@@ -1297,11 +1335,24 @@ jQuery(document).ready(function() {
 							else if(key == 'rel-connected-display')
 							{
 								jQuery('#rel-connected-div').show();
+								if(rel_type == 'one-to-many')
+								{
+									jQuery('#rel-connected-show-attributes-div').hide();
+								}
+								else if(rel_type == 'many-to-many')
+								{
+									jQuery('#rel-connected-show-attributes-div').show();
+								}
+
 							}
 							else if(key == 'rel-related-display')
 							{
 								jQuery('#rel-related-div').show();
 								jQuery('#rel-related-div-group').show();
+							}
+							else
+							{
+								$('#add-'+myclass+'-div #'+key).val(value);
 							}
 						}
 						else if(value == 0)
@@ -1309,11 +1360,16 @@ jQuery(document).ready(function() {
 							$('#add-'+myclass+'-div #'+key).val(value);
 							if(key == 'ent-show_ui')
 							{
+								show_ui = 0;
 								jQuery('#ent-show_in_menu_div').hide();
 								jQuery('#ent-menu_icon_div').hide();
 								jQuery('#ent-menu_icon_32_div').hide();
 								jQuery('#ent-menu_position_div').hide();
 								jQuery('#ent-top_level_page_div').hide();
+							}
+							else if(key == 'ent-show_in_menu')
+							{
+								menu_selected = 0;
 							}
 							else if(key == 'ent-hierarchical')
 							{
@@ -1357,11 +1413,13 @@ jQuery(document).ready(function() {
 								{
 									jQuery('#rel-related-div-group').show();
 									jQuery('#rel-related-div').show();
+									rel_type = "many-to-many";
 								}
 								else if(value == 'one-to-many')
 								{
 									jQuery('#rel-related-div-group').hide();
 									jQuery('#rel-related-div').hide();
+									rel_type = "one-to-many";
 								}
 							}
 							if(key == 'widg-type')
@@ -1407,12 +1465,54 @@ jQuery(document).ready(function() {
 								{
 									subtype = value;
 								}
+								if(subtype == 'relationship')
+								{
+									jQuery('#widg-attach_div').hide();
+									jQuery('#widg-attach-rel_div').show();
+									jQuery('#widg-rel-conn-type_div').show();
+									jQuery('#widg-rel-to-title_div').show();
+									jQuery('#widg-order_div').hide();
+									jQuery('#widg-orderby_div').hide();
+									jQuery('#widg-post_status_div').hide();
+								}
+								else if(subtype == 'entity')
+								{
+									jQuery('#widg-attach_div').show();
+									jQuery('#widg-attach-rel_div').hide();
+									jQuery('#widg-rel-conn-type_div').hide();
+									jQuery('#widg-rel-to-title_div').hide();
+								}
 							}
-							
+							else if(key == 'ent-show_in_menu')
+							{
+								menu_selected = value;
+							}
+								
 							$('#add-'+myclass+'-div #'+key).val(value);
 						}
 					}
 				});
+				if(menu_selected == 0 && show_ui == 1)
+				{
+					jQuery('#ent-menu_icon_div').hide();
+					jQuery('#ent-menu_icon_32_div').hide();
+					jQuery('#ent-menu_position_div').hide();
+					jQuery('#ent-top_level_page_div').hide();
+				}
+				else if(menu_selected == 2 && show_ui == 1)
+				{
+					jQuery('#ent-menu_icon_div').show();
+					jQuery('#ent-menu_icon_32_div').show();
+					jQuery('#ent-menu_position_div').hide();
+					jQuery('#ent-top_level_page_div').show();
+				}
+				else if(menu_selected == 1 && show_ui == 1)
+				{
+					jQuery('#ent-menu_icon_div').show();
+					jQuery('#ent-menu_icon_32_div').show();
+					jQuery('#ent-menu_position_div').show();
+					jQuery('#ent-top_level_page_div').hide();
+				}
 				if(myclass == 'widget' && subtype == 'admin')
 				{
 					jQuery('#widg-html_div').show();

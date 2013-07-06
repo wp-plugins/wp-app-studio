@@ -101,7 +101,7 @@ function wpas_add_ent_field_form($app_id,$ent_id)
 <script type="text/javascript">
 jQuery(document).ready(function() {
         var options_arr = ['checkbox_list','radio','select','multi_select','select_advanced'];
-	var filterable_arr = ['textarea','wysiwyg','file','image'];
+	var filterable_arr = ['textarea','wysiwyg','file','image','plupload_image','thickbox_image'];
 	var min_max_value_arr = ['decimal','digits_only','integer'];
 	var min_max_length_arr = ['text','letters_with_punc','alphanumeric','letters_only','no_whitespace','textarea','password'];
 	var min_max_words_arr = ['textarea'];
@@ -201,14 +201,17 @@ jQuery(document).ready(function() {
 		if(jQuery.inArray(myItem,filterable_arr) != -1)
 		{
                         jQuery('#fld_is_filterable_div').hide();
+			jQuery('#fld_is_filterable').attr('checked',false);
 		}
 		if(jQuery.inArray(myItem,required_arr) != -1)
 		{
                         jQuery('#fld_required_div').hide();
+                        jQuery('#fld_required').attr('checked',false);
 		}
 		if(jQuery.inArray(myItem,clone_arr) != -1)
 		{
                         jQuery('#fld_clone_div').hide();
+                        jQuery('#fld_clone').attr('checked',false);
 		}
 		if(myItem == 'hidden_function')
 		{

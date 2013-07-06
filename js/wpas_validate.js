@@ -668,11 +668,22 @@ jQuery(document).ready(function() {
 			'widg-side_subtype':{
 			required:true,
 			},
+			'widg-attach-rel':{
+			required:true,
+			},
+			'widg-rel-conn-type':{
+			required:true,
+			},
 			'widg-title':{
 			minlength:3,
 			maxlength:50,
 			required:true,
 			checkWidg:true,
+			},
+			'widg-rel-to-title':{
+			minlength:3,
+			maxlength:50,
+			required:true,
 			},
 			'widg-label':{
 			minlength:3,

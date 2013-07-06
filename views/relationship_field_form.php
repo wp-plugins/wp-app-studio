@@ -127,17 +127,14 @@ jQuery(document).ready(function() {
                                                                         </div>
                                         </div>
                                    <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Required?</label>
+                                                                        <label class="control-label span3"></label>
                                                         <div class="controls span9">
-                                                        <label class="radio inline">
-                                                <input id="rel_fld_required" type="radio" value="1" name="rel_fld_required">Yes
-                                                        </label>
+                                                        <label class="checkbox"> Required
+                                                <input id="rel_fld_required" type="checkbox" value="" name="rel_fld_required">
                                                        
-                                                        <label class="radio inline">
-                                                <input id="rel_fld_required" type="radio" value="0" name="rel_fld_required" checked>No
-                                                </label>
                                                  <a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
 			<i class="icon-info-sign"></i></a>
+                                                        </label>
                                                         </div>
                                         </div>
                                         <div class="control-group row-fluid">

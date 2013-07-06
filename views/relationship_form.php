@@ -8,6 +8,14 @@ jQuery(document).ready(function() {
 		if(jQuery(this).attr('checked'))
 		{
 			jQuery('#rel-connected-div').show();
+			if(jQuery('#rel-type').val() == 'one-to-many')
+			{
+				jQuery('#rel-connected-show-attributes-div').hide();
+			}
+			else
+			{
+				jQuery('#rel-connected-show-attributes-div').show();
+			}
 		}
 		else
 		{
@@ -28,11 +36,19 @@ jQuery(document).ready(function() {
 		if(jQuery(this).val() == 'many-to-many')
                 {
                         jQuery('#rel-related-div-group').show();
+			if(jQuery('#rel-connected-display').attr('checked'))
+			{
+				jQuery('#rel-connected-show-attributes-div').show();
+			}
                 }
                 else
                 {
                         jQuery('#rel-related-div-group').hide();
                         jQuery('#rel-related-div').hide();
+			if(jQuery('#rel-connected-display').attr('checked'))
+			{
+				jQuery('#rel-connected-show-attributes-div').hide();
+			}
                 }
 	});
 });
@@ -153,6 +169,15 @@ jQuery(document).ready(function() {
         <i class="icon-info-sign"></i></a> (default: Unordered List)
         </div>
         </div>
+        <div class="control-group row-fluid" id="rel-connected-show-attributes-div">
+        <label class="control-label span3"></label>
+        <div class="controls span9">
+        <label class="checkbox">Display Connected Attributes
+        <input name="rel-connected-show-attributes" id="rel-connected-show-attributes" type="checkbox" value="False"/>
+        <a href="#" style="cursor: help;" title="When checked, it displays the connected relationship attribute data on the frontend."><i class="icon-info-sign"></i></a></label>
+        </div>
+        </div>
+	
 	</div>
 	<div id="rel-related-div-group">
         <div class="control-group row-fluid">

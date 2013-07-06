@@ -302,8 +302,12 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	}
 	else if($type == "relationship")
 	{
-	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> | </span>
-	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a>';
+	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> </span>
+	<span id="add_field" class="' . $type . '">'; 
+	if($mylist['rel-type'] == 'many-to-many')
+	{
+		$view .= '| <a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a>';
+	}
 	}
 	else if($type == "help")
 	{
