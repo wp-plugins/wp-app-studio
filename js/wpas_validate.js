@@ -277,6 +277,10 @@ jQuery(document).ready(function() {
 			maxlength:16,
 			checkAlphaNum: true,
 			},
+			'ent-display-idx':{
+			maxlength:2,
+			checkInt: true,
+			}
 			},
 			success: function(label) {
 				 label.addClass('valid');
@@ -444,6 +448,18 @@ jQuery(document).ready(function() {
 			maxlength:50,
 			},
 			'rel-from-title':{
+			maxlength:50,
+			},              
+			'rel-connected-display-from-title':{
+			maxlength:50,
+			},              
+			'rel-related-display-from-title':{
+			maxlength:50,
+			},              
+			'rel-connected-display-to-title':{
+			maxlength:50,
+			},              
+			'rel-related-display-to-title':{
 			maxlength:50,
 			},              
 			},
@@ -652,11 +668,22 @@ jQuery(document).ready(function() {
 			'widg-side_subtype':{
 			required:true,
 			},
+			'widg-attach-rel':{
+			required:true,
+			},
+			'widg-rel-conn-type':{
+			required:true,
+			},
 			'widg-title':{
 			minlength:3,
 			maxlength:50,
 			required:true,
 			checkWidg:true,
+			},
+			'widg-rel-to-title':{
+			minlength:3,
+			maxlength:50,
+			required:true,
 			},
 			'widg-label':{
 			minlength:3,

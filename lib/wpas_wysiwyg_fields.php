@@ -13,18 +13,6 @@ function wpas_unhide_kitchensink( $args ) {
         {
                 $args['wordpress_adv_hidden'] = false;
         }
-	$ext = "p[*]";
-	if(isset($args['extended_valid_elements'])){
-		$args['extended_valid_elements'] .= ',' . $ext;
-	}
-	else {
-		$args['extended_valid_elements'] = $ext;
-	}
-	$args['remove_linebreaks'] = 0;
-	$args['wpautop'] = 0;
-	$args['fix_list_elements'] = 0;
-	$args['remove_redundant_brs'] = 0;
-	$args['verify_html'] = 0;
         return $args;
 }
 
