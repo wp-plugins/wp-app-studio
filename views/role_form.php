@@ -378,12 +378,81 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 
 	return $html;
 }
+function wpas_form_capabilities($app_id,$forms,$myrole)
+{
+	$html ="";
+	$formcount = 0;
+	foreach($forms as $myform)
+	{
+		$label = $myform['form-name'];
+		$label = str_replace(" ","_",$label);
+		$label = strtolower($label);
+		$form_caps[$formcount]['view'] = "view_" . $label;
+		$formcount++;
+	}
+
+	$count = 1;
+	$navcount = 0;
+
+	if(empty($form_caps))
+	{
+		$html = 'No forms defined yet.';
+	}
+	else
+	{
+		foreach($form_caps as $myform_cap)
+		{
+			foreach($myform_cap as $key => $mycap)
+			{
+				$nav_in = "";
+				if($key == 'view')
+				{
+					if($navcount == 0)
+					{
+						$nav_in = "in";
+						$navcount ++;
+					}
+					$form_name = str_replace('view_','',$mycap);
+					$div_name = $form_name;
+					$form_name = str_replace('_',' ',$form_name);
+					$form_name = ucwords($form_name);
+					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-form">Form : ' . esc_html($form_name) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner">';
+				}
+				if($count == 1)
+				{
+					$html .= '<div class="control-group" id="' . esc_attr($div_name) . '">';
+				}
+				$html .= '<label class="checkbox inline span3">' . $key;
+				$html .= '<input name="role-' . $mycap . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
+				if(isset($myrole['role-'.$mycap]) && $myrole['role-'.$mycap] != 0)
+				{
+					$html .= ' checked';
+				}	
+				$html .= '/> </label>';
+				$count ++;
+				if($count  == 5)
+				{
+					$html .= "</div>";
+					$count = 1;
+				}
+			}
+			if($count <= 5)
+			{
+				$html .= "</div></div></div>";
+				$count = 1;
+			}
+		}
+	}
+	return $html;
+}
 function wpas_add_role_form($app_id,$role_id)
 {
 	$app = wpas_get_app($app_id);
         $entities = $app['entity'];
 	$taxonomies = Array();
 	$widgets = Array();
+	$forms = Array();
+	
 	if(isset($app['taxonomy']))
 	{
 		$taxonomies = $app['taxonomy'];
@@ -391,6 +460,10 @@ function wpas_add_role_form($app_id,$role_id)
 	if(isset($app['widget']))
 	{
 		$widgets = $app['widget'];
+	}
+	if(isset($app['form']))
+	{
+		$forms = $app['form'];
 	}
 	$myrole = Array();
 
@@ -470,6 +543,9 @@ function wpas_add_role_form($app_id,$role_id)
 		<li>
 		<a data-toggle="tab" href="#tab-widg">Widgets</a>
 		</li>
+		<li>
+		<a data-toggle="tab" href="#tab-form">Forms</a>
+		</li>
 		</ul>	
 		<div id="role-tabs" class="tab-content">
 		<div id="tab-def" class="tab-pane">
@@ -487,6 +563,9 @@ function wpas_add_role_form($app_id,$role_id)
 		</div>
 		<div id="tab-widg" class="tab-pane">
 		<?php echo wpas_widg_capabilities($app_id,$widgets,$myrole); ?>
+		</div>
+		<div id="tab-form" class="tab-pane">
+		<?php echo wpas_form_capabilities($app_id,$forms,$myrole); ?>
 		</div>
 		</div>
 		</div> 

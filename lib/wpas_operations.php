@@ -292,6 +292,7 @@ function wpas_check_valid_generate($myapp)
 	// 4: emtpy panel in layout
 	// 5: not all attributes assigned to layout
 	// 6: help with no tab  
+	// 7: no unique key in entity
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
@@ -337,6 +338,9 @@ function wpas_check_valid_generate($myapp)
 		case 6:
 			$alert = "Error: You must assign tabs to the help attached to " . $error_loc_name . ".";
 			break;
+		case 7:
+			$alert = "Error: You must have at least one unique attribute in each entity. Please set at least one attribute unique in " . $error_loc_name . " entity.";
+			break;
 		default:
 			$alert = "";
 			break;
@@ -358,6 +362,7 @@ function wpas_check_entity_field($myapp_entity)
 	//check if entities have at least one field
 	foreach($myapp_entity as $myentity)
 	{
+		$unique_key = 0;
 		if($myentity['ent-name'] == 'post' && !empty($myentity['field']))
 		{
 			$no_post = 1;
@@ -415,6 +420,19 @@ function wpas_check_entity_field($myapp_entity)
 		if(isset($myentity['field']))
 		{
 			$ent_attr_count = count($myentity['field']);
+			foreach($myentity['field'] as $myfields)
+			{
+				if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
+				{
+					$unique_key = 1;
+					break;
+				}
+			}
+		}
+		if(!in_array($myentity['ent-name'],Array('page','post')) && $unique_key == 0)
+		{
+			$error_loc_name = $myentity['ent-label'];
+			break;
 		}
 		if(!empty($myentity['layout']) && $layout_attr_count < $ent_attr_count)
 		{
@@ -430,6 +448,10 @@ function wpas_check_entity_field($myapp_entity)
 	elseif($check_field == 1)
 	{
 		$generate_error = 3;	
+	}
+	elseif($unique_key == 0)
+	{
+		$generate_error = 7;
 	}
 	elseif($empty_panel == 1)
 	{

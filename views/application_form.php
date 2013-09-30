@@ -300,6 +300,10 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a> | </span>
 	<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="Edit Layout">Edit Layout</a>';
 	}
+	else if($type == "form")
+	{
+	$view = ' <span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="Edit Layout">Edit Layout</a>';
+	}
 	else if($type == "relationship")
 	{
 	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> </span>
@@ -497,6 +501,18 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $list_values['icon'] = "icon-cog";
                 $add_field_tag = "#widg";
         }
+	elseif($list_type == 'form')
+        {
+                $base = admin_url('admin.php?page=wpas_add_new_app&view=form&app=' . $app_id);
+                $list_values['title'] = "Forms";
+                $format = "formpage";
+                $field_name = "form-name";
+                $other_fields = Array("form-shc","form-attached_entity","form-form_title","form-temp_type","form-ajax","date","modified_date");
+                $other_labels = Array("Name","Shortcode","Attached Entity","Title","Frontend Template","Ajax","Created","Modified");
+                $list_values['type'] = 'form';
+                $list_values['icon'] = "icon-list-alt";
+                $add_field_tag = "#form";
+        }
         $return_list = wpas_list_html($list_values);
         if($list_values['count'] == 0)
         {
@@ -619,6 +635,10 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 				}
 				$other_fields[1] = $subtype;
 			}
+			elseif($list_type == 'form')
+			{
+				$mylist['form-shc'] = "[" . $mylist['form-name'] . "]";
+			}
                         $url['edit_url'] = $edit_url . $key_list;
                         $url['delete_url'] = "#" . $key_list;
                         $url['view'] = "#" . $key_list;
@@ -681,14 +701,6 @@ function wpas_breadcrumb($page)
                 echo '<li id="second" class="active">Edit Application</li>
                         </ul>';
         }
-}
-function wpas_form_desc()
-{
-	echo '<div id="title-bar"><div class="row-fluid">
-		<div class="span3"><i class="icon-list-alt icon-large pull-left"></i><h4>Forms</h3></div>
-	</div></div>';
-	 echo '<div class="well"><p>Forms are used to collect infomation from the frontend of your application. There are public and private forms. Public forms are accessible to everyone. Private forms are accessible to the logged in users only.</p>
-		<span class="label label-important">This feature is currently under development.</span></div>';
 }
 function wpas_pointer_desc()
 {

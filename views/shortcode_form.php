@@ -27,7 +27,7 @@ function wpas_add_shortcode_form($app_id)
 		<div class="control-group row-fluid">
                 <label class="control-label span3"></label>
                 <label class="checkbox span9">Enable paged navigation.
-                <input type="checkbox" value="" id="shc-sc_pagenav" name="shc-sc_pagenav">
+                <input type="checkbox" value="1" id="shc-sc_pagenav" name="shc-sc_pagenav">
                 <a title="Enables pagination links for the shortcode's content." style="cursor: help;" href="#">
                 <i class="icon-info-sign"></i></a>
                 </label>

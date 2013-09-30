@@ -102,7 +102,7 @@ jQuery(document).ready(function() {
 		<label class="control-label span3">Name</label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-name" id="ent-name" type="text" placeholder="e.g. product" value="" >
-		<a href="#" style="cursor: help;" title="General name for the entity, usually singular max. 16 characters, can not contain capital letters,reserved words or spaces.">
+		<a href="#" style="cursor: help;" title="General name for the entity, usually singular max. 16 characters, can not contain capital letters,reserved words,dashes or spaces.">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

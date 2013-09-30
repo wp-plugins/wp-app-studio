@@ -101,7 +101,7 @@ jQuery(document).ready(function() {
                                            <option value="checkbox">Checkbox</option>
                                            <option value="checkbox_list">Checkbox List</option>
 					   					   <option value="select">Select</option>
-					   					   <option value="radio">Radio Button</option>
+					   					   <option value="radio">Radio</option>
                                      </select>
                            <a href="#" style="cursor: help;" title="Attribute types defines how the entity attribute will be displayed on the admin edit page of the entity. ">
 			<i class="icon-info-sign"></i></a>                                             
@@ -110,8 +110,8 @@ jQuery(document).ready(function() {
 <div class="control-group row-fluid" id="rel_fld_values_div" style="display:none;">
                                                                         <label class="control-label span3">Values</label>
                                                                         <div class="controls span9">
-                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue,red,white " ></textarea>
-                                                                                <a href="#" style="cursor: help;" title="Enter comma separated option values for the field. There must be only one comma between the values. You can not put a comma at the end of the values as well.">
+                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue;red;white " ></textarea>
+                                                                                <a href="#" style="cursor: help;" title="Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolan at the end of the values as well.">
 					<i class="icon-info-sign"></i></a>
 
                                                                         </div>
@@ -130,7 +130,7 @@ jQuery(document).ready(function() {
                                                                         <label class="control-label span3"></label>
                                                         <div class="controls span9">
                                                         <label class="checkbox"> Required
-                                                <input id="rel_fld_required" type="checkbox" value="" name="rel_fld_required">
+                                                <input id="rel_fld_required" type="checkbox" value="1" name="rel_fld_required">
                                                        
                                                  <a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
 			<i class="icon-info-sign"></i></a>

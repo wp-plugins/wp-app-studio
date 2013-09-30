@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 1.1.8
+   Version: 2.0
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -13,8 +13,9 @@ register_activation_hook( __FILE__, 'wpas_activate' );
 register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
-define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "1.1.8");
+//define('WPAS_SSL_URL', "https://www.emarketdesign.com");
+define('WPAS_SSL_URL', "http://wordpressc.com");
+define('WPAS_VERSION', "2.0");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
 	update_option('wpas_version',WPAS_VERSION);
@@ -190,6 +191,7 @@ require_once("views/import_form.php");
 require_once("views/shortcode_form.php");
 require_once("views/widget_form.php");
 require_once("views/role_form.php");
+require_once("views/forms_form.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
@@ -211,7 +213,7 @@ function wpas_enqueue_scripts($hook_suffix){
 	if($hook_suffix == $hook_app_list || $hook_suffix == $hook_app_new)
 	{
 		add_filter('user_can_richedit', '__return_true');
-		$local_vars = array();
+		$local_vars = Array();
 		$local_vars['nonce_update_field_order'] = wp_create_nonce( 'wpas_update_field_order_nonce' );
 		$local_vars['nonce_delete_field'] = wp_create_nonce( 'wpas_delete_field_nonce' );
 		$local_vars['nonce_delete'] = wp_create_nonce( 'wpas_delete_nonce' );
@@ -222,36 +224,35 @@ function wpas_enqueue_scripts($hook_suffix){
 		$local_vars['nonce_check_status_generate'] = wp_create_nonce( 'wpas_check_status_generate_nonce' );
 		$local_vars['nonce_save_layout'] = wp_create_nonce( 'wpas_save_layout_nonce' );
 
-		wp_register_style( 'wpas-admin-css', plugin_dir_url( __FILE__ ) . 'css/wpas-admin.css' );
-		wp_enqueue_style( 'wpas-admin-css' );
-		wp_register_style( 'wpas-core', plugin_dir_url( __FILE__ ) . 'css/wpas-core.css');
-		wp_enqueue_style( 'wpas-core' );
-		wp_register_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.css');
-		wp_enqueue_style( 'font-awesome' );
+		$form_vars = Array();
+		$form_vars['nonce_save_form_layout'] = wp_create_nonce('wpas_save_form_layout_nonce');
+
+		wp_enqueue_style('wpas-admin-css', plugin_dir_url( __FILE__ ) . 'css/wpas-admin.css');
+		wp_enqueue_style('wpas-core',plugin_dir_url( __FILE__ ) . 'css/wpas-core.css');
+		wp_enqueue_style('font-awesome',plugin_dir_url( __FILE__ ) . 'css/font-awesome.css');
 		wp_enqueue_style("wp-jquery-ui-draggable");
 		wp_enqueue_style("wp-jquery-ui-droppable");
 		wp_enqueue_style("wp-jquery-ui-sortable");
+		wp_enqueue_style("jq-css","http://code.jquery.com/ui/1.10.3/themes/pepper-grinder/jquery-ui.css");
 
 
-		wp_register_script( 'bootstrap-min-js',plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js');
-		wp_enqueue_script( 'bootstrap-min-js');
-
-		wp_register_script( 'jquery-validate-js',plugin_dir_url( __FILE__ ) . 'js/jquery.validate.min.js');
-		wp_enqueue_script( 'jquery-validate-js');
+		wp_enqueue_script('bootstrap-min-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js');
+		wp_enqueue_script('jquery-validate-js', plugin_dir_url( __FILE__ ) . 'js/jquery.validate.min.js');
 		wp_enqueue_script("jquery-ui-draggable");
 		wp_enqueue_script("jquery-ui-droppable");
 		wp_enqueue_script("jquery-ui-sortable");
 		wp_enqueue_script('jquery-ui-accordion');
-		wp_register_script( 'wpas-js',plugin_dir_url( __FILE__ ) . 'js/wpas.js',array(),false,true);
-		wp_enqueue_script( 'wpas-js');
-		wp_register_script( 'wpas-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_layout.js',array(),false,true);
-		wp_enqueue_script( 'wpas-layout-js');
-		wp_register_script( 'wpas-paging-js',plugin_dir_url( __FILE__ ) . 'js/wpas_paging.js',array(),false,true);
-		wp_enqueue_script( 'wpas-paging-js');
-		wp_register_script( 'wpas-validate-js',plugin_dir_url( __FILE__ ) . 'js/wpas_validate.js',array(),false,true);
-		wp_enqueue_script( 'wpas-validate-js');
+		wp_enqueue_script('jquery-ui-slider');
+		wp_enqueue_script('wpas-js', plugin_dir_url( __FILE__ ) . 'js/wpas.js',array(),false,true);
+		wp_enqueue_script('wpas-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_layout.js',array(),false,true);
+		wp_enqueue_script('wpas-paging-js',plugin_dir_url( __FILE__ ) . 'js/wpas_paging.js',array(),false,true);
+		wp_enqueue_script('wpas-validate-js',plugin_dir_url( __FILE__ ) . 'js/wpas_validate.js',array(),false,true);
+		wp_enqueue_script('jquery-ui-datepicker',plugin_dir_url( __FILE__ ) . 'js/jquery-ui-datepicker.js');
+		wp_enqueue_script('jquery-time-js',plugin_dir_url( __FILE__ ) . 'js/jquery-ui-timepicker-addon.js',array('jquery-ui-datepicker', 'jquery-ui-slider'));
+		wp_enqueue_script( 'wpas-form-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_form_layout.js',array(),false,true);
 
 		wp_localize_script('wpas-js','wpas_vars',$local_vars);
+		wp_localize_script('wpas-form-layout-js','form_vars',$form_vars);
 	}
 }
 function wpas_app_list()
@@ -415,10 +416,12 @@ function wpas_show_page($app,$page)
 		echo "<div id=\"list-widget\" class=\"group1\" style=\"display: none;\">";
 		echo "</div>";
 		echo "<div id=\"list-form\" class=\"group1\" style=\"display: none;\">";
-		wpas_form_desc();
 		echo "</div>";
 		echo "<div id=\"add-form-div\" class=\"group1\" style=\"display: none;\">";
-		wpas_form_desc();
+		wpas_add_forms_form($app_key);
+		echo "</div>";
+		echo "<div id=\"edit-form-layout-div\" class=\"group1 container-fluid\" style=\"display: none;\">";
+		wpas_form_layout_form();
 		echo "</div>";
 		echo "<div id=\"list-help\" class=\"group1\" style=\"display: none;\">";
 		echo "</div>";

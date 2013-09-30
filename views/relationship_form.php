@@ -72,7 +72,7 @@ jQuery(document).ready(function() {
         <div class="control-group row-fluid">
         <label class="control-label span3">From Entity Title</label>
         <div class="controls span9">
-        <input name="rel-from-title" id="rel-from-title" type="text" placeholder="e.g. Manager (To Entity)">
+        <input name="rel-from-title" id="rel-from-title" type="text" placeholder="e.g. Orders (To Entity)">
         <a href="#" title="Default is set to To Entity label." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
         <div class="control-group row-fluid">
@@ -89,9 +89,27 @@ jQuery(document).ready(function() {
         <div class="control-group row-fluid">
         <label class="control-label span3">To Entity Title</label>
         <div class="controls span9">
-        <input name="rel-to-title" id="rel-to-title" type="text" placeholder="e.g. Employee (From Entity)">
+        <input name="rel-to-title" id="rel-to-title" type="text" placeholder="e.g. Products (From Entity)">
         <a href="#" title="Default is set to From Entity label." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3">Description</label>
+	<div class="controls span9">
+	<textarea class="input-xlarge" id="rel-desc" name="rel-desc"></textarea>
+	<a href="#" style="cursor: help;" title="A short descriptive summary of what the relationship is.">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Required?
+			<input name="rel-required" id="rel-required" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the relationship required so it can not be blank. ">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
         <div class="control-group row-fluid">
         <label class="control-label span3">Type</label>
         <div class="controls span9">
@@ -119,8 +137,8 @@ jQuery(document).ready(function() {
         <label class="control-label span3" ></label>
         <div class="controls span9">
             <label class="checkbox">Main Column Display 
-            <input name="rel-display_in_main" id="rel-display_in_main" type="checkbox" value="False"/>
-            <a href="#" style="cursor: help;" title="Display the relationship box in the main column of the entity editor instead of the default side column. This will allocate more space when defining connections. The relationships with attributes are by default allocated to the main column."><i class="icon-info-sign"></i></a></label>
+            <input name="rel-display_in_main" id="rel-display_in_main" type="checkbox" value="1"/>
+            <a href="#" style="cursor: help;" title="When set, Wp App Studio displays the relationship box in the main column of the entity editor instead of the side column(default). This will allocate more space when defining connections. The relationships with attributes are by default allocated to the main column."><i class="icon-info-sign"></i></a></label>
         </div>
         </div>
         <div class="control-group row-fluid">
@@ -139,7 +157,7 @@ jQuery(document).ready(function() {
         <label class="control-label span3"></label>
         <div class="controls span9">
         <label class="checkbox">Connected Frontend Display
-        <input name="rel-connected-display" id="rel-connected-display" type="checkbox" value="False"/>
+        <input name="rel-connected-display" id="rel-connected-display" type="checkbox" value="1"/>
         <a href="#" style="cursor: help;" title="When checked, it displays the connected relationship data on the frontend. For example; you have a relationship between products and orders. One product may be ordered multiple times. On a product page, connected option will show the order records that the same product is ordered."><i class="icon-info-sign"></i></a></label>
         </div>
         </div>
@@ -165,15 +183,15 @@ jQuery(document).ready(function() {
         <option selected="selected" value="ul">Unordered List</option>
         <option value="ol">Ordered List</option>
         <option value="inline">Comma Seperated List</option></select>
-        <a href="#" style="cursor: help;" title="Sets how the connected relationship data that will be displayed on the frontend.">
+        <a href="#" style="cursor: help;" title="Sets how the connected relationship data will be displayed on the frontend.">
         <i class="icon-info-sign"></i></a> (default: Unordered List)
         </div>
         </div>
         <div class="control-group row-fluid" id="rel-connected-show-attributes-div">
         <label class="control-label span3"></label>
         <div class="controls span9">
-        <label class="checkbox">Display Connected Attributes
-        <input name="rel-connected-show-attributes" id="rel-connected-show-attributes" type="checkbox" value="False"/>
+        <label class="checkbox">Connected Relationship Attributes Display 
+        <input name="rel-connected-show-attributes" id="rel-connected-show-attributes" type="checkbox" value="1"/>
         <a href="#" style="cursor: help;" title="When checked, it displays the connected relationship attribute data on the frontend."><i class="icon-info-sign"></i></a></label>
         </div>
         </div>
@@ -184,8 +202,8 @@ jQuery(document).ready(function() {
         <label class="control-label span3"></label>
         <div class="controls span9">
         <label class="checkbox">Related Frontend Display
-        <input name="rel-related-display" id="rel-related-display" type="checkbox" value="False"/>
-        <a href="#" style="cursor: help;" title="When checked, it displays the related relationship data on the frontend. For example; you have a many to many relationship between products and orders. One product may be ordered multiple times. One order may include multiple products. On a product page, related option will show the products that are ordered in the same connected order."><i class="icon-info-sign"></i></a></label>
+        <input name="rel-related-display" id="rel-related-display" type="checkbox" value="1"/>
+        <a href="#" style="cursor: help;" title="When checked, it displays the related relationship data on the frontend. For example; you have a many to many relationship between products and orders. One product may be ordered multiple times. One order may include multiple products. On a product page, related option will show the products that are ordered in the same connected order. This option can be used only in Many-to-Many relationships."><i class="icon-info-sign"></i></a></label>
         </div>
         </div>
         </div>
@@ -194,14 +212,14 @@ jQuery(document).ready(function() {
         <label class="control-label span3">Related Display From Title</label>
         <div class="controls span9">
         <input name="rel-related-display-from-title" id="rel-related-display-from-title" type="text" placeholder="e.g. Related Products (From Entity)">
-        <a href="#" title="Sets the related relationship title which will be displayed on the from entity frontend" style="cursor: help;"><i class="icon-info-sign"></i></a>
+        <a href="#" title="Sets the related relationship title which will be displayed on the from entity frontend. This option can be used only in Many-to-Many relationships." style="cursor: help;"><i class="icon-info-sign"></i></a>
         </div>
         </div>
         <div class="control-group row-fluid">
         <label class="control-label span3">Related Display To Title</label>
         <div class="controls span9">
         <input name="rel-related-display-to-title" id="rel-related-display-to-title" type="text" placeholder="e.g. Related Orders (To Entity)">
-        <a href="#" title="Sets the related relationship title which will be displayed on the to entity frontend" style="cursor: help;"><i class="icon-info-sign"></i></a>
+        <a href="#" title="Sets the related relationship title which will be displayed on the to entity frontend. This option can be used only in Many-to-Many relationships." style="cursor: help;"><i class="icon-info-sign"></i></a>
         </div>
         </div>
         <div class="control-group row-fluid">
@@ -211,7 +229,7 @@ jQuery(document).ready(function() {
         <option selected="selected" value="ul">Unordered List</option>
         <option value="ol">Ordered List</option>
         <option value="inline">Comma Seperated List</option></select>
-        <a href="#" style="cursor: help;" title="Sets how the related relationship data that will be displayed on the frontend.">
+        <a href="#" style="cursor: help;" title="Sets how the related relationship data will be displayed on the frontend. This option can be used only in Many-to-Many relationships.">
         <i class="icon-info-sign"></i></a> (default: Unordered List)
         </div>
         </div>

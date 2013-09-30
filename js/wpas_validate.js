@@ -36,29 +36,35 @@ jQuery(document).ready(function() {
 		jQuery.validator.addMethod('checkAlphaNumDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\-]+$/i.test(value);
 		}, 'Must contain only letters, numbers or dashes.');
+		jQuery.validator.addMethod('checkAlphaDashIcon', function(value, element) { 
+			return this.optional(element) || /^icon\-[a-z\-]+$/i.test(value);
+		}, 'Must contain only letters and dashes and start with icon-.');
 		jQuery.validator.addMethod('checkAlphaNumUnder', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_]+$/i.test(value);
 		}, 'Must contain only letters, numbers or underscores.');
 		jQuery.validator.addMethod('checkAlphaNumUnderDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_\-]+$/i.test(value);
 		}, 'Must contain only letters, numbers, underscores or dashes.');
+		jQuery.validator.addMethod('checkAlphaNumComma', function(value, element) { 
+			return this.optional(element) || /^[a-z0-9,]+$/i.test(value);
+		}, 'Must contain only letters, numbers and commas.');
 		jQuery.validator.addMethod('checkDomainName', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\-]+\.(com|net|org)$/i.test(value);
 		}, 'Must be a valid domain name.');
 		jQuery.validator.addMethod('checkVersion', function(value, element) { 
 			return this.optional(element) || /^[0-9\.]+$/i.test(value);
 		}, 'Must contain only numbers and dots.');
-		jQuery.validator.addMethod('checkCsv', function(value, element) { 
+		jQuery.validator.addMethod('checkSemiCo', function(value, element) { 
 			comma_loc = (value.length - 1);
-			if(value.indexOf(',') < 0 && value != '')
+			if(value.indexOf(';') < 0 && value != '')
 			{
 				return false;
 			}
-			else if(value.indexOf(',,') >= 0 && value != '')
+			else if(value.indexOf(';;') >= 0 && value != '')
 			{
 				return false;
 			}
-			else if(comma_loc == value.lastIndexOf(',') && value != '')
+			else if(comma_loc == value.lastIndexOf(';') && value != '')
 			{
 				return false;
 			}
@@ -66,7 +72,7 @@ jQuery(document).ready(function() {
 			{
 				return true;
 			}
-		}, 'CSV format is required.');
+		}, 'You need to seperate each option value with a semicolon.');
 		jQuery.validator.addMethod('noReservedEnt', function(value, element) { 
 			if(jQuery.inArray(value,arr_ent) == -1)
 			{
@@ -268,6 +274,7 @@ jQuery(document).ready(function() {
 			url:true,
 			},
 			'ent-top_level_page': {
+			required:true,
 			maxlength:50,
 			},
 			'ent-default_grp_title': {
@@ -309,11 +316,29 @@ jQuery(document).ready(function() {
 			required:true,
 			},
 			'fld_values': {
-			maxlength:500,
-			checkCsv:true,
+			maxlength:3500,
+			checkSemiCo:true,
 			required:true,
 			},
 			'fld_type': {
+			required:true,
+			},
+			'fld_file_ext': {
+			checkAlphaNumComma: true,
+			},
+			'fld_file_size': {
+			number:true,
+			},
+			'fld_fa_chkd_val': {
+			checkAlphaDashIcon: true,
+			},
+			'fld_fa_unchkd_val': {
+			checkAlphaDashIcon: true,
+			},
+			'fld_date_format':{
+			required:true,
+			},
+			'fld_time_format':{
 			required:true,
 			},
 			'fld_hidden_func':{
@@ -489,9 +514,9 @@ jQuery(document).ready(function() {
 			required:true
 			},
 			'rel_fld_values': {
-			maxlength:500,
+			maxlength:3500,
 			required:true,
-			checkCsv:true,
+			checkSemiCo:true,
 			},
 			'rel_fld_desc': {
 			maxlength:300,
@@ -705,6 +730,83 @@ jQuery(document).ready(function() {
 			'widg-post_per_page':{
 			maxlength:3,
 			checkNum:true,
+			},
+			},
+			success: function(label) {
+				label.addClass('valid');
+				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+			}
+		});
+		jQuery('#form-form').validate(
+		{
+			onfocusout: false,
+			onkeyup: false,
+			onclick: false,
+			ignore: ":hidden",
+			rules: {
+			'form-name':{
+			minlength:3,
+			maxlength:30,
+			uniqueName:['form'],
+			noSpace:true,
+			checkAlphaNumUnder: true,
+			required:true,
+			},
+			'form-attached_entity':{
+			required:true,
+			},
+			'form-form_title':{
+			maxlength:50,
+			},
+			'form-form_desc':{
+			maxlength:5000,
+			},
+			'form-submit_button_label':{
+			maxlength:30,
+			},
+			'form-disable_after':{
+			maxlength:10,
+			checkNum:true,
+			},
+			'form-confirm_txt':{
+			maxlength:5000,
+			},
+			'form-confirm_url':{
+			maxlength:255,
+			url:true,
+			required:true,
+			},
+			'form-confirm_sendto':{
+			required:true,
+			},
+			'form-confirm_replyto':{
+			maxlength:255,
+			email:true,
+			},
+			'form-confirm_subject':{
+			required:true,
+			maxlength:255,
+			},
+			'form-confirm_msg':{
+			required:true,
+			maxlength:5000,
+			},
+			'form-confirm_admin_sendto':{
+			maxlength:255,
+			email:true,
+			required:true,
+			},
+			'form-confirm_admin_replyto':{
+			maxlength:255,
+			email:true,
+			},
+			'form-confirm_admin_subject':{
+			required:true,
+			maxlength:255,
+			},
+			'form-confirm_admin_msg':{
+			required:true,
+			maxlength:5000,
 			},
 			},
 			success: function(label) {
