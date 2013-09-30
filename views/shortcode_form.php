@@ -27,7 +27,7 @@ function wpas_add_shortcode_form($app_id)
 		<div class="control-group row-fluid">
                 <label class="control-label span3"></label>
                 <label class="checkbox span9">Enable paged navigation.
-                <input type="checkbox" value="" id="shc-sc_pagenav" name="shc-sc_pagenav">
+                <input type="checkbox" value="1" id="shc-sc_pagenav" name="shc-sc_pagenav">
                 <a title="Enables pagination links for the shortcode's content." style="cursor: help;" href="#">
                 <i class="icon-info-sign"></i></a>
                 </label>
@@ -38,8 +38,8 @@ function wpas_add_shortcode_form($app_id)
 		<?php
 		$initial_data='<table class="content-table" border=0 cellpadding=1 cellspacing=1><tbody><tr><td class="content-cell featured-image">!#featured_img_thumb#</td><td class="content-cell content-title">!#title#</td></tr><tr><td class="content-cell content-excerpt" colspan=2>!#excerpt#</td></tr></tbody></table>';
 
-	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,mylistbox';
-	$buttons['theme_advanced_buttons2'] = 'tablecontrols,code';
+	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
+	$buttons['theme_advanced_buttons2'] = 'tablecontrols,code,mylistbox';
 
 	$settings = array(
 			'text_area_name'=>'shc-sc_layout',//name you want for the textarea
@@ -72,7 +72,7 @@ font-style:italic;
 		<div class="control-group row-fluid">
 		<label class="control-label span3" >Css </label>
 		<div class="controls span9">
-		<textarea class="input-xlarge" id="shc-sc_css" name="shc-sc_css" class="tinymce" placeholder="<?php echo $default_css; ?>"></textarea>
+		<textarea class="input-xlarge" id="shc-sc_css" name="shc-sc_css" class="tinymce" placeholder="<?php echo esc_attr($default_css); ?>"></textarea>
 		<a href="#" style="cursor: help;" title="The custom css code to be used when displaying the content. You can leave this field blank and use a common css file for all.">
 		<i class="icon-info-sign"></i></a>
 		</div>

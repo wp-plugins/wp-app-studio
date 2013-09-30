@@ -3,37 +3,62 @@
 function wpas_get_app_list($app_key_list = "")
 {
 	$app_list = Array();
-	if($app_key_list == "")
+	if(empty($app_key_list))
 	{	
 		$app_key_list = get_option('wpas_app_key_list');
 	}
-	if($app_key_list)
+	if($app_key_list !== false && !empty($app_key_list))
 	{
 		foreach($app_key_list as $app_key)
 		{
-			$app_list[$app_key] = unserialize(base64_decode(get_option('wpas_app_' . $app_key)));
+			if(get_option('wpas_app_' . $app_key) !== false)
+			{
+				$app_list[$app_key] = unserialize(base64_decode(get_option('wpas_app_' . $app_key)));
+			}
 		}
 	}
 	return $app_list;
 }
 function wpas_get_app($app_key)
 {
-	return unserialize(base64_decode(get_option('wpas_app_' . $app_key)));
+	if(get_option('wpas_app_' . $app_key) !== false)
+	{
+		return unserialize(base64_decode(get_option('wpas_app_' . $app_key)));
+	}
+	return false;
 }
 	
 function wpas_update_app($app,$app_key,$type='')
 {
-	$app['modified_date']= date('Y-m-d H:i:s');
-	$app_serialized = base64_encode(serialize($app));
-	update_option('wpas_app_' . $app_key ,$app_serialized);
-	if($type == 'new')
+	if(empty($type))
 	{
-		wpas_update_app_key_list($app_key,'add');
+		$app['modified_date']= date('Y-m-d H:i:s');
+	}
+	if($type == 'new_with_date' && !empty($app['app_name']))
+	{
+		$app_date = str_replace(":","-",$app['modified_date']);
+		$app_date = str_replace(" ","-",$app_date);
+		$app['app_name'] = sanitize_text_field($app['app_name'] . "-" . $app_date);
+		
+	}
+	if(is_array($app) && !empty($app))
+	{
+		$app_serialized = base64_encode(serialize($app));
+		update_option('wpas_app_' . $app_key ,$app_serialized);
+		if($type == 'new' || $type == 'new_with_date')
+		{
+			wpas_update_app_key_list($app_key,'add');
+		}
 	}
 }
 function wpas_update_app_key_list($app_key,$type)
 {
+	$app_key = sanitize_text_field($app_key);
 	$app_key_list = get_option('wpas_app_key_list');
+	if($app_key_list === false)
+	{
+		$app_key_list = Array();
+	}
 	if($type == 'add')
 	{
 		if(!in_array($app_key,$app_key_list))
@@ -57,6 +82,7 @@ function wpas_update_app_key_list($app_key,$type)
 }
 function wpas_delete_app($app_key)
 {
+	$app_key = sanitize_text_field($app_key);
 	delete_option('wpas_app_' . $app_key);
 	return wpas_update_app_key_list($app_key,'delete');
 }
@@ -68,10 +94,10 @@ function wpas_add_app_form($button,$app_id,$app_title,$style)
                 <div class="span12" id="app-save" style="display: <?php echo $style; ?>">
                 <form action="" method="post" id="app_form" class="well form-inline">
                 <fieldset>
-                <input id="app_title" type="text" class="input-xlarge" placeholder="Enter application name" value="<?php  echo htmlspecialchars($app_title); ?>" name="app_title">
-                <input type="hidden" name="app" value="<?php echo $app_id; ?>" id="app">
+                <input id="app_title" type="text" class="input-xlarge" placeholder="Enter application name" value="<?php  echo esc_attr($app_title); ?>" name="app_title">
+                <input type="hidden" name="app" value="<?php echo esc_attr($app_id); ?>" id="app">
                 <input type="hidden" name="type" value="app" id="type">
-		<?php wp_nonce_field($button . "_app_nonce"); ?>
+		<?php wp_nonce_field("wpas_" . strtolower($button) . "_app_nonce"); ?>
 		<input class="btn btn-mid btn-primary" id="save-app" type="submit" name="Save" value="<?php echo $button; ?>">
                 </fieldset>
                 </form>
@@ -82,11 +108,11 @@ function wpas_nav($app_name,$option="")
 {
 	if(is_array($option))
 	{
-                $option_link = '<p id="update-option"><a href="#' .htmlspecialchars($app_name) .'"><i class="icon-picture"></i>Update</a></p>';
+                $option_link = '<p id="update-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-picture"></i>Update</a></p>';
 	}
 	else
 	{
-                $option_link = '<p id="add-option"><a href="#' .htmlspecialchars($app_name) .'"><i class="icon-picture"></i>Add New</a></p>';
+                $option_link = '<p id="add-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-picture"></i>Add New</a></p>';
 	}
         ?>
                 <div class="row-fluid"><div id="was-nav" class="span3">
@@ -96,8 +122,8 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div id="collapseOne" class="accordion-body in collapse">
                 <div class="accordion-inner">
-                <p id="add-entity"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-table"></i>Add New</a></p>
-                <p id="entity"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-entity"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-table"></i>Add New</a></p>
+                <p id="entity"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -107,8 +133,8 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div id="collapseTwo" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-taxonomy"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-tag"></i>Add New</a></p>
-                <p id="taxonomy"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-taxonomy"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-tag"></i>Add New</a></p>
+                <p id="taxonomy"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -118,8 +144,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseThree" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-relationship"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-link"></i>Add New</a></p>
-                <p id="relationship"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-relationship"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-link"></i>Add New</a></p>
+                <p id="relationship"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -129,8 +155,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseFour" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-shortcode"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-bookmark"></i>Add New</a></p>
-                <p id="shortcode"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-bookmark"></i>Add New</a></p>
+                <p id="shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -140,8 +166,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseFive" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-widget"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-cog"></i>Add New</a></p>
-                <p id="widget"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-widget"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-cog"></i>Add New</a></p>
+                <p id="widget"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -151,8 +177,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseSix" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-form"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-list-alt"></i>Add New</a></p>
-                <p id="form"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-list-alt"></i>Add New</a></p>
+                <p id="form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -162,8 +188,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseSeven" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-help"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-info-sign"></i>Add New</a></p>
-                <p id="help"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-help"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-info-sign"></i>Add New</a></p>
+                <p id="help"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -173,8 +199,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseEight" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-pointer"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-map-marker"></i>Add New</a></p>
-                <p id="pointer"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-pointer"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-map-marker"></i>Add New</a></p>
+                <p id="pointer"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -184,8 +210,8 @@ function wpas_nav($app_name,$option="")
   </div>
                 <div id="collapseNine" class="accordion-body collapse">
                 <div class="accordion-inner">
-                <p id="add-role"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-key"></i>Add New</a></p>
-                <p id="role"><a href="#<?php echo htmlspecialchars($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                <p id="add-role"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-key"></i>Add New</a></p>
+                <p id="role"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -210,15 +236,15 @@ function wpas_list_html($list_values)
 	if($list_values['type'] == 'app')
 	{
 		$ret .= '<div class="pull-right ' . $list_values['type'] . '" id="add-new">
-			<a class="btn btn-info  pull-left" href="' . $list_values['import'] . '" class="import">
+			<a class="btn btn-info  pull-left" href="' .  wp_nonce_url($list_values['import'],'wpas_import') . '" class="import">
 			<i class="icon-signin"></i>Import</a>
-       			<a class="btn btn-info  pull-right" href="' . $list_values['add_new_url']  . '" class="add-new">
+       			<a class="btn btn-info  pull-right" href="' . esc_url($list_values['add_new_url'])  . '" class="add-new">
 			<i class="icon-plus-sign"></i>Add New</a>';
 	}
 	else
 	{
 		$ret .= '<div class="span9 ' . $list_values['type'] . '" id="add-new">
-			<a class="btn btn-info  pull-right" href="' . htmlspecialchars($list_values['add_new_url']) . '" class="add-new">
+			<a class="btn btn-info  pull-right" href="' . esc_url($list_values['add_new_url']) . '" class="add-new">
 			<i class="icon-plus-sign"></i>Add New</a>';
 	}
 	$ret .= '</div>
@@ -226,10 +252,10 @@ function wpas_list_html($list_values)
 		</div>';
 	if(isset($list_values['app_name']))
 	{
-                $ret .= '<input type="hidden" name="app-name" id="app-name" value="' . htmlspecialchars($list_values['app_name']). '">';
+                $ret .= '<input type="hidden" name="app-name" id="app-name" value="' . esc_attr($list_values['app_name']). '">';
 	}
         $ret .= '<ul class="subsubsub">
-                <li class="all">All<span class="count">(' . $list_values['count'] . ')</span></li>
+                <li class="all">All<span class="count">(' . intval ($list_values['count']) . ')</span></li>
                 </ul>
                 <div class="tablenav top">
                 <div class="alignleft actions ' . $list_values['type'] . '">
@@ -265,35 +291,39 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 {
 	$view = "";
 	$others = "";
-	$url_title = "Edit";
-	$view_url = $url['edit_nonce'];
+	$view_url = $url['view'];
+	$url_title = "View";
 
 	if($type == "entity")
 	{
 	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> | </span>
 	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a> | </span>
 	<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="Edit Layout">Edit Layout</a>';
-	   $url_title = "View";
-	   $view_url = $url['view'];
+	}
+	else if($type == "form")
+	{
+	$view = ' <span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="Edit Layout">Edit Layout</a>';
 	}
 	else if($type == "relationship")
 	{
-	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> | </span>
-	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a>';
-	   $url_title = "View";
-	   $view_url = $url['view'];
+	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> </span>
+	<span id="add_field" class="' . $type . '">'; 
+	if($mylist['rel-type'] == 'many-to-many')
+	{
+		$view .= '| <a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a>';
+	}
 	}
 	else if($type == "help")
 	{
 	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> | </span>
 	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="Add Tab">Add Tab</a>';
-	   $url_title = "View";
-	   $view_url = $url['view'];
 	}
 	else if($type == 'app')
 	{
-	$view = '<span id="generate" class="' . $type . '"><a href="' . $url['generate'] . '" title="Generate">Generate</a>
-		| <span id="export" class="' . $type . '"><a href="' . $url['export'] . '" title="Export">Export</a>';
+	$view = '<span id="generate" class="' . $type . '"><a href="' . wp_nonce_url($url['generate'],'wpas_generate') . '" title="Generate">Generate</a>
+		| <span id="export" class="' . $type . '"><a href="' . wp_nonce_url($url['export'],'wpas_export') . '" title="Export">Export</a>';
+	$view_url = $url['edit_url'];
+	$url_title = "Edit";
 	}
 
 	foreach($other_fields as $myfield)
@@ -331,19 +361,19 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	<th class="check-column" scope="row">
 	<input type="checkbox" value="' .$key_list .'" name="checkbox[]">
 	</th><td class="post-title page-title column-title" id="edit_td"><strong>
-	<a class="row-title" id="' . $field_name . '" title="' . $url_title . '" href="' .  $view_url . '">' . $mylist[$field_name] . '</a></strong>
+	<a class="row-title" id="' . $field_name . '" title="' . $url_title . '" href="' .  $view_url . '">' . esc_html($mylist[$field_name]) . '</a></strong>
 	<div class="row-actions">';
 	if($type == 'entity' && in_array($mylist['ent-name'],Array("post","page")))
 	{
 	}
 	elseif($type == 'role' && in_array($mylist['role-name'],Array("administrator","contributor","editor","author","subscriber")))
 	{
-	$ret .='<span id="edit" class="' . $type . '"><a title="Edit" href="' . $url['edit_nonce'] . '">Edit</a>  </span>';
+	$ret .='<span id="edit" class="' . $type . '"><a title="Edit" href="' . $url['edit_url'] . '">Edit</a>  </span>';
 	}
 	else
 	{
-	$ret .='<span id="edit" class="' . $type . '"><a title="Edit" href="' . $url['edit_nonce'] . '">Edit</a> | </span>';
-	$ret .= '<span id="delete" class="' . $type . '"><a href="' . $url['delete_nonce'] . '" title="Delete">Delete</a>  | </span>';
+	$ret .='<span id="edit" class="' . $type . '"><a title="Edit" href="' . $url['edit_url'] . '">Edit</a> | </span>';
+	$ret .= '<span id="delete" class="' . $type . '"><a href="' . $url['delete_url'] . '" title="Delete">Delete</a>  | </span>';
 	}
 	$ret .= $view . '
 	</span></div></td>' . $others; 
@@ -374,13 +404,16 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
         }
         if(isset($_REQUEST[$list_type . 'page']))
         {
-                $page = $_REQUEST[$list_type . 'page'];
+                $page = intval ($_REQUEST[$list_type . 'page']);
         }
-        if($list_type == 'app')
+        $list_values['type'] = $list_type;
+        $list_values['add_new_url'] = "#" . esc_attr($app_name);
+        
+	if($list_type == 'app')
         {
-                $base = "admin.php?page=wpas_app_list";
+                $base = admin_url('admin.php?page=wpas_app_list');
                 $list_values['title'] = "Applications";
-                $edit_url = admin_url('admin.php?page=wpas_add_new_app&edit&app=');
+                $edit_url = wp_nonce_url(admin_url('admin.php?page=wpas_add_new_app&edit'),'wpas_edit_app_nonce') . '&app=';
                 $generate_url = admin_url('admin.php?page=wpas_app_list&generate=1&app=');
                 $export_url = admin_url('admin.php?page=wpas_app_list&export=1&app=');
                 $list_values['import'] = admin_url('admin.php?page=wpas_app_list&import=1');
@@ -388,20 +421,17 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $field_name = "app_name";
                 $other_fields = Array('entities','taxonomies','date','modified_date');
                 $other_labels = Array("Name","Entities","Taxonomies","Created","Modified");
-                $list_values['type'] = $list_type;
                 $list_values['add_new_url'] = admin_url('admin.php?page=wpas_add_new_app');
                 $list_values['icon'] = "icon-cogs";
         }
 	elseif($list_type == 'entity')
         {
-                $base = "admin.php?page=wpas_add_new_app&view=entity&app=" . $app_id;
+                $base = admin_url('admin.php?page=wpas_add_new_app&view=entity&app='. $app_id);
                 $list_values['title'] = "Entities";
                 $format = "entitypage";
                 $field_name = "ent-name";
                 $other_fields = Array("ent-label","ent-singular-label","ent-hierarchical","ent_fields","date","modified_date");
                 $other_labels = Array("Name","Plural Label","Singular Label","Hierarchical","Attributes","Created","Modified");
-                $list_values['type'] = $list_type;
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-table";
                 $add_field_tag = "#ent";
         }
@@ -413,8 +443,6 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $field_name = "txn-name";
                 $other_fields = Array("txn-label","txn-singular-label","txn-hierarchical","txn-attaches","date","modified_date");
                 $other_labels = Array("Name","Plural Label","Singular Label","Hierarchical","Attached Entities","Created","Modified");
-                $list_values['type'] = $list_type;
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-tag";
         }
         elseif($list_type == 'relationship')
@@ -425,8 +453,6 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $field_name = "rel-name";
                 $other_fields = Array("rel-from-title","rel-to-title","rel-type","rel_fields","date","modified_date");
                 $other_labels = Array("Name","From Title","To Title","Type","Attributes","Created","Modified");
-                $list_values['type'] = $list_type;
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-link";
                 $add_field_tag = "#rel";
         }
@@ -438,8 +464,6 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $field_name = "help-object_name";
                 $other_fields = Array("help-screen_type","sidebar_on_off","help_tabs","date","modified_date");
                 $other_labels = Array("Attach To","Screen Type","SideBar","Tabs","Created","Modified");
-                $list_values['type'] = $list_type;
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-info-sign";
                 $add_field_tag = "#help";
         }
@@ -451,8 +475,6 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $field_name = "role-name";
                 $other_fields = Array("role-label","role_permissions","date","modified_date");
                 $other_labels = Array("Name","Label","Capabilities","Created","Modified");
-                $list_values['type'] = $list_type;
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-key";
                 $add_field_tag = "#role";
         }
@@ -464,8 +486,6 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $field_name = "shc-label";
                 $other_fields = Array("shc-attach","date","modified_date");
                 $other_labels = Array("Name","Attach To Entity","Created","Modified");
-                $list_values['type'] = $list_type;
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-bookmark";
                 $add_field_tag = "#shortcode";
         }
@@ -478,9 +498,20 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $other_fields = Array("widg-type","widg-subtype","widg-attach","date","modified_date");
                 $other_labels = Array("Title","Type","Subtype","Attach To Entity","Created","Modified");
                 $list_values['type'] = 'widg';
-                $list_values['add_new_url'] = "#" . $app_name;
                 $list_values['icon'] = "icon-cog";
                 $add_field_tag = "#widg";
+        }
+	elseif($list_type == 'form')
+        {
+                $base = admin_url('admin.php?page=wpas_add_new_app&view=form&app=' . $app_id);
+                $list_values['title'] = "Forms";
+                $format = "formpage";
+                $field_name = "form-name";
+                $other_fields = Array("form-shc","form-attached_entity","form-form_title","form-temp_type","form-ajax","date","modified_date");
+                $other_labels = Array("Name","Shortcode","Attached Entity","Title","Frontend Template","Ajax","Created","Modified");
+                $list_values['type'] = 'form';
+                $list_values['icon'] = "icon-list-alt";
+                $add_field_tag = "#form";
         }
         $return_list = wpas_list_html($list_values);
         if($list_values['count'] == 0)
@@ -557,12 +588,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                         }
                         elseif($list_type == 'taxonomy')
                         {
-				$mylist['txn-attaches'] = "";
-                                foreach($mylist['txn-attach'] as $mytxn)
-                                {
-                                        $mylist['txn-attaches'] .= $mytxn . ", ";
-                                }
-                                $mylist['txn-attaches'] = rtrim($mylist['txn-attaches'],', ');
+				$mylist['txn-attaches'] = implode(",",$mylist['txn-attach']);
                         }
 			elseif($list_type == 'help')
                         {
@@ -594,7 +620,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                         }
 			elseif($list_type == 'role')
 			{
-				$permission_count = count($mylist) - 4;
+				$permission_count = count($mylist) - 4;  //count only caps
 				$mylist['role_permissions'] = $permission_count . " capabilities set";
 			}
 			elseif($list_type == 'widget')
@@ -609,8 +635,12 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 				}
 				$other_fields[1] = $subtype;
 			}
-                        $url['edit_nonce'] = $edit_url . $key_list;
-                        $url['delete_nonce'] = "#" . $key_list;
+			elseif($list_type == 'form')
+			{
+				$mylist['form-shc'] = "[" . $mylist['form-name'] . "]";
+			}
+                        $url['edit_url'] = $edit_url . $key_list;
+                        $url['delete_url'] = "#" . $key_list;
                         $url['view'] = "#" . $key_list;
 			if(isset($add_field_tag))
 			{
@@ -636,7 +666,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                         }
                         $count ++;
                 }
-		
+	
 		$paging_text = paginate_links( array(
                                         'total' => ceil($list_values['count']/10),
                                         'current' => $page,
@@ -671,14 +701,6 @@ function wpas_breadcrumb($page)
                 echo '<li id="second" class="active">Edit Application</li>
                         </ul>';
         }
-}
-function wpas_form_desc()
-{
-	echo '<div id="title-bar"><div class="row-fluid">
-		<div class="span3"><i class="icon-list-alt icon-large pull-left"></i><h4>Forms</h3></div>
-	</div></div>';
-	 echo '<div class="well"><p>Forms are used to collect infomation from the frontend of your application. There are public and private forms. Public forms are accessible to everyone. Private forms are accessible to the logged in users only.</p>
-		<span class="label label-important">This feature is currently under development.</span></div>';
 }
 function wpas_pointer_desc()
 {

@@ -1,33 +1,123 @@
- ===  Wp App Studio  === 
+===  Wp App Studio  === 
 Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 1.0.0
+Tested up to: 3.6.1
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 
-Wp App Studio is easy to learn and use design tool for creating fully featured, advanced web apps based on WordPress platform. No coding required.
+Wp App Studio is easy to learn and use design tool for creating fully featured custom plugins based on WordPress platform. No coding required.
 
  ==  Description  == 
+= Are you a WPAS user? =
+* Serious about WordPress.
+* No coding experience.
+* Tired of writing code.
+* Tired of people not updating and supporting code.
+* Tired of finding, testing, retesting plugins, and still dealing with conflicts.
+* Thinking life is short.
+* Want to focus on something unique than reinventing the wheel.
+* Don't want to deal with technology/trends changes 
+* Don't want to wait weeks to get something done.
+* Don't want to spend thousands to get something done.
 
-Wp App Studio is a SaaS platform that creates fully featured Wordpress based applications in the form of a plugin.
+No problem. This is it. Create your own custom plugin. Let us support it for 30 days for Free.
 
-*"By creating Wp App Studio, we wanted to make ever expanding features of WordPress as a CMS accessible to both programmers and non-programmers alike without spending thousands or countless hours in development. It is simple to use, easy to learn, and full of advanced features to meet your needs. Try it, you will not be disappointed."*
---*eMarket Design*
+Wp App Studio(WPAS) is a cost-effective REST API based software as a service (SaaS) platform that creates fully featured Wordpress plugins.
 
+[How does WPAS work? SaaS Whaat? and others](http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/)
 
-= How it works =
+= Two ways to use this platform =
+1. Download and install this plugin, purchase API credits, design/generate plugins at your computer.(Pros)
+2. Register/login to eMD Playground, get free API credits, design/generate plugins, and purchase when you are ready.(Beginners)
 
-1. Download, install, and activate Wp App Studio plugin.
-2. Design and generate your App in Wp App Studio.
-3. Download, install, and activate your App plugin.
+[TRY IT FOR FREE](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
 
-= Features =
+= What's new in 2.0? =
+First of all, thanks to all of our customers for their patience and support.
 
- *Create Entities* 
+= Summary =
+Say Hello to beautiful app interfaces using Twitter's Bootstrap or jQuery UI based, client/server side validated ajax forms with full of advanced components.
+
+= Detail =
+* Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
+* Ability to create and display multi-column, device independent, and  ajax powered forms.
+* Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
+* Ability to pick one of available 24 different jQuery UI themes if you chose jQuery UI for your frontend theme.
+* Added option to use Font Awesome webfont in buttons, radios, and checkboxes. Different icons can be selected for the checked and the unchecked states of the form elements.
+* Added option to pick 3 Adjustable height size for form elements.
+* Ability to do a graceful degradation; turn off JavaScript, everything works as expected.
+* Ability to create form access groups based on user roles by setting form permissions.
+* Ability to schedule your forms availability based on date ranges.
+* Ability to limit forms availability by the number of submissions.
+* Ability to send confirmations to admins and/users after a successful entry.
+* Ability to show simple text or redirect to another website after a successful entry.
+* Ability to do client and server side validations for all available attribute types.
+* Integrated cross-site scripting (XSS) and cross-site request forgery (CSRF) attack prevention.
+* Integrated protection against SPAM using honeypot and/or captcha.
+* Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
+* Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
+* Added support for custom user roles in the user relationship dropdown in the advanced section of entity configuration.
+* Added description and optionality to relationship screen. When you set a relationship required and Wp App Studio will enforce it.
+* Added description, display type(multi or single select), required fields to Taxonomy screen.
+* Added uniqueness option to attributes types. Setting an attribute unique will set it as a unique key identifier. It will be used when connecting entity records to other entity records.
+* Added max file size, allowable extensions, and max file uploads validations options for file and image uploader attribute type.
+* Many more features, bug fixes to better look and feel and stability.
+
+= What's in store for the next release? =
+
+More work on the interface; ability to create modal forms to support create, read, update, and delete(CRUD) operations. Dependent and conditional fields, calculator field type, and more precision on the form layout editor.
+
+= Create your own plugin using Wp App Studio =
+An intro to WPAS system, not updated for 2.0 but still relevant. More video tutorials in the website.
+
+[youtube http://www.youtube.com/watch?v=od4UuGuA0FA]
+
+= What comes in and out of my computer? =
+
+*What comes out*
+
+* API Keys (WPAS userid and password)
+* App (plugin) metadata
+
+*What comes in*
+
+* WPAS account balance and available\used credits info
+* Development status messages (success, failure etc.)
+* Plugin download link
+
+All communication to WPAS servers are implemented through token based secure HTTPS REST requests using XML files. No other format is allowed.
+
+[See Wp App Studio Platform documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/ "WPAS Delivery Diagram")
+
+= Should I install Wp App Studio plugin to my production server? =
+
+You can install it anywhere you like. However, Wp App Studio is a development tool and we recommend you to install it to your laptop or development computer.
+
+= Who should use this service? =
+
+Wp App Studio is designed for the users with no coding experience. The generated plugin code is based on open source software and is completely open source. You can modify, whitelabel, and resell your plugin without any limitation.
+
+= What are the features? =
+
+See Other Notes tab or project links below.
+
+*Project Links*
+
+* [Wp App Studio Demo](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/wpas-demos/ "Wp App Studio Demo")
+* [Wp App Studio Playground](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
+* [Video Tutorials](http://emarketdesign.com/videos "Wp App Studio Video Tutorials")
+* [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
+* [Paid Support](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/wp-app-studio-support-pricing/ "Wp App Studio Paid Support")
+* [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
+* [Pricing](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+
+== Features ==
+
+ *Create Entities*
  
 * Collect data about things, persons, places, or concepts.
 * Supports all of Wordpress Custom Post Type API and more
@@ -173,15 +263,25 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/using-web-apps/ "Creating and Saving Wp App Studio App Filters")
 
- *Create Forms*  *Under Development *
+ *Create Forms*
  
-* Quickly generate beautiful, standards compliant forms within Wp App Studio.
-* Leverages the latest techniques in web design.
-* Validate client-side.
-* Validate server-side.
-* Process without changing pages (using AJAX).
-* Easily customizable using CSS.
-* Bot prevention (no need for CAPTCHAs).
+* Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
+* Ability to create and display multi-column, device independent, and  ajax powered forms.
+* Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
+* Ability to pick one of available 24 different jQuery UI themes if you chose jQuery UI for your frontend theme.
+* Added option to use Font Awesome webfont in buttons, radios, and checkboxes. Different icons can be selected for the checked and the unchecked states of the form elements.
+* Added option to pick 3 Adjustable height size for form elements.
+* Ability to do a graceful degradation; turn off JavaScript, everything works as expected.
+* Ability to create form access groups based on user roles by setting form permissions.
+* Ability to schedule your forms availability based on date ranges.
+* Ability to limit forms availability by the number of submissions.
+* Ability to send confirmations to admins and/users after a successful entry.
+* Ability to show simple text or redirect to another website after a successful entry.
+* Ability to do client and server side validations for all available attribute types.
+* Integrated cross-site scripting (XSS) and cross-site request forgery (CSRF) attack prevention.
+* Integrated protection against SPAM using honeypot and/or captcha.
+* Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
+* Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/designing-and-creating-forms/ "Creating Wp App Studio App Forms")
 
@@ -192,12 +292,7 @@ Wp App Studio is a SaaS platform that creates fully featured Wordpress based app
 * Easy to use interface.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-web-app-tours-through-pointers/ "Creating Wp App Studio App Tours")
-* [Wp App Studio Demo](http://demo.emarketdesign.com/ "Wp App Studio Demo")
-* [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
-* [Wp App Studio Forums](http://emarketdesign.com/forums/forum/wp-app-studio-forums/ "Wp App Studio Forums")
-* [Paid Support](http://emarketdesign.com/support "Wp App Studio Paid Support")
-* [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
-* [Pricing](http://emarketdesign.com/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+
 
  ==  Installation  == 
 
@@ -226,10 +321,6 @@ The simplest way to install is to click on 'Plugins' then 'Add' and type 'Wp App
 = What are the basic requirements of Wp App Studio? =
 
 Wp App Studio creates a custom made plugin. You must be able to install the generated plugin in your wordpress installation. Your hosting environment must meet minimum [system requirements] [4]</a>. All Api access purchases are subject to our [api access terms and condition of use][1]. 
-
-= How can I use Wp App Studio service? =
-
-First download, activate Wp App Studio plugin, then design your app. After you are done designing, purchase credit based on the entity count on your app and send your design to WPAS servers for code generation. You will get download link after your plugin is ready. Simply download and activate your plugin as you normally would any other wordpress plugin. 
 
 = Do I have to install any other plugin to run Wp App Studio plugins? =
 
@@ -263,11 +354,6 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 
  We plan to release some of our own designs in  [WPAS Marketplace][3]. It will be soon open to other designers/developers as well. 
 
-= How do updates get credited? =
-
-When you purchase WPAS entity credits, you also earn free update credits. These credits can be used when you update your app. Updating your app means adding, deleting, or updating taxonomies, relationships, permissions, and/or shortcodes etc. Every time you update objects in your app design you use an update credit.
-
-Updates to objects other than entities use 1 update credit per generation even if there are multiple changes. Entity updates use 1 update credit. If there are no update credit left, entity credits are used.
 
  [1]: http://emarketdesign.com/terms-and-conditions/ "Terms and Conditions"
  [2]: http://emarketdesign.com/paid-support-terms-and-conditions/ "Paid Support Terms and Conditions"
@@ -297,7 +383,86 @@ Updates to objects other than entities use 1 update credit per generation even i
 19. App Taxonomy View
 20. App Entity Operations View
 
-== Changelog ==
+== Upgrade Notice ==
+= 2.0.1 =
+Fixed api server location
+= 2.0 =
+Added frontend interface using Twitter's Bootstrap or jQuery UI frameworks and fixed misc. bugs.
+= 1.1.8 =
+Added relationship attribute display option and relationship widget feature. Fixed misc. bugs.
+= 1.1.6 =
+Fixed upgrade bug. Playground is open for free trial of WPAS platform.
+= 1.1.5 =
+Added attribute and taxonomy selectors for widgets and short codes. Playground is open for free trial of WPAS platform.
+= 1.1.0 =
+Hardened overall plugin security and added connected/related relationship type creation/display feature.(UPGRADE RECOMMENDED)
+= 1.0.2 =
+Fixed minor bugs related to entity layout and capabilities.
 
-= 1.0.0 =
+== Changelog ==
+= 2.0.1 (09/29/13) =
+* Fixed api server location
+= 2.0 (09/29/13) =
+* Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
+* Ability to create and display multi-column, device independent, and  ajax powered forms.
+* Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
+* Ability to pick one of available 24 different jQuery UI themes if you chose jQuery UI for your frontend theme.
+* Added option to use Font Awesome webfont in buttons, radios, and checkboxes. Different icons can be selected for the checked and the unchecked states of the form elements.
+* Added option to pick 3 Adjustable height size for form elements.
+* Ability to do a graceful degradation; turn off JavaScript, everything works as expected.
+* Ability to create form access groups based on user roles by setting form permissions.
+* Ability to schedule your forms availability based on date ranges.
+* Ability to limit forms availability by the number of submissions.
+* Ability to send confirmations to admins and/users after a successful entry.
+* Ability to show simple text or redirect to another website after a successful entry.
+* Ability to do client and server side validations for all available attribute types.
+* Integrated cross-site scripting (XSS) and cross-site request forgery (CSRF) attack prevention.
+* Integrated protection against SPAM using honeypot and/or captcha.
+* Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
+* Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
+* Added support for custom user roles in the user relationship dropdown in the advanced section of entity configuration.
+* Added description and optionality to relationship screen. When you set a relationship required and Wp App Studio will enforce it.
+* Added description, display type(multi or single select), required fields to Taxonomy screen.
+* Added uniqueness option to attributes types. Setting an attribute unique will set it as a unique key identifier. It will be used when connecting entity records to other entity records.
+* Added max file size, allowable extensions, and max file uploads validations options for file and image uploader attribute type.
+* Many more features, bug fixes to better look and feel and stability.
+= 1.1.8 (7/05/13) =
+* Removed filterable option for attribute image types.
+* Fixed p and br tag deletion issue in Help Tab editor.
+* Fixed required option not working in relationship attribute create screen.
+* Removed create relationship attribute option from one-to-many relationships since relationship attributes are only applicable to many-to-many relationships.
+* Added relationship attribute frontend display option.
+* Add relationship widget feature. You will be able to display entity relationship data on frontend using relationship widgets.
+* Fixed misc. advanced options screen data entry issues related to entities and taxonomies.
+ 
+= 1.1.6 (6/25/13) =
+* Fixed upgrade bug. 
+* Fixed p and br tags deletion in shortcode and widget layouts.
+
+= 1.1.5 (6/24/13) =
+* Added Entity attribute and taxonomy selectors in shortcode and widgets layouts. You will be able to use entity attributes and taxonomies in shortcodes and widgets.
+* Added link/unlink button Help Sidebar and Help Tab editor screens.
+* Added "Design WPAS" capability so that admins will be able to give designers wpas design permission without assigning them to an admin role.
+* Added visual editor display option independent of user profile for all wpas screens.
+* Wp App Studio Playground is open for designing, building, and testing your plugins without incurring API charges.
+
+= 1.1.0 (6/01/13) =
+* Hardened overall plugin security by adding extra nonces, data sanitization/validation rules and Wordpress HTTP API calls.
+* Added connected/related relationship display types features in the relationship module. For example, on a product page, you will be able to display the orders that include a certain product(connected) or products which are also ordered with the product(related) i.e. "customers who purchased this also purchased" type(See demo.emarketdesign.com)
+* Added frontend display of connected and/or related relationship data. You will be able to display relationship data with different title on the from and to entity pages.(See demo.emarketdesign.com)
+* Added search filtering based on user roles. Users only can search data they are allowed to view.
+
+= 1.0.2 (5/12/13) =
+* Fixed a minor bug related to entity layout
+* Fixed a minor bug related to entity capabilities
+* Added additional error check for xml parsing
+
+= 1.0.1 (5/10/13) =
+* Frontend display has been improved. You can just add a link to your entity content from Appearance > Menus and the content will be displayed at the frontend.
+* Added frontend custom css. You can change the default content display.
+* Added Entity Menu Display index. You will be able to sort your entities and display them accordingly in the navigation menu.
+* Quick Start process has been expanded for the post capabilities. Operations menu link will display even if you do not define a custom role for your entity.
+
+= 1.0.0 (5/2/13) =
 * Initial release with fireworks.
+

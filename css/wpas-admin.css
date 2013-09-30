@@ -270,6 +270,13 @@ border-radius:4px;
 padding:20px;
 background-color:#FFF7EF;
 }
+#form-layout-ctr{
+min-height:550px;
+border:2px gray dotted;
+border-radius:4px;
+padding:20px;
+background-color:#FFF7EF;
+}
 .acc-ctr{
 border:2px #6495ED solid;
 border-radius:4px;
@@ -329,7 +336,7 @@ padding:100px;
 text-align:center;
 font-size:30px;
 color:#ADD8E6;
-min-height:60px;
+min-height:450px;
 border:2px dashed;
 }
 #app-edit-btn{
@@ -350,7 +357,7 @@ font-size: 12px;
 }
 .layout-edit-icons{
 cursor:pointer;
-font-size:14px;
+font-size:20px;
 }
 .icon-red{
 color:red;
@@ -383,4 +390,32 @@ font-weight:bolder;
 }
 .affix {
     top: 10px;
+}
+/* time picker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; }
+.ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+/* form-layouts */
+
+.form-hr,.form-text,.form-attr,.form-relent,.form-tax{
+border:2px #6495ED solid;
+border-radius:4px;
+background:#F5FFFA;
+cursor:move;
+margin-bottom:5px;
+padding:10px;
+color:#6495ED;
+font-weight:bold;
+}
+.form-inside{
+padding-top:10px;
+padding-left:10px;
+padding-right:10px;
 }
