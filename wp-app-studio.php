@@ -13,8 +13,7 @@ register_activation_hook( __FILE__, 'wpas_activate' );
 register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
-//define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_SSL_URL', "http://wordpressc.com");
+define('WPAS_SSL_URL', "https://www.emarketdesign.com");
 define('WPAS_VERSION', "2.0");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
