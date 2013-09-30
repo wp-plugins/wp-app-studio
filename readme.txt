@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Wp App Studio is easy to learn and use design tool for creating fully featured custom plugins based on WordPress platform. No coding required.
 
  ==  Description  == 
-Are you a WPAS user?
+= Are you a WPAS user? =
 * Serious about WordPress.
 * No coding experience.
 * Tired of writing code.
@@ -23,25 +23,26 @@ Are you a WPAS user?
 * Don't want to deal with technology/trends changes 
 * Don't want to wait weeks to get something done.
 * Don't want to spend thousands to get something done.
+
 No problem. This is it. Create your own custom plugin. Let us support it for 30 days for Free.
 
 Wp App Studio(WPAS) is a cost-effective REST API based software as a service (SaaS) platform that creates fully featured Wordpress plugins.
 
-[How does WPAS work? SaaS Whaat? and others][http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/]
+[How does WPAS work? SaaS Whaat? and others](http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/)
 
-Two ways to use this platform:
-1- Download and install this plugin, purchase API credits, design/generate plugins at your computer.(Pros)
-2- Register/login to eMD Playground, get free API credits, design/generate plugins, and purchase when you are ready.(Beginners)
+= Two ways to use this platform =
+1. Download and install this plugin, purchase API credits, design/generate plugins at your computer.(Pros)
+2. Register/login to eMD Playground, get free API credits, design/generate plugins, and purchase when you are ready.(Beginners)
 
 [TRY IT FOR FREE](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
 
 = What's new in 2.0? =
 First of all, thanks to all of our customers for their patience and support.
 
-*Summary*
+= Summary =
 Say Hello to beautiful app interfaces using Twitter's Bootstrap or jQuery UI based, client/server side validated ajax forms with full of advanced components.
 
-*Detail*
+= Detail =
 * Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
 * Ability to create and display multi-column, device independent, and  ajax powered forms.
 * Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
@@ -106,14 +107,13 @@ See Other Notes tab or project links below.
 
 *Project Links*
 
-* [Wp App Studio Demo](http://demo.emarketdesign.com/ "Wp App Studio Demo")
+* [Wp App Studio Demo](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/wpas-demos/ "Wp App Studio Demo")
 * [Wp App Studio Playground](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
 * [Video Tutorials](http://emarketdesign.com/videos "Wp App Studio Video Tutorials")
 * [Wp App Studio Documentation](http://emarketdesign.com/documentation/wp-app-studio-documentation/ "Wp App Studio Documentation")
-* [Wp App Studio Forums](http://emarketdesign.com/forums/forum/wp-app-studio-forums/ "Wp App Studio Forums")
-* [Paid Support](http://emarketdesign.com/support "Wp App Studio Paid Support")
+* [Paid Support](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/wp-app-studio-support-pricing/ "Wp App Studio Paid Support")
 * [Marketplace](http://emarketdesign.com/marketplace/ "Wp App Studio Marketplace: place to purchase app designs for less")
-* [Pricing](http://emarketdesign.com/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
+* [Pricing](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/wp-app-studio-pricing/ "Wp App Studio Pricing")
 
 == Features ==
 
@@ -263,15 +263,25 @@ See Other Notes tab or project links below.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/using-web-apps/ "Creating and Saving Wp App Studio App Filters")
 
- *Create Forms*  *Under Development *
+ *Create Forms*
  
-* Quickly generate beautiful, standards compliant forms within Wp App Studio.
-* Leverages the latest techniques in web design.
-* Validate client-side.
-* Validate server-side.
-* Process without changing pages (using AJAX).
-* Easily customizable using CSS.
-* Bot prevention (no need for CAPTCHAs).
+* Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
+* Ability to create and display multi-column, device independent, and  ajax powered forms.
+* Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
+* Ability to pick one of available 24 different jQuery UI themes if you chose jQuery UI for your frontend theme.
+* Added option to use Font Awesome webfont in buttons, radios, and checkboxes. Different icons can be selected for the checked and the unchecked states of the form elements.
+* Added option to pick 3 Adjustable height size for form elements.
+* Ability to do a graceful degradation; turn off JavaScript, everything works as expected.
+* Ability to create form access groups based on user roles by setting form permissions.
+* Ability to schedule your forms availability based on date ranges.
+* Ability to limit forms availability by the number of submissions.
+* Ability to send confirmations to admins and/users after a successful entry.
+* Ability to show simple text or redirect to another website after a successful entry.
+* Ability to do client and server side validations for all available attribute types.
+* Integrated cross-site scripting (XSS) and cross-site request forgery (CSRF) attack prevention.
+* Integrated protection against SPAM using honeypot and/or captcha.
+* Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
+* Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/designing-and-creating-forms/ "Creating Wp App Studio App Forms")
 
@@ -388,7 +398,7 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
-= 2.0 (09/29/13)
+= 2.0 (09/29/13) =
 * Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
 * Ability to create and display multi-column, device independent, and  ajax powered forms.
 * Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
