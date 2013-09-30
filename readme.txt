@@ -3,7 +3,7 @@ Contributors: emarket-design
 Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 2.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -384,6 +384,8 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 20. App Entity Operations View
 
 == Upgrade Notice ==
+= 2.0.1 =
+Fixed api server location
 = 2.0 =
 Added frontend interface using Twitter's Bootstrap or jQuery UI frameworks and fixed misc. bugs.
 = 1.1.8 =
@@ -398,6 +400,8 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 2.0.1 (09/29/13) =
+* Fixed api server location
 = 2.0 (09/29/13) =
 * Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
 * Ability to create and display multi-column, device independent, and  ajax powered forms.
