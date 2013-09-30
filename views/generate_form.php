@@ -1,21 +1,24 @@
 <?php
 function wpas_generate_page($app_reg, $submits,$alert,$success)
 {
-	$apps_options = "";
+	$apps_options = "<option value=''>Please select</option>";
 	$submit_results = "";
 	$message = "";
 	$apps = wpas_get_app_list();
-	foreach($apps as $key => $myapp)
+	if(!empty($apps))
 	{
-		$apps_options .= "<option value='" . $key . "'";
-		if($_GET['app'] == $key)
+		foreach($apps as $key => $myapp)
 		{
-			$apps_options .= " selected";
+			$apps_options .= "<option value='" . esc_attr($key) . "'";
+			if($_GET['app'] == $key)
+			{
+				$apps_options .= " selected";
+			}
+			$apps_options .= ">" .  esc_html($myapp['app_name']) . "</option>";
 		}
-		$apps_options .= ">" .  $myapp['app_name'] . "</option>";
 	}
 
-	if($submits == "")
+	if(empty($submits))
 	{
 		$total = 0;
 		$submit_results = "<tr><td colspan=8>No application has been submitted.</td></tr>";
@@ -26,7 +29,7 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		$page =1;
         	if(isset($_REQUEST['generatepage']))
         	{
-                	$page = $_REQUEST['generatepage'];
+                	$page = intval ($_REQUEST['generatepage']);
         	}
 		$count =0;
 		$submits = array_reverse($submits);
@@ -39,18 +42,18 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
                                 {
                                         $alt = "alternate";
                                 }
-				if($mysubmit['status_link'])
+				if(isset($mysubmit['status_link']))
 				{
-					if(strpos($mysubmit['status'],'Error') != false)
+					if(strpos($mysubmit['status'],'Error') !== false)
 					{	
-						$mysubmit['status_link'] = "<a href='" . $mysubmit['status_link'] . "' target='_blank'>Please open a support ticket</a>";
+						$mysubmit['status_link'] = "<a href='" . esc_url($mysubmit['status_link']) . "' target='_blank'>Please open a support ticket</a>";
 					}
-					elseif(strpos($mysubmit['status'],'Success') != false || strpos($mysubmit['status'],'Change') != false)
+					elseif(strpos($mysubmit['status'],'Success') !== false || strpos($mysubmit['status'],'Change') !== false)
 					{	
-						$mysubmit['status_link'] = "<a href='" . $mysubmit['status_link'] . "'>Download</a>";
+						$mysubmit['status_link'] = "<a href='" . esc_url($mysubmit['status_link']) . "'>Download</a>";
 					}
 				}
-				$submit_results .= "<tr class='" . $alt . "'><td>" . $mysubmit['app_submitted'] . "</td><td id='credit-used'>" . $mysubmit['credit_used'] . "</td><td id='credit-left'>" . $mysubmit['credit_left'] . "</td><td id='update-left'>" . $mysubmit['update_left'] . "</td><td id='status'>" . $mysubmit['status'] . "</td><td id='download-link'>" . $mysubmit['status_link'] . "</p></td><td>" . $mysubmit['date_submit'] . "</td></tr>";
+				$submit_results .= "<tr class='" . $alt . "'><td>" . esc_html($mysubmit['app_submitted']) . "</td><td id='credit-used'>" . intval ($mysubmit['credit_used']) . "</td><td id='credit-left'>" . intval ($mysubmit['credit_left']) . "</td><td id='update-left'>" . intval ($mysubmit['update_left']) . "</td><td id='status'>" . $mysubmit['status'] . "</td><td id='download-link'>" . $mysubmit['status_link'] . "</p></td><td>" . esc_html($mysubmit['date_submit']) . "</td></tr>";
 			}
                         $count ++;
 			
@@ -58,7 +61,7 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 	}
 
 
-	if($alert != "")
+	if(!empty($alert))
 	{
 		$message = "<div class='alert alert-error'>" . $alert . "</div>";
 	}
@@ -81,18 +84,19 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		<div id="generate" class="span12">
 		<form id="generate_form" class="form-horizontal" method="post" >
 		<fieldset>
+		<?php wp_nonce_field('wpas_generate_app','wpas_generate_nonce'); ?>
 		<div class="well">
 		<?php echo $message; ?>
 		<div class="control-group">
 		<label class="control-label">Email</label>
 		<div class="controls">
-		<input id="email" name="email" class="input-large" type="text" value="<?php echo $app_reg['email']; ?>">
+		<input id="email" name="email" class="input-large" type="text" value="<?php if(isset($app_reg['email'])) { echo $app_reg['email']; }?>">
 		</div>
 		</div>
 		<div class="control-group">
 		<label class="control-label">Passcode</label>
 		<div class="controls">
-		<input id="passcode" name="passcode" class="input-large" type="password" value="<?php echo $app_reg['passcode']; ?>">
+		<input id="passcode" name="passcode" class="input-large" type="password" value="<?php if(isset($app_reg['passcode'])) { echo $app_reg['passcode']; } ?>">
 		</div>
 		</div>
 		<div class="control-group">
@@ -129,7 +133,8 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		<?php 
 		if($total > 0)
 		{
-			$base = "admin.php?page=wpas_app_list&generate=1&app=" . $_GET['app'];
+			$base = admin_url('admin.php?page=wpas_app_list&generate=1&app=' . $_GET['app']);
+			$base = wp_nonce_url($base,'wpas_generate');
 			echo $paging_text = paginate_links( array(
 								'total' => ceil($total/10),
 								'current' => $page,
