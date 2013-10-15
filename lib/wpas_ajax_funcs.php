@@ -752,7 +752,7 @@ function wpas_check_status_generate()
 		{
 			if($mysubmit['queue_id'] == $queue_id)
 			{
-				if(time() < $mysubmit['refresh_time'] + 300)
+				if(time() < $mysubmit['refresh_time'] + 120)
 				{
 					$resp[3] = "Your application is in queue and will be generated soon. Thank you for your patience.";
 					$no_check =1;
@@ -1936,6 +1936,17 @@ function wpas_delete()
 								unset($app['role'][$rkey][$role_name]);
 							}
 						}
+					}
+				}
+				//7 - delete the form and its layout
+				if(!empty($app['form']))
+				{
+					foreach($app['form'] as $fkey => $myform)
+					{
+						if($myform['form-attached_entity'] == $ent_label)
+                                                {
+                                                        unset($app['form'][$fkey]);
+                                                }
 					}
 				}
 			}

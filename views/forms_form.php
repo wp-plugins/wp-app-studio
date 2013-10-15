@@ -335,7 +335,7 @@ jQuery(document).ready(function($) {
 	<label class="control-label span3" >Frontend Template</label>
 	<div class="controls span9">
 	<select name="form-temp_type" id="form-temp_type" class="input-medium">
-	<option value="Pure">JQuery UI</option>
+	<option value="Pure">jQuery UI</option>
 	<option value="Bootstrap" selected="selected">Twitter's Bootstrap</option>
 	</select>
 	<a href="#" style="cursor: help;" title="Sets the frontend framework which will be used to configure the overall look and feel of the form. If you pick JQuery UI, you can choose your theme from App's Settings under Theme tab. Default is Twitter Bootstrap.">
@@ -401,6 +401,7 @@ jQuery(document).ready(function($) {
 	<option value="btn-danger">Danger (Red - #DA4F49)</option>
 	<option value="btn-inverse">Inverse (Black - #363636)</option>
 	<option value="btn-link">Link (Blue -  #0088CC)</option>
+	<option value="btn-jui">jQuery UI (Themeable)</option>
 	</select>
 	<a href="#" style="cursor: help;" title="Standard button is a white background button with a darkgray border. Primary button provides extra visual weight and identifies the primary action in a set of buttons. Info button is used as an alternative to the standard style. Success button indicates a successful or positive action. Warning button indicates caution should be taken with this action. Danger button indicates a dangerous or potentially negative action. Inverse button is alternate dark gray button, not tied to a semantic action or use. Link button deemphasizes a button by making it look like a link while maintaining button behavior.">
 	<i class="icon-info-sign"></i></a>

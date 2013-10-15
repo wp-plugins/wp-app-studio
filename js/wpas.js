@@ -599,6 +599,8 @@ jQuery(document).ready(function($) {
 				$('#fld_is_filterable_div').hide();
 				$('#fld_multiple_div').hide();
 				$('#fld_is_advanced_div').hide();
+				$('#fld_file_ext_div').hide();
+				$('#fld_image_thickbox_div').hide();
 				hiddenvar = 'ent_field';	
 			} 
 			else if($(this).attr('href').match(/#rel/g)) 
@@ -781,6 +783,7 @@ jQuery(document).ready(function($) {
 			{
                                $('#support-cust-nav-div').hide();
                                $('#ao_force_col_div').hide();
+			       $('#ao_theme_type_div').hide();
 			}
 			else if(button == 'form')
 			{
@@ -1831,6 +1834,10 @@ jQuery(document).ready(function($) {
 							else if(key == 'ao_force_dashboard_to_column')
 							{
 								$('#ao_force_col_div').show();
+							}
+							else if(key == 'ao_set_uitheme')
+							{
+								$('#ao_theme_type_div').show();
 							}
                                                 }
                                                 else{

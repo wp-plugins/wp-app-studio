@@ -567,6 +567,9 @@ jQuery(document).ready(function() {
 			maxlength:255,
 			url: true,
 			},
+			'ao_theme_type':{
+			required:true,
+			},
 			'ao_left_footer_html':{
 			maxlength:300,
 			},

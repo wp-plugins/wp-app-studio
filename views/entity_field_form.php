@@ -476,7 +476,7 @@ jQuery(document).ready(function($) {
 	<div class="controls span9">
 			<label class="checkbox">Multiple
             <input name="fld_multiple" id="fld_multiple" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="Sets multiple file uploads option.">
+			<a href="#" style="cursor: help;" title="Allows users to select multiple values when set.">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>

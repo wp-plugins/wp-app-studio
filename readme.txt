@@ -1,9 +1,9 @@
 ===  Wp App Studio  === 
 Contributors: emarket-design
-Tags: admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, theme,admin themes,admin-theme,administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
+Tags: Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.6.1
-Stable tag: 2.0.1
+Stable tag: 2.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -382,8 +382,13 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 18. App Entity View
 19. App Taxonomy View
 20. App Entity Operations View
+21. jQuery UI Sunny Theme Form
+22. Bootstrap Form with FontAwesome Webfont
+23. Using FontAwesome Webfont with buttons, radios and checkboxes
 
 == Upgrade Notice ==
+= 2.0.5 =
+Updated and upgraded jQuery UI form components and modified some api rules.
 = 2.0.1 =
 Fixed api server location
 = 2.0 =
@@ -400,6 +405,16 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 2.0.5 (10/15/13) =
+* Added option to remove the operations screen.
+* Added option to remove filters and columns in entity list pages.
+* Added option to default to base jQuery UI when no theme selected.
+* Moved the operations link to the entity list page as a button next to add new.
+* Applied jQuery UI theme to all attribute types including radio, checkboxes, select, text, textarea and wysiwyg.
+* Added themeable jQuery UI submit button to all forms; 24 additional buttons with different colors.
+* Modified api rule for unique key checks before code generation.
+* Reduced generated plugin size by removing unused libraries by 60%.
+* Added additional multiselect and select form element with search option to the JQuery UI form component list
 = 2.0.1 (09/29/13) =
 * Fixed api server location
 = 2.0 (09/29/13) =

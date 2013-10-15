@@ -306,6 +306,12 @@ function wpas_check_valid_generate($myapp)
 		$generate_error = $resp_error['generate_error'];
 		$error_loc_name = $resp_error['error_loc_name'];
 	}
+	if($generate_error == 0 && !empty($myapp['form']))
+	{
+		$resp_error = wpas_check_form_rel_uniq($myapp);
+		$generate_error = $resp_error['generate_error'];
+		$error_loc_name = $resp_error['error_loc_name'];
+	}
 	if($generate_error == 0 && !empty($myapp['help']))
 	{
 		foreach($myapp['help'] as $myhelp)
@@ -347,6 +353,112 @@ function wpas_check_valid_generate($myapp)
 	}
 	return $alert;	
 }
+function wpas_check_form_rel_uniq($myapp)
+{
+	$generate_error = 0;
+	$error_loc_name = "";
+	foreach($myapp['form'] as $myform)
+	{
+		if(!empty($myform['form-dependents']))
+		{
+			if(!empty($myform['form-layout']))
+			{
+				foreach($myform['form-layout'] as $myform_layout)
+				{
+					$rel_entity = "";
+					$unique_key = 0;
+					if(in_array($myform_layout['obtype'],Array('relent-1','relent-2','relemt-3')))
+					{
+						foreach($myapp['relationship'] as $myrel)
+						{
+							if($myform_layout['relent'] == $myrel['rel-name-id'])
+							{
+								if($myform_layout['entity'] == $myrel['rel-from-name'])
+								{
+									$rel_entity = $myrel['rel-to-name'];
+								}
+								else
+								{
+									$rel_entity = $myrel['rel-from-name'];
+								}
+								break;
+							}
+						}
+						foreach($myapp['entity'] as $myentity)
+						{
+							if($rel_entity == $myentity['ent-label'])
+							{
+								foreach($myentity['field'] as $myfields)
+								{
+									if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
+									{
+										$unique_key = 1;
+										break;
+									}
+								}
+								if($unique_key == 0)
+								{
+									$generate_error = 7;
+									$error_loc_name = $myentity['ent-label'];
+									return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				foreach($myform['form-dependents'] as $rel_dep)
+				{
+					$rel_entity = "";
+					$unique_key = 0;
+					$dep= explode("__",$rel_dep);
+					foreach($myapp['relationship'] as $myrel)
+					{
+						if($dep[1] == $myrel['rel-name-id'] && $myrel['rel-required'] == 1)
+						{
+							if($myform['form-attached_entity'] == $myrel['rel-from-name'])
+							{
+								$rel_entity = $myrel['rel-to-name'];
+							}
+							else
+							{
+								$rel_entity = $myrel['rel-from-name'];
+							}
+							break;
+						}
+					}
+					if($rel_entity != "")
+					{
+						foreach($myapp['entity'] as $myentity)
+						{
+							if($rel_entity == $myentity['ent-label'])
+							{
+								foreach($myentity['field'] as $myfields)
+								{
+									if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
+									{
+										$unique_key = 1;
+										break;
+									}
+								}
+								if($unique_key == 0)
+								{
+									$generate_error = 7;
+									$error_loc_name = $myentity['ent-label'];
+									return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+								}
+							}
+						}
+					}
+				}
+					
+			}
+		}
+	}
+	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+}
 function wpas_check_entity_field($myapp_entity)
 {
 	$no_post = 0;
@@ -362,7 +474,6 @@ function wpas_check_entity_field($myapp_entity)
 	//check if entities have at least one field
 	foreach($myapp_entity as $myentity)
 	{
-		$unique_key = 0;
 		if($myentity['ent-name'] == 'post' && !empty($myentity['field']))
 		{
 			$no_post = 1;
@@ -420,16 +531,8 @@ function wpas_check_entity_field($myapp_entity)
 		if(isset($myentity['field']))
 		{
 			$ent_attr_count = count($myentity['field']);
-			foreach($myentity['field'] as $myfields)
-			{
-				if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
-				{
-					$unique_key = 1;
-					break;
-				}
-			}
 		}
-		if(!in_array($myentity['ent-name'],Array('page','post')) && $unique_key == 0)
+		if(!in_array($myentity['ent-name'],Array('page','post')))
 		{
 			$error_loc_name = $myentity['ent-label'];
 			break;
@@ -448,10 +551,6 @@ function wpas_check_entity_field($myapp_entity)
 	elseif($check_field == 1)
 	{
 		$generate_error = 3;	
-	}
-	elseif($unique_key == 0)
-	{
-		$generate_error = 7;
 	}
 	elseif($empty_panel == 1)
 	{

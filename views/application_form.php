@@ -442,7 +442,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "taxonomypage";
                 $field_name = "txn-name";
                 $other_fields = Array("txn-label","txn-singular-label","txn-hierarchical","txn-attaches","date","modified_date");
-                $other_labels = Array("Name","Plural Label","Singular Label","Hierarchical","Attached Entities","Created","Modified");
+                $other_labels = Array("Name","Plural Label","Singular Label","Hierarchical","Attached To","Created","Modified");
                 $list_values['icon'] = "icon-tag";
         }
         elseif($list_type == 'relationship')
@@ -463,7 +463,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "helppage";
                 $field_name = "help-object_name";
                 $other_fields = Array("help-screen_type","sidebar_on_off","help_tabs","date","modified_date");
-                $other_labels = Array("Attach To","Screen Type","SideBar","Tabs","Created","Modified");
+                $other_labels = Array("Attached To","Screen Type","SideBar","Tabs","Created","Modified");
                 $list_values['icon'] = "icon-info-sign";
                 $add_field_tag = "#help";
         }
@@ -485,7 +485,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "shortcodepage";
                 $field_name = "shc-label";
                 $other_fields = Array("shc-attach","date","modified_date");
-                $other_labels = Array("Name","Attach To Entity","Created","Modified");
+                $other_labels = Array("Name","Attached To","Created","Modified");
                 $list_values['icon'] = "icon-bookmark";
                 $add_field_tag = "#shortcode";
         }
@@ -496,7 +496,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "widgpage";
                 $field_name = "widg-title";
                 $other_fields = Array("widg-type","widg-subtype","widg-attach","date","modified_date");
-                $other_labels = Array("Title","Type","Subtype","Attach To Entity","Created","Modified");
+                $other_labels = Array("Title","Type","Subtype","Attached To","Created","Modified");
                 $list_values['type'] = 'widg';
                 $list_values['icon'] = "icon-cog";
                 $add_field_tag = "#widg";
@@ -508,7 +508,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "formpage";
                 $field_name = "form-name";
                 $other_fields = Array("form-shc","form-attached_entity","form-form_title","form-temp_type","form-ajax","date","modified_date");
-                $other_labels = Array("Name","Shortcode","Attached Entity","Title","Frontend Template","Ajax","Created","Modified");
+                $other_labels = Array("Name","Shortcode","Attached To","Title","Template","Ajax","Created","Modified");
                 $list_values['type'] = 'form';
                 $list_values['icon'] = "icon-list-alt";
                 $add_field_tag = "#form";
@@ -638,6 +638,10 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 			elseif($list_type == 'form')
 			{
 				$mylist['form-shc'] = "[" . $mylist['form-name'] . "]";
+				if($mylist['form-temp_type'] == 'Pure')
+				{
+					$mylist['form-temp_type'] = 'jQuery UI';
+				}
 			}
                         $url['edit_url'] = $edit_url . $key_list;
                         $url['delete_url'] = "#" . $key_list;
