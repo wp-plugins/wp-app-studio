@@ -3,7 +3,7 @@ function wpas_view_rel_fields($rel_name)
 {
 return '<div id="title-bar"><div class="row-fluid"><h4 class="span3"><i class="icon-columns"></i>Attributes</h3>
                 <div class="span9 field" id="add_field_rel">
-<a class="btn btn-info  pull-right" href="#rel'. $rel_name . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
+<a class="btn btn-info  pull-right" href="#rel'. esc_attr($rel_name) . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
 </div></div></div>';
 }
 function wpas_view_rel_fields_list($rel_field)
@@ -30,12 +30,12 @@ function wpas_view_rel_fields_list($rel_field)
 
                 $ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
                         <div class="span1"><i class="icon-sort"></i></div>
-			<div class="span3" id="field-name">' . $myfield['rel_fld_name'] . '</div>
-                        <div class="span3" id="field-label">' . $myfield['rel_fld_label'] . '</div>
-                        <div class="span2">' . $myfield['rel_fld_type'] . '</div>
+			<div class="span3" id="field-name">' . esc_html($myfield['rel_fld_name']) . '</div>
+                        <div class="span3" id="field-label">' . esc_html($myfield['rel_fld_label']) . '</div>
+                        <div class="span2">' . esc_html($myfield['rel_fld_type']) . '</div>
 			<div class="span1">' . $required . '</div>
-                        <div class="span1" id="edit-rel-field"><a href="#' . $key . '">Edit</a></div>
-                        <div class="span1" id="delete-rel-field"><a href="#' . $key . '">Delete</a></div></div></div></li>';
+                        <div class="span1" id="edit-rel-field"><a href="#' . esc_attr($key) . '">Edit</a></div>
+                        <div class="span1" id="delete-rel-field"><a href="#' . esc_attr($key) . '">Delete</a></div></div></div></li>';
         }
         $ret .= '</ul>';
 	return $ret;
@@ -69,7 +69,7 @@ jQuery(document).ready(function() {
 </script>
 
 <form action="" method="post" id="rel-field-form" class="form-horizontal">
-<input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
+<input type="hidden" id="app" name="app" value="<?php echo esc_attr($app_id); ?>">
 <input type="hidden" id="rel" name="rel" value="0">
 <input type="hidden" id="rel_field" name="rel_field" value="">
 
@@ -101,7 +101,7 @@ jQuery(document).ready(function() {
                                            <option value="checkbox">Checkbox</option>
                                            <option value="checkbox_list">Checkbox List</option>
 					   					   <option value="select">Select</option>
-					   					   <option value="radio">Radio Button</option>
+					   					   <option value="radio">Radio</option>
                                      </select>
                            <a href="#" style="cursor: help;" title="Attribute types defines how the entity attribute will be displayed on the admin edit page of the entity. ">
 			<i class="icon-info-sign"></i></a>                                             
@@ -110,8 +110,8 @@ jQuery(document).ready(function() {
 <div class="control-group row-fluid" id="rel_fld_values_div" style="display:none;">
                                                                         <label class="control-label span3">Values</label>
                                                                         <div class="controls span9">
-                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue,red,white " ></textarea>
-                                                                                <a href="#" style="cursor: help;" title="Enter comma separated option values for the field. There must be only one comma between the values. You can not put a comma at the end of the values as well.">
+                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue;red;white " ></textarea>
+                                                                                <a href="#" style="cursor: help;" title="Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolan at the end of the values as well.">
 					<i class="icon-info-sign"></i></a>
 
                                                                         </div>
@@ -127,17 +127,14 @@ jQuery(document).ready(function() {
                                                                         </div>
                                         </div>
                                    <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Required?</label>
+                                                                        <label class="control-label span3"></label>
                                                         <div class="controls span9">
-                                                        <label class="radio inline">
-                                                <input id="rel_fld_required" type="radio" value="1" name="rel_fld_required">Yes
-                                                        </label>
+                                                        <label class="checkbox"> Required
+                                                <input id="rel_fld_required" type="checkbox" value="1" name="rel_fld_required">
                                                        
-                                                        <label class="radio inline">
-                                                <input id="rel_fld_required" type="radio" value="0" name="rel_fld_required" checked>No
-                                                </label>
                                                  <a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
 			<i class="icon-info-sign"></i></a>
+                                                        </label>
                                                         </div>
                                         </div>
                                         <div class="control-group row-fluid">

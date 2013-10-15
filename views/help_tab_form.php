@@ -3,7 +3,7 @@ function wpas_view_help_tabs($help_name)
 {
 	return '<div id="title-bar"><div class="row-fluid"><h4 class="span3"><i class="icon-columns"></i>Tabs</h3>
 		<div class="span9 field" id="add_field_help">
-		<a class="btn btn-info  pull-right" href="#help'. $help_name . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
+		<a class="btn btn-info  pull-right" href="#help'. esc_attr($help_name) . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
 		</div></div></div>';
 }
 function wpas_view_help_tabs_list($help_tab)
@@ -16,11 +16,11 @@ function wpas_view_help_tabs_list($help_tab)
 	$ret .= '<ul id="fields-sort" class="sortable ui-sortable">';
 	foreach($help_tab as $key => $myfield)
 	{
-		$ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
+		$ret .= '<li id="' . esc_attr($key) . '"><div id="field-row"><div class="row-fluid">
 			<div class="span1"><i class="icon-sort"></i></div>
-			<div class="span6" id="field-label">' . $myfield['help_fld_name'] . '</div>
-			<div class="span2" id="edit-help-field"><a href="#' . $key . '">Edit</a></div>
-			<div class="span2" id="delete-help-field"><a href="#' . $key . '">Delete</a></div></div></div></li>';
+			<div class="span6" id="field-label">' . esc_html($myfield['help_fld_name']) . '</div>
+			<div class="span2" id="edit-help-field"><a href="#' . esc_attr($key) . '">Edit</a></div>
+			<div class="span2" id="delete-help-field"><a href="#' . esc_attr($key) . '">Delete</a></div></div></div></li>';
 	}
 	$ret .= '</ul>';
 	return $ret;
@@ -29,7 +29,7 @@ function wpas_add_help_tab_form($app_id)
 {
 	?>
 		<form action="" method="post" id="help-field-form" class="form-horizontal">
-		<input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
+		<input type="hidden" id="app" name="app" value="<?php echo esc_attr($app_id); ?>">
 		<input type="hidden" id="help" name="help" value="0">
 		<input type="hidden" id="help_field" name="help_field" value="">
 		<div class="well">
@@ -45,7 +45,7 @@ function wpas_add_help_tab_form($app_id)
 		<div class="controls">
 		<?php
 
-	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent';
+	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
 	$buttons['theme_advanced_buttons2'] = 'tablecontrols';
 
 		$settings = array(

@@ -47,7 +47,7 @@ echo wpas_entity_types($app_id,'help');
 				<label class="control-label">Help SideBar</label>
 				<div class="controls">
 <?php
-$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent';
+$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
 $buttons['theme_advanced_buttons2'] = 'tablecontrols';
 
 
@@ -81,19 +81,19 @@ return '<div class="well form-horizontal">
                 <button class="btn  btn-danger pull-left" id="cancel" name="cancel" type="button">
                 <i class="icon-off"></i>Close</button>
         <div class="help">
-        <button class="btn  btn-primary pull-right" id="edit-help" name="Edit" type="submit" href="#' . $help_id . '">
+        <button class="btn  btn-primary pull-right" id="edit-help" name="Edit" type="submit" href="#' . esc_attr($help_id) . '">
         <i class="icon-edit"></i>Edit Help</button>
         </div>
         </div>
         <fieldset>
                 <div class="control-group">
                                 <label class="control-label">Attach To </label>
-                                <div class="controls"><span id="help-object_name" class="input-xlarge uneditable-input">' . $help['help-object_name'] . '</span>
+                                <div class="controls"><span id="help-object_name" class="input-xlarge uneditable-input">' . esc_html($help['help-object_name']) . '</span>
                                 </div>
                         </div>
                 <div class="control-group">
                                 <label class="control-label">Screen Type </label>
-                                <div class="controls"><span id="help-screen_type" class="input-xlarge uneditable-input">' . $help['help-screen_type'] . '</span>
+                                <div class="controls"><span id="help-screen_type" class="input-xlarge uneditable-input">' . esc_html($help['help-screen_type']) . '</span>
                                 </div>
                         </div>
      </fieldset>

@@ -3,8 +3,8 @@ function wpas_add_app_option()
 {
 ?>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-	jQuery.fn.changeTheme = function (theme_name) {
+jQuery(document).ready(function($) {
+	$.fn.changeTheme = function (theme_name) {
                 new_url = 'http://jqueryui.com/resources/images/themeGallery/theme_90_';
                 if(theme_name == 'mint-choc')
                 {
@@ -36,33 +36,43 @@ jQuery(document).ready(function() {
                 }
                 new_url += theme_name;
                 new_url += '.png';
-                jQuery('#theme_url').attr("src",new_url);
-                jQuery('#theme_url').load();
+                $('#theme_url').attr("src",new_url);
+                $('#theme_url').load();
 	}
-        jQuery('#ao_modify_navigation_menus').click(function() {
-                if(jQuery(this).attr('checked'))
+        $('#ao_modify_navigation_menus').click(function() {
+                if($(this).attr('checked'))
                 {
-			jQuery('#support-cust-nav-div').show();
+			$('#support-cust-nav-div').show();
                 }
                 else
                 {
-			jQuery('#support-cust-nav-div').hide();
+			$('#support-cust-nav-div').hide();
                 }
         });
-        jQuery('#ao_force_dashboard_to_column').click(function() {
-                if(jQuery(this).attr('checked'))
+        $('#ao_force_dashboard_to_column').click(function() {
+                if($(this).attr('checked'))
                 {
-			jQuery('#ao_force_col_div').show();
+			$('#ao_force_col_div').show();
                 }
                 else
                 {
-			jQuery('#ao_force_col_div').hide();
+			$('#ao_force_col_div').hide();
                 }
         });
-
-	jQuery('#ao_theme_type').click(function() {
-                theme_name = jQuery(this).find('option:selected').val();
-		jQuery(this).changeTheme(theme_name);
+        $('#ao_set_uitheme').click(function() {
+                if($(this).attr('checked'))
+                {
+			$('#ao_theme_type_div').show();
+                }
+                else
+                {
+			$('#ao_theme_type_div').hide();
+			$('#ao_theme_type').val('');
+                }
+        });
+	$('#ao_theme_type').click(function() {
+                theme_name = $(this).find('option:selected').val();
+		$(this).changeTheme(theme_name);
         }); 
 });
 </script>
@@ -80,7 +90,7 @@ jQuery(document).ready(function() {
 		<li><a href="#tab3" data-toggle="tab">Dashboards</a></li>
 		<li><a href="#tab4" data-toggle="tab">Toolbar</a></li>
 		<li><a href="#tab5" data-toggle="tab">Login Screen</a></li>
-		<li><a href="#tab6" data-toggle="tab">Theme</a></li>
+		<li><a href="#tab6" data-toggle="tab">Display Options</a></li>
 		<li><a href="#tab7" data-toggle="tab">Footer</a></li>
 		<li><a href="#tab8" data-toggle="tab">Mail</a></li>
 	</ul>
@@ -304,12 +314,43 @@ jQuery(document).ready(function() {
 		</div>
 		<div class="tab-pane" id="tab6">
 		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox">Remove Filters
+			<input type="checkbox" name="ao_remove_colfilter" id="ao_remove_colfilter" value="1">
+			<a href="#" style="cursor: help;" title="Allows to display or remove filters and colums component.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox">Remove Operations
+			<input type="checkbox" name="ao_remove_operations" id="ao_remove_operations" value="1">
+			<a href="#" style="cursor: help;" title="Allows to display or remove operations page and its button.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox">Set jQuery UI Theme
+			<input type="checkbox" name="ao_set_uitheme" id="ao_set_uitheme" value="1">
+			<a href="#" style="cursor: help;" title="Allows to display or remove menus.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid" id="ao_theme_type_div" style="display:none;">
 		<div class="span1"></div>
 		<div class="span10">
 			<table style="background-color:transparent !important;">
               <tr><td>Theme Type</td>
                       <td> <select name="ao_theme_type" id="ao_theme_type">
-                        <option value="smoothness" selected="selected">Smoothness</option>
+                        <option value="" selected="selected">Please select</option>
+                        <option value="smoothness">Smoothness</option>
                         <option value="ui-lightness">UI lightness</option>
                         <option value="ui-darkness">UI darkness</option>
                         <option value="start">Start</option>
@@ -334,7 +375,7 @@ jQuery(document).ready(function() {
                         <option value="trontastic">Trontastic</option>
                         <option value="swanky-purse">Swanky Purse</option>
                         </select>
-                        <a href="#" style="cursor: help;" title="Whether this entity is intended to be used publicly either via the admin interface or by front-end users. -false- Entity is not intended to be used publicly and should generally be unavailable in the admin interface and on the front end unless explicitly planned for elsewhere. -true - Entity is intended for public use. This includes on the front end and in the admin interface.">
+                        <a href="#" style="cursor: help;" title="Allows to set a jQuery UI theme for the frontend and backend.">
                         <i class="icon-info-sign"></i> </a></td>
                         <td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td>
                         </tr>
