@@ -3,7 +3,7 @@ function wpas_view_ent_fields($ent_name)
 {
 return '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>Attributes</h3></div>
                 <div class="span9 field" id="add_field_entity">
-<a class="btn btn-info  pull-right" href="#ent'. $ent_name . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
+<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
 </div></div></div>';
 }
 function wpas_view_ent_fields_list($ent_field)
@@ -12,9 +12,9 @@ function wpas_view_ent_fields_list($ent_field)
         <div id="field-name" class="span3">Name</div>
         <div id="field-label" class="span3">Label</div>
         <div class="span2">Type</div>
-        <div class="span1">Required</div>
-        <div id="edit-field" class="span1"></div>
-        <div id="delete-field" class="span1"></div>
+        <div class="span1">Req</div>
+        <div class="span1">Unique</div>
+	<div class="span1"><div id="edit-field"></div><div id="delete-field"></div></div>
 	</div></div>';
 	$ret .= '<ul id="fields-sort" class="sortable ui-sortable">';
         foreach($ent_field as $key => $myfield)
@@ -27,14 +27,23 @@ function wpas_view_ent_fields_list($ent_field)
 		{
 			$required = 'N';
 		}
-                $ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
+		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1)
+		{
+			$uniq_id = 'Y';
+		}
+		else
+		{
+			$uniq_id = 'N';
+		}
+                $ret .= '<li id="' . esc_attr($key) . '"><div id="field-row"><div class="row-fluid">
                                 <div class="span1"><i class="icon-sort"></i></div>
-                                <div class="span3" id="field-name">' . $myfield['fld_name'] . '</div>
-                                <div class="span3" id="field-label">' . $myfield['fld_label'] . '</div>
-                                <div class="span2">' . $myfield['fld_type'] . '</div>
+                                <div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
+                                <div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
+                                <div class="span2">' . esc_html($myfield['fld_type']) . '</div>
                                 <div class="span1">' . $required . '</div>
-                                <div class="span1" id="edit-field"><a href="#' . $key . '">Edit</a></div>
-                                <div class="span1" id="delete-field"><a href="#' . $key . '">Delete</a></div></div></div></li>';
+                                <div class="span1">' . $uniq_id . '</div>
+                                <div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">Edit</a></div>
+                                <div id="delete-field"><a href="#' . esc_attr($key) . '">Delete</a></div></div></div></div></li>';
         }
         $ret .= '</ul>';
 	return $ret;
@@ -84,7 +93,7 @@ if(isset($app['entity'][$ent_id]['field']) && is_array($app['entity'][$ent_id]['
 	{
 		if(!in_array($myfield['fld_label'],$attrs))
 		{
-		$response .= "<li class=\"ui-draggable\"><div class=\"tabattr\">" . $myfield['fld_label'] . "</div></li>";
+		$response .= "<li class=\"ui-draggable\"><div class=\"tabattr\">" . esc_html($myfield['fld_label']) . "</div></li>";
 		}
 
 	}
@@ -99,150 +108,247 @@ function wpas_add_ent_field_form($app_id,$ent_id)
 {
 ?>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-        var options_arr = ['checkbox_list','radio','select','multi_select','select_advanced'];
+jQuery(document).ready(function($) {
+        var options_arr = ['checkbox_list','radio','select'];
 	var filterable_arr = ['textarea','wysiwyg','file','image'];
 	var min_max_value_arr = ['decimal','digits_only','integer'];
 	var min_max_length_arr = ['text','letters_with_punc','alphanumeric','letters_only','no_whitespace','textarea','password'];
 	var min_max_words_arr = ['textarea'];
-	var required_arr = ['date','datetime','time','wysiwyg','file','image','plupload_image','thickbox_image','color','hidden_constant','hidden_function','checkbox'];
-	var clone_arr = ['image','plupload_image','thickbox_image','hidden_constant','hidden_function','checkbox','select_advanced'];
+	var required_arr = ['file','image','hidden_constant','hidden_function'];
+	var srequired_arr = ['file','image'];
+	var not_uniq_arr = ['file','image','hidden_constant','hidden_function','checkbox','checkbox_list','radio','select','textarea','wysiwyg','password'];
 
-	jQuery.fn.changeValidateMsg = function(myItem){
+	$.fn.changeValidateMsg = function(myItem){
 		switch(myItem) {
 		case 'email':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid email address.');		
+			$('#validation-message').text('Validation Message: Please enter a valid email address.');		
 			break;
 		case 'url':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid URL.');		
+			$('#validation-message').text('Validation Message: Please enter a valid URL.');		
 			break;
 		case 'decimal':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid number.');		
+			$('#validation-message').text('Validation Message: Please enter a valid number.');		
 			break;
 		case 'digits_only':
-			jQuery('#validation-message').text('Validation Message: Please enter only digits.');		
+			$('#validation-message').text('Validation Message: Please enter only digits.');		
 			break;
 		case 'credit_card':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid credit card number.');
+			$('#validation-message').text('Validation Message: Please enter a valid credit card number.');
 			break;
 		case 'phone_us':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid phone number.');
+			$('#validation-message').text('Validation Message: Please enter a valid phone number.');
 			break;
 		case 'phone_uk':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid phone number.');
+			$('#validation-message').text('Validation Message: Please enter a valid phone number.');
 			break;
 		case 'mobile_uk':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid mobile number.');
+			$('#validation-message').text('Validation Message: Please enter a valid mobile number.');
 			break;
 		case 'letters_with_punc':
-			jQuery('#validation-message').text('Validation Message: Letters or punctuation only please.');
+			$('#validation-message').text('Validation Message: Letters or punctuation only please.');
 			break;
 		case 'alphanumeric':
-			jQuery('#validation-message').text('Validation Message: Letters, numbers, and underscores only please.');
+			$('#validation-message').text('Validation Message: Letters, numbers, and underscores only please.');
 			break;
 		case 'letters_only':
-			jQuery('#validation-message').text('Validation Message: Letters only please.');
+			$('#validation-message').text('Validation Message: Letters only please.');
 			break;
 		case 'no_whitespace':
-			jQuery('#validation-message').text('Validation Message: No white space please.');
+			$('#validation-message').text('Validation Message: No white space please.');
 			break;
 		case 'zipcode_us':
-			jQuery('#validation-message').text('Validation Message: The specified US ZIP Code is invalid.');
+			$('#validation-message').text('Validation Message: The specified US ZIP Code is invalid.');
 			break;
 		case 'zipcode_uk':
-			jQuery('#validation-message').text('Validation Message: Please specify a valid postcode.');
+			$('#validation-message').text('Validation Message: Please specify a valid postcode.');
 			break;
 		case 'integer':
-			jQuery('#validation-message').text('Validation Message: A positive or negative non-decimal number please.');
+			$('#validation-message').text('Validation Message: A positive or negative non-decimal number please.');
 			break;
 		case 'vin_number_us':
-			jQuery('#validation-message').text('Validation Message: The specified vehicle identification number (VIN) is invalid.');
+			$('#validation-message').text('Validation Message: The specified vehicle identification number (VIN) is invalid.');
 			break;
 		case 'ip4':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid IP v4 address.');
+			$('#validation-message').text('Validation Message: Please enter a valid IP v4 address.');
 			break;
 		case 'ip6':
-			jQuery('#validation-message').text('Validation Message: Please enter a valid IP v6 address.');
+			$('#validation-message').text('Validation Message: Please enter a valid IP v6 address.');
 			break;
 		default:	
-			jQuery('#validation-message').text('');		
+			$('#validation-message').text('');		
 			break;
 		}
-	
-		if(myItem == 'plupload_image')
+		if(myItem == 'image')
 		{
-			jQuery('#validation-options').show();		
-			jQuery('#max-file-uploads').show();		
+			$('#fld_dflt_value_div').hide();
+			$('#fld_file_size_div').show();
+			$('#fld_file_ext_div').show();
+			$('#fld_image_thickbox_div').show();
+			$('#validation-options').show();		
+			$('#max-file-uploads').show();		
+			$('#fld_file_ext').val('jpg,jpeg,png,gif');	
 		}
-		if(myItem == 'date')
+		if(myItem == 'file')
 		{
-			jQuery('#validation-options').show();		
-			jQuery('#date-format').show();
+			$('#fld_dflt_value_div').hide();
+			$('#fld_file_size_div').show();
+			$('#fld_file_ext_div').show();
+			$('#fld_image_thickbox_div').hide();
+			$('#validation-options').show();		
+			$('#max-file-uploads').show();		
+			$('#fld_file_ext').val('');	
 		}
-		if(jQuery.inArray(myItem,min_max_value_arr) != -1)
-                {
-			jQuery('#validation-options').show();		
-			jQuery('#min-max-value').show();		
-                }
-		if(jQuery.inArray(myItem,min_max_length_arr) != -1)
-                {
-			jQuery('#validation-options').show();		
-			jQuery('#min-max-length').show();		
-                }
-		if(jQuery.inArray(myItem,min_max_words_arr) != -1)
-                {
-			jQuery('#validation-options').show();		
-			jQuery('#min-max-words').show();		
-                }
-                if(jQuery.inArray(myItem,options_arr) != -1)
-                {
-                        jQuery('#fld_values_div').show();
-                }
-		if(jQuery.inArray(myItem,filterable_arr) != -1)
+		if(myItem == 'date' || myItem == 'datetime')
 		{
-                        jQuery('#fld_is_filterable_div').hide();
+			$('#date-format').show();
 		}
-		if(jQuery.inArray(myItem,required_arr) != -1)
+		if(myItem == 'time' || myItem == 'datetime')
 		{
-                        jQuery('#fld_required_div').hide();
+			$('#time-format').show();
 		}
-		if(jQuery.inArray(myItem,clone_arr) != -1)
+		if($.inArray(myItem,min_max_value_arr) != -1)
+                {
+			$('#validation-options').show();		
+			$('#min-max-value').show();		
+                }
+		if($.inArray(myItem,min_max_length_arr) != -1)
+                {
+			$('#validation-options').show();		
+			$('#min-max-length').show();		
+                }
+		if($.inArray(myItem,min_max_words_arr) != -1)
+                {
+			$('#validation-options').show();		
+			$('#min-max-words').show();		
+                }
+                if($.inArray(myItem,options_arr) != -1)
+                {
+                        $('#fld_values_div').show();
+                }
+                if($.inArray(myItem,['checkbox','checkbox_list','radio']) != -1)
+                {
+                        $('#fld_fa_chkd_div').show();
+                        $('#fld_fa_unchkd_div').show();
+			if(myItem == 'radio')
+			{
+				$('#fld_fa_chkd_val').attr('placeholder','icon-circle');
+				$('#fld_fa_unchkd_val').attr('placeholder','icon-circle-blank');
+			}
+			else
+			{
+				$('#fld_fa_chkd_val').attr('placeholder','icon-checked');
+				$('#fld_fa_unchkd_val').attr('placeholder','icon-checked-empty');
+			}
+                }
+		if(myItem == 'select')
 		{
-                        jQuery('#fld_clone_div').hide();
+			$('#fld_is_advanced_div').show();
+			$('#fld_multiple_div').show();
+		}
+		if($.inArray(myItem,filterable_arr) != -1)
+		{
+                        $('#fld_is_filterable_div').hide();
+			$('#fld_is_filterable').attr('checked',false);
+		}
+		if($.inArray(myItem,required_arr) != -1)
+		{
+                        $('#fld_required_div').hide();
+                        $('#fld_required').attr('checked',false);
+		}
+		if($.inArray(myItem,srequired_arr) != -1)
+		{
+                        $('#fld_srequired_div').hide();
+                        $('#fld_srequired').attr('checked',false);
 		}
 		if(myItem == 'hidden_function')
 		{
-			jQuery('#fld_dflt_value_div').hide();
-			jQuery('#fld_hidden_func_div').show();
+			$('#fld_dflt_value_div').hide();
+			$('#fld_hidden_func_div').show();
+			$('#fld_searchable_div').show();
 		}
-
-		if(jQuery('#validation-message').text() == '')
+		if(myItem == 'hidden_constant')
+		{
+			$('#fld_searchable_div').show();
+		}
+		if($.inArray(myItem,not_uniq_arr) != -1)
+		{
+                        $('#fld_uniq_id_div').hide();
+                        $('#fld_uniq_id').attr('checked',false);
+		}
+		if(myItem == '')
+		{
+			$('#fld_uniq_id_div').hide();
+                        $('#fld_uniq_id').attr('checked',false);
+                        $('#fld_required_div').hide();
+                        $('#fld_srequired_div').hide();
+                        $('#fld_required').attr('checked',false);
+                        $('#fld_srequired').attr('checked',false);
+                        $('#fld_is_filterable_div').hide();
+			$('#fld_is_filterable').attr('checked',false);
+			$('#fld_dflt_value_div').hide();
+			$('#fld_dflt_value').val('');
+		}
+		if(myItem == 'checkbox')
+		{
+			$('#fld_dflt_checked_div').show();
+			$('#fld_dflt_value_div').hide();
+			$('#fld_dflt_value').val('');
+		}
+		
+		
+		if($('#validation-message').text() == '')
                 {
-                        jQuery('#validation-message').hide();           
+                        $('#validation-message').hide();           
                 }
                 else
                 {
-                        jQuery('#validation-message').show();           
+                        $('#validation-message').show();           
                 }
 	}
 
-        jQuery('#fld_type').click(function() {
-		jQuery('#validation-options').hide();		
-		jQuery('#max-file-uploads').hide();		
-		jQuery('#date-format').hide();	
-		jQuery('#min-max-value').hide();		
-		jQuery('#min-max-length').hide();		
-		jQuery('#min-max-words').hide();		
-		jQuery('#fld_values_div').hide();
-		jQuery('#fld_hidden_func_div').hide();
-		jQuery('#fld_is_filterable_div').show();
-		jQuery('#fld_required_div').show();
-		jQuery('#fld_dflt_value_div').show();
-		jQuery('#fld_clone_div').show();
-
-		jQuery(this).changeValidateMsg(jQuery(this).val());
-                
+	$(document).on('change','#fld_type',function(){
+		$('#fld_dflt_checked_div').hide();
+		$('#validation-options').hide();		
+		$('#max-file-uploads').hide();		
+		$('#date-format').hide();	
+		$('#time-format').hide();	
+		$('#min-max-value').hide();		
+		$('#min-max-length').hide();		
+		$('#min-max-words').hide();		
+		$('#fld_values_div').hide();
+		$('#fld_hidden_func_div').hide();
+		$('#fld_searchable_div').hide();
+		$('#fld_is_filterable_div').show();
+		$('#fld_required_div').show();
+		$('#fld_srequired_div').show();
+		$('#fld_dflt_value_div').show();
+		$('#fld_file_size_div').hide();
+		$('#fld_file_ext_div').hide();
+		$('#fld_multiple_div').hide();
+		$('#fld_is_advanced_div').hide();
+		$('#fld_image_thickbox_div').hide();
+		$('#fld_fa_chkd_div').hide();
+		$('#fld_fa_unchkd_div').hide();
+		$('#fld_uniq_id_div').show();
+		$('#fld_required').attr('checked',false);
+		$('#fld_srequired').attr('checked',false);
+		$('#fld_uniq_id').attr('checked',false);
+		$('#fld_required').attr('disabled',false);
+		$('#fld_srequired').attr('disabled',false);
+		$(this).changeValidateMsg($(this).val());
         });
+
+	$('#fld_uniq_id').click(function () {
+		if($(this).attr('checked')){
+			$('#fld_required').attr('checked',true);
+			$('#fld_required').attr('disabled',true);
+		}
+		else
+		{
+			$('#fld_required').attr('checked',false);
+			$('#fld_required').attr('disabled',false);
+		}			
+	});
 });
 </script>
 <input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
@@ -276,88 +382,142 @@ jQuery(document).ready(function() {
 			</div>
     </div>
 	<div class="control-group row-fluid">
-    <label class="control-label span3"></label>
-	<div class="controls span9">
-	<div id="fld_required_div" name="fld_required_div">
-			<label class="checkbox">Required?
-			<input name="fld_required" id="fld_required" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
-			<i class="icon-info-sign"></i></a>
-			</label>
-	</div>
-	<div id="fld_is_filterable_div" name="fld_is_filterable_div">
-			<label class="checkbox">Filterable?
-            <input name="fld_is_filterable" id="fld_is_filterable" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="Makes the attribute filterable in admin list page of the entity.">
-			<i class="icon-info-sign"></i></a>
-			</label>
-	</div>
-	<div  id="fld_clone_div" name="fld_clone_div">
-			<label class="checkbox">Cloneable?
-           <input name="fld_clone" id="fld_clone" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="Makes the attribute Cloneable so it can have multiple values. ">
-			<i class="icon-info-sign"></i></a>
-			</label>
-	</div>
-	</div>
-	</div>
-	<div class="control-group row-fluid" id="fld_dflt_value_div" name="fld_dflt_value_div">
-			<label class="control-label span3">Default Value</label>
-			<div class="controls span9">
-			<input class="input-xlarge" name="fld_dflt_value" id="fld_dflt_value" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="Sets a default value for the attribute.">
-			<i class="icon-info-sign"></i></a>
-			</div>
-	</div>
-	<div class="control-group row-fluid">
 			<label class="control-label span3">Type</label>
 			<div class="controls span9">
 					<select name="fld_type" id="fld_type">
-							<option selected="selected" value="">Please select</option>
-							<option value="email">Email</option>
-							<option value="url">URL</option>
-							<option value="decimal">Decimal</option>
-							<option value="digits_only">Digits Only</option>
-							<option value="credit_card">Credit Card</option>
-							<option value="phone_us">Phone US</option>
-							<option value="phone_uk">Phone UK</option>
-							<option value="mobile_uk">Mobile UK</option>
-							<option value="letters_with_punc">Letters with Punctuation</option>
-							<option value="alphanumeric">AlphaNumeric</option>
-							<option value="letters_only">Letters Only</option>
-							<option value="no_whitespace">No WhiteSpace</option>
-							<option value="zipcode_us">Zipcode US</option>
-							<option value="zipcode_uk">Postal Code UK</option>
-							<option value="integer">Integer</option>
-							<option value="vin_number_us">VIN Number US</option>
-							<option value="ip4">IP Address V4</option>
-							<option value="ip6">IP Address V6</option>
-							<option value="date">Date</option>
-							<option value="datetime">DateTime</option>
-							<option value="time">Time</option>
-							<option value="text">Text</option>
-							<option value="textarea">Text Area</option>
-							<option value="wysiwyg">Wysiwyg Editor</option>
-							<option value="file">File</option>
-							<option value="image">Image</option>
-							<option value="plupload_image">Plupload Image</option>
-							<option value="thickbox_image">Thickbox Image</option>
-							<option value="color">Color Picker</option>
-							<option value="hidden_constant">Hidden Constant</option>
-							<option value="hidden_function">Hidden Function</option>
-							<option value="password">Password</option>
-							<option value="checkbox">Checkbox</option>
-							<option value="radio">Radio Button</option>
-							<option value="select">Select</option>
-							<option value="select_advanced">Select Advanced</option>
-							<option value="multi_select">Multi Select</option>
-							<option value="checkbox_list">Checkbox List</option>
+						<option selected="selected" value="">Please select</option>
+						<option value="" style='font-style:italic;font-weight:bold;'>Text</option>
+						<option value="alphanumeric" style='padding-left:2em;'>AlphaNumeric</option>
+						<option value="color" style='padding-left:2em;'>Color Picker</option>
+						<option value="credit_card" style='padding-left:2em;'>Credit Card</option>
+						<option value="decimal" style='padding-left:2em;'>Decimal</option>
+						<option value="digits_only" style='padding-left:2em;'>Digits Only</option>
+						<option value="email" style='padding-left:2em;'>Email</option>
+						<option value="integer" style='padding-left:2em;'>Integer</option>
+						<option value="ip4" style='padding-left:2em;'>IP Address V4</option>
+						<option value="ip6" style='padding-left:2em;'>IP Address V6</option>
+						<option value="letters_only" style='padding-left:2em;'>Letters Only</option>
+						<option value="letters_with_punc" style='padding-left:2em;'>Letters with Punctuation</option>
+						<option value="mobile_uk" style='padding-left:2em;'>Mobile UK</option>
+						<option value="no_whitespace" style='padding-left:2em;'>No WhiteSpace</option>
+						<option value="password" style='padding-left:2em;'>Password</option>
+						<option value="phone_uk" style='padding-left:2em;'>Phone UK</option>
+						<option value="phone_us" style='padding-left:2em;'>Phone US</option>
+						<option value="zipcode_uk" style='padding-left:2em;'>Postal Code UK</option>
+						<option value="text" style='padding-left:2em;'>Text</option>
+						<option value="url" style='padding-left:2em;'>URL</option>
+						<option value="vin_number_us" style='padding-left:2em;'>VIN Number US</option>
+						<option value="zipcode_us" style='padding-left:2em;'>Zipcode US</option>
+						<option value="" style='font-style:italic;font-weight:bold;'>Date/Time</option>
+						<option value="date" style='padding-left:2em;'>Date</option>
+						<option value="datetime" style='padding-left:2em;'>DateTime</option>
+						<option value="time" style='padding-left:2em;'>Time</option>
+						<option value="" style='font-style:italic;font-weight:bold;'>Textarea</option>
+						<option value="textarea" style='padding-left:2em;'>Text Area</option>
+						<option value="wysiwyg" style='padding-left:2em;'>Wysiwyg Editor</option>
+						<option value="" style='font-style:italic;font-weight:bold;'>Uploaders</option>
+						<option value="file" style='padding-left:2em;'>File Uploader</option>
+						<option value="image" style='padding-left:2em;'>Image Uploader</option>
+						<option value="" style='font-style:italic;font-weight:bold;'>Hidden</option>
+						<option value="hidden_constant" style='padding-left:2em;'>Hidden Constant</option>
+						<option value="hidden_function" style='padding-left:2em;'>Hidden Function</option>
+						<option value="" style='font-style:italic;font-weight:bold;'>Selectors</option>
+						<option value="checkbox" style='padding-left:2em;'>Checkbox</option>
+						<option value="checkbox_list" style='padding-left:2em;'>Checkbox List</option>
+						<option value="radio" style='padding-left:2em;'>Radios</option>
+						<option value="select" style='padding-left:2em;'>Select</option>
 					</select>
 			<a href="#" style="cursor: help;" title="Defines the attribute display and validation type. ">
 			<i class="icon-info-sign"></i></a>      
 			<span id="validation-message" class="label label-info" style="display:none;"> </span>
 			</div>
 	  </div>
+	<div class="control-group" id="fld_uniq_id_div" name="fld_uniq_id_div">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Unique
+			<input name="fld_uniq_id" id="fld_uniq_id" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="An identifier which is guaranteed to be unique among all identifiers used for those objects and for a specific purpose. Exp; VIN of a car uniquely identifies a car among other cars. A unique identifier is used in forms as a searchable dropdown to link related entities.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_required_div" name="fld_required_div">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Required for Submit
+			<input name="fld_required" id="fld_required" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_srequired_div" name="fld_srequired_div">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Required for Search
+			<input name="fld_srequired" id="fld_srequired" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the attribute required for search form submissions so it can not be blank.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_is_filterable_div" name="fld_is_filterable_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Filterable
+            <input name="fld_is_filterable" id="fld_is_filterable" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the attribute filterable in admin list page of the entity.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_is_advanced_div" name="fld_is_advanced_div" style="display:none;">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Advanced
+            <input name="fld_is_advanced" id="fld_is_advanced" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Enables support for searching, remote data sets, and infinite scrolling of results.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group row-fluid" name="fld_file_size_div" id="fld_file_size_div" style="display:none;">
+			<label class="control-label span3">Maximum File Size</label>
+			<div class="controls span9">
+			<input class="input-large" name="fld_file_size" id="fld_file_size" type="text" placeholder="" value="" >
+			<a href="#" style="cursor: help;" title="Set maximum file size in kilobytes. exp. 100K. Leave it blank for no limit. Validation Message: Please upload no greater than X kbytes.">
+			<i class="icon-info-sign"></i></a>
+			</div>
+	</div>
+	<div class="control-group row-fluid" name="fld_file_ext_div" id="fld_file_ext_div" style="display:none;">
+			<label class="control-label span3">Allowed Extensions</label>
+			<div class="controls span9">
+			<input class="input-large" name="fld_file_ext" id="fld_file_ext" type="text" placeholder="" value="" >
+			<a href="#" style="cursor: help;" title="Sets the file extensions allowed to upload. exp. for files : pdf,txt for images: jpg,png. Leave it blank for all types. Validation Message: Please upload a valid file type.">
+			<i class="icon-info-sign"></i></a>
+			</div>
+	</div>
+	<div class="control-group" id="fld_multiple_div" name="fld_multiple_div" style="display:none;">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Multiple
+            <input name="fld_multiple" id="fld_multiple" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Allows users to select multiple values when set.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_image_thickbox_div" name="fld_image_thickbox_div" style="display:none;">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Thickbox
+            <input name="fld_image_thickbox" id="fld_image_thickbox" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Sets thickbox option.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
 	<div class="control-group row-fluid" name="fld_hidden_func_div" id="fld_hidden_func_div" style="display:none;">
 			<label class="control-label span3">Hidden Function</label>
 			<div class="controls span9">
@@ -377,10 +537,53 @@ jQuery(document).ready(function() {
 			<option value="current_day">Current Day (01)</option>
 			<option value="now">Now (YYYY-MM-DD HH:mm:ss)</option>
 			<option value="current_time">Current Time (HH:mm:ss)</option>
+			<option value="unique_id">Unique Identifier</option>
 			</select>
 			<a href="#" style="cursor: help;" title="Sets a default value for the attribute.">
 			<i class="icon-info-sign"></i></a>
 			</div>
+	</div>
+	<div class="control-group" id="fld_searchable_div" name="fld_searchable_div" style="display:none;">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Searchable
+            <input name="fld_searchable" id="fld_searchable" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the hidden function or hidden constant attribute searchable in the front end. Searchable hidden attributes can be used in the search forms.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div id="date-format" style="display:none;">
+	<div class="control-group row-fluid">
+			<label class="control-label span3">Date Format</label>
+			<div class="controls span9">
+			<select name="fld_date_format" id="fld_date_format">
+			<option value="" selected="selected">Please select</option>
+			<option value="mm-dd-yy">MM-DD-YYYY</option>
+			<option value="yy-mm-dd">YYYY-MM-DD</option>
+			<option value="dd-mm-yy">DD-MM-YYYY</option>
+			<option value="mm/dd/yy">MM/DD/YYYY</option>
+			<option value="yy/mm/dd">YYYY/MM/DD</option>
+			<option value="dd/mm/yy">DD/MM/YYYY</option>
+			</select>
+			<a href="#" style="cursor: help;" title="Select a date format.">
+			<i class="icon-info-sign"></i></a>
+			</div>
+	</div>
+	</div>
+	<div id="time-format" style="display:none;">
+	<div class="control-group row-fluid">
+			<label class="control-label span3">Time Format</label>
+			<div class="controls span9">
+			<select name="fld_time_format" id="fld_time_format">
+			<option value="" selected="selected">Please select</option>
+			<option value="hh:mm:ss">HH:mm:ss</option>
+			<option value="hh:mm">HH:mm</option>
+			</select>
+			<a href="#" style="cursor: help;" title="Select a time format.">
+			<i class="icon-info-sign"></i></a>
+			</div>
+	</div>
 	</div>
 	<div id="validation-options" class="control-group row-fluid" style="display:none;">
 	<label class="control-label span3">Validation Options</label>
@@ -439,26 +642,12 @@ jQuery(document).ready(function() {
 			</div>
 	</div>
 	</div>
-	<div id="date-format" style="display:none;">
-	<div class="control-group row-fluid">
-			<label class="control-label span3">Date Format</label>
-			<div class="controls span9">
-			<select name="fld_date_format" id="fld_date_format">
-			<option value="" selected>Please select</option>
-			<option value="yyyy_mm_dd">YYYY-MM-DD</option>
-			<option value="dd_mm_yyyy">DD-MM-YYYY</option>
-			</select>
-			<a href="#" style="cursor: help;" title="Create a minumum value for the attribute.">
-			<i class="icon-info-sign"></i></a>
-			</div>
-	</div>
-	</div>
 	<div id="max-file-uploads" style="display:none;">
 	<div class="control-group row-fluid">
 			<label class="control-label span3">Max File Uploads</label>
 			<div class="controls span9">
 			<input class="input-mini" name="fld_max_file_uploads" id="fld_max_file_uploads" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="Create a minumum value for the attribute.">
+			<a href="#" style="cursor: help;" title="Sets the number of maximum allowable file uploads.">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -468,11 +657,45 @@ jQuery(document).ready(function() {
 	<div class="control-group row-fluid" id="fld_values_div" style="display:none;">
         <label class="control-label span3">Values</label>
         <div class="controls span9">
-        <textarea id="fld_values" name="fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue,red,white " ></textarea>
-        <a href="#" style="cursor: help;" title="Enter comma separated option values for the field. There must be only one comma between the values. You can not put a comma at the end of the values as well.">
+        <textarea id="fld_values" name="fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue;red;white " ></textarea>
+        <a href="#" style="cursor: help;" title="Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolon at the end of the values as well.">
         <i class="icon-info-sign"></i></a>
         </div>
 </div>
+	<div class="control-group row-fluid" id="fld_dflt_value_div" name="fld_dflt_value_div">
+			<label class="control-label span3">Default Value</label>
+			<div class="controls span9">
+			<input class="input-xlarge" name="fld_dflt_value" id="fld_dflt_value" type="text" placeholder="" value="" >
+			<a href="#" style="cursor: help;" title="Sets a default value for the attribute.">
+			<i class="icon-info-sign"></i></a>
+			</div>
+	</div>
+	<div class="control-group row-fluid" id="fld_dflt_checked_div" name="fld_dflt_checked_div" style="display:none;">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Default Value
+			<input name="fld_dflt_checked" id="fld_dflt_checked" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Default is unchecked. ">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="fld_fa_chkd_div" name="fld_fa_chkd_div" style="display:none;">
+			<label class="control-label span3">Font Awesome Checked Icon Class</label>
+			<div class="controls span9">
+			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
+			<a href="#" style="cursor: help;" title="Sets font awesome web font icon class for selected values.">
+			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/3.2.1/cheatsheet/" target="_blank">Cheatsheet</a>
+			</div>
+	</div>
+	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
+			<label class="control-label span3">Font Awesome Unchecked Icon Class</label>
+			<div class="controls span9">
+			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
+			<a href="#" style="cursor: help;" title="Sets font awesome web font icon class for unselected values.">
+			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/3.2.1/cheatsheet/" target="_blank">Cheatsheet</a>
+			</div>
+	</div>
   </attributeset>
 </div>
 

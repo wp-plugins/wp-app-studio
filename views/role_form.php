@@ -198,7 +198,7 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 				$ent_name = ucwords($ent_name);
 		
 
-				$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . $mycap . '" data-toggle="collapse" data-parent="#tab-ent">Entity : ' . $heading_label . '</a></div><div id="collapse_'. $mycap . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner"><label class="checkbox inline span12"><b>Check All</b><input name="' . $div_name . '-all" id="' . $div_name . '-all" class="checkall" type="checkbox" value="1" /></label><div id="' . $div_name . '">';
+				$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-ent">Entity : ' . esc_html($heading_label) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner"><label class="checkbox inline span12"><b>Check All</b><input name="' . esc_attr($div_name) . '-all" id="' . esc_attr($div_name) . '-all" class="checkall" type="checkbox" value="1" /></label><div id="' . esc_attr($div_name) . '">';
 			}
 			if($count == 1)
 			{
@@ -206,7 +206,7 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 			}
 
 			$html .= '<label class="checkbox inline span3">' . $key;
-			$html .= '<input name="role-' . $mycap . '" id="role-' . $mycap . '" type="checkbox" value="1"';
+			$html .= '<input name="role-' . esc_attr($mycap) . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
 			if(isset($myrole['role-'.$mycap]))
 			{
 				$html .= ' checked';
@@ -272,14 +272,14 @@ function wpas_tax_capabilities($app_id,$taxonomies,$myrole)
 					$div_name = $tax_name;
 					$tax_name = str_replace('_',' ',$tax_name);
 					$tax_name = ucwords($tax_name);
-					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . $mycap . '" data-toggle="collapse" data-parent="#tab-tax">Taxonomy : ' . $tax_name . '</a></div><div id="collapse_'. $mycap . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner"><label class="checkbox inline span12"><b>Check All</b><input name="' . $div_name . '-all" id="' . $div_name . '-all" class="checkall" type="checkbox" value="1" /></label>';
+					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-tax">Taxonomy : ' . esc_html($tax_name) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner"><label class="checkbox inline span12"><b>Check All</b><input name="' . esc_attr($div_name) . '-all" id="' . esc_attr($div_name) . '-all" class="checkall" type="checkbox" value="1" /></label>';
 				}
 				if($count == 1)
 				{
-					$html .= '<div class="control-group" id="' . $div_name . '">';
+					$html .= '<div class="control-group" id="' . esc_attr($div_name) . '">';
 				}
 				$html .= '<label class="checkbox inline span3">' . $key;
-				$html .= '<input name="role-' . $mycap . '" id="role-' . $mycap . '" type="checkbox" value="1"';
+				$html .= '<input name="role-' . esc_attr($mycap) . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
 				if(isset($myrole['role-'.$mycap]))
 				{
 					$html .= ' checked';
@@ -348,14 +348,14 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 					$widg_name = preg_replace('/^admin_/',' Admin : ',$widg_name);
 					$widg_name = str_replace('_',' ',$widg_name);
 					$widg_name = ucwords($widg_name);
-					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . $mycap . '" data-toggle="collapse" data-parent="#tab-widg">Widget : ' . $widg_name . '</a></div><div id="collapse_'. $mycap . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner"><label class="checkbox inline span12"><b>Check All</b><input name="' . $div_name . '-all" id="' . $div_name . '-all" class="checkall" type="checkbox" value="1" /></label>';
+					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-widg">Widget : ' . esc_html($widg_name) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner"><label class="checkbox inline span12"><b>Check All</b><input name="' . esc_attr($div_name) . '-all" id="' . esc_attr($div_name) . '-all" class="checkall" type="checkbox" value="1" /></label>';
 				}
 				if($count == 1)
 				{
-					$html .= '<div class="control-group" id="' . $div_name . '">';
+					$html .= '<div class="control-group" id="' . esc_attr($div_name) . '">';
 				}
 				$html .= '<label class="checkbox inline span3">' . $key;
-				$html .= '<input name="role-' . $mycap . '" id="role-' . $mycap . '" type="checkbox" value="1"';
+				$html .= '<input name="role-' . $mycap . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
 				if(isset($myrole['role-'.$mycap]))
 				{
 					$html .= ' checked';
@@ -378,12 +378,81 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 
 	return $html;
 }
+function wpas_form_capabilities($app_id,$forms,$myrole)
+{
+	$html ="";
+	$formcount = 0;
+	foreach($forms as $myform)
+	{
+		$label = $myform['form-name'];
+		$label = str_replace(" ","_",$label);
+		$label = strtolower($label);
+		$form_caps[$formcount]['view'] = "view_" . $label;
+		$formcount++;
+	}
+
+	$count = 1;
+	$navcount = 0;
+
+	if(empty($form_caps))
+	{
+		$html = 'No forms defined yet.';
+	}
+	else
+	{
+		foreach($form_caps as $myform_cap)
+		{
+			foreach($myform_cap as $key => $mycap)
+			{
+				$nav_in = "";
+				if($key == 'view')
+				{
+					if($navcount == 0)
+					{
+						$nav_in = "in";
+						$navcount ++;
+					}
+					$form_name = str_replace('view_','',$mycap);
+					$div_name = $form_name;
+					$form_name = str_replace('_',' ',$form_name);
+					$form_name = ucwords($form_name);
+					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-form">Form : ' . esc_html($form_name) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner">';
+				}
+				if($count == 1)
+				{
+					$html .= '<div class="control-group" id="' . esc_attr($div_name) . '">';
+				}
+				$html .= '<label class="checkbox inline span3">' . $key;
+				$html .= '<input name="role-' . $mycap . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
+				if(isset($myrole['role-'.$mycap]) && $myrole['role-'.$mycap] != 0)
+				{
+					$html .= ' checked';
+				}	
+				$html .= '/> </label>';
+				$count ++;
+				if($count  == 5)
+				{
+					$html .= "</div>";
+					$count = 1;
+				}
+			}
+			if($count <= 5)
+			{
+				$html .= "</div></div></div>";
+				$count = 1;
+			}
+		}
+	}
+	return $html;
+}
 function wpas_add_role_form($app_id,$role_id)
 {
 	$app = wpas_get_app($app_id);
         $entities = $app['entity'];
 	$taxonomies = Array();
 	$widgets = Array();
+	$forms = Array();
+	
 	if(isset($app['taxonomy']))
 	{
 		$taxonomies = $app['taxonomy'];
@@ -391,6 +460,10 @@ function wpas_add_role_form($app_id,$role_id)
 	if(isset($app['widget']))
 	{
 		$widgets = $app['widget'];
+	}
+	if(isset($app['form']))
+	{
+		$forms = $app['form'];
 	}
 	$myrole = Array();
 
@@ -422,8 +495,8 @@ function wpas_add_role_form($app_id,$role_id)
   </div>
 </div>
 		<form action="" method="post" id="role-form" name="role-form" class="form-horizontal">
-		<input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>" />
-		<input type="hidden" value="<?php echo $role_id; ?>" name="role" id="role" />  
+		<input type="hidden" id="app" name="app" value="<?php echo esc_attr($app_id); ?>" />
+		<input type="hidden" value="<?php echo esc_attr($role_id); ?>" name="role" id="role" />  
 		<fieldset>
 		<div class="well">
 		<div class="row-fluid"><div class="alert alert-info pull-right"><a class="icon-info-sign" data-placement="bottom" href="#" rel="tooltip" title="A role is a collection of capabilities which enable or disable access to your application's data."> HELP</a></div></div>
@@ -435,7 +508,7 @@ function wpas_add_role_form($app_id,$role_id)
 		<?php 
 		 if(isset($myrole['role-name']))
 		 {
-			 echo ' value="' . $myrole['role-name'] . '" ' . $disable;
+			 echo ' value="' . esc_attr($myrole['role-name']) . '" ' . $disable;
 		 }
 		?>
 		></input><a href="#" title="Sets a unique name containing only alphanumeric characters and underscores." style="cursor: help;">
@@ -449,7 +522,7 @@ function wpas_add_role_form($app_id,$role_id)
 		<?php 
 		 if(isset($myrole['role-label']))
 		 {
-			 echo ' value="' . $myrole['role-label'] . '" ' . $disable ;
+			 echo ' value="' . esc_attr($myrole['role-label']) . '" ' . $disable ;
 		 }
 		?>
 		></input><a href="#" title="Sets a role label to represent your role." style="cursor: help;">
@@ -470,6 +543,9 @@ function wpas_add_role_form($app_id,$role_id)
 		<li>
 		<a data-toggle="tab" href="#tab-widg">Widgets</a>
 		</li>
+		<li>
+		<a data-toggle="tab" href="#tab-form">Forms</a>
+		</li>
 		</ul>	
 		<div id="role-tabs" class="tab-content">
 		<div id="tab-def" class="tab-pane">
@@ -487,6 +563,9 @@ function wpas_add_role_form($app_id,$role_id)
 		</div>
 		<div id="tab-widg" class="tab-pane">
 		<?php echo wpas_widg_capabilities($app_id,$widgets,$myrole); ?>
+		</div>
+		<div id="tab-form" class="tab-pane">
+		<?php echo wpas_form_capabilities($app_id,$forms,$myrole); ?>
 		</div>
 		</div>
 		</div> 
