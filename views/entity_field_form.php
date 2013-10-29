@@ -115,6 +115,7 @@ jQuery(document).ready(function($) {
 	var min_max_length_arr = ['text','letters_with_punc','alphanumeric','letters_only','no_whitespace','textarea','password'];
 	var min_max_words_arr = ['textarea'];
 	var required_arr = ['file','image','hidden_constant','hidden_function'];
+	var srequired_arr = ['file','image'];
 	var not_uniq_arr = ['file','image','hidden_constant','hidden_function','checkbox','checkbox_list','radio','select','textarea','wysiwyg','password'];
 
 	$.fn.changeValidateMsg = function(myItem){
@@ -254,10 +255,20 @@ jQuery(document).ready(function($) {
                         $('#fld_required_div').hide();
                         $('#fld_required').attr('checked',false);
 		}
+		if($.inArray(myItem,srequired_arr) != -1)
+		{
+                        $('#fld_srequired_div').hide();
+                        $('#fld_srequired').attr('checked',false);
+		}
 		if(myItem == 'hidden_function')
 		{
 			$('#fld_dflt_value_div').hide();
 			$('#fld_hidden_func_div').show();
+			$('#fld_searchable_div').show();
+		}
+		if(myItem == 'hidden_constant')
+		{
+			$('#fld_searchable_div').show();
 		}
 		if($.inArray(myItem,not_uniq_arr) != -1)
 		{
@@ -269,7 +280,9 @@ jQuery(document).ready(function($) {
 			$('#fld_uniq_id_div').hide();
                         $('#fld_uniq_id').attr('checked',false);
                         $('#fld_required_div').hide();
+                        $('#fld_srequired_div').hide();
                         $('#fld_required').attr('checked',false);
+                        $('#fld_srequired').attr('checked',false);
                         $('#fld_is_filterable_div').hide();
 			$('#fld_is_filterable').attr('checked',false);
 			$('#fld_dflt_value_div').hide();
@@ -304,8 +317,10 @@ jQuery(document).ready(function($) {
 		$('#min-max-words').hide();		
 		$('#fld_values_div').hide();
 		$('#fld_hidden_func_div').hide();
+		$('#fld_searchable_div').hide();
 		$('#fld_is_filterable_div').show();
 		$('#fld_required_div').show();
+		$('#fld_srequired_div').show();
 		$('#fld_dflt_value_div').show();
 		$('#fld_file_size_div').hide();
 		$('#fld_file_ext_div').hide();
@@ -316,8 +331,10 @@ jQuery(document).ready(function($) {
 		$('#fld_fa_unchkd_div').hide();
 		$('#fld_uniq_id_div').show();
 		$('#fld_required').attr('checked',false);
+		$('#fld_srequired').attr('checked',false);
 		$('#fld_uniq_id').attr('checked',false);
 		$('#fld_required').attr('disabled',false);
+		$('#fld_srequired').attr('disabled',false);
 		$(this).changeValidateMsg($(this).val());
         });
 
@@ -428,9 +445,19 @@ jQuery(document).ready(function($) {
 	<div class="control-group" id="fld_required_div" name="fld_required_div">
     <label class="control-label span3"></label>
 	<div class="controls span9">
-			<label class="checkbox">Required
+			<label class="checkbox">Required for Submit
 			<input name="fld_required" id="fld_required" type="checkbox" value="1"/>
 			<a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_srequired_div" name="fld_srequired_div">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Required for Search
+			<input name="fld_srequired" id="fld_srequired" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the attribute required for search form submissions so it can not be blank.">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>
@@ -510,10 +537,21 @@ jQuery(document).ready(function($) {
 			<option value="current_day">Current Day (01)</option>
 			<option value="now">Now (YYYY-MM-DD HH:mm:ss)</option>
 			<option value="current_time">Current Time (HH:mm:ss)</option>
+			<option value="unique_id">Unique Identifier</option>
 			</select>
 			<a href="#" style="cursor: help;" title="Sets a default value for the attribute.">
 			<i class="icon-info-sign"></i></a>
 			</div>
+	</div>
+	<div class="control-group" id="fld_searchable_div" name="fld_searchable_div" style="display:none;">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Searchable
+            <input name="fld_searchable" id="fld_searchable" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the hidden function or hidden constant attribute searchable in the front end. Searchable hidden attributes can be used in the search forms.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
 	</div>
 	<div id="date-format" style="display:none;">
 	<div class="control-group row-fluid">
@@ -647,7 +685,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="Sets font awesome web font icon class for selected values.">
-			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank">Cheatsheet</a>
+			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/3.2.1/cheatsheet/" target="_blank">Cheatsheet</a>
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
@@ -655,7 +693,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="Sets font awesome web font icon class for unselected values.">
-			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank">Cheatsheet</a>
+			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/3.2.1/cheatsheet/" target="_blank">Cheatsheet</a>
 			</div>
 	</div>
   </attributeset>

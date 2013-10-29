@@ -88,10 +88,6 @@ jQuery(document).ready(function() {
 			return false;
 		}, 'You cannot use reserved words.');
 		jQuery.validator.addMethod('checkRel', function(value, element) { 
-			var to_name = jQuery('select#rel-to-name').val();
-			var to_title = jQuery('#rel-to-title').val();
-			var from_name = jQuery('select#rel-from-name').val();
-			var from_title = jQuery('#rel-from-title').val();
 			var app_id = jQuery('input#app').val();
 			var rel_id = jQuery('input#rel').val();
 			var check = true;
@@ -101,7 +97,7 @@ jQuery(document).ready(function() {
 				cache: false,
 				dataType:'JSON',
 				async: false, 
-				data: {action:'wpas_check_rel',app_id: app_id,rel_id:rel_id,from_name:from_name,to_name:to_name,to_title:to_title,from_title:from_title},
+				data: {action:'wpas_check_rel',app_id: app_id,rel_id:rel_id,rel_name:value},
 				success: function(response)
 				{
 					check = response;
@@ -462,8 +458,15 @@ jQuery(document).ready(function() {
 			onkeyup: false,
 			onclick: false,
 			rules: {
-			'rel-to-name':{
+			'rel-name':{
 			checkRel:true,
+			required:true,
+			minlength:3,
+			maxlength:32,
+			noSpace:true,
+			checkAlphaNumUnder: true,
+			},
+			'rel-to-name':{
 			required:true,
 			},
 			'rel-from-name':{
@@ -757,6 +760,18 @@ jQuery(document).ready(function() {
 			},
 			'form-attached_entity':{
 			required:true,
+			},
+			'form-form_type':{
+			required:true,
+			},
+			'form-attached_view':{
+			required:true,
+			},
+			'form-not_loggedin_msg':{
+			maxlength:5000,
+			},
+			'form-noresult_msg':{
+			maxlength:5000,
 			},
 			'form-form_title':{
 			maxlength:50,

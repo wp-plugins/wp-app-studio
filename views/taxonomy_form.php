@@ -104,9 +104,19 @@ jQuery(document).ready(function() {
 	<div class="control-group row-fluid">
     <label class="control-label span3"></label>
 	<div class="controls span9">
-			<label class="checkbox">Required
+			<label class="checkbox">Required for Submit
 			<input name="txn-required" id="txn-required" type="checkbox" value="1"/>
 			<a href="#" style="cursor: help;" title="Makes the taxonomy required. When you set a taxonomy required, users must assign at least one taxonomy value when they create an entity record.">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group row-fluid">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Required for Search
+			<input name="txn-srequired" id="txn-srequired" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the taxonomy required. When you set a taxonomy required, users must assign at least one taxonomy value when they search entity records using the taxonomy.">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>

@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 2.0.5
+   Version: 2.2
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
 define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "2.0.5");
+define('WPAS_VERSION', "2.2");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
 	update_option('wpas_version',WPAS_VERSION);
@@ -187,7 +187,7 @@ require_once("views/help_tab_form.php");
 require_once("views/branding.php");
 require_once("views/generate_form.php");
 require_once("views/import_form.php");
-require_once("views/shortcode_form.php");
+require_once("views/view_form.php");
 require_once("views/widget_form.php");
 require_once("views/role_form.php");
 require_once("views/forms_form.php");

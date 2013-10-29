@@ -151,20 +151,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseFour" data-parent="#was-nav" data-toggle="collapse"><i class="icon-bookmark icon-large"></i>Shortcodes</a>
+                <a class="accordion-toggle" href="#collapseFour" data-parent="#was-nav" data-toggle="collapse"><i class="icon-cog icon-large"></i>Widgets</a>
   </div>
                 <div id="collapseFour" class="accordion-body collapse">
-                <div class="accordion-inner">
-                <p id="add-shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-bookmark"></i>Add New</a></p>
-                <p id="shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
-                </div>
-                </div>
-                </div>
-                <div class="accordion-group">
-                <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseFive" data-parent="#was-nav" data-toggle="collapse"><i class="icon-cog icon-large"></i>Widgets</a>
-  </div>
-                <div id="collapseFive" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-widget"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-cog"></i>Add New</a></p>
                 <p id="widget"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
@@ -173,20 +162,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseSix" data-parent="#was-nav" data-toggle="collapse"><i class="icon-list-alt icon-large"></i>Forms</a>
+                <a class="accordion-toggle" href="#collapseFive" data-parent="#was-nav" data-toggle="collapse"><i class="icon-info-sign icon-large"></i>Help Screens</a>
   </div>
-                <div id="collapseSix" class="accordion-body collapse">
-                <div class="accordion-inner">
-                <p id="add-form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-list-alt"></i>Add New</a></p>
-                <p id="form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
-                </div>
-                </div>
-                </div>
-                <div class="accordion-group">
-                <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseSeven" data-parent="#was-nav" data-toggle="collapse"><i class="icon-info-sign icon-large"></i>Help Screens</a>
-  </div>
-                <div id="collapseSeven" class="accordion-body collapse">
+                <div id="collapseFive" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-help"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-info-sign"></i>Add New</a></p>
                 <p id="help"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
@@ -195,12 +173,34 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseEight" data-parent="#was-nav" data-toggle="collapse"><i class="icon-map-marker icon-large"></i>Pointers</a>
+                <a class="accordion-toggle" href="#collapseSix" data-parent="#was-nav" data-toggle="collapse"><i class="icon-map-marker icon-large"></i>Pointers</a>
   </div>
-                <div id="collapseEight" class="accordion-body collapse">
+                <div id="collapseSix" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-pointer"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-map-marker"></i>Add New</a></p>
                 <p id="pointer"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                </div>
+                </div>
+                </div>
+                <div class="accordion-group">
+                <div class="accordion-heading">
+                <a class="accordion-toggle" href="#collapseSeven" data-parent="#was-nav" data-toggle="collapse"><i class="icon-eye-open icon-large"></i>Views</a>
+  </div>
+                <div id="collapseSeven" class="accordion-body collapse">
+                <div class="accordion-inner">
+                <p id="add-shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-eye-open"></i>Add New</a></p>
+                <p id="shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
+                </div>
+                </div>
+                </div>
+                <div class="accordion-group">
+                <div class="accordion-heading">
+                <a class="accordion-toggle" href="#collapseEight" data-parent="#was-nav" data-toggle="collapse"><i class="icon-list-alt icon-large"></i>Forms</a>
+  </div>
+                <div id="collapseEight" class="accordion-body collapse">
+                <div class="accordion-inner">
+                <p id="add-form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-list-alt"></i>Add New</a></p>
+                <p id="form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i>List All</a></p>
                 </div>
                 </div>
                 </div>
@@ -298,7 +298,7 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	{
 	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="View">View</a> | </span>
 	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="Add Attribute">Add Attribute</a> | </span>
-	<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="Edit Layout">Edit Layout</a>';
+	<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="Edit Admin Layout">Edit Admin Layout</a>';
 	}
 	else if($type == "form")
 	{
@@ -481,12 +481,12 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 	elseif($list_type == 'shortcode')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=shortcode&app=' . $app_id);
-                $list_values['title'] = "ShortCode";
+                $list_values['title'] = "View";
                 $format = "shortcodepage";
                 $field_name = "shc-label";
                 $other_fields = Array("shc-attach","date","modified_date");
                 $other_labels = Array("Name","Attached To","Created","Modified");
-                $list_values['icon'] = "icon-bookmark";
+                $list_values['icon'] = "icon-eye-open";
                 $add_field_tag = "#shortcode";
         }
 	elseif($list_type == 'widget')
@@ -507,8 +507,8 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $list_values['title'] = "Forms";
                 $format = "formpage";
                 $field_name = "form-name";
-                $other_fields = Array("form-shc","form-attached_entity","form-form_title","form-temp_type","form-ajax","date","modified_date");
-                $other_labels = Array("Name","Shortcode","Attached To","Title","Template","Ajax","Created","Modified");
+		$other_fields = Array("form-form_type","form-shc","form-attached_entity","form-form_title","form-temp_type","date","modified_date");
+		$other_labels = Array("Name","Type","Shortcode","Attached To","Title","Template","Created","Modified");
                 $list_values['type'] = 'form';
                 $list_values['icon'] = "icon-list-alt";
                 $add_field_tag = "#form";
@@ -567,7 +567,6 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                         }
                         elseif($list_type == 'relationship')
                         {
-                                $mylist['rel-name'] = $mylist['rel-from-name'] . '-' . $mylist['rel-to-name'];
                                 $count_rel_fields = 0;
 				if(isset($mylist['field']))
 				{

@@ -218,7 +218,7 @@ jQuery(document).ready(function($) {
 		$('ul li#fourth').remove();
 		app_link = type.replace('add-','');
 		app_link = app_link.replace('-field','');
-		if(app_link == 'option' || app_link == 'update-option' || app_link == 'edit_layout')
+		if($.inArray(app_link, ['option','update-option','edit_layout','edit_form_layout']) != -1)
 		{
 			app_link = 'entity';
 		}
@@ -272,7 +272,7 @@ jQuery(document).ready(function($) {
 		else if(type == 'shortcode')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">ShortCode - '+shc+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">View - '+shc+'</li>');
 		}
 		else if(type == 'widget')
 		{
@@ -299,7 +299,7 @@ jQuery(document).ready(function($) {
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(ent_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Edit Layout</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Edit Admin Layout</li>');
 		}
 		else if(type == 'edit_form_layout')
 		{
@@ -336,7 +336,7 @@ jQuery(document).ready(function($) {
 		else if(type == 'add-shortcode')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New ShortCode</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New View</li>');
 		}
 		else if(type == 'add-widget')
 		{       
@@ -446,8 +446,10 @@ jQuery(document).ready(function($) {
 							$('#min-max-words').hide();                
 							$('#fld_values_div').hide();
 							$('#fld_hidden_func_div').hide();
+							$('#fld_searchable_div').hide();
 							$('#fld_is_filterable_div').show();
 							$('#fld_required_div').show();
+							$('#fld_srequired_div').show();
 							$('#fld_dflt_value_div').show();
 							$('#fld_file_ext_div').hide();
 							$('#fld_multiple_div').hide();
@@ -586,6 +588,7 @@ jQuery(document).ready(function($) {
 				$('#validation-options').hide();
 				$('#fld_values_div').hide();
 				$('#fld_hidden_func_div').hide();
+				$('#fld_searchable_div').hide();
 				$('#fld_dflt_value_div').hide();
 				$('#max-file-uploads').hide();
 				$('#date-format').hide();
@@ -595,6 +598,7 @@ jQuery(document).ready(function($) {
 				$('#min-max-words').hide();
 				$('#fld_file_size_div').hide();
 				$('#fld_required_div').hide();
+				$('#fld_srequired_div').hide();
 				$('#fld_uniq_id_div').hide();
 				$('#fld_is_filterable_div').hide();
 				$('#fld_multiple_div').hide();
@@ -801,6 +805,13 @@ jQuery(document).ready(function($) {
 				$('#form-email_admin_div').hide();
 				$('#form-schedule_div').hide();
 				$('#form-tabs').hide();
+				$('#formtabs-3-li').show();
+				$('#form-submit_status_div').show();
+				$('#form-noresult_msg_div').hide();
+				$('#form-result_msg_div').hide();
+				$('#form-ajax_search_div').hide();
+				$('#form-enable_operators_div').hide();
+				$('#form-attached_view_div').hide();
 			}
 			$('label.error').each(function() {
                                 $(this).remove();
@@ -1405,6 +1416,38 @@ jQuery(document).ready(function($) {
 							dependents = value;
 							
 						}
+						else if(key == 'form-form_type')
+						{
+							if(value == 'search')
+							{
+                                				$('#form-attached_view_div').show();
+								$('#formtabs-3-li').hide();
+								$('#form-submit_status_div').hide();
+								$('#form-noresult_msg_div').show();
+								$('#form-result_msg_div').show();
+								$('#form-ajax_search_div').show();
+								$('#form-enable_operators_div').show();
+							}
+							else
+							{
+								$('#form-attached_view_div').hide();
+								$('#formtabs-3-li').show();
+								$('#form-submit_status_div').show();
+								$('#form-noresult_msg_div').hide();
+								$('#form-result_msg_div').hide();
+								$('#form-ajax_search_div').hide();
+								$('#form-enable_operators_div').hide();
+							}
+							$('#add-'+myclass+'-div #'+key).val(value);
+						}	
+						else if(key == 'form-attached_view')
+						{
+							$.get(ajaxurl,{action:'wpas_get_views',app_id:app_id,val:value}, function(response)
+                        				{
+                                				$('#add-form-div #form-attached_view').html('<option value="">Please select</option>'+response);
+                                				$('#form-attached_view_div').show();
+                        				});
+						}	
 						else if(key == 'form-confirm_sendto')
 						{
 							$.get(ajaxurl,{action:'wpas_get_email_attrs',primary_entity:primary_entity,dependents:dependents,app_id:app_id,values:value}, function(response)
@@ -1496,10 +1539,16 @@ jQuery(document).ready(function($) {
 							else if(key == 'form-email_user_confirm')
 							{
 								$('#form-email_user_div').show();
+								show = 'form-confirm_msg';
+								app_id = $('input#app').val();
+								$.fn.getAddons(show,app_id,'email',primary_entity,'',dependents);
 							}
 							else if(key == 'form-email_admin_confirm')
 							{
 								$('#form-email_admin_div').show();
+								show = 'form-confirm_admin_msg';
+								app_id = $('input#app').val();
+								$.fn.getAddons(show,app_id,'email',primary_entity,'',dependents);
 							}
 							else if(key == 'form-enable_form_schedule')
 							{
@@ -1782,7 +1831,7 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click','ul.breadcrumb li a',function(){
 		var link = $(this).attr('href');
-                if($('ul li#fourth').html() == 'Edit Layout')
+                if($('ul li#fourth').html() == 'Edit Admin Layout')
 		{
 			app_id = $('input#app').val();	
 			app = $('input#app_title').val();

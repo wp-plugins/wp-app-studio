@@ -2,14 +2,14 @@
 Contributors: emarket-design
 Tags: Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
-Tested up to: 3.6.1
-Stable tag: 2.0.5
+Tested up to: 3.7
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 
-Wp App Studio is easy to learn and use design tool for creating fully featured custom plugins based on WordPress platform. No coding required.
+Wp App Studio is easy to learn and use design and development tool for creating fully featured custom plugins. No coding required.
 
  ==  Description  == 
 = Are you a WPAS user? =
@@ -26,7 +26,7 @@ Wp App Studio is easy to learn and use design tool for creating fully featured c
 
 No problem. This is it. Create your own custom plugin. Let us support it for 30 days for Free.
 
-Wp App Studio(WPAS) is a cost-effective REST API based software as a service (SaaS) platform that creates fully featured Wordpress plugins.
+Wp App Studio(WPAS) is a cost-effective REST API based software as a service (SaaS) platform that creates fully featured Wordpress plugins. Saas is a software delivery model commonly used by companies such as Google, Yahoo, Amazon etc. In SaaS delivery model all processing takes place outside of your computer. To be able to use this platform, you must purchase API credits.
 
 [How does WPAS work? SaaS Whaat? and others](http://emarketdesign.com/documentation/wp-app-studio-documentation/wp-app-studio-platform/)
 
@@ -36,40 +36,25 @@ Wp App Studio(WPAS) is a cost-effective REST API based software as a service (Sa
 
 [TRY IT FOR FREE](http://emarketdesign.com/wp-app-studio-playground/ "Wp App Studio Playground")
 
-= What's new in 2.0? =
-First of all, thanks to all of our customers for their patience and support.
+= What's new in 2.2? =
+In this release, we added Search Forms, building more on the interface. Using search forms, you can drill down and filter your content by attributes, taxonomies, and relationships. Each seach form optionally can have operators such as equal to, less than, greater than etc. Operators change based on the attribute searched.
 
-= Summary =
-Say Hello to beautiful app interfaces using Twitter's Bootstrap or jQuery UI based, client/server side validated ajax forms with full of advanced components.
+By making search operators optional, we wanted to give plugin owners ability to limit content access. Search forms, as well as submit forms, can be displayed to eligible users by using permissions module.  In addition, we split "required" option in attribute screen in to "Required for Submit" and "Required for Search". This option becomes very handy in a search support ticket usecase where you ask users search using email or ticket id. Even if email is required in ticket submission, it is not required for searching tickets. If a user does not want to see her other tickets associated with her email, she will be able to search using her ticket id and return specific ticket status. Search forms are fully validated on the client and server side. In other words, users will not be able to enter digits into email field and submit a search request. 
 
-= Detail =
-* Ability to create parent-child relationship forms, accepting data entry to entities, taxonomies, and relationships.
-* Ability to create and display multi-column, device independent, and  ajax powered forms.
-* Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
-* Ability to pick one of available 24 different jQuery UI themes if you chose jQuery UI for your frontend theme.
-* Added option to use Font Awesome webfont in buttons, radios, and checkboxes. Different icons can be selected for the checked and the unchecked states of the form elements.
-* Added option to pick 3 Adjustable height size for form elements.
-* Ability to do a graceful degradation; turn off JavaScript, everything works as expected.
-* Ability to create form access groups based on user roles by setting form permissions.
-* Ability to schedule your forms availability based on date ranges.
-* Ability to limit forms availability by the number of submissions.
-* Ability to send confirmations to admins and/users after a successful entry.
-* Ability to show simple text or redirect to another website after a successful entry.
-* Ability to do client and server side validations for all available attribute types.
-* Integrated cross-site scripting (XSS) and cross-site request forgery (CSRF) attack prevention.
-* Integrated protection against SPAM using honeypot and/or captcha.
-* Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
-* Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
-* Added support for custom user roles in the user relationship dropdown in the advanced section of entity configuration.
-* Added description and optionality to relationship screen. When you set a relationship required and Wp App Studio will enforce it.
-* Added description, display type(multi or single select), required fields to Taxonomy screen.
-* Added uniqueness option to attributes types. Setting an attribute unique will set it as a unique key identifier. It will be used when connecting entity records to other entity records.
-* Added max file size, allowable extensions, and max file uploads validations options for file and image uploader attribute type.
-* Many more features, bug fixes to better look and feel and stability.
+As in the submit forms, search form layouts can be designed using form layout editor. All other submit form functionality such as theming options, scheduling, ajax submissions etc. is also applicable to search forms.
+
+As an enhancement to overall forms module, we added attributes, taxonomies, and relationship unique identifier tags to admin/user email notifications. This will open the door for more customizable offers in many business cases such as realtime offer submission based on user profile.
+
+Another exciting feature is the inclusion of Views module. Views module will replace Shortcodes module which is deprecated as of WPAS v2.2. Using views module, you will be able to design how you want to display content. Views can be attached to search forms. For example, you can design a view for the results of a search form by adding attributes you would like to return. You can fine the results using HTML or visual layout editor. Views can also be used as stand-alone using shortcodes, perfect for content reports and analysis. We will be building more on the views module in upcoming releases.
+
+There are also some minor changes such as the addition of relationship name in the relationship editor. Relationship name will uniquely identify a particular instance. We also added some additional API rules to minimize error occurrence probability in the code generation process.
+
+As in the previous releases, we fixed some bugs and improved overall stability of the WPAS generated plugins.
+
 
 = What's in store for the next release? =
 
-More work on the interface; ability to create modal forms to support create, read, update, and delete(CRUD) operations. Dependent and conditional fields, calculator field type, and more precision on the form layout editor.
+Adding advanced filters to views and widgets modules to improve report generation. Creating custom plugin setting pages.
 
 = Create your own plugin using Wp App Studio =
 An intro to WPAS system, not updated for 2.0 but still relevant. More video tutorials in the website.
@@ -199,16 +184,17 @@ See Other Notes tab or project links below.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/using-web-apps/ "Wp App Studio App Data Migration")
 
- *Create Shortcodes* 
+ *Create Views* 
  
-* Create macros called shortcodes without coding.
-* Design your shortcode layout with tags of most built-in data retrieval functions using WYSIWYG editor.
-* Filter your shortcode data by ID, Author, Date etc.
-* Add your shortcode to a page or a post as well as a text widget.
-* Ability to attach custom css to your shortcode layout
-* Sort your shortcode data by criteria provided ascending or descending.
-* Filter your shortcode data by its publish status.
-* Ability to limit number of entity records to show.
+* Design how you want display your content using views.
+* Design your view layout with tags of most built-in data retrieval functions using WYSIWYG editor.
+* Filter your view data by ID, Author, Date etc.
+* Add your view to a page or a post as well as a text widget using shortcodes.
+* Ability to attach custom css to view layout
+* Sort your view data by criteria provided ascending or descending.
+* Filter your view data by its publish status.
+* Ability to limit number of records to show.
+* Attach views to search forms to format search results.
 * A simple page navigation is provided and displayed when the number of records exceed the number defined.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/creating-shortcodes/ "Creating Wp App Studio Shortcodes")
@@ -270,7 +256,7 @@ See Other Notes tab or project links below.
 * Ability to create and display forms using Twitter’s Bootstrap or jQuery UI frameworks.
 * Ability to pick one of available 24 different jQuery UI themes if you chose jQuery UI for your frontend theme.
 * Added option to use Font Awesome webfont in buttons, radios, and checkboxes. Different icons can be selected for the checked and the unchecked states of the form elements.
-* Added option to pick 3 Adjustable height size for form elements.
+* Ability to pick 3 Adjustable height size for form elements.
 * Ability to do a graceful degradation; turn off JavaScript, everything works as expected.
 * Ability to create form access groups based on user roles by setting form permissions.
 * Ability to schedule your forms availability based on date ranges.
@@ -281,7 +267,9 @@ See Other Notes tab or project links below.
 * Integrated cross-site scripting (XSS) and cross-site request forgery (CSRF) attack prevention.
 * Integrated protection against SPAM using honeypot and/or captcha.
 * Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
-* Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
+* Ability to select and insert all WPAS shortcodes using WPAS button. Use the button to insert forms, views, and other WPAS components into posts or pages.
+* Ability to create fully featured search forms with operators change based on the type of attribute.
+* Ability to limit access to forms using permissions module.
 
 [Click for more info](http://emarketdesign.com/documentation/wp-app-studio-documentation/design-web-apps/designing-and-creating-forms/ "Creating Wp App Studio App Forms")
 
@@ -362,31 +350,19 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 
 == Screenshots ==
 
-1. Creating a New Application: you can create as many apps as you need. 
-2. Creating a New Entity: Each entity corresponds to a post type in Wp developer terminology.
-3. Listing of All App Entities
-4. Creating New Entity Attributes
-5. Defining Advanced Entity options
-6. Creating Entity Layout page
-7. Creating Taxonomies
-8. Setting Advanced Taxonomy options
-9. Creating Relationships
-10. Creating New Relationship Attributes
-11. Creating Help Screens
-12. Creating Help Screen Tabs
-13. Creating New Widget
-14. Creating New Shortcode
-15. Creating New Roles
-16. Configuring App Settings
-17. App Dashboard View
-18. App Entity View
-19. App Taxonomy View
-20. App Entity Operations View
-21. jQuery UI Sunny Theme Form
-22. Bootstrap Form with FontAwesome Webfont
-23. Using FontAwesome Webfont with buttons, radios and checkboxes
+1. Create custom plugins in the form of WPAS apps. 
+2. Define your content using entities and entity attributes.
+3. Create views, dashboard and sideboard widgets to display, relationships and taxonomies to relate and categorize content.
+4. Create help for entity and taxonomy screens.
+5. Create beautiful entity backends.
+6. Create Twitter's Bootstrap or jQuery UI themed forms.
+7. Create search forms with advanced operators.
+8. Use Font-Awesome webicon fonts in your radios, checkboxes and buttons.
+9. Use WPAS button to insert forms and views shortcodes in a post or page.
 
 == Upgrade Notice ==
+= 2.2 =
+Added search forms functionality, replaced Shortcodes with Views module and many more.
 = 2.0.5 =
 Updated and upgraded jQuery UI form components and modified some api rules.
 = 2.0.1 =
@@ -405,6 +381,13 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 2.2 (10/29/13) =
+* Added fully featured search forms with operators functionality in the forms module. Search forms inherit most of submit form functionality such as client/server validation.
+* Added "Required for Search" option in the entity attribute module. This feature will help separate submit form requirements from search requirements.
+* Replaced Shortcodes module with Views module. Shortcodes will be deprecated as WPAS V2.2. Using views module, you will be able to design how you want to display content.
+* Added attributes, taxonomies, and relationship unique identifiers tags to admin/user email notifications.
+* There are also some minor changes such as the addition of relationship name in the relationship editor. Relationship name will uniquely identify a particular instance. Make sure you add relationship name in your previously designed app relationships.
+* Fixed some bugs and improved overall stability of the WPAS generated plugins.
 = 2.0.5 (10/15/13) =
 * Added option to remove the operations screen.
 * Added option to remove filters and columns in entity list pages.

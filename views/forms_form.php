@@ -159,10 +159,18 @@ function wpas_form_container($layout,$app,$form_id)
 	$layout_html .= "<input type='hidden' id='form-field-count' name='form-field-count' value='" . esc_attr($count) . "'></div>";
 	return $layout_html;
 }
-function display_tinymce($id,$initial='')
+function display_tinymce($id,$initial='',$set_html=0,$set_attr=0)
 {
 	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
 	$buttons['theme_advanced_buttons2'] = 'tablecontrols';
+	if($set_html == 1)
+	{
+		$buttons['theme_advanced_buttons2'] .= ',code';
+	}
+	if($set_attr == 1)
+	{
+		$buttons['theme_advanced_buttons2'] .= ',mylistbox';
+	}
 
 	$settings = array(
 			'text_area_name'=> $id,//name you want for the textarea
@@ -189,6 +197,34 @@ jQuery(document).ready(function($) {
 		{
 			$('#form-tabs').hide();
 		}
+	});
+	$('#form-form_type').click(function() {
+		if($(this).find('option:selected').val() == 'search')
+		{
+			app_id = $('input#app').val();
+			$('#formtabs-3-li').hide();
+			$('#form-submit_status_div').hide();
+			$('#form-noresult_msg_div').show();
+			$('#form-result_msg_div').show();
+			$('#form-ajax_search_div').show();
+			$('#form-enable_operators_div').show();
+			$.get(ajaxurl,{action:'wpas_get_views',app_id:app_id}, function(response)
+			{
+				$('#add-form-div #form-attached_view').html('<option value="">Please select</option>'+response);
+				$('#form-attached_view_div').show();
+			});
+		}
+		else
+		{
+			$('#formtabs-3-li').show();
+			$('#form-submit_status_div').show();
+			$('#form-noresult_msg_div').hide();
+			$('#form-result_msg_div').hide();
+			$('#form-ajax_search_div').hide();
+			$('#form-enable_operators_div').hide();
+			$('#form-attached_view_div').hide();
+		}
+			
 	});
 	$('#form-temp_type').click(function () {
 		if($(this).find('option:selected').val() == 'Bootstrap')
@@ -278,12 +314,33 @@ jQuery(document).ready(function($) {
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
+	<div class="control-group row-fluid"> 
+	<label class="control-label span3" >Type</label>
+	<div class="controls span9">
+	<select name="form-form_type" id="form-form_type" class="input-medium">
+	<option value="" selected="selected">Please select</option>
+	<option value="submit">Submit</option>
+        <option value="search">Search</option>
+	</select>
+	<a href="#" style="cursor: help;" title="Sets the type of form to be created. Submit forms are for sending and saving data. Search forms are for searching content and displaying results on a page.">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 	<div class="control-group row-fluid" id="form-form-attached_entity_div"> 
 	<label class="control-label span3" >Attached to Entity</label>
 	<div class="controls span9">
 	<select name="form-attached_entity" id="form-attached_entity" class="input-medium">
 	</select>
 	<a href="#" style="cursor: help;" title="Sets the primary entity for your form. The selected entity will be main entry point and will be used for the dependent selection. ">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="form-attached_view_div" style="display:none;"> 
+	<label class="control-label span3" >Attached to View</label>
+	<div class="controls span9">
+	<select name="form-attached_view" id="form-attached_view" class="input-medium">
+	</select>
+	<a href="#" style="cursor: help;" title="Search forms must be attched to a already created view. A search view defines the format of how search results will be displayed.">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -324,7 +381,7 @@ jQuery(document).ready(function($) {
 	<ul id="formTab" class="nav nav-tabs">
 	<li class="active"><a data-toggle="tab" href="#formtabs-1">Display Options</a></li>
 	<li><a data-toggle="tab" href="#formtabs-2">Submissions</a></li>
-	<li><a data-toggle="tab" href="#formtabs-3">Confirmations</a></li>
+	<li id="formtabs-3-li"><a data-toggle="tab" href="#formtabs-3">Confirmations</a></li>
 	<li><a data-toggle="tab" href="#formtabs-4">Scheduling</a></li>
 	</ul>
 	<div id="FormTabContent" class="tab-content">
@@ -359,15 +416,49 @@ jQuery(document).ready(function($) {
 	<option value="left">Left</option>
 	<option value="inside">Inside</option>
 	</select>
-	<a href="#" style="cursor: help;" title="Sets the field label position relative to the field input location. Options are Top,Left or Inside. The inside option is relavant only for textboxes.">
+	<a href="#" style="cursor: help;" title="Sets the field label position relative to the field input location. Options are Top,Left or Inside. Pick your label placement based on the space you have available for the form. Min 680px required for inside/top label placement with 3 column layout. If you enabled operators in your search form, you will need more space for multi-layout designs. You can always adjust the width css element of your form container when needed. Enabling operators will give access to all of your data so limiting access by role may always be a good idea.">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>		
+	<div class="control-group row-fluid" id="form-ajax_search_div" style="display:none;">
+	<label class="control-label span3"></label>
+	<div class="controls span9"><label class="checkbox">Enable Ajax
+	<input name="form-ajax_search" id="form-ajax_search" type="checkbox" value="1"/>
+	<a href="#" style="cursor: help;" title="Enables ajax when displaying search results without reloading the page.">
+	<i class="icon-info-sign"></i></a>
+	</label>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="form-enable_operators_div" style="display:none;">
+	<label class="control-label span3"></label>
+	<div class="controls span9"><label class="checkbox">Enable Search Operators
+	<input name="form-enable_operators" id="form-enable_operators" type="checkbox" value="1"/>
+	<a href="#" style="cursor: help;" title="Enables operators in search forms such as '<, >, Is, Search' etc.">
+	<i class="icon-info-sign"></i></a>
+	</label>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="form-result_msg_div" style="display:none;">
+	<label class="control-label span3" >Results Header</label>
+	<div class="controls span9">
+<?php display_tinymce('form-result_msg','Below are your search results.',1); ?>
+	<a href="#" style="cursor: help;" title="Sets the text which will be displayed when there are results to show. You can put in a title and a description of the data returned or a header row containing a column titles. Remember the results come from the view you attached to the form. So layout of the form results must be done in the view. This header text will be displayed between the form and results so anything outside of form and results boundry can be placed in a page before the form shortcode.">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3" >No Access Message</label>
 	<div class="controls span9">
 <?php display_tinymce('form-not_loggedin_msg','You are not allowed to access to this area. Please contact the site administrator.'); ?>
 	<a href="#" style="cursor: help;" title="Sets the text which will be displayed to users that do not have access to this form.">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="form-noresult_msg_div" style="display:none;">
+	<label class="control-label span3" >No Results Message</label>
+	<div class="controls span9">
+<?php display_tinymce('form-noresult_msg','Your search returned no results.'); ?>
+	<a href="#" style="cursor: help;" title="Sets the text which will be displayed when there are no results to show.">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -435,7 +526,7 @@ jQuery(document).ready(function($) {
 		<div class="controls span9">
 		<input class="input-medium" name="form-submit_button_fa" id="form-submit_button_fa" type="text" placeholder="" value="" >
 		<a href="#" style="cursor: help;" title="Sets the font awesome icon which will be displayed next to the button text.">
-		<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank">Cheatsheet</a>
+		<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/3.2.1/cheatsheet/" target="_blank">Cheatsheet</a>
 		</div>
 	</div>
 	<div class="control-group row-fluid"> 
@@ -523,7 +614,9 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 	<label class="control-label span3">Success Text</label>
 	<div class="controls span9">
-<?php display_tinymce('form-confirm_success_txt','Thanks for your submission.'); ?>
+	<textarea id="form-confirm_success_txt" name="form-confirm_success_txt" class="input-xlarge" rows="3">
+	Thanks for your submission.
+	</textarea>
 	<a href="#" style="cursor: help;" title="Sets the text which will be displayed to users after a successful entry.">
 	<i class="icon-info-sign"></i></a>
 	</div>
@@ -531,7 +624,9 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 	<label class="control-label span3">Error Text</label>
 	<div class="controls span9">
-<?php display_tinymce('form-confirm_error_txt','There has been an error when submitting your entry. Please contact the site administrator.'); ?>
+	<textarea id="form-confirm_error_txt" name="form-confirm_error_txt" class="input-xlarge" rows="3">
+	There has been an error when submitting your entry. Please contact the site administrator.
+	</textarea>
 	<a href="#" style="cursor: help;" title="Sets the text which will be displayed to users after an unsuccessful entry.">
 	<i class="icon-info-sign"></i></a>
 	</div>
@@ -583,7 +678,7 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 	<label class="control-label span3">User Email Message</label>
 	<div class="controls span9">
-<?php display_tinymce('form-confirm_msg'); ?>
+<?php display_tinymce('form-confirm_msg','',0,1); ?>
 	<a href="#" style="cursor: help;" title="A short message confirming a successful submission.">
 	<i class="icon-info-sign"></i></a>
 	</div>
@@ -626,7 +721,7 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 	<label class="control-label span3">Admin Email Message</label>
 	<div class="controls span9">
-<?php display_tinymce('form-confirm_admin_msg'); ?>
+<?php display_tinymce('form-confirm_admin_msg','',0,1); ?>
 	<a href="#" style="cursor: help;" title="Sets a message confirming a successful submission.">
 	<i class="icon-info-sign"></i></a>
 	</div>

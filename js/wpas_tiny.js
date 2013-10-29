@@ -31,7 +31,7 @@ jQuery(document).ready(function($){
 		mlb.add('WP Builtin', '',{'style':'font-style:italic;font-weight:bold;'});
 		mlb.add('Title', '!#title#',{'style':'padding-left:2em;'});
 		mlb.add('Permalink', '!#permalink#',{'style':'padding-left:2em;'});
-		if(type != 'relationship')
+		if(type != 'relationship' && type != 'email')
 		{
 			mlb.add('Excerpt', '!#excerpt#',{'style':'padding-left:2em;'});
 			mlb.add('Content', '!#content#',{'style':'padding-left:2em;'});
@@ -44,8 +44,8 @@ jQuery(document).ready(function($){
 			mlb.add('Modified Author', '!#mod_author#',{'style':'padding-left:2em;'});
 		}
 	}
-	$.fn.getAddons = function (layout_id,app_id,type,comp_name,rel_conn_type) {
-		$.get(ajaxurl,{action:'wpas_get_comp_attrs', app_id:app_id,type:type,comp_name:comp_name,rel_conn_type:rel_conn_type}, function(response){
+	$.fn.getAddons = function (layout_id,app_id,type,comp_name,rel_conn_type,rels) {
+		$.get(ajaxurl,{action:'wpas_get_comp_attrs', app_id:app_id,type:type,comp_name:comp_name,rel_conn_type:rel_conn_type,rels:rels}, function(response){
 			layout = tinymce.get(layout_id);
 			listbox = layout.controlManager.get('mylistbox');
 			listbox.items = [];
@@ -60,7 +60,7 @@ jQuery(document).ready(function($){
 			}
 			$.each(response,function (key,value)
 			{
-				if(value == comp_name || value == 'Taxonomies')
+				if(value == comp_name || value == 'Taxonomies' || key.indexOf('relattr_') == 0)
 				{
 					listbox.add(value,'',{'style':'font-style:italic;font-weight:bold;'});
 				}
@@ -98,12 +98,29 @@ jQuery(document).ready(function($){
 			});
 			tinymce.get('widg-layout').setContent('');
 		}
-		jQuery.fn.getAddons(layout_id,app_id,type,comp_name,'');
+		jQuery.fn.getAddons(layout_id,app_id,type,comp_name,'',[]);
 	});
 	$(document).on('change','#widg-rel-conn-type',function(){
 		comp_name = $('#widg-attach-rel :selected').val();
 		conn_type = $('#widg-rel-conn-type :selected').val();
 		app_id = $('input#app').val();
-		jQuery.fn.getAddons('widg-layout',app_id,'relationship',comp_name,conn_type);
+		jQuery.fn.getAddons('widg-layout',app_id,'relationship',comp_name,conn_type,[]);
+	});
+	$(document).on('change','#form-email_user_confirm,#form-email_admin_confirm',function(){
+		if($(this).attr('id') == 'form-email_user_confirm')
+		{
+			show = 'form-confirm_msg';
+		}
+		else if($(this).attr('id') == 'form-email_admin_confirm')
+		{
+			show = 'form-confirm_admin_msg';
+		}
+		comp_name = $('#form-attached_entity :selected').val();
+		app_id = $('input#app').val();
+		var rels = [];
+		$('#form-dependents :selected').each(function() {
+			rels.push($(this).val()); 
+		});
+		jQuery.fn.getAddons(show,app_id,'email',comp_name,'',rels);	
 	});
 });

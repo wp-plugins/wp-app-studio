@@ -293,6 +293,7 @@ function wpas_check_valid_generate($myapp)
 	// 5: not all attributes assigned to layout
 	// 6: help with no tab  
 	// 7: no unique key in entity
+	// 8: search form layout empty
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
@@ -307,10 +308,16 @@ function wpas_check_valid_generate($myapp)
 		$error_loc_name = $resp_error['error_loc_name'];
 	}
 	if($generate_error == 0 && !empty($myapp['form']))
-	{
-		$resp_error = wpas_check_form_rel_uniq($myapp);
+	{	
+		$resp_error = wpas_check_search_form_layout($myapp['form']);
 		$generate_error = $resp_error['generate_error'];
 		$error_loc_name = $resp_error['error_loc_name'];
+		if($generate_error == 0)
+		{
+			$resp_error = wpas_check_form_rel_uniq($myapp);
+			$generate_error = $resp_error['generate_error'];
+			$error_loc_name = $resp_error['error_loc_name'];
+		}
 	}
 	if($generate_error == 0 && !empty($myapp['help']))
 	{
@@ -346,6 +353,9 @@ function wpas_check_valid_generate($myapp)
 			break;
 		case 7:
 			$alert = "Error: You must have at least one unique attribute in each entity. Please set at least one attribute unique in " . $error_loc_name . " entity.";
+			break;
+		case 8:
+			$alert = "Error: You must have a form layout for " . $error_loc_name . " search form.";
 			break;
 		default:
 			$alert = "";
@@ -591,5 +601,19 @@ function wpas_check_layout_attr($mylayout_panel)
 	}
 	return $layout_attr_count;
 }
-		
+function wpas_check_search_form_layout($myappform)
+{
+	$generate_error = 0;
+	$error_loc_name = "";
+	foreach($myappform as $myform)
+	{
+		if($myform['form-form_type'] == 'search' && empty($myform['form-layout']))
+		{
+			$generate_error = 8;
+			$error_loc_name = $myform['form-name'];
+			break;
+		}
+	}
+	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+}
 ?>

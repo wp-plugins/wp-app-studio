@@ -59,6 +59,12 @@ jQuery(document).ready(function() {
         <div class="well">
         <div class="row-fluid"><div class="alert alert-info pull-right"><a class="icon-info-sign" data-placement="bottom" href="#" rel="tooltip" title="Relationships are connections between entities. You can create one-to-many(1-M), many-to-many(M-M) relationships. Each relationship may have one to many attributes."> HELP</a></div></div>
         <div class="control-group row-fluid">
+        <label class="control-label span3">Name</label>
+        <div class="controls span9">
+        <input name="rel-name" id="rel-name" type="text" placeholder="orders_products">
+        <a href="#" title="Relationship name should be in slug form (must not contain capital letters or spaces) and not more than 32 characters long. Previously used relationship names are not allowed. Underscores are allowed." style="cursor: help;"><i class="icon-info-sign"></i></a></div>
+        </div>
+        <div class="control-group row-fluid">
         <label class="control-label span3">From Entity Name</label>
         <div class="controls span9">
         <select id="rel-from-name" name="rel-from-name">
@@ -103,9 +109,19 @@ jQuery(document).ready(function() {
 	<div class="control-group">
     <label class="control-label span3"></label>
 	<div class="controls span9">
-			<label class="checkbox">Required?
+			<label class="checkbox">Required for Submit
 			<input name="rel-required" id="rel-required" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="Makes the relationship required so it can not be blank. ">
+			<a href="#" style="cursor: help;" title="Makes the relationship required when entering data using this relationship so it can not be blank. ">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group">
+    <label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox">Required for Search
+			<input name="rel-srequired" id="rel-srequired" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="Makes the relationship required when search data using this relationship so it can not be blank. ">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>
