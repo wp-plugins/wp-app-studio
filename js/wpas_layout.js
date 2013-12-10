@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
 			accept: 'div.tab',
 			drop: function(event, ui) {
 				var tabcount = $(this).getCount('tab-ctr');
-				tab = '<div class="tab-ctr ui-draggable" id="tab-ctr'+tabcount+'"><div id="tab-ctr'+tabcount+'-row" class="row-fluid"><div id="tab-ctr'+tabcount+'-title" class="tabctr-title layout-title span10 pull-left">Tab Title (edit me)</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div>';
+				tab = '<div class="tab-ctr ui-draggable" id="tab-ctr'+tabcount+'"><div id="tab-ctr'+tabcount+'-row" class="row-fluid"><div id="tab-ctr'+tabcount+'-title" class="tabctr-title layout-title span10 pull-left">' + layout_vars.edit_tab_title + '</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div>';
 				$(this).append(tab);
 				$(".multitab-ctr").sortable();
 				$(this).attrDroppable();
@@ -51,7 +51,7 @@ jQuery(document).ready(function() {
 			accept: 'div.acc',
 			drop: function(event, ui) {
 				var acccount = $(this).getCount('acc-ctr');
-				accordion = '<div class="acc-ctr" id="acc-ctr'+acccount+'"><div id="acc-ctr'+acccount+'-row" class="row-fluid"><div id="acc-ctr'+acccount+'-title" class="accctr-title layout-title span10 pull-left">Accordion Title (edit me)</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div>';
+				accordion = '<div class="acc-ctr" id="acc-ctr'+acccount+'"><div id="acc-ctr'+acccount+'-row" class="row-fluid"><div id="acc-ctr'+acccount+'-title" class="accctr-title layout-title span10 pull-left">' + layout_vars.edit_acc_title + '</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div>';
 				$(this).append(accordion);
 				$(".multiacc-ctr").sortable();
 				$(this).attrDroppable();
@@ -102,7 +102,7 @@ jQuery(document).ready(function() {
 				{
 					var divcount = $(this).getCount('tabgrp-ctr');
 					var tabcount = $(this).getCount('tab-ctr');
-					tabgrp = '<div class="tabgrp-ctr ui-sortable" id="tabgrp'+divcount+'"><div id="tabgrp'+divcount +'-row" class="row-fluid"><div id="tabgrp'+divcount+ '-title" class="tabgrp-title layout-title span11 pull-left">Tab Group Title (edit me)</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div class="multitab-ctr"><div class="tab-ctr ui-draggable" id="tab-ctr'+tabcount+'"><div id="tab-ctr'+tabcount+'-row" class="row-fluid"><div id="tab-ctr'+tabcount+'-title" class="tabctr-title layout-title span10 pull-left">Tab Title (edit me)</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div></div></div>';
+					tabgrp = '<div class="tabgrp-ctr ui-sortable" id="tabgrp'+divcount+'"><div id="tabgrp'+divcount +'-row" class="row-fluid"><div id="tabgrp'+divcount+ '-title" class="tabgrp-title layout-title span11 pull-left">' + layout_vars.edit_tab_gr_title + '</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div class="multitab-ctr"><div class="tab-ctr ui-draggable" id="tab-ctr'+tabcount+'"><div id="tab-ctr'+tabcount+'-row" class="row-fluid"><div id="tab-ctr'+tabcount+'-title" class="tabctr-title layout-title span10 pull-left">' + layout_vars.edit_tab_title + '</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div></div></div>';
 					$(this).append(tabgrp);
 					$(this).tabDroppable();
 				}
@@ -110,7 +110,7 @@ jQuery(document).ready(function() {
 				{
 					var accdivcount = $(this).getCount('accgrp-ctr');
 					var acccount = $(this).getCount('acc-ctr');
-					accgrp = '<div class="accgrp-ctr ui-sortable" id="accgrp'+accdivcount+'"><div id="accgrp'+accdivcount +'-row" class="row-fluid"><div id="accgrp'+accdivcount+ '-title" class="accgrp-title layout-title span11 pull-left">Accordion Group Title (edit me)</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div class="multiacc-ctr"><div class="acc-ctr" id="acc-ctr'+acccount+'"><div id="acc-ctr'+acccount+'-row" class="row-fluid"><div id="acc-ctr'+acccount+'-title" class="accctr-title layout-title span10 pull-left">Accordion Title (edit me)</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div></div></div>';
+					accgrp = '<div class="accgrp-ctr ui-sortable" id="accgrp'+accdivcount+'"><div id="accgrp'+accdivcount +'-row" class="row-fluid"><div id="accgrp'+accdivcount+ '-title" class="accgrp-title layout-title span11 pull-left">' + layout_vars.edit_acc_gr_title + '</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div class="multiacc-ctr"><div class="acc-ctr" id="acc-ctr'+acccount+'"><div id="acc-ctr'+acccount+'-row" class="row-fluid"><div id="acc-ctr'+acccount+'-title" class="accctr-title layout-title span10 pull-left">' + layout_vars.edit_acc_title + '</div><div class="pull-right layout-edit-icons"><a class="edit"><i class="icon-edit"></i></a><a class="delete"><i class="icon-trash"></i></a></div></div><div id="multiattr-ctr" class="multiattr-ctr"></div></div></div></div>';
 					$(this).append(accgrp);
 					$(this).accDroppable();
 				}
@@ -118,7 +118,7 @@ jQuery(document).ready(function() {
 				$(this).attrDroppable();
 			}
 		});
-		if(response != '<div class="dragme">DRAG AND DROP</div>')
+		if(response != '<div class="dragme">' + layout_vars.drag_drop + '</div>')
 		{
 			$(this).tabDroppable();
 			$(this).accDroppable();
@@ -183,7 +183,7 @@ jQuery(document).ready(function() {
 
 		if(tabs.length === 0 && accs.length === 0)
 		{
-			$('#layout-ctr').append('<div class="dragme">DRAG AND DROP</div>');
+			$('#layout-ctr').append('<div class="dragme">' + layout_vars.drag_drop + '</div>');
 		}
 	});
 

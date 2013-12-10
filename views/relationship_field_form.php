@@ -1,18 +1,19 @@
 <?php
 function wpas_view_rel_fields($rel_name)
 {
-return '<div id="title-bar"><div class="row-fluid"><h4 class="span3"><i class="icon-columns"></i>Attributes</h3>
+return '<div id="title-bar"><div class="row-fluid"><h4 class="span3"><i class="icon-columns"></i>' . __("Attributes","wpas") . '</h3>
                 <div class="span9 field" id="add_field_rel">
-<a class="btn btn-info  pull-right" href="#rel'. $rel_name . '" class="add-new" ><i class="icon-plus-sign"></i>Add New</a>
+<a class="btn btn-info  pull-right" href="#rel'. esc_attr($rel_name) . '" class="add-new" >
+<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>
 </div></div></div>';
 }
 function wpas_view_rel_fields_list($rel_field)
 {
 	$ret = '<div id="field-title"><div class="row-fluid"><div class="span1"></div>
-        <div id="field-name" class="span3">Name</div>
-        <div id="field-label" class="span3">Label</div>
-        <div class="span2">Type</div>
-        <div class="span1">Required</div>
+        <div id="field-name" class="span3">' . __("Name","wpas") . '</div>
+        <div id="field-label" class="span3">' . __("Label","wpas") . '</div>
+        <div class="span2">' . __("Type","wpas") . '</div>
+        <div class="span1">' . __("Required","wpas") . '</div>
         <div id="edit-field" class="span1"></div>
         <div id="delete-field" class="span1"></div>
         </div></div>';
@@ -21,21 +22,21 @@ function wpas_view_rel_fields_list($rel_field)
         {
 		if(isset($myfield['rel_fld_required']) && $myfield['rel_fld_required'] == 1)
                 {
-                        $required = 'Y';
+                        $required = __("Y","wpas");
                 }
                 else
                 {
-                        $required = 'N';
+                        $required = __("N","wpas");
                 }
 
                 $ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
                         <div class="span1"><i class="icon-sort"></i></div>
-			<div class="span3" id="field-name">' . $myfield['rel_fld_name'] . '</div>
-                        <div class="span3" id="field-label">' . $myfield['rel_fld_label'] . '</div>
-                        <div class="span2">' . $myfield['rel_fld_type'] . '</div>
+			<div class="span3" id="field-name">' . esc_html($myfield['rel_fld_name']) . '</div>
+                        <div class="span3" id="field-label">' . esc_html($myfield['rel_fld_label']) . '</div>
+                        <div class="span2">' . esc_html($myfield['rel_fld_type']) . '</div>
 			<div class="span1">' . $required . '</div>
-                        <div class="span1" id="edit-rel-field"><a href="#' . $key . '">Edit</a></div>
-                        <div class="span1" id="delete-rel-field"><a href="#' . $key . '">Delete</a></div></div></div></li>';
+                        <div class="span1" id="edit-rel-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
+                        <div class="span1" id="delete-rel-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></li>';
         }
         $ret .= '</ul>';
 	return $ret;
@@ -69,82 +70,79 @@ jQuery(document).ready(function() {
 </script>
 
 <form action="" method="post" id="rel-field-form" class="form-horizontal">
-<input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
+<input type="hidden" id="app" name="app" value="<?php echo esc_attr($app_id); ?>">
 <input type="hidden" id="rel" name="rel" value="0">
 <input type="hidden" id="rel_field" name="rel_field" value="">
 
 <div class="well">
-<div class="alert alert-info pull-right"><a class="icon-info-sign" data-placement="bottom" href="#" rel="tooltip" title="An attribute is a property or descriptor of a relationship, for example, Quantity Ordered is an attribute of the relationship between the products and the orders entities."> HELP</a></div>
+<div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of a relationship, for example, Quantity Ordered is an attribute of the relationship between the products and the orders entities.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div>
                 <fieldset>
 <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Name</label>
-                                                                <div class="controls span9">
-                                                                        <input name="rel_fld_name" id="rel_fld_name" type="text" placeholder="e.g quantity_ordered" value="" >
-                                                                        			<a href="#" style="cursor: help;" title="Single word, no spaces, all lower case. Underscores and dashes allowed ">
+      <label class="control-label span3"><?php _e("Name","wpas"); ?></label>
+     <div class="controls span9">
+     <input name="rel_fld_name" id="rel_fld_name" type="text" placeholder="<?php _e("e.g quantity_ordered","wpas");?>" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Single word, no spaces, all lower case. Underscores and dashes allowed","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>	
                                                 </div>
                                                 </div>
                                                 <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Label</label>
+                                                                        <label class="control-label span3"><?php _e("Label","wpas"); ?></label>
                                                                         <div class="controls span9">
-                                                                                <input name="rel_fld_label" id="rel_fld_label" type="text" placeholder="e.g Quantity Ordered" value="" > 
-                                                                                			<a href="#" style="cursor: help;" title="This is the name which will appear on the related relationship box of the admin EDIT page of the entity. ">
+                                                                                <input name="rel_fld_label" id="rel_fld_label" type="text" placeholder="<?php _e("e.g Quantity Ordered","wpas");?>" value="" > 
+                                                                                			<a href="#" style="cursor: help;" title="<?php _e("This is the name which will appear on the related relationship box of the admin EDIT page of the entity.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>                                  
                                                                          </div>
                                                 </div>
                            <div class="control-group row-fluid">
-                               <label class="control-label span3">Type</label>
+                               <label class="control-label span3"><?php _e("Type","wpas"); ?></label>
                                <div class="controls span9">
                                     <select name="rel_fld_type" id="rel_fld_type">
-                                           <option selected="selected" value="text">Text</option>
-                                           <option value="textarea">Text Area</option>
-                                           <option value="checkbox">Checkbox</option>
-                                           <option value="checkbox_list">Checkbox List</option>
-					   					   <option value="select">Select</option>
-					   					   <option value="radio">Radio Button</option>
+                                           <option selected="selected" value="text"><?php _e("Text","wpas"); ?></option>
+                                           <option value="textarea"><?php _e("Text Area","wpas"); ?></option>
+                                           <option value="checkbox"><?php _e("Checkbox","wpas"); ?></option>
+                                           <option value="checkbox_list"><?php _e("Checkbox List","wpas"); ?></option>
+					   					   <option value="select"><?php _e("Select","wpas"); ?></option>
+					   					   <option value="radio"><?php _e("Radio","wpas"); ?></option>
                                      </select>
-                           <a href="#" style="cursor: help;" title="Attribute types defines how the entity attribute will be displayed on the admin edit page of the entity. ">
+                           <a href="#" style="cursor: help;" title="<?php _e("Attribute types defines how the entity attribute will be displayed on the admin edit page of the entity. ","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>                                             
                                                                         </div>
                                           </div>
 <div class="control-group row-fluid" id="rel_fld_values_div" style="display:none;">
-                                                                        <label class="control-label span3">Values</label>
+                                                                        <label class="control-label span3"><?php _e("Values","wpas"); ?></label>
                                                                         <div class="controls span9">
-                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue,red,white " ></textarea>
-                                                                                <a href="#" style="cursor: help;" title="Enter comma separated option values for the field. There must be only one comma between the values. You can not put a comma at the end of the values as well.">
+                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="<?php _e("e.g. blue;red;white","wpas"); ?>"></textarea>
+                                                                                <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolan at the end of the values as well.","wpas"); ?>">
 					<i class="icon-info-sign"></i></a>
 
                                                                         </div>
                                         </div>
 
 <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Description</label>
+<label class="control-label span3"><?php _e("Description","wpas"); ?></label>
                                                                         <div class="controls span9">
-                                                                                <textarea id="rel_fld_desc" name="rel_fld_desc" class="input-xlarge" rows="3" placeholder="e.g please enter the quantity ordered." ></textarea>
-                                                                                <a href="#" style="cursor: help;" title="instructions for authors. shown when submitting data. ">
+                                                                                <textarea id="rel_fld_desc" name="rel_fld_desc" class="input-xlarge" rows="3" placeholder="<?php _e("e.g please enter the quantity ordered.","wpas");?>"></textarea>
+                                                                                <a href="#" style="cursor: help;" title="<?php _e("instructions for authors. shown when submitting data.","wpas"); ?>">
 					<i class="icon-info-sign"></i></a>
 
                                                                         </div>
                                         </div>
                                    <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Required?</label>
+                                                                        <label class="control-label span3"></label>
                                                         <div class="controls span9">
-                                                        <label class="radio inline">
-                                                <input id="rel_fld_required" type="radio" value="1" name="rel_fld_required">Yes
-                                                        </label>
+                                                        <label class="checkbox"> <?php _e("Required","wpas"); ?>
+                                                <input id="rel_fld_required" type="checkbox" value="1" name="rel_fld_required">
                                                        
-                                                        <label class="radio inline">
-                                                <input id="rel_fld_required" type="radio" value="0" name="rel_fld_required" checked>No
-                                                </label>
-                                                 <a href="#" style="cursor: help;" title="Makes the attribute required so it can not be blank. ">
+                                                 <a href="#" style="cursor: help;" title="<?php _e("Makes the attribute required so it can not be blank.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
+                                                        </label>
                                                         </div>
                                         </div>
                                         <div class="control-group row-fluid">
-                                                                        <label class="control-label span3">Default Value</label>
+                                                                        <label class="control-label span3"><?php _e("Default Value","wpas"); ?></label>
                                                                         <div class="controls span9">
-                                                                        <input name="rel_fld_dflt_value" id="rel_fld_dflt_value" type="text" placeholder="Default value of the field" value="" >
-                                                                        <a href="#" style="cursor: help;" title="Create a default value for the attribute.">
+                                                                        <input name="rel_fld_dflt_value" id="rel_fld_dflt_value" type="text" placeholder="<?php _e("Default value of the field","wpas"); ?>" value="" >
+                                                                        <a href="#" style="cursor: help;" title="<?php _e("Create a default value for the attribute.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
                                                                         </div>
                                         </div>
@@ -152,8 +150,8 @@ jQuery(document).ready(function() {
 </div>
 
         <div class="control-group row-fluid">
-              <button class="btn  btn-danger layout-buttons" id="cancel" name="cancel" type="button"><i class="icon-ban-circle"></i>Cancel</button>
-           <button class="btn  btn-primary pull-right layout-buttons" id="save-relationship-field" name="Save" type="submit">Save</button>
+              <button class="btn  btn-danger layout-buttons" id="cancel" name="cancel" type="button"><i class="icon-ban-circle"></i><?php _e("Cancel","wpas"); ?></button>
+           <button class="btn  btn-primary pull-right layout-buttons" id="save-relationship-field" name="Save" type="submit"><?php _e("Save","wpas"); ?></button>
         </div>
 </form>
 <?php

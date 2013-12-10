@@ -3,8 +3,8 @@ function wpas_add_app_option()
 {
 ?>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-	jQuery.fn.changeTheme = function (theme_name) {
+jQuery(document).ready(function($) {
+	$.fn.changeTheme = function (theme_name) {
                 new_url = 'http://jqueryui.com/resources/images/themeGallery/theme_90_';
                 if(theme_name == 'mint-choc')
                 {
@@ -36,112 +36,122 @@ jQuery(document).ready(function() {
                 }
                 new_url += theme_name;
                 new_url += '.png';
-                jQuery('#theme_url').attr("src",new_url);
-                jQuery('#theme_url').load();
+                $('#theme_url').attr("src",new_url);
+                $('#theme_url').load();
 	}
-        jQuery('#ao_modify_navigation_menus').click(function() {
-                if(jQuery(this).attr('checked'))
+        $('#ao_modify_navigation_menus').click(function() {
+                if($(this).attr('checked'))
                 {
-			jQuery('#support-cust-nav-div').show();
+			$('#support-cust-nav-div').show();
                 }
                 else
                 {
-			jQuery('#support-cust-nav-div').hide();
+			$('#support-cust-nav-div').hide();
                 }
         });
-        jQuery('#ao_force_dashboard_to_column').click(function() {
-                if(jQuery(this).attr('checked'))
+        $('#ao_force_dashboard_to_column').click(function() {
+                if($(this).attr('checked'))
                 {
-			jQuery('#ao_force_col_div').show();
+			$('#ao_force_col_div').show();
                 }
                 else
                 {
-			jQuery('#ao_force_col_div').hide();
+			$('#ao_force_col_div').hide();
                 }
         });
-
-	jQuery('#ao_theme_type').click(function() {
-                theme_name = jQuery(this).find('option:selected').val();
-		jQuery(this).changeTheme(theme_name);
+        $('#ao_set_uitheme').click(function() {
+                if($(this).attr('checked'))
+                {
+			$('#ao_theme_type_div').show();
+                }
+                else
+                {
+			$('#ao_theme_type_div').hide();
+			$('#ao_theme_type').val('');
+                }
+        });
+	$('#ao_theme_type').click(function() {
+                theme_name = $(this).find('option:selected').val();
+		$(this).changeTheme(theme_name);
         }); 
 });
 </script>
 	<div class="row-fluid" style="display:none;" id="edit-btn-div">
 	<div id="app-edit-btn">
         <button class="btn  btn-primary pull-right" id="edit-option" name="Edit" type="submit" href="#">
-        <i class="icon-edit"></i>Edit</button>
+        <i class="icon-edit"></i><?php _e("Edit","wpas"); ?></button>
         </div>
 	</div>
 	<form action="" method="post" id="option-form" class="form-horizontal">
 	<div class="tabbable">
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="#tab1" data-toggle="tab">App Info</a></li>
-		<li><a href="#tab2" data-toggle="tab">Navigation</a></li>
-		<li><a href="#tab3" data-toggle="tab">Dashboards</a></li>
-		<li><a href="#tab4" data-toggle="tab">Toolbar</a></li>
-		<li><a href="#tab5" data-toggle="tab">Login Screen</a></li>
-		<li><a href="#tab6" data-toggle="tab">Theme</a></li>
-		<li><a href="#tab7" data-toggle="tab">Footer</a></li>
-		<li><a href="#tab8" data-toggle="tab">Mail</a></li>
+		<li class="active"><a href="#tab1" data-toggle="tab"><?php _e("App Info","wpas"); ?></a></li>
+		<li><a href="#tab2" data-toggle="tab"><?php _e("Navigation","wpas"); ?></a></li>
+		<li><a href="#tab3" data-toggle="tab"><?php _e("Dashboards","wpas"); ?></a></li>
+		<li><a href="#tab4" data-toggle="tab"><?php _e("Toolbar","wpas"); ?></a></li>
+		<li><a href="#tab5" data-toggle="tab"><?php _e("Login Screen","wpas"); ?></a></li>
+		<li><a href="#tab6" data-toggle="tab"><?php _e("Display Options","wpas"); ?></a></li>
+		<li><a href="#tab7" data-toggle="tab"><?php _e("Footer","wpas"); ?></a></li>
+		<li><a href="#tab8" data-toggle="tab"><?php _e("Mail","wpas"); ?></a></li>
 	</ul>
 	<input type="hidden" value="" name="app" id="app">	
 	<div class="tab-content">
-	<div class="row-fluid"><div class="alert alert-info pull-right"><a class="icon-info-sign" data-placement="bottom" href="#" rel="tooltip" title="Settings page offers quick configuration of some of the features of your application."> HELP</a></div></div>
+	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Settings page offers quick configuration of some of the features of your application.","wpas"); ?>"> <?php _e("HELP","wpas"); ?></a></div></div>
 
 			<div class="tab-pane active" id="tab1">
 					<div class="control-group row-fluid">
-							<label class="control-label span3">Domain Name</label>
+							<label class="control-label span3"><?php _e("Domain Name","wpas"); ?></label>
 							 <div class="controls span8">
-								 <input class="input-xlarge" name="ao_domain" id="ao_domain" type="text" placeholder="e.g. example.com" value="" >
-								 <a href="#" style="cursor: help;" title="Enter your domain name. ">
+								 <input class="input-xlarge" name="ao_domain" id="ao_domain" type="text" placeholder="<?php _e("e.g. example.com","wpas"); ?>" value="" >
+								 <a href="#" style="cursor: help;" title="<?php _e("Enter your domain name.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3">Site Name</label>
+							<label class="control-label span3"><?php _e("Site Name","wpas"); ?></label>
 							 <div class="controls span8">
-								 <input class="input-xlarge" name="ao_blog_name" id="ao_blog_name" type="text" placeholder="e.g. My WordPress Blog" value="" >
-								<a href="#" style="cursor: help;" title="Enter your blog's title. ">
+								 <input class="input-xlarge" name="ao_blog_name" id="ao_blog_name" type="text" placeholder="<?php _e("e.g. My WordPress Blog","wpas");?>" value="" >
+								<a href="#" style="cursor: help;" title="<?php _e("Enter your blog's title.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</div>
 					</div>	
 					<div class="control-group row-fluid">
-							<label class="control-label span3">Application Desc</label>
+							<label class="control-label span3"><?php _e("Application Desc","wpas"); ?></label>
 							 <div class="controls span8">
-								 <textarea class="input-xlarge" rows="4" name="ao_app_desc" id="ao_app_desc" placeholder="e.g. Product List Application" value="" ></textarea>
-								 <a href="#" style="cursor: help;" title="Enter a brief description of the application">
+								 <textarea class="input-xlarge" rows="4" name="ao_app_desc" id="ao_app_desc" placeholder="<?php _e("e.g. Product List Application","wpas"); ?>" value="" ></textarea>
+								 <a href="#" style="cursor: help;" title="<?php _e("Enter a brief description of the application","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3">Application Version</label>
+							<label class="control-label span3"><?php _e("Application Version","wpas"); ?></label>
 							 <div class="controls span8">
-								 <input class="input-xlarge" name="ao_app_version" id="ao_app_version" type="text" placeholder="e.g 1.0.0" value="" >
-								 <a href="#" style="cursor: help;" title="Enter the application's version number.">
+								 <input class="input-xlarge" name="ao_app_version" id="ao_app_version" type="text" placeholder="<?php _e("e.g 1.0.0","wpas"); ?>" value="" >
+								 <a href="#" style="cursor: help;" title="<?php _e("Enter the application's version number.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3">Author</label>
+							<label class="control-label span3"><?php _e("Author","wpas"); ?></label>
 							 <div class="controls span8">
-								 <input class="input-xlarge" name="ao_author" id="ao_author" type="text" placeholder="Name Of The Plugin Author" value="" >
-								 <a href="#" style="cursor: help;" title="Name of the application author.">
+								 <input class="input-xlarge" name="ao_author" id="ao_author" type="text" placeholder="<?php _e("Name Of The Plugin Author","wpas"); ?>" value="" >
+								 <a href="#" style="cursor: help;" title="<?php _e("Name of the application author.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3">Author Site Url</label>
+							<label class="control-label span3"><?php _e("Author Site Url","wpas"); ?></label>
 							 <div class="controls span8">
-								 <input class="input-xlarge" name="ao_author_url" id="ao_author_url" type="text" placeholder="e.g. http://example.com" value="" >
-								 <a href="#" style="cursor: help;" title="URI of the application author.">
+								 <input class="input-xlarge" name="ao_author_url" id="ao_author_url" type="text" placeholder="<?php _e("e.g. http://example.com","wpas"); ?>" value="" >
+								 <a href="#" style="cursor: help;" title="<?php _e("URI of the application author.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>                  
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3">License Text</label>
+							<label class="control-label span3"><?php _e("License Text","wpas"); ?></label>
 							 <div class="controls span8">
-								 <textarea class="input-xlarge" rows="10" name="ao_license_text" id="ao_license_text" readonly placeholder="This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License, version 2, as published by the Free Software Foundation.&#013 &#013 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&#013 &#013You should have received a copy of the GNU General Public License  along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA"></textarea>
-								 <a href="#" style="cursor: help;" title="information about licensing for the application">
+								 <textarea class="input-xlarge" rows="10" name="ao_license_text" id="ao_license_text" readonly placeholder="<?php _e("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License, version 2, as published by the Free Software Foundation.&#013 &#013 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&#013 &#013You should have received a copy of the GNU General Public License  along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA","wpas"); ?>"></textarea>
+								 <a href="#" style="cursor: help;" title="<?php _e("information about licensing for the application","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
@@ -150,9 +160,9 @@ jQuery(document).ready(function() {
 					<div class="row-fluid">
 					<label class="control-label span1"></label>
 					<div class="control-group">
-							<label class="checkbox">Customize Navigation menus
+							<label class="checkbox"><?php _e("Customize Navigation menus","wpas"); ?>
 									<input type="checkbox" name="ao_modify_navigation_menus" id="ao_modify_navigation_menus" value="1">
-									<a href="#" style="cursor: help;" title="Allows to display or remove menus.">
+									<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove menus.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
@@ -162,65 +172,65 @@ jQuery(document).ready(function() {
 					<div class="controls span7">
 					<div id="support-cust-nav-div" style="display:none;">
 					<div class="control-group" id="ao_dashboard_on_div">
-							<label class="checkbox span8">Display Dashboard menu
+							<label class="checkbox span8"><?php _e("Display Dashboard menu","wpas"); ?>
 									<input type="checkbox" name="ao_dashboard_on" id="ao_dashboard_on" value="1">
-								  <a href="#" style="cursor: help;" title="Allows to display or remove the dashboard menu.">
+								  <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the dashboard menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_posts_on_div">
-							<label class="checkbox span8">Display Posts menu
+							<label class="checkbox span8"><?php _e("Display Posts menu","wpas"); ?>
 									<input type="checkbox" name="ao_posts_on" id="ao_posts_on" value="1">
-								  <a href="#" style="cursor: help;" title="Allows to display or remove the posts menu.">
+								  <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the posts menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_media_on_div">
-							<label class="checkbox span8">Display Media menu
+							<label class="checkbox span8"><?php _e("Display Media menu","wpas"); ?>
 									<input type="checkbox" name="ao_media_on" id="ao_media_on" value="1">
-								  <a href="#" style="cursor: help;" title="Allows to display or remove the media menu.">
+								  <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the media menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_links_on_div">
-							<label class="checkbox span8">Display Links menu
+							<label class="checkbox span8"><?php _e("Display Links menu","wpas"); ?>
 									<input type="checkbox" name="ao_links_on" id="ao_links_on" value="1">
-								  <a href="#" style="cursor: help;" title="Allows to display or remove the links menu.">
+								  <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the links menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_pages_on_div">
-							<label class="checkbox span8">Display Pages menu
+							<label class="checkbox span8"><?php _e("Display Pages menu","wpas"); ?>
 									<input type="checkbox" name="ao_pages_on" id="ao_pages_on" value="1">
-								  <a href="#" style="cursor: help;" title="Allows to display or remove the pages menu.">
+								  <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the pages menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_appearance_on_div">
-							<label class="checkbox span8">Display Appearance menu
+							<label class="checkbox span8"><?php _e("Display Appearance menu","wpas"); ?>
 										<input type="checkbox" name="ao_appearance_on" id="ao_appearance_on" value="1">
-								  <a href="#" style="cursor: help;" title="Allows to display or remove the appearance menu.">
+								  <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the appearance menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_tools_on_div">
-							<label class="checkbox span8">Display Tools menu
+							<label class="checkbox span8"><?php _e("Display Tools menu","wpas"); ?>
 										<input type="checkbox" name="ao_tools_on" id="ao_tools_on" value="1">
-								   <a href="#" style="cursor: help;" title="Allows to display or remove the tools menu.">
+								   <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the tools menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_users_on_div">
-							<label class="checkbox span8">Display Users menu
+							<label class="checkbox span8"><?php _e("Display Users menu","wpas"); ?>
 										<input type="checkbox" name="ao_users_on" id="ao_users_on" value="1">
-								   <a href="#" style="cursor: help;" title="Allows to display or remove the users menu.">
+								   <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the users menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
 					<div class="control-group row-fluid" id="ao_comments_on_div">
-							<label class="checkbox span8">Display Comments menu
+							<label class="checkbox span8"><?php _e("Display Comments menu","wpas"); ?>
 										  <input type="checkbox" name="ao_comments_on" id="ao_comments_on" value="1">
-								   <a href="#" style="cursor: help;" title="Allows to display or remove the comments menu.">
+								   <a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove the comments menu.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							</label>
 					</div>
@@ -235,30 +245,30 @@ jQuery(document).ready(function() {
 				<label class="control-label span1"></label>
 						<div class="controls span8">
 						<div class="control-group row-fluid">
-					<label class="checkbox">Remove all default dashboard widgets
+					<label class="checkbox"><?php _e("Remove all default dashboard widgets","wpas"); ?>
 							<input type="checkbox" name="ao_remove_std_dashboard_widgets" id="ao_remove_std_dashboard_widgets" value="1">
-					 	 <a href="#" style="cursor: help;" title="Allows to remove all the standard dashboard widgets.">
+					 	 <a href="#" style="cursor: help;" title="<?php _e("Allows to remove all the standard dashboard widgets.","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
 					 </label>
 				</div>
 				<div class="control-group row-fluid">
-						 <label class="checkbox">Force the Number of Columns in Dashboard
+						 <label class="checkbox"><?php _e("Force the Number of Columns in Dashboard","wpas"); ?>
 						<input type="checkbox" name="ao_force_dashboard_to_column" id="ao_force_dashboard_to_column" value="1">
-					  	<a href="#" style="cursor: help;" title="Forces the number of columns in the admin dashboard widgets.">
+					  	<a href="#" style="cursor: help;" title="<?php _e("Forces the number of columns in the admin dashboard widgets.","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
 					  </label>
 				</div>
 				<div class="row-fluid  control-group" id="ao_force_col_div" style="display:none;">
 					 
 							<select id="ao_force_dash_column_num" name="ao_force_dash_column_num" class="input-medium">
-							<option value="">Please select</option>
-							<option value="1">1 column</option>
-							<option value="2">2 columns</option>
-							<option value="3">3 columns</option>
-							<option value="4">4 columns</option>
-							<option value="5">5 columns</option>
+							<option value=""><?php _e("Please select","wpas"); ?></option>
+							<option value="1"><?php _e("1 column","wpas"); ?></option>
+							<option value="2"><?php _e("2 columns","wpas"); ?></option>
+							<option value="3"><?php _e("3 columns","wpas"); ?></option>
+							<option value="4"><?php _e("4 columns","wpas"); ?></option>
+							<option value="5"><?php _e("5 columns","wpas"); ?></option>
 							</select>
-					<a href="#" style="cursor: help;" title="Select the number of columns in the admin dashboard widgets.">	<i class="icon-info-sign"></i></a>
+					<a href="#" style="cursor: help;" title="<?php _e("Select the number of columns in the admin dashboard widgets.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 				</div>			
 				</div> <!--controls -->
 				</div><!--row -->	            
@@ -268,16 +278,16 @@ jQuery(document).ready(function() {
 				<label class="control-label span1"></label>
 					<div class="controls span8">
 					<div class="control-group row-fluid">
-						<label class="control-label span3">Modify Toolbar </label>
+						<label class="control-label span3"><?php _e("Modify Toolbar ","wpas"); ?></label>
 						<div class="span8">
 							<select id="ao_modify_admin_bar" name="ao_modify_admin_bar" class="input-large">
-							<option value="">Please select</option>
-							<option value="1">Remove both toolbars</option>
-							<option value="2">Remove backend toolbar</option>
-							<option value="3">Remove frontend toolbar</option>
-							<option value="4">Remove all standard admin toolbar menus</option>
+							<option value=""><?php _e("Please select","wpas"); ?></option>
+							<option value="1"><?php _e("Remove both toolbars","wpas"); ?></option>
+							<option value="2"><?php _e("Remove backend toolbar","wpas"); ?></option>
+							<option value="3"><?php _e("Remove frontend toolbar","wpas"); ?></option>
+							<option value="4"><?php _e("Remove all standard admin toolbar menus","wpas"); ?></option>
 							</select>
-							<a href="#" style="cursor: help;" title="Remove both toolbars: Allows to remove admin toolbar from the backend and the front side of your website. Remove backend toolbar: Allows to remove admin toolbar from the backend. Remove frontend toolbar: Allows to remove admin toolbar from the front side of your website. Remove all standard admin toolbar menus: Allows to remove all default admin toolbar menus.">	<i class="icon-info-sign"></i></a>
+							<a href="#" style="cursor: help;" title="<?php _e("Remove both toolbars: Allows to remove admin toolbar from the backend and the front side of your website. Remove backend toolbar: Allows to remove admin toolbar from the backend. Remove frontend toolbar: Allows to remove admin toolbar from the front side of your website. Remove all standard admin toolbar menus: Allows to remove all default admin toolbar menus.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 						</div>	
 					</div>
 				</div><!--controls -->
@@ -285,18 +295,18 @@ jQuery(document).ready(function() {
 		</div><!--tab -->
 		<div class="tab-pane" id="tab5">
 				<div class="control-group row-fluid">
-					<label class="control-label span3">Login logo image url</label>
+					<label class="control-label span3"><?php _e("Login logo image url","wpas"); ?></label>
 					<div class="controls span8">
-							<input class="input-xlarge" name="ao_login_logo_url" id="ao_login_logo_url" type="text" placeholder="http://path-to-my-application-logo" value="" >
-							<a href="#" style="cursor: help;" title="Enter login logo image url for the application. It is displayed above the login box. For best results, use an image that is less than 326 pixels wide.">
+							<input class="input-xlarge" name="ao_login_logo_url" id="ao_login_logo_url" type="text" placeholder="<?php _e("http://path-to-my-application-logo","wpas"); ?>" value="" >
+							<a href="#" style="cursor: help;" title="<?php _e("Enter login logo image url for the application. It is displayed above the login box. For best results, use an image that is less than 326 pixels wide.","wpas"); ?>">
 							<i class="icon-info-sign"></i></a>
 					</div>
 				</div>
 				<div class="control-group row-fluid">
-					<label class="control-label span3">Toolbar image url</label>
+					<label class="control-label span3"><?php _e("Toolbar image url","wpas"); ?></label>
 					<div class="controls span8">
-				<input class="input-xlarge" name="ao_admin_logo_url" id="ao_admin_logo_url" type="text" placeholder="http://path-to-my-application-toolbar-logo" value="" >
-						<a href="#" style="cursor: help;" title="Enter toolbar image url for the application. It is displayed in the admin toolbar. For best results, use an image that is 20x20 pixels.">
+				<input class="input-xlarge" name="ao_admin_logo_url" id="ao_admin_logo_url" type="text" placeholder="<?php _e("http://path-to-my-application-toolbar-logo","wpas"); ?>" value="" >
+						<a href="#" style="cursor: help;" title="<?php _e("Enter toolbar image url for the application. It is displayed in the admin toolbar. For best results, use an image that is 20x20 pixels.","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
 					</div>
 				</div>
@@ -304,37 +314,68 @@ jQuery(document).ready(function() {
 		</div>
 		<div class="tab-pane" id="tab6">
 		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox"><?php _e("Remove Filters","wpas"); ?>
+			<input type="checkbox" name="ao_remove_colfilter" id="ao_remove_colfilter" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove filters and colums component.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox"><?php _e("Remove Operations","wpas"); ?>
+			<input type="checkbox" name="ao_remove_operations" id="ao_remove_operations" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove operations page and its button.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox"><?php _e("Set jQuery UI Theme","wpas"); ?>
+			<input type="checkbox" name="ao_set_uitheme" id="ao_set_uitheme" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove menus.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid" id="ao_theme_type_div" style="display:none;">
 		<div class="span1"></div>
 		<div class="span10">
 			<table style="background-color:transparent !important;">
-              <tr><td>Theme Type</td>
+              <tr><td><?php _e("Theme Type","wpas"); ?></td>
                       <td> <select name="ao_theme_type" id="ao_theme_type">
-                        <option value="smoothness" selected="selected">Smoothness</option>
-                        <option value="ui-lightness">UI lightness</option>
-                        <option value="ui-darkness">UI darkness</option>
-                        <option value="start">Start</option>
-                        <option value="redmond">Redmond</option>
-                        <option value="sunny">Sunny</option>
-                        <option value="overcast">Overcast</option>
-                        <option value="le-frog">Le Frog</option>
-                        <option value="flick">Flick</option>
-                        <option value="pepper-grinder">Pepper Grinder </option>
-                        <option value="eggplant">Eggplant</option>
-                        <option value="dark-hive">Dark Hive</option>
-                        <option value="cupertino">Cupertino</option>
-                        <option value="south-street">South Street</option>
-                        <option value="blitzer">Blitzer</option>
-                        <option value="humanity">Humanity</option>
-                        <option value="hot-sneaks">Hot Sneaks</option>
-                        <option value="excite-bike">Excite Bike</option>
-                        <option value="vader">Vader</option>
-                        <option value="dot-luv">Dot Luv</option>
-                        <option value="mint-choc">Mint Choc</option>
-                        <option value="black-tie">Black Tie</option>
-                        <option value="trontastic">Trontastic</option>
-                        <option value="swanky-purse">Swanky Purse</option>
+                        <option value="" selected="selected"><?php _e("Please select","wpas"); ?></option>
+                        <option value="smoothness"><?php _e("Smoothness","wpas"); ?></option>
+                        <option value="ui-lightness"><?php _e("UI lightness","wpas"); ?></option>
+                        <option value="ui-darkness"><?php _e("UI darkness","wpas"); ?></option>
+                        <option value="start"><?php _e("Start","wpas"); ?></option>
+                        <option value="redmond"><?php _e("Redmond","wpas"); ?></option>
+                        <option value="sunny"><?php _e("Sunny","wpas"); ?></option>
+                        <option value="overcast"><?php _e("Overcast","wpas"); ?></option>
+                        <option value="le-frog"><?php _e("Le Frog","wpas"); ?></option>
+                        <option value="flick"><?php _e("Flick","wpas"); ?></option>
+                        <option value="pepper-grinder"><?php _e("Pepper Grinder ","wpas"); ?></option>
+                        <option value="eggplant"><?php _e("Eggplant","wpas"); ?></option>
+                        <option value="dark-hive"><?php _e("Dark Hive","wpas"); ?></option>
+                        <option value="cupertino"><?php _e("Cupertino","wpas"); ?></option>
+                        <option value="south-street"><?php _e("South Street","wpas"); ?></option>
+                        <option value="blitzer"><?php _e("Blitzer","wpas"); ?></option>
+                        <option value="humanity"><?php _e("Humanity","wpas"); ?></option>
+                        <option value="hot-sneaks"><?php _e("Hot Sneaks","wpas"); ?></option>
+                        <option value="excite-bike"><?php _e("Excite Bike","wpas"); ?></option>
+                        <option value="vader"><?php _e("Vader","wpas"); ?></option>
+                        <option value="dot-luv"><?php _e("Dot Luv","wpas"); ?></option>
+                        <option value="mint-choc"><?php _e("Mint Choc","wpas"); ?></option>
+                        <option value="black-tie"><?php _e("Black Tie","wpas"); ?></option>
+                        <option value="trontastic"><?php _e("Trontastic","wpas"); ?></option>
+                        <option value="swanky-purse"><?php _e("Swanky Purse","wpas"); ?></option>
                         </select>
-                        <a href="#" style="cursor: help;" title="Whether this entity is intended to be used publicly either via the admin interface or by front-end users. -false- Entity is not intended to be used publicly and should generally be unavailable in the admin interface and on the front end unless explicitly planned for elsewhere. -true - Entity is intended for public use. This includes on the front end and in the admin interface.">
+                        <a href="#" style="cursor: help;" title="<?php _e("Allows to set a jQuery UI theme for the frontend and backend.","wpas"); ?>">
                         <i class="icon-info-sign"></i> </a></td>
                         <td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td>
                         </tr>
@@ -346,7 +387,7 @@ jQuery(document).ready(function() {
 		<div class="tab-pane" id="tab7">
 			<div class="row-fluid">
 				<div class="control-group row-fluid span6">
-					<label class="">Left footer</label>
+					<label class=""><?php _e("Left footer","wpas"); ?></label>
 					 <div class="controls span8">
 <?php
         $buttons['theme_advanced_buttons1'] = 'bold,italic,underline,link,unlink';
@@ -365,12 +406,12 @@ jQuery(document).ready(function() {
 	wp_editor('',$id,$settings);
 
 ?>
-					 <a href="#" style="cursor: help;" title="Displays a message in the left hand side of the backend footer.">
+					 <a href="#" style="cursor: help;" title="<?php _e("Displays a message in the left hand side of the backend footer.","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
  	</div></div>
 
 				<div class="control-group row-fluid span6">
-					<label class="">Right footer</label>
+					<label class=""><?php _e("Right footer","wpas"); ?></label>
 					 <div class="controls span8">
 <?php
         $buttons['theme_advanced_buttons1'] = 'bold,italic,underline,link,unlink';
@@ -388,25 +429,25 @@ jQuery(document).ready(function() {
 	wp_editor('',$id,$settings);
 
 ?>
-					 <a href="#" style="cursor: help;" title="Displays a short message such as application version number in the right hand side of the backend footer.">
+					 <a href="#" style="cursor: help;" title="<?php _e("Displays a short message such as application version number in the right hand side of the backend footer.","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
 					 </div>
 				</div></div>
 		</div>
 		<div class="tab-pane" id="tab8">
 				<div class="control-group row-fluid">
-					<label class="control-label span3">Mail FROM email address</label>
+					<label class="control-label span3"><?php _e("Mail FROM email address","wpas"); ?></label>
 					 <div class="controls span8">
-						 <input class="input-xlarge" name="ao_mail_from_email" id="ao_mail_from_email" type="text" placeholder="e.g. info@example.com" value="" >
-						 <a href="#" style="cursor: help;" title="Sets the FROM email address for the application wide emails">
+						 <input class="input-xlarge" name="ao_mail_from_email" id="ao_mail_from_email" type="text" placeholder="<?php _e("e.g. info@example.com","wpas"); ?>" value="" >
+						 <a href="#" style="cursor: help;" title="<?php _e("Sets the FROM email address for the application wide emails","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
 					 </div>
 				</div>
 				<div class="control-group row-fluid">
-					<label class="control-label span3">Mail FROM name</label>
+					<label class="control-label span3"><?php _e("Mail FROM name","wpas"); ?></label>
 					 <div class="controls span8">
-						 <input class="input-xlarge" name="ao_mail_from_name" id="ao_mail_from_name" type="text" placeholder="e.g. Webmaster" value="" >
-						 <a href="#" style="cursor: help;" title="Sets the name of the sender for the application wide emails.">
+						 <input class="input-xlarge" name="ao_mail_from_name" id="ao_mail_from_name" type="text" placeholder="<?php _e("e.g. Webmaster","wpas"); ?>" value="" >
+						 <a href="#" style="cursor: help;" title="<?php _e("Sets the name of the sender for the application wide emails.","wpas"); ?>">
 						<i class="icon-info-sign"></i></a>
 					 </div>
 				</div>
@@ -415,9 +456,9 @@ jQuery(document).ready(function() {
 </div>
 	<div class="control-group row-fluid">
                    <button class="btn  btn-danger layout-buttons" id="cancel" name="cancel" type="button"><i class="icon-ban-circle">
-</i>Cancel</button>
+</i><?php _e("Cancel","wpas"); ?></button>
                    <button class="btn  btn-primary pull-right layout-buttons" id="update-option" type="submit" value="Update">
-                   <i class="icon-save"></i>Update</button>
+                   <i class="icon-save"></i><?php _e("Update","wpas"); ?></button>
     </div>
 
 </form>

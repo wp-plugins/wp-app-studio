@@ -2,102 +2,151 @@
 
 add_action( 'admin_init', 'wpas_export');
 
-function wpas_curl_request($method,$fields)
+function wpas_is_allowed()
 {
+	//for now wpas only is allowed to administrator , will add a role and cap next version
+	if (!current_user_can('design_wpas'))
+	{
+		wp_die(__("You do not have permission to access.","wpas"));
+	}
+}
+function wpas_remote_request($method,$fields)
+{
+	$args = array(
+		'body' => $fields
+	);
+
 	if($method == 'check_status')
 	{
 		$url = WPAS_SSL_URL . "/check_status.php";
 	}
-	else
+	elseif($method == 'check' || $method == 'generate')
 	{
 		$url = WPAS_SSL_URL . "/check_reg.php";
 	}
-	$c = curl_init();
-	curl_setopt($c, CURLOPT_URL, $url);
-	if($method == 'generate')
+	$resp = wp_remote_post($url,$args);
+	if($resp && !is_wp_error($resp) && $resp['response']['code'] == 200) 
 	{
-		curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
-	}
-	curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($c, CURLOPT_POST, 1);
-	curl_setopt($c, CURLOPT_POSTFIELDS, $fields);
-	$result = curl_exec($c);
-	curl_close($c);
-	if($result)
-	{
-		$xml = simplexml_load_string($result);
-		return $xml;
+		if(isset($resp['body']) && strlen($resp['body']) > 0)
+		{
+			libxml_use_internal_errors(true);
+			$xml_resp = simplexml_load_string($resp['body']);
+			if(count(libxml_get_errors()) == 0 && $xml_resp !== false)
+			{
+				return $xml_resp;
+			} 
+		}
 	}
 	return false;
 }
-
-
-function wpas_export(){
-        if(isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['app']))
+function wpas_export()
+{
+        if(isset($_GET['export']) && $_GET['export'] == 1 && !empty($_GET['app']))
         {
-                $app_key = $_GET['app'];
-		$app = wpas_get_app($app_key);
-		$now = date("Y-m-d-H-i-s");
-                $fileName = sanitize_file_name($app['app_name']. "-" . $now .'.wpas');
-                $output = gzdeflate(base64_encode(serialize($app)),9);
-                header("Expires: Mon, 21 Nov 1997 05:00:00 GMT");    // Date in the past
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                header("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
-                header("Pragma: no-cache");                          // HTTP/1.0
-                header('Content-type: application/wpas');
-                header('Content-Disposition: attachment; filename='.$fileName);
-                header('Content-Description: File Transfer' );
-                print($output);
-                exit;
+		wpas_is_allowed();
+		check_admin_referer('wpas_export');
+		$app = wpas_get_app($_GET['app']);
+		if($app !== false && !empty($app))
+		{
+			$now = date("Y-m-d-H-i-s");
+			$fileName = sanitize_file_name($app['app_name']. "-" . $now .'.wpas');
+			$output = gzdeflate(base64_encode(serialize($app)),9);
+			header("Expires: Mon, 21 Nov 1997 05:00:00 GMT");    // Date in the past
+			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+			header("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
+			header("Pragma: no-cache");                          // HTTP/1.0
+			header('Content-type: application/wpas');
+			header('Content-Disposition: attachment; filename='.$fileName);
+			header('Content-Description: File Transfer' );
+			print($output);
+			exit;
+		}
         }
 }
-
 function wpas_import_app($app_new)
 {
 	$status = "";
         echo '<div class="wpas">';
         wpas_branding_header();
-        if(!empty($_FILES['wpasimport']['size'])){
+        if(isset($_FILES['wpasimport']) && !empty($_FILES['wpasimport']['size']))
+	{
+		check_admin_referer('wpas_import_file','wpas_import_nonce');
                 $overrides = array('action'=>'wpas_import', 'mimes'=> array('wpas' => 'application/wpas'),'test_form' => false);
-                $_POST['action'] = 'wpas_import';
                 $upload = wp_handle_upload($_FILES['wpasimport'], $overrides);
-                if(isset($upload['error']))
+		if(!empty($upload['error']))
                 {
                         echo wpas_import_page($upload['error']);
                 }
-                elseif(!empty($upload['file']))
+                elseif(isset($upload['file']) && !empty($upload['file']))
                 {
                         $data = file_get_contents($upload['file']);
-                        $data = unserialize(base64_decode(gzinflate($data)));
-                        foreach($app_new as $app_value)
-                        {
-                                if($data['app_name'] == $app_value['app_name'])
-                                {
-					if($data['modified_date'] == $app_value['modified_date'])
-					{
-						$status = "dupe";
-						break;
-					}
-					else
-					{
-						$status = "dupe_diff_date";
-					}
-                                }
-                        }
-			if($status == "dupe")
+			$inflated_data = @gzinflate($data);
+			if($inflated_data !== false)
 			{
-				echo wpas_import_page('dupe');
-				exit;
-			}
-			elseif($status == "dupe_diff_date")
-			{
-                        	echo wpas_import_page('dupe_diff_date');
+                        	$data = unserialize(base64_decode($inflated_data));
 			}
 			else
 			{
-                        	echo wpas_import_page('success');
+				$status = "error_data";
 			}
-			wpas_update_app($data,$data['app_id'],'new');
+			if($status != "error_data" && !empty($data) && !empty($data['app_name']) && !empty($data['app_id']) && strtotime($data['modified_date'] ))
+			{
+				$status = "new";
+				if(!empty($app_new))
+				{
+					foreach($app_new as $app_key => $app_value)
+					{
+						if($data['app_id'] == $app_key)
+						{
+							if($data['modified_date'] == $app_value['modified_date'])
+							{
+								$status = "dupe";
+								break;
+							}
+							else
+							{
+						
+								$status = "dupe_diff_date";
+								break;
+							}
+						}
+						elseif($data['app_name'] == $app_value['app_name'])
+						{
+							$status = "new_with_date";
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				$status = "error_data";
+			}
+			switch ($status) {
+				case 'dupe':
+					echo wpas_import_page('dupe');
+					break;
+				case 'dupe_diff_date':
+					//overwrite
+					wpas_update_app($data,$data['app_id'],'dupe');
+					echo wpas_import_page('dupe_diff_date');
+					break;
+				case 'new_with_date':
+					//overwrite
+					wpas_update_app($data,$data['app_id'],'new_with_date');
+					echo wpas_import_page('dupe_name');
+					break;
+				case 'new':
+					wpas_update_app($data,$data['app_id'],'new');
+					echo wpas_import_page('success');
+					break;
+				case 'error_data':
+					echo wpas_import_page('error_data');
+					break;
+				default:
+                			echo wpas_import_page();
+					break;
+			}
                 }
         }
         else
@@ -107,256 +156,495 @@ function wpas_import_app($app_new)
         wpas_branding_footer();
         echo '</div>';
 }
-
 function wpas_generate_app()
 {
         $alert = "";
 	$success = 0;
 	$entity_count = 0;
-        $app_reg = unserialize(get_option('wpas_passcode_email'));
-        $submits = unserialize(get_option("wpas_apps_submit"));
-
-        if(isset($_POST['passcode']))
+	$submits = Array();
+	$app_reg = Array();
+	if(get_option('wpas_passcode_email') !== false)
+	{
+        	$app_reg = unserialize(get_option('wpas_passcode_email'));
+	}
+	if(get_option('wpas_apps_submit') !== false)
+	{
+        	$submits = unserialize(get_option('wpas_apps_submit'));
+	}
+	
+	if(!empty($_POST) && (empty($_POST['email']) || !is_email($_POST['email'])))
+	{
+		$alert = __("Error: Please enter valid email.","wpas");
+		$success = 0;
+	}
+	elseif(!empty($_POST) && empty($_POST['passcode']))
+	{
+		$alert = __("Error: Please enter passcode.","wpas");
+		$success = 0;
+	}
+	elseif(!empty($_POST) && (empty($_POST['app']) || wpas_get_app(sanitize_text_field($_POST['app'])) === false))
+	{
+		$alert = __("Error: Please select an application to generate.","wpas");
+		$success = 0;
+	}
+        elseif(!empty($_POST))
         {
+		check_admin_referer('wpas_generate_app','wpas_generate_nonce');
+		$passcode = sanitize_text_field($_POST['passcode']);
+		$email = sanitize_email($_POST['email']); 
+		$app_key = sanitize_text_field($_POST['app']);
 		if(isset($_POST['save_passcode']) && $_POST['save_passcode'] == 1)
 		{
-                        $app_reg = Array('passcode'=>$_POST['passcode'],'email'=>$_POST['email']);
+                        $app_reg = Array('passcode' => $passcode,
+					'email' => $email);
                         update_option('wpas_passcode_email',serialize($app_reg));
 		}
-		$myapp_id = $_POST['app'];
-                $myapp = wpas_get_app($myapp_id);
-		$check_field = 0;
-		$no_setting = 0;
-		$has_entity = 0;
-		$empty_panel = 0;
-		$empty_help = 0;
-		$attrs_left = 0;
-		$fields_string = "";
 
-
-		if(!isset($myapp['option']) || empty($myapp['option']))
-		{
-			$no_setting = 1;
-		}
-		else
-		{
-			//check if entities have at least one field
-			foreach($myapp['entity'] as $myentity)
-			{
-				if($myentity['ent-name'] == 'post')
-				{
-					if(!empty($myentity['field']))
-					{
-						$entity_count++;
-						$no_post = 1;
-					}
-					else
-					{
-						$no_post = 0;
-					}
-				}
-				elseif($myentity['ent-name'] == 'page')
-				{
-					if(!empty($myentity['field']))
-					{
-						$entity_count++;
-						$no_page = 1;
-					}
-					else
-					{
-						$no_page = 0;
-					}
-				}
-				else
-				{
-					if(empty($myentity['field']))
-					{
-						$ent_name = $myentity['ent-label'];
-						$check_field = 1;
-						break;
-					}
-					$entity_count++;
-					$has_entity = 1;
-				}
-				
-				$layout_attr_count =0;
-				//check if layout has empty tabs or empty acc
-				if(isset($myentity['layout']))
-				{
-					foreach($myentity['layout'] as $mylayout)
-					{
-						if(isset($mylayout['tabs']))
-						{
-							foreach($mylayout['tabs'] as $mytab)
-							{
-								if($mytab['attr'] == "")
-								{
-									$empty_panel_ent_name = $myentity['ent-label'];
-									$empty_panel = 1;
-									break;
-								}
-								else
-								{
-									$my_attrs = explode(",",$mytab['attr']);
-									$layout_attr_count = $layout_attr_count + count($my_attrs);
-								}
-							}
-						}
-						if(isset($mylayout['accs']))
-						{
-							foreach($mylayout['accs'] as $myacc)
-							{
-								if($myacc['attr'] == "")
-								{
-									$empty_panel_ent_name = $myentity['ent-label'];
-									$empty_panel = 1;
-									break;
-								}
-								else
-								{
-									$my_attrs = explode(",",$myacc['attr']);
-									$layout_attr_count = $layout_attr_count + count($my_attrs);
-								}
-							}
-						}	
-					}
-				}
-				if(isset($myentity['field']))
-				{
-					$ent_attr_count = count($myentity['field']);
-				}
-				if(!empty($myentity['layout']) && $layout_attr_count < $ent_attr_count)
-				{
-					$attrs_left = 1;
-					$empty_panel_ent_name = $myentity['ent-label'];
-					break;
-				}
-			}
-			if(isset($myapp['help']))
-			{
-				foreach($myapp['help'] as $myhelp)
-				{
-					if(!is_array($myhelp['field']) && empty($myhelp['field']))
-					{
-						$empty_help = 1;
-						$empty_help_name = $myhelp['help-object_name'];
-						break;
-					}
-				}
-			}
-		}
-
-		if($no_setting == 1)
-		{
-                        $alert = "Error: You must fill out the domain name field in the application's settings app info tab.";
-			$success = 0;
-		}
-		elseif($check_field == 0 && $no_post == 0 && $no_page == 0 && $has_entity == 0)
-		{
-                        $alert = "Error: You must have at least one entity and each entity must have at least one attribute.";
-			$success = 0;
-		}
-		elseif($check_field == 1)
-		{
-                        $alert = "Error: You must have at least one entity and each entity must have at least one attribute. Please add at least one attribute to: " . $ent_name;
-			$success = 0;
-		}
-		elseif($empty_panel == 1)
-		{
-                        $alert = "Error: You must have at least one attribute in each panel in " . $empty_panel_ent_name . " entity layout.";
-			$success = 0;
-		}
-		elseif($attrs_left == 1)
-		{
-                        $alert = "Error: You must assign all attributes to a panel in " . $empty_panel_ent_name . " entity layout.";
-			$success = 0;
-		}
-		elseif($empty_help == 1)
-		{
-                        $alert = "Error: You must assign tabs to the help attached to " . $empty_help_name . ".";
-			$success = 0;
-		}
-                else
-                {
-                        $postfields = array(
-                                        'passcode' => $_POST['passcode'],
-                                        'email' => $_POST['email'],
-					'method' => 'check',
-					'entity_count' =>  $entity_count,
-					'app_id' => $myapp_id,
-                                        );
-			
-			foreach ( $postfields as $key => $value )
-			{
-                                $fields_string .= $key.'='.$value.'&';
-			}
-                        rtrim($fields_string,'&');
-                       
-			$xml = wpas_curl_request('check',$fields_string); 
-
-			if(!$xml)
-			{
-				$alert = "Error: System error, please try again later.";
-				$success = 0;
-			}
-			elseif($xml->error)
-			{
-				$alert = "Error: " . (string) $xml->errormsg;
-				$success = 0;
-			}
-			elseif($xml->success)
-			{
-				$token = (string) $xml->token;
-				$myfields = array(
-					'token' => $token,
-					'method' => 'generate',
-					'type' => (string) $xml->success,
-					'app' => gzdeflate(base64_encode(serialize($myapp))),
-					);
-				$xml1 = wpas_curl_request('generate',$myfields); 
+		$myapp = wpas_get_app($app_key);
 	
-				if(!$xml1)
+		if($myapp !== false && !empty($myapp))
+		{
+			//if app is ready to generate , alert will be empty
+			$alert = wpas_check_valid_generate($myapp);
+			if(empty($alert))
+			{
+				$entity_count = wpas_get_entity_count($myapp);
+				$postfields = array(
+						'passcode' => $passcode,
+						'email' => $email,
+						'method' => 'check',
+						'entity_count' =>  $entity_count,
+						'app_id' => $app_key,
+						);
+			
+				$xml_check = wpas_remote_request('check',$postfields); 
+	
+
+				if($xml_check === false)
 				{
-					$alert = "Error: System error, please try again later.";
+					$alert = __("Error: System error, please try again later.","wpas");
 					$success = 0;
 				}
-				elseif($xml1->error)
+				elseif(isset($xml_check->error))
 				{
-					$alert = "Error: " . (string) $xml1->errormsg;
+					$alert = __("Error:","wpas") . " " . (string) $xml_check->errormsg;
 					$success = 0;
 				}
-				elseif($xml1->success)
+				elseif(isset($xml_check->success))
 				{
-					$success = 1;
-					$new_submit['credit_used']= (string) $xml1->credit_used;
-					$new_submit['credit_left']= (string) $xml1->credit_left;
-					$new_submit['update_left']= (string) $xml1->update_left;
-					$new_submit['app_submitted']= $myapp['app_name'];
-					$new_submit['date_submit']= date("Y-m-d H:i:s");
-					$new_submit['queue_id']= (string) $xml1->queue_id;
-					$new_submit['status'] = '<a id="check-status" class="btn btn-info btn-mini" href="#'. $new_submit['queue_id'] . '">Refresh</a>';
-					$new_submit['status_link'] = '';
-					$new_submit['refresh_time'] = time();
-					$submits[] = $new_submit;
-					update_option('wpas_apps_submit',serialize($submits));
+					$token = (string) $xml_check->token;
+					$myfields = array(
+						'token' => $token,
+						'method' => 'generate',
+						'type' => (string) $xml_check->success,
+						'app' => gzdeflate(base64_encode(serialize($myapp))),
+						);
+					$xml_generate = wpas_remote_request('generate',$myfields); 
+		
+					if($xml_generate === false)
+					{
+						$alert = __("Error: System error, please try again later.","wpas");
+						$success = 0;
+					}
+					elseif(isset($xml_generate->error))
+					{
+						$alert = __("Error:","wpas") . " " . (string) $xml_generate->errormsg;
+						$success = 0;
+					}
+					elseif(isset($xml_generate->success))
+					{
+						$success = 1;
+						if(isset($xml_generate->queue_id))
+						{
+							$queue_id = sanitize_text_field($xml_generate->queue_id);
+							$new_submit['credit_used']= intval ($xml_generate->credit_used);
+							$new_submit['credit_left']= intval ($xml_generate->credit_left);
+							$new_submit['update_left']= intval ($xml_generate->update_left);
+							$new_submit['app_submitted']= $myapp['app_name'];
+							$new_submit['date_submit']= date("Y-m-d H:i:s");
+							$new_submit['queue_id']= $queue_id;
+							$new_submit['status'] = '<a id="check-status" class="btn btn-info btn-mini" href="#'. esc_attr($queue_id) . '">' . __("Refresh","wpas") . '</a>';
+							$new_submit['status_link'] = '';
+							$new_submit['refresh_time'] = time();
+							$submits[] = $new_submit;
+							update_option('wpas_apps_submit',serialize($submits));
+						}
+					}
 				}
 			}
-                }
-        }
-	elseif(isset($_POST['email']))
-	{
-                        $alert = "Error: Please enter passcode.";
-			$success = 0;
+        	}
 	}
-		
+	
         echo '<div class="wpas">';
         wpas_branding_header();
         echo wpas_generate_page($app_reg,$submits,$alert,$success);
         wpas_branding_footer();
         echo '</div>';
-
-
 }
+function wpas_check_valid_generate($myapp)
+{
+	$generate_error = 0;
+	$resp_error = Array();
+	$error_loc_name = "";
+	//generate_errors , error_loc_name
+	// 1: no_setting
+	// 2: no_entity
+	// 3: no attribute in an entity
+	// 4: emtpy panel in layout
+	// 5: not all attributes assigned to layout
+	// 6: help with no tab  
+	// 7: no unique key in entity
+	// 8: search form layout empty
+	// 9: search form not linked to any view
 
 
+	if(!isset($myapp['option']) || empty($myapp['option']))
+	{
+		$generate_error = 1;
+	}
+	elseif(!empty($myapp['entity']))
+	{
+		//check if entities have at least one field
+		$resp_error = wpas_check_entity_field($myapp['entity']);
+		$generate_error = $resp_error['generate_error'];
+		$error_loc_name = $resp_error['error_loc_name'];
+	}
+	if($generate_error == 0 && !empty($myapp['form']))
+	{	
+		$resp_error = wpas_check_search_form($myapp);
+		$generate_error = $resp_error['generate_error'];
+		$error_loc_name = $resp_error['error_loc_name'];
+		if($generate_error == 0)
+		{
+			$resp_error = wpas_check_form_rel_uniq($myapp);
+			$generate_error = $resp_error['generate_error'];
+			$error_loc_name = $resp_error['error_loc_name'];
+		}
+	}
+	if($generate_error == 0 && !empty($myapp['help']))
+	{
+		foreach($myapp['help'] as $myhelp)
+		{
+			if(!isset($myhelp['field']) || empty($myhelp['field']))
+			{
+				$generate_error = 6;
+				$error_loc_name = $myhelp['help-object_name'];
+				break;
+			}
+		}
+	}
+	switch ($generate_error)
+	{
+		case 1:
+			$alert = __("Error: You must fill out the domain name field in the application's settings app info tab.","wpas");
+			break;
+		case 2:
+			$alert = __("Error: You must have at least one entity and each entity must have at least one attribute.","wpas");
+			break;
+		case 3:
+			$alert = __("Error: You must have at least one entity and each entity must have at least one attribute. Please add at least one attribute to: ","wpas") . $error_loc_name;
+			break;
+		case 4:
+			$alert = sprintf(__('Error: You must have at least one attribute in each panel in %s entity layout.','wpas'),$error_loc_name);
+			break;
+		case 5:
+			$alert = sprintf(__('Error: You must assign all attributes to a panel in %s entity layout.','wpas'),$error_loc_name);
+			break;
+		case 6:
+			$alert = __("Error: You must assign tabs to the help attached to:","wpas") . $error_loc_name;
+			break;
+		case 7:
+			$alert = sprintf(__('Error: You must have at least one unique attribute in each entity. Please set at least one attribute unique in %s entity.','wpas'),$error_loc_name);
+			break;
+		case 8:
+			$alert = sprintf(__('Error: You must have a form layout for %s search form.','wpas'),$error_loc_name);
+			break;
+		case 9:
+			$alert = sprintf(__('Error: You must have a view attached for %s search form.','wpas'),$error_loc_name);
+			break;
+		default:
+			$alert = "";
+			break;
+	}
+	return $alert;	
+}
+function wpas_check_form_rel_uniq($myapp)
+{
+	$generate_error = 0;
+	$error_loc_name = "";
+	foreach($myapp['form'] as $myform)
+	{
+		if(!empty($myform['form-dependents']))
+		{
+			if(!empty($myform['form-layout']))
+			{
+				foreach($myform['form-layout'] as $myform_layout)
+				{
+					$rel_entity = "";
+					$unique_key = 0;
+					if($myform_layout['obtype'] == 'relent')
+					{
+						foreach($myform_layout as $myitem)
+						{
+							if(isset($myitem['relent']))
+							{
+								foreach($myapp['relationship'] as $myrel)
+								{
+									if($myitem['relent'] == $myrel['rel-name-id'])
+									{
+										if($myitem['entity'] == $myrel['rel-from-name'])
+										{
+											$rel_entity = $myrel['rel-to-name'];
+										}
+										else
+										{
+											$rel_entity = $myrel['rel-from-name'];
+										}
+										break;
+									}
+								}
+								foreach($myapp['entity'] as $myentity)
+								{
+									if($rel_entity == $myentity['ent-label'])
+									{
+										foreach($myentity['field'] as $myfields)
+										{
+											if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
+											{
+												$unique_key = 1;
+												break;
+											}
+										}
+										if($unique_key == 0)
+										{
+											$generate_error = 7;
+											$error_loc_name = $myentity['ent-label'];
+											return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				foreach($myform['form-dependents'] as $rel_dep)
+				{
+					$rel_entity = "";
+					$unique_key = 0;
+					$dep= explode("__",$rel_dep);
+					foreach($myapp['relationship'] as $myrel)
+					{
+						if($dep[1] == $myrel['rel-name-id'] && $myrel['rel-required'] == 1)
+						{
+							if($myform['form-attached_entity'] == $myrel['rel-from-name'])
+							{
+								$rel_entity = $myrel['rel-to-name'];
+							}
+							else
+							{
+								$rel_entity = $myrel['rel-from-name'];
+							}
+							break;
+						}
+					}
+					if($rel_entity != "")
+					{
+						foreach($myapp['entity'] as $myentity)
+						{
+							if($rel_entity == $myentity['ent-label'])
+							{
+								foreach($myentity['field'] as $myfields)
+								{
+									if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
+									{
+										$unique_key = 1;
+										break;
+									}
+								}
+								if($unique_key == 0)
+								{
+									$generate_error = 7;
+									$error_loc_name = $myentity['ent-label'];
+									return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+								}
+							}
+						}
+					}
+				}
+					
+			}
+		}
+	}
+	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+}
+function wpas_check_entity_field($myapp_entity)
+{
+	$no_post = 0;
+	$no_page = 0;
+	$check_field = 0;
+	$has_entity = 0;
+	$empty_panel = 0;
+	$attrs_left = 0;
+	$generate_error = 0;
+	$error_loc_name = "";
+	$layout_attr_count =0;
+	
+	//check if entities have at least one field
+	foreach($myapp_entity as $myentity)
+	{
+		if($myentity['ent-name'] == 'post' && !empty($myentity['field']))
+		{
+			$no_post = 1;
+		}
+		elseif($myentity['ent-name'] == 'page' && !empty($myentity['field']))
+		{
+			$no_page = 1;
+		}
+		elseif(!in_array($myentity['ent-name'],Array('page','post')) && empty($myentity['field']))
+		{
+			$error_loc_name = $myentity['ent-label'];
+			$check_field = 1;
+			break;
+		}
+		elseif(!in_array($myentity['ent-name'],Array('page','post')))
+		{
+			$has_entity = 1;
+		}
+
+		//check if layout has empty tabs or empty acc
+		if(!empty($myentity['layout']))
+		{
+			foreach($myentity['layout'] as $mylayout)
+			{
+				if(!empty($mylayout['tabs']))
+				{
+					$resp_layout = wpas_check_layout_attr($mylayout['tabs']);
+					if($resp_layout === false)
+					{
+						$error_loc_name = $myentity['ent-label'];
+						$empty_panel = 1;
+						break;
+					}
+					else
+					{
+						$layout_attr_count += $resp_layout;	
+					}
+				}
+				if(!empty($mylayout['accs']))
+				{
+					$resp_layout = wpas_check_layout_attr($mylayout['accs']);
+					if($resp_layout === false)
+					{
+						$error_loc_name = $myentity['ent-label'];
+						$empty_panel = 1;
+						break;
+					}
+					else
+					{
+						$layout_attr_count += $resp_layout;	
+					}
+				}
+			}
+		}
+		if(isset($myentity['field']))
+		{
+			$ent_attr_count = count($myentity['field']);
+		}
+		if(!in_array($myentity['ent-name'],Array('page','post')))
+		{
+			$error_loc_name = $myentity['ent-label'];
+			break;
+		}
+		if(!empty($myentity['layout']) && $layout_attr_count < $ent_attr_count)
+		{
+			$attrs_left = 1;
+			$error_loc_name = $myentity['ent-label'];
+			break;
+		}
+	}
+	if($check_field == 0 && $no_post == 0 && $no_page == 0 && $has_entity == 0)
+	{
+		$generate_error = 2;	
+	}
+	elseif($check_field == 1)
+	{
+		$generate_error = 3;	
+	}
+	elseif($empty_panel == 1)
+	{
+		$generate_error = 4;
+	}
+	elseif($attrs_left == 1)
+	{
+		$generate_error = 5;
+	}
+	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+}
+function wpas_get_entity_count($myapp)
+{
+	$entity_count = 0;
+	foreach($myapp['entity'] as $myentity)
+	{
+		if(!empty($myentity['field']))
+		{
+			$entity_count ++;
+		}
+	}
+	return $entity_count;
+}
+function wpas_check_layout_attr($mylayout_panel)
+{
+	$layout_attr_count = 0;
+	foreach($mylayout_panel as $mypanel)
+	{
+		if(empty($mypanel['attr']))
+		{
+			return false;
+		}
+		else
+		{
+			$my_attrs = explode(",",$mypanel['attr']);
+			$layout_attr_count = $layout_attr_count + count($my_attrs);
+		}
+	}
+	return $layout_attr_count;
+}
+function wpas_check_search_form($myapp)
+{
+	$generate_error = 0;
+	$error_loc_name = "";
+	foreach($myapp['form'] as $myform)
+	{
+		$form_linked = 0;
+		if($myform['form-form_type'] == 'search' && empty($myform['form-layout']))
+		{
+			$generate_error = 8;
+			$error_loc_name = $myform['form-name'];
+			break;
+		}
+		elseif($myform['form-form_type'] == 'search')
+		{
+			if(!empty($myapp['shortcode']))
+			{
+				foreach($myapp['shortcode'] as $myview)
+				{
+					if($myview['shc-view_type'] == 'search' && $myview['shc-attach_form'] == $myform['form-name'])
+					{
+						$form_linked = 1;
+					}
+				}
+			}
+			if($form_linked == 0)
+			{
+				$generate_error = 9;
+				$error_loc_name = $myform['form-name'];
+				break;
+			}
+		}
+	}
+	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+}
 ?>
