@@ -57,6 +57,7 @@ function wpas_load_langs($langs)
 		if($screen->parent_base == 'wpas_app_list')
 		{
 			$langs['table'] =  plugin_dir_path(__FILE__) . '../js/tiny_mce/plugins/table/langs/langs.php';
+			$langs['taglist'] = plugin_dir_path(__FILE__) . 'wpas_taglist_translate.php';
 		}
 	}
         return $langs;

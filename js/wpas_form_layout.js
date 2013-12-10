@@ -13,17 +13,17 @@ jQuery(document).ready(function($) {
 			}
 			else if(response == 2)
 			{
-				$('#errorModalForm .modal-body').html('Please add all required fields to the form layout.');
+				$('#errorModalForm .modal-body').html(form_vars.req_missing_error);
 				$('#errorModalForm').modal('show'); //req missing
 			}
 			else if(response == 3)
 			{
-				$('#errorModalForm .modal-body').html('Please check duplicate entries and try again.');
+				$('#errorModalForm .modal-body').html(form_vars.dupe_error);
 				$('#errorModalForm').modal('show'); //dupe error
 			}
 			else if(response == 4)
 			{
-				$('#errorModalForm .modal-body').html('Please select an option for all dropdowns.');
+				$('#errorModalForm .modal-body').html(form_vars.dropdown_error);
 				$('#errorModalForm').modal('show'); //dupe error
 			}
 		});
@@ -41,40 +41,64 @@ jQuery(document).ready(function($) {
 	});
 	$(document).on('click','.form-attr-select,.form-tax-select,.form-relent-select',function(){
 		label_vars = $(this).attr('id').split('-');
-		label_id = label_vars[5];
+		label_id = label_vars[4];
+		type = label_vars[1];
 		select_label = "";
                 if($(this).find('option:selected').val() != '')
                 {
-			if(label_vars[1] != 'relent')
-			{
-				select_label = $(this).find('option:selected').attr('entity') + " - ";
-			}
-			select_label += $(this).find('option:selected').text();
-			$(this).parent().parent().parent().parent().find('#field-label'+label_id).text(select_label);
+			select_label = $(this).find('option:selected').text();
+			$(this).closest('.form-'+type).find('#field-label'+label_id).text(select_label);
+		}
+	});
+	$(document).on('click','.form-attr-size,.form-tax-size,.form-relent-size',function(){
+		label_vars = $(this).attr('id').split('-');
+		type = label_vars[1];
+		label_id = label_vars[4];
+                if($(this).find('option:selected').val() != '')
+                {
+			spansize = $(this).find('option:selected').val();
+			$(this).closest('.form-'+type).find('#field-label'+label_id).attr('class','span'+spansize);
 		}
 	});
 	$(document).on('click','.add-attr,.delete-attr,.add-tax,.delete-tax,.add-relent,.delete-relent',function(){
 		selected_val = [];
+		selected_size = [];
 		i = 1;
+		j = 1;
 		app_id = $('input#app').val();
 		form_id = $('#edit-form-layout-div input#form').val();
 		id_vars = $(this).attr('id').split('-');
-		count = id_vars[2];
+		count = id_vars[3];
 		type = id_vars[1];
+		order = id_vars[2];
+		spancount = count -1;
+		spansize = $(this).closest('.row-fluid').find('#form-'+type+'-size-'+order+'-'+spancount).find('option:selected').val();
+	
+		//field-labels
+		if(id_vars[0] == 'add')
+		{
+			$(this).closest('.form-'+type).find('#field-labels #field-label'+spancount).attr("class",'span'+spansize);
+			$(this).closest('.form-'+type).find('#field-labels').append('<div id="field-label'+count+'" class="span1"></div>');
+		}	
+		else if(id_vars[0] == 'delete')
+		{
+			deletecount = Number(count) +1;
+			$(this).closest('.form-'+type).find('#field-label'+deletecount).remove();
+		}
+
 		rep_div = $(this).closest('.form-inside').attr('id');
 		rep_div_vars = rep_div.split('-');
-		field_count = rep_div_vars[3];
+		field_count = rep_div_vars[2];
 		$(this).closest('.form-'+ type).find('.form-' + type + '-select').each(function() {
 			selected_val[i]  = $(this).val();
 			i++;
 		});
-		if(id_vars[0] == 'delete')
-		{
-			labelcount = Number(count)+1;
-			$(this).closest('.form-'+type).find('#field-label'+labelcount).html('');
-		}
+		$(this).closest('.form-'+ type).find('.form-' + type + '-size').each(function() {
+			selected_size[j]  = $(this).val();
+			j++;
+		});
 
-		$.get(ajaxurl,{action:'wpas_get_form_html',app_id:app_id,form_id:form_id,type:type,count:count,field_count:field_count,selected:selected_val},function(response){
+		$.get(ajaxurl,{action:'wpas_get_form_html',app_id:app_id,form_id:form_id,type:type,count:count,field_count:field_count,selected:selected_val,selected_size:selected_size},function(response){
 				$('#'+rep_div).html(response);
 		});
 	});
@@ -92,11 +116,11 @@ jQuery(document).ready(function($) {
 		$.get(ajaxurl,{action:'wpas_get_form_layout',app_id:app_id,form_id:form_id}, function(response){
 			$('#form-layout-bin-ctr').html(response);
 			$('#edit-form-layout-div').show();
-			$('#form-hr,#form-text,#form-relent-1,#form-attr-1,#form-tax-1').draggable({
+			$('#form-hr,#form-text,#form-relent,#form-attr,#form-tax').draggable({
 				helper: 'clone',
 			});
 			$('#form-layout-ctr').droppable({
-				accept: '#form-hr,#form-text,#form-relent-1,#form-attr-1,#form-tax-1',
+				accept: '#form-hr,#form-text,#form-relent,#form-attr,#form-tax',
 				drop: function(event, ui) {
 					if($('.dragme'))
 					{
@@ -120,9 +144,9 @@ jQuery(document).ready(function($) {
 							$(resp_div).html(response);
 						});
 						break;
-					case 'form-attr-1':
-					case 'form-tax-1':
-					case 'form-relent-1':
+					case 'form-attr':
+					case 'form-tax':
+					case 'form-relent':
 						$.get(ajaxurl,{action:'wpas_get_form_html',app_id:app_id,form_id:form_id,type:type,count:count,field_count:field_count},function(response){
 							$(resp_div).html(response);
 						});
@@ -135,10 +159,9 @@ jQuery(document).ready(function($) {
 					{
 						div_html += "<a class='edit'><i class='icon-edit pull-left'></i></a>";
 					}
-					div_html += "</div><div id='field-label1' class='span4'>" + type_val + "</div>";
-					div_html += "<div id='field-label2' class='span3'></div>";
-					div_html += "<div id='field-label3' class='span3'></div>";
-					div_html += "<div class='span1 layout-edit-icons'>";
+					div_html += "</div><div class='row-fluid span10' id='field-labels'>";
+					div_html += "<div id='field-label1' class='span12'>" + type_val + "</div>";
+					div_html += "</div><div class='span1 layout-edit-icons'>";
 					div_html += "<a class='delete'><i class='icon-trash pull-right'></i></a></div></div>";
 					if(drag_id == 'form-hr')
 					{

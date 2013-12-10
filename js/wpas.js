@@ -87,14 +87,14 @@ jQuery(document).ready(function($) {
 				if(myaction == 'edit')
 				{
 					$(this).getBreadcrumb('role');
-					$('button#save-role').html('<i class="icon-save"></i>Update');
+					$('button#save-role').html('<i class="icon-save"></i>' + wpas_vars.update);
 					$('button#save-role').val('Update');
 					$('button#save-role').attr('id','update-role');
 				}
 				else if(myaction == 'add')
 				{
 					$(this).getBreadcrumb('add-role');
-					$('button#update-role').html('<i class="icon-save"></i>Save');
+					$('button#update-role').html('<i class="icon-save"></i>'+wpas_vars.save);
 					$('button#update-role').val('Save');
 					$('button#update-role').attr('id','save-role');
 				}
@@ -222,152 +222,152 @@ jQuery(document).ready(function($) {
 		{
 			app_link = 'entity';
 		}
-		var app_url = '<li id=\"second\"><a href=\"#list-' + app_link + '\"> Application - ' + app + '</a><span class=\"divider\">/</span></li>';
-		var ent_url = '<li id=\"third\"><a href=\"#list-ent-fields\">Entity - '+ent+'</a><span class=\"divider\">/</span></li>';  
-		var rel_url = '<li id=\"third\"><a href=\"#list-rel-fields\">Relationship - '+rel+'</a><span class=\"divider\">/</span></li>'; 
-		var help_url = '<li id=\"third\"><a href=\"#list-help-fields\">Help - '+help+'</a><span class=\"divider\">/</span></li>';  
-		var form_url = '<li id=\"third\"><a href=\"#list-form\">Form - '+form+'</a><span class=\"divider\">/</span></li>';  
+		var app_url = '<li id=\"second\"><a href=\"#list-' + app_link + '\">' + wpas_vars.application + ' - ' + app + '</a><span class=\"divider\">/</span></li>';
+		var ent_url = '<li id=\"third\"><a href=\"#list-ent-fields\">'+ wpas_vars.entity + ' - '+ent+'</a><span class=\"divider\">/</span></li>';  
+		var rel_url = '<li id=\"third\"><a href=\"#list-rel-fields\">' + wpas_vars.relationship + ' - '+rel+'</a><span class=\"divider\">/</span></li>'; 
+		var help_url = '<li id=\"third\"><a href=\"#list-help-fields\">' + wpas_vars.help + ' - '+help+'</a><span class=\"divider\">/</span></li>';  
+		var form_url = '<li id=\"third\"><a href=\"#list-form\">' + wpas_vars.form + ' - '+form+'</a><span class=\"divider\">/</span></li>';  
 		if(type == 'app')
 		{
-			$('ul.breadcrumb').append('<li id=\"second\" class=\"active\">Application - ' + app + '</li>');
+			$('ul.breadcrumb').append('<li id=\"second\" class=\"active\">' + wpas_vars.application + ' - ' + app + '</li>');
 		}
 		else if(type == 'entity')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Entity - '+ent+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.entity  + ' - '+ent+'</li>');
 		}
 		else if(type == 'taxonomy')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Taxonomy - '+txn+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.taxonomy + ' - '+txn+'</li>');
 		}
 		else if(type == 'relationship')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Relationship - '+rel+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.relationship + ' - '+rel+'</li>');
 		}
 		else if(type == 'relationship-field')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(rel_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Attribute - '+field+'</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.attribute + ' - '+field+'</li>');
 		}
 		else if(type == 'help-field')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(help_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Tab - '+field+'</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.tab + ' - '+field+'</li>');
 		}
 		else if(type == 'entity-field')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(ent_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Attribute - '+field+'</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.attribute + ' - '+field+'</li>');
 		}
 		else if(type == 'help')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Help - '+help+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.help + ' - '+help+'</li>');
 		}
 		else if(type == 'shortcode')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">View - '+shc+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.view + ' - '+shc+'</li>');
 		}
 		else if(type == 'widget')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Widget - '+widget+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.widget + ' - '+widget+'</li>');
 		}
 		else if(type == 'form')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Form - '+form+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.form + ' - '+form+'</li>');
 		}
 		else if(type == 'add-entity')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Entity</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_entity + '</li>');
 		}
 		else if(type == 'add-entity-field')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(ent_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Add New Attribute</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.add_new_attribute + '</li>');
 		}
 		else if(type == 'edit_layout')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(ent_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Edit Admin Layout</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.edit_admin_layout + '</li>');
 		}
 		else if(type == 'edit_form_layout')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(form_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Edit Form Layout</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.edit_form_layout + '</li>');
 		}
 		else if(type == 'add-relationship-field')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(rel_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Add New Attribute</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.add_new_attribute + '</li>');
 		}
 		else if(type == 'add-taxonomy')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Taxonomy</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_taxonomy + '</li>');
 		}
 		else if(type == 'add-relationship')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Relationship</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_relationship + '</li>');
 		}
 		else if(type == 'add-option')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Application Settings</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_application_settings + '</li>');
 		}
 		else if(type == 'add-help')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Help</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_help + '</li>');
 		}
 		else if(type == 'add-shortcode')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New View</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_view + '</li>');
 		}
 		else if(type == 'add-widget')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Widget</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_widget + '</li>');
 		}
 		else if(type == 'add-form')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Form</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_form + '</li>');
 		}
 		else if(type == 'add-help-field')
 		{
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append(help_url);
-			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">Add New Tab</li>');
+			$('ul.breadcrumb').append('<li id=\"fourth\" class=\"active\">' + wpas_vars.add_new_tab + '</li>');
 		}
 		else if(type == 'update-option')
 		{       
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Update Application Settings</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.update_application_settings + '</li>');
 		}
 		else if(type == 'add-role')
 		{      
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">Add New Role</li>');
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_role + '</li>');
 		}
 		else if(type == 'role')
 		{
 			$('ul.breadcrumb').append(app_url);
-			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">Role - '+role+'</li>');
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.role + ' - '+role+'</li>');
 		}
 	}
 	$(document).on('click','#edit-field a,#edit-rel-field a,#edit-help-field a',function(){
@@ -480,7 +480,7 @@ jQuery(document).ready(function($) {
 		}, 'json');
 				
 
-		$('button#save-'+type+'-field').html('<i class="icon-save"></i>Update');
+		$('button#save-'+type+'-field').html('<i class="icon-save"></i>' + wpas_vars.update);
 		$('button#save-'+type+'-field').val('Update');
 		$(current_div+ ' input#' + input_name + '_field').val(field_id);
 		$(current_div+ ' input#' + input_name).val(comp_id);
@@ -724,22 +724,22 @@ jQuery(document).ready(function($) {
 			}
 			else if(button == 'shortcode')
 			{
+				$('#shc-theme_type_div').hide();
+				tinymce.get('shc-layout_header').setContent('');
+				tinymce.get('shc-layout_footer').setContent('');
+				tinymce.get('shc-sc_layout').setContent('');
 				$('#add-shortcode-div input#app').val(app_id);
-                		$.get(ajaxurl,{action:'wpas_get_entities',type:button,app_id:app_id}, function(response)
-				{
-					$('#add-shortcode-div #shc-attach').html('<option value="">Please select</option>'+response);
-				});
 			}
 			else if(button == 'widget')
 			{
 				$('#add-widget-div input#app').val(app_id);
                 		$.get(ajaxurl,{action:'wpas_get_entities',type:button,app_id:app_id}, function(response)
 				{
-					$('#add-widget-div #widg-attach').html('<option value="">Please select</option>'+response);
+					$('#add-widget-div #widg-attach').html(response);
 				}); 
                 		$.get(ajaxurl,{action:'wpas_get_rels',app_id:app_id}, function(response)
 				{
-					$('#add-widget-div #widg-attach-rel').html('<option value="">Please select</option>'+response);
+					$('#widg-attach-rel').html(response);
 				}); 
 				$('#widg-dash_subtype_div').hide();
 				$('#widg-side_subtype_div').hide();
@@ -761,16 +761,16 @@ jQuery(document).ready(function($) {
                         {
 				$('#add-rel-field-div input#app').val(app_id);
 				$('#add-rel-field-div input#rel').val(rel_id);
-				$('#rel-connected-div').hide();
-				$('#rel-related-div-group').hide();
-				$('#rel-related-div').hide();
+				$('#reltabs-3-li').hide();
+				$('#reltabs-2-li').hide();
+				$('#rel-related-display-div').hide();
                                 $.get(ajaxurl,{action:'wpas_get_entities',type:button+'_from',app_id:app_id}, function(response)
                                 {
-                                        $('#add-relationship-div #rel-from-name').html('<option value="">Please select</option>'+response);
+                                        $('#add-relationship-div #rel-from-name').html(response);
                                 });
                                 $.get(ajaxurl,{action:'wpas_get_entities',type:button+'_to',app_id:app_id}, function(response)
                                 {
-                                        $('#add-relationship-div #rel-to-name').html('<option value="">Please select</option>'+response);
+                                        $('#add-relationship-div #rel-to-name').html(response);
                                 });
                         }
 			else if(button == 'help')
@@ -779,7 +779,6 @@ jQuery(document).ready(function($) {
 				$('#add-help-field-div input#help').val(help_id);
                 		$.get(ajaxurl,{action:'wpas_get_entities',type:button,app_id:app_id}, function(response)
 				{
-					response = '<option value="">Please select</option>' + response;
 					$('#add-help-div #help-object_name').html(response);
 				});
 			}
@@ -795,7 +794,7 @@ jQuery(document).ready(function($) {
 				$('#add-form-div input#form').val(form_id);
                                 $.get(ajaxurl,{action:'wpas_get_entities',type:'form',app_id:app_id}, function(response)
                                 {
-                                        $('#add-form-div #form-attached_entity').html('<option value="">Please select</option>'+response);
+                                        $('#add-form-div #form-attached_entity').html(response);
                                 });
 				$('#form-dependents').html('');
                                 $('#form-font_awesome').attr('checked', true);
@@ -811,7 +810,6 @@ jQuery(document).ready(function($) {
 				$('#form-result_msg_div').hide();
 				$('#form-ajax_search_div').hide();
 				$('#form-enable_operators_div').hide();
-				$('#form-attached_view_div').hide();
 			}
 			$('label.error').each(function() {
                                 $(this).remove();
@@ -819,10 +817,10 @@ jQuery(document).ready(function($) {
                 	$('label.valid').each(function() {
                                 $(this).remove();
                         });
-			$('button#save-'+button+'-field').html('<i class="icon-save"></i>Save');
+			$('button#save-'+button+'-field').html('<i class="icon-save"></i>' + wpas_vars.save);
 			$('button#save-'+button+'-field').val('Save');
 
-			$('button#update-'+button).html('<i class="icon-save"></i>Save');
+			$('button#update-'+button).html('<i class="icon-save"></i>' + wpas_vars.save);
 			$('button#update-'+button).val('Save');
 			$('button#update-'+button).attr('id','save-'+button);
 				
@@ -983,7 +981,7 @@ jQuery(document).ready(function($) {
 			});
 			$('#add-option-div input,#add-option-div textarea').prop('disabled',true);
 			$('#add-option-div button#cancel,button#update-option,button#save-option').prop('disabled',true);
-			$('#add-option a').html('<i class="icon-picture"></i>Update Settings');
+			$('#add-option a').html('<i class="icon-picture"></i>' + wpas_vars.update_settings);
 			$('#add-option a').parent().attr('id','update-option');
 			$('#edit-btn-div').show();
 			$.each(response,function (key,value) {
@@ -1309,6 +1307,10 @@ jQuery(document).ready(function($) {
 				{
 					$('input#shc').val(response[1]);
 					layout_id= 'shc-sc_layout';
+					$('#shc-theme_type_div').hide();
+					tinymce.get('shc-layout_header').setContent('');
+					tinymce.get('shc-layout_footer').setContent('');
+					tinymce.get('shc-sc_layout').setContent('');
 				}
 				else if(myclass == 'widget')
 				{
@@ -1318,6 +1320,7 @@ jQuery(document).ready(function($) {
 				else if(myclass == 'form')
 				{
 					$('input#form').val(response[1]);
+					tinymce.get('form-form_desc').setContent('');
 				}
 				menu_selected = "";
 				show_ui = "";
@@ -1336,10 +1339,6 @@ jQuery(document).ready(function($) {
 						{
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass,values:value}, function(response)
                                 			{
-								if(key == 'shc-attach' || key == 'help-object_name' || key == 'widg-attach')
-								{
-									response = '<option value="">Please select</option>' + response;
-								}
                                         			$('#add-'+myclass+'-div #'+ key).html(response);
 								if(key == 'help-object_name')
 								{
@@ -1358,7 +1357,19 @@ jQuery(document).ready(function($) {
 								//for insert entity attributes 
 								app_id = $('input#app').val();	
 								$.fn.getAddons(layout_id,app_id,'entity',value,'');
+                                                                $('#add-'+myclass+'-div #'+ key + '_div').show();
+                                                                $('#shc-attach_form_div').hide();
 							}
+						}
+						else if(key == 'shc-attach_form')
+						{
+							$.get(ajaxurl,{action:'wpas_get_search_forms',app_id:app_id,val:value}, function(response)
+                                                        {
+                                                                $('#shc-attach_form').html(response);
+                                                                $('#shc-attach_form_div').show();
+                                                                $('#shc-attach_div').hide();
+								$.fn.getAddons(layout_id,app_id,'form',value,'');
+                                                        });
 						}
 						else if(key == 'ent-limit_user_relationship_role')
 						{
@@ -1371,12 +1382,9 @@ jQuery(document).ready(function($) {
 						{
 							$.get(ajaxurl,{action:'wpas_get_rels',app_id:app_id,value:value}, function(response)
 							{
-								response = '<option value="">Please select</option>'+response;
 								$('#add-'+myclass+'-div #'+ key).html(response);
 							});
 							widg_rel_name = value; 
-
-
 						}
 						else if(key == 'widg-rel-conn-type')
 						{
@@ -1403,7 +1411,7 @@ jQuery(document).ready(function($) {
 						{
 							$.get(ajaxurl,{action:'wpas_get_entities',type:'form',app_id:app_id,values:value}, function(response)
 							{
-								$('#add-'+myclass+'-div #'+ key).html('<option value="">Please select</option>'+response);
+								$('#add-'+myclass+'-div #'+ key).html(response);
 							});
 							primary_entity = value;
 						}
@@ -1420,7 +1428,6 @@ jQuery(document).ready(function($) {
 						{
 							if(value == 'search')
 							{
-                                				$('#form-attached_view_div').show();
 								$('#formtabs-3-li').hide();
 								$('#form-submit_status_div').hide();
 								$('#form-noresult_msg_div').show();
@@ -1430,7 +1437,6 @@ jQuery(document).ready(function($) {
 							}
 							else
 							{
-								$('#form-attached_view_div').hide();
 								$('#formtabs-3-li').show();
 								$('#form-submit_status_div').show();
 								$('#form-noresult_msg_div').hide();
@@ -1440,20 +1446,20 @@ jQuery(document).ready(function($) {
 							}
 							$('#add-'+myclass+'-div #'+key).val(value);
 						}	
-						else if(key == 'form-attached_view')
-						{
-							$.get(ajaxurl,{action:'wpas_get_views',app_id:app_id,val:value}, function(response)
-                        				{
-                                				$('#add-form-div #form-attached_view').html('<option value="">Please select</option>'+response);
-                                				$('#form-attached_view_div').show();
-                        				});
-						}	
 						else if(key == 'form-confirm_sendto')
 						{
 							$.get(ajaxurl,{action:'wpas_get_email_attrs',primary_entity:primary_entity,dependents:dependents,app_id:app_id,values:value}, function(response)
 						{
 							$('#add-'+myclass+'-div #'+ key).html(response);
 						});
+						}
+						else if(key == 'shc-view_type')
+						{
+							if(value == 'std')
+							{
+								$('#shc-theme_type_div').show();
+							}
+							$('#add-'+myclass+'-div #'+key).val(value);
 						}
 						else if(value == 1)
 						{
@@ -1480,6 +1486,7 @@ jQuery(document).ready(function($) {
 							else if(key == 'ent-show_in_menu')
 							{
 								menu_selected = 1;
+								$('#add-'+myclass+'-div #'+key).val(value);
 							}
 							else if(key == 'ent-hierarchical')
 							{
@@ -1516,21 +1523,22 @@ jQuery(document).ready(function($) {
 							}
 							else if(key == 'rel-connected-display')
 							{
-								$('#rel-connected-div').show();
+								$('#reltabs-2-li').show();
 								if(rel_type == 'one-to-many')
 								{
 									$('#rel-connected-show-attributes-div').hide();
+									$('#rel-related-display-div').hide();
 								}
 								else if(rel_type == 'many-to-many')
 								{
 									$('#rel-connected-show-attributes-div').show();
+									$('#rel-related-display-div').show();
 								}
 
 							}
 							else if(key == 'rel-related-display')
 							{
-								$('#rel-related-div').show();
-								$('#rel-related-div-group').show();
+								$('#reltabs-3-li').show();
 							}
 							else if(key == 'form-advanced-option')
 							{
@@ -1574,6 +1582,7 @@ jQuery(document).ready(function($) {
 							else if(key == 'ent-show_in_menu')
 							{
 								menu_selected = 0;
+								$('#add-'+myclass+'-div #'+key).val(value);
 							}
 							else if(key == 'ent-hierarchical')
 							{
@@ -1602,12 +1611,11 @@ jQuery(document).ready(function($) {
 							}
 							else if(key == 'rel-connected-display')
 							{
-								$('#rel-connected-div').hide();
+								$('#reltabs-2-li').hide();
 							}
 							else if(key == 'rel-related-display')
 							{
-								$('#rel-related-div').hide();
-								$('#rel-related-div-group').hide();
+								$('#reltabs-3-li').hide();
 							}
 							else if(key == 'form-advanced-option')
 							{
@@ -1631,14 +1639,12 @@ jQuery(document).ready(function($) {
 							{
 								if(value == 'many-to-many')
 								{
-									$('#rel-related-div-group').show();
-									$('#rel-related-div').show();
+									$('#reltabs-3-li').show();
 									rel_type = "many-to-many";
 								}
 								else if(value == 'one-to-many')
 								{
-									$('#rel-related-div-group').hide();
-									$('#rel-related-div').hide();
+									$('#reltabs-3-li').hide();
 									rel_type = "one-to-many";
 								}
 							}
@@ -1784,7 +1790,7 @@ jQuery(document).ready(function($) {
 		
                 		$(this).getBreadcrumb(myclass);
 				
-				$('button#save-'+myclass).html('<i class="icon-save"></i>Update');
+				$('button#save-'+myclass).html('<i class="icon-save"></i>'+ wpas_vars.update);
 				$('button#save-'+myclass).val('Update');
 				$('button#save-'+myclass).attr('id','update-'+myclass);
 				$('#add-'+myclass+'-div input#app').val(app_id);
@@ -1831,12 +1837,12 @@ jQuery(document).ready(function($) {
 
 	$(document).on('click','ul.breadcrumb li a',function(){
 		var link = $(this).attr('href');
-                if($('ul li#fourth').html() == 'Edit Admin Layout')
+                if($('ul li#fourth').html() == wpas_vars.edit_admin_layout)
 		{
 			app_id = $('input#app').val();	
 			app = $('input#app_title').val();
 			list_type= 'entity';
-			ent = $('ul li#third a').html().replace('Entity - ','');
+			ent = $('ul li#third a').html().replace(wpas_vars.entity + ' - ','');
 			$('div #list-entity').find('#ent-name').each(function () {
 				if($(this).html() == ent)
 				{
@@ -1899,7 +1905,7 @@ jQuery(document).ready(function($) {
                                         }
 				});
 		}, 'json');
-		$('button#save-option').html('<i class="icon-save"></i>Update');
+		$('button#save-option').html('<i class="icon-save"></i>' + wpas_vars.update);
 		$('button#save-option').val('Update');
 		$('button#save-option').attr('id','update-option');
 		$(this).getBreadcrumb('update-option');
@@ -1913,14 +1919,17 @@ jQuery(document).ready(function($) {
                 }
 	});
 	$(document).on('click','#tab-tax input.checkall,#tab-ent input.checkall,#tab-def input.checkall,#tab-widg input.checkall',function(){
-		divId = $(this).attr('id').replace('-all','');
 		if(this.checked == true)
 		{
-			$('#' + divId + ' :input[type=checkbox]').attr('checked',true);
+			$(this).closest('div').find(':input[type=checkbox]').each(function() {
+				$(this).attr('checked',true);
+			});	
 		}
 		else
 		{
-			$('#' + divId + ' :input[type=checkbox]').attr('checked',false);
+			$(this).closest('div').find(':input[type=checkbox]').each(function() {
+				$(this).attr('checked',false);
+			});	
 		}
 	});
 
@@ -1932,11 +1941,11 @@ jQuery(document).ready(function($) {
 			{
 				if(response[1].search("Success") != -1 || response[1].search("Change") != -1)
 				{
-					tr_object.find('#download-link').html('<a href="' + response[0] + '">Download</a>');	
+					tr_object.find('#download-link').html('<a href="' + response[0] + '">' + wpas_vars.download + '</a>');	
 				}
 				else if(response[1].search("Error") != -1)
 				{
-					tr_object.find('#download-link').html('<a href="' + response[0] + '">Please open a support ticket</a>');				     }	
+					tr_object.find('#download-link').html('<a href="' + response[0] + '">' + wpas_vars.support_ticket + '</a>');				     }	
 			}
 			tr_object.find('#credit-used').html(response[4]);	
 			tr_object.find('#credit-left').html(response[5]);	

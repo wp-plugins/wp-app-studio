@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 2.2
+   Version: 2.8
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,8 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
 define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "2.2");
+define('WPAS_VERSION', "2.8");
+define('WPAS_DATA_VERSION', "2");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
 	update_option('wpas_version',WPAS_VERSION);
@@ -171,6 +172,7 @@ function wpas_deactivate ()
       //deletes of options are done in uninstall, delete of plugin
 }
 
+require_once("wpas_translate.php");
 require_once("lib/wpas_wysiwyg_fields.php");
 require_once("lib/wpas_operations.php");
 require_once("lib/wpas_ajax_funcs.php");
@@ -194,6 +196,74 @@ require_once("views/forms_form.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
+if(get_option('wpas_data_version') != WPAS_DATA_VERSION)
+{
+	$apps = wpas_get_app_list();
+	$new_layout = Array();
+	foreach($apps as $app_key => $myapp)
+	{
+		if(!empty($myapp['form']))
+		{
+			foreach($myapp['form'] as $form_key => $myform)
+			{
+				if(!empty($myform['form-layout']))
+				{
+					$seq = 0;
+					$new_layout = Array();
+					foreach($myform['form-layout'] as $layout_key => $layout_field)
+					{
+						if(isset($layout_field['sequence']))
+						{
+							$seq = $layout_field['sequence'];
+							if($layout_field['obtype'] == 'hr')
+							{
+								$new_layout[$seq]['obtype'] = 'hr';
+							}
+							elseif($layout_field['obtype'] == 'text')
+							{
+								$new_layout[$seq]['obtype'] = 'text';
+								$new_layout[$seq]['desc'] = $layout_field['desc'];
+							}
+							else
+							{
+								$type = explode('-',$layout_field['obtype']);
+								$new_layout[$seq]['obtype'] = $type[0];
+								$span = (int) (12/ $type[1]);
+								
+								if(in_array($type[0], Array('attr','tax','relent')))
+								{
+									$new_layout[$seq][$layout_field['obposition']]['entity'] = $layout_field['entity'];
+									$new_layout[$seq][$layout_field['obposition']][$type[0]] = $layout_field[$type[0]];
+									$new_layout[$seq][$layout_field['obposition']]['size'] = $span;
+									if($layout_field['obposition'] > 1)
+									{
+										$new_layout[$seq][$layout_field['obposition']]['label'] = $myform['form-layout'][$layout_key-$layout_field['obposition']+1]['box_label'.$layout_field['obposition']];
+									}
+									else
+									{
+										$new_layout[$seq][$layout_field['obposition']]['label'] = $layout_field['box_label'.$layout_field['obposition']];
+									}
+								}
+							}
+						}
+					}
+					if(!empty($new_layout))
+					{
+						$myapp['form'][$form_key]['form-layout'] = $new_layout;
+						$myapp['form'][$form_key]['modified_date'] = date("Y-m-d H:i:s");
+					}
+				}
+			}
+			//update app in options to have new form data
+			if(!empty($new_layout))
+			{
+				wpas_update_app($myapp,$app_key);
+			}
+		}
+	}
+	update_option('wpas_data_version',WPAS_DATA_VERSION);
+}
+
 add_action('admin_menu', 'wpas_plugin_menu');
 add_action( 'admin_init', 'wpas_update' );
 
@@ -202,17 +272,16 @@ function wpas_plugin_menu() {
 	global $hook_app_list, $hook_app_new;
 	$icon_url = plugin_dir_url( __FILE__ ) . "img/wpas-icon.png";
 	
-	$hook_app_list = add_menu_page('WP App Studio', __('WP App Studio','wpas'), 'design_wpas', 'wpas_app_list', 'wpas_app_list',$icon_url);
+	$hook_app_list = add_menu_page('WP App Studio', 'WP App Studio', 'design_wpas', 'wpas_app_list', 'wpas_app_list',$icon_url);
 	$hook_app_new = add_submenu_page( 'wpas_app_list', __('Add New App','wpas'), __('Add New App','wpas'), 'design_wpas', 'wpas_add_new_app', 'wpas_add_new_app');
 	add_action( 'admin_enqueue_scripts', 'wpas_enqueue_scripts' );
 
 }
 function wpas_enqueue_scripts($hook_suffix){
-	global $hook_app_list, $hook_app_new;
+	global $hook_app_list, $hook_app_new, $local_vars,$form_vars, $layout_vars, $validate_vars;
 	if($hook_suffix == $hook_app_list || $hook_suffix == $hook_app_new)
 	{
 		add_filter('user_can_richedit', '__return_true');
-		$local_vars = Array();
 		$local_vars['nonce_update_field_order'] = wp_create_nonce( 'wpas_update_field_order_nonce' );
 		$local_vars['nonce_delete_field'] = wp_create_nonce( 'wpas_delete_field_nonce' );
 		$local_vars['nonce_delete'] = wp_create_nonce( 'wpas_delete_nonce' );
@@ -223,7 +292,6 @@ function wpas_enqueue_scripts($hook_suffix){
 		$local_vars['nonce_check_status_generate'] = wp_create_nonce( 'wpas_check_status_generate_nonce' );
 		$local_vars['nonce_save_layout'] = wp_create_nonce( 'wpas_save_layout_nonce' );
 
-		$form_vars = Array();
 		$form_vars['nonce_save_form_layout'] = wp_create_nonce('wpas_save_form_layout_nonce');
 
 		wp_enqueue_style('wpas-admin-css', plugin_dir_url( __FILE__ ) . 'css/wpas-admin.css');
@@ -242,6 +310,7 @@ function wpas_enqueue_scripts($hook_suffix){
 		wp_enqueue_script("jquery-ui-sortable");
 		wp_enqueue_script('jquery-ui-accordion');
 		wp_enqueue_script('jquery-ui-slider');
+	
 		wp_enqueue_script('wpas-js', plugin_dir_url( __FILE__ ) . 'js/wpas.js',array(),false,true);
 		wp_enqueue_script('wpas-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_layout.js',array(),false,true);
 		wp_enqueue_script('wpas-paging-js',plugin_dir_url( __FILE__ ) . 'js/wpas_paging.js',array(),false,true);
@@ -252,6 +321,8 @@ function wpas_enqueue_scripts($hook_suffix){
 
 		wp_localize_script('wpas-js','wpas_vars',$local_vars);
 		wp_localize_script('wpas-form-layout-js','form_vars',$form_vars);
+		wp_localize_script('wpas-layout-js','layout_vars',$layout_vars);
+		wp_localize_script('wpas-validate-js','validate_vars',$validate_vars);
 	}
 }
 function wpas_app_list()
@@ -371,7 +442,7 @@ function wpas_show_page($app,$page)
 			wpas_nav($app_name);
 		}
 		echo "<div id=\"was-editor\" class=\"span9\">";
-		echo "<div id=\"loading\" class=\"group1\" style=\"display: none;\">Please wait ...</div>";
+		echo "<div id=\"loading\" class=\"group1\" style=\"display: none;\">" . __("Please wait","wpas") . "...</div>";
 		wpas_modal_confirm_delete();
 		echo "<div id=\"list-entity\" class=\"group1\" style=\"display: block;\">";
 		echo wpas_list('entity',$app['entity'],$app_key,$app_name,1);
@@ -431,12 +502,6 @@ function wpas_show_page($app,$page)
 		echo "<div id=\"add-help-field-div\" class=\"group1\" style=\"display: none;\">";
 		wpas_add_help_tab_form($app_key);
 		echo "</div>";
-		echo "<div id=\"list-pointer\" class=\"group1\" style=\"display: none;\">";
-		wpas_pointer_desc();
-		echo "</div>";
-		echo "<div id=\"add-pointer-div\" class=\"group1\" style=\"display: none;\">";
-		wpas_pointer_desc();
-		echo "</div>";
 		echo "<div id=\"list-role\" class=\"group1\" style=\"display: none;\">";
 		echo "</div>";
 		echo "<div id=\"add-role-div\" class=\"group1\" style=\"display: none;\">";
@@ -471,13 +536,13 @@ function wpas_modal_confirm_delete()
 	echo "<div class=\"modal hide\" id=\"confirmdeleteModal\">
                 <div class=\"modal-header\">
                 <button id=\"delete-close\" type=\"button\" class=\"close\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">x</button>
-                <h3><i class=\"icon-trash icon-red\"></i>Delete</h3>
+                <h3><i class=\"icon-trash icon-red\"></i>" . __("Delete","wpas") . "</h3>
                 </div>
-                <div class=\"modal-body\" style=\"clear:both\">Are you sure you wish to delete?
-                </div>
+                <div class=\"modal-body\" style=\"clear:both\">" . __("Are you sure you wish to delete?","wpas") . 
+                "</div>
                 <div class=\"modal-footer\">
-                <button id=\"delete-cancel\" class=\"btn btn-danger\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">Cancel</button> 
-                <button id=\"delete-ok\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\" class=\"btn btn-primary\">OK</button>
+                <button id=\"delete-cancel\" class=\"btn btn-danger\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">" . __("Cancel","wpas") . "</button> 
+                <button id=\"delete-ok\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\" class=\"btn btn-primary\">" . __("OK","wpas") . "</button>
                 </div>
                 </div>";
 }
