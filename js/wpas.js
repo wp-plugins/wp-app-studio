@@ -48,6 +48,7 @@ jQuery(document).ready(function($) {
 				maxlength:50,
                 		uniqueName:['role'],
 				noSpace:true,
+				noCap:true,
 				checkAlphaNumUnder: true,
 				required:true
 				},
@@ -125,7 +126,11 @@ jQuery(document).ready(function($) {
 					divId = 'help';
 				}
             			var neworder = $('#'+divId+'-fld-list-div #fields-sort').sortable('toArray');
-
+				if(type == 'entity')
+				{
+					var builtin = $('#builtin-fields-sort').find('li').map(function() { return this.id; }).get();
+					neworder = $.merge(neworder,builtin);
+				}
              			$.ajax({
 					type:'POST',
 					url : ajaxurl,
@@ -403,6 +408,9 @@ jQuery(document).ready(function($) {
                 {
 			if(response)
 			{
+			$('#fld_name').attr('readonly',false);
+			$('#fld_label').attr('readonly',false);
+			$('#fld_type').attr('disabled',false);
 			$.each(response[0],function (key,value) {
 				if(value != undefined)
 				{
@@ -412,6 +420,13 @@ jQuery(document).ready(function($) {
                                         }
 					else if(value == 1 && key != 'fld_max_file_uploads')
 					{
+						if(key == 'fld_builtin')
+						{
+							$('#fld_name').attr('readonly',true);
+							$('#fld_label').attr('readonly',true);
+							$('#fld_type').attr('disabled',true);
+							$('#fld_builtin').val(1);
+						}	
 						if($(current_div+' #'+key).attr('type') == 'radio')
 						{
 							$('input:radio[name="'+key+'"][value="1"]').attr('checked', true);
@@ -584,6 +599,9 @@ jQuery(document).ready(function($) {
 				//should be empty always since its an add form
 				field_id = "";
 				field = "";
+				$('#fld_name').attr('readonly',false);
+				$('#fld_label').attr('readonly',false);
+				$('#fld_type').attr('disabled',false);
 				$('#validation-message').hide();
 				$('#validation-options').hide();
 				$('#fld_values_div').hide();
@@ -634,7 +652,7 @@ jQuery(document).ready(function($) {
 				button = "help";
 				if(div_id == 'add_field')
 				{
-					help = $(this).parent().parent().parent().find('#help-object_name').html();
+					help = $(this).parent().parent().parent().find('#help-entity').html();
 					help_id = $(this).attr('href').replace('#help','');
 				}
 				else
@@ -724,7 +742,11 @@ jQuery(document).ready(function($) {
 			}
 			else if(button == 'shortcode')
 			{
+				$('#shc-sc_pagenav_div').hide();
 				$('#shc-theme_type_div').hide();
+				$('#shc-attach_div').hide();
+				$('#shc-attach_form_div').hide();
+				$('#shc-attach_tax_div').hide();
 				tinymce.get('shc-layout_header').setContent('');
 				tinymce.get('shc-layout_footer').setContent('');
 				tinymce.get('shc-sc_layout').setContent('');
@@ -777,10 +799,7 @@ jQuery(document).ready(function($) {
 			{
 				$('#add-help-field-div input#app').val(app_id);
 				$('#add-help-field-div input#help').val(help_id);
-                		$.get(ajaxurl,{action:'wpas_get_entities',type:button,app_id:app_id}, function(response)
-				{
-					$('#add-help-div #help-object_name').html(response);
-				});
+				$('#help-others').hide();
 			}
 			else if(button == 'option')
 			{
@@ -929,7 +948,10 @@ jQuery(document).ready(function($) {
 			}
 			else
 			{
-				form_data += '&'+this.name+'=0';
+				if(type != 'role')
+				{		
+					form_data += '&'+this.name+'=0';
+				}
 			}
     		});
 
@@ -940,6 +962,7 @@ jQuery(document).ready(function($) {
 		}
 	
 		$(this).checkColumn();
+
                 $.post(ajaxurl,{action:'wpas_save_form',form: form_data, type: type, app_id:app_id,nonce:wpas_vars.nonce_save_form}, function(response){
 				if(response)
 				{
@@ -1155,7 +1178,7 @@ jQuery(document).ready(function($) {
 		});
 		}
 	});
-	$(document).on('click','#view.entity a, #view.relationship a,#view.help a, td#edit_td a#ent-name, td#edit_td a#rel-name, td#edit_td a#help-object_name, tbody#the-list a#ent-name,#the-list a#help-object_name,#the-list a#rel-name',function(){
+	$(document).on('click','#view.entity a, #view.relationship a,#view.help a, td#edit_td a#ent-name, td#edit_td a#rel-name, td#edit_td a#help-entity, tbody#the-list a#ent-name,#the-list a#help-entity,#the-list a#rel-name',function(){
                 app_id = $('input#app').val();
 		comp_id = $(this).attr('href').replace('#','');
 		if($(this).attr('id') == 'rel-name' || $(this).attr('class') == 'relationship' || $(this).parent().attr('class') == 'relationship')
@@ -1166,11 +1189,11 @@ jQuery(document).ready(function($) {
 			show_id = 'list-rel-fields';
 			$('input#rel').val(rel_id);
 		}
-		else if($(this).attr('id') == 'help-object_name' || $(this).attr('class') == 'help' || $(this).parent().attr('class') == 'help')
+		else if($(this).attr('id') == 'help-entity' || $(this).attr('class') == 'help' || $(this).parent().attr('class') == 'help')
 		{
 			type = 'help';
 			help_id = comp_id;
-			help = $(this).parent().parent().parent().find('#help-object_name').html();
+			help = $(this).parent().parent().parent().find('#help-entity').html();
 			show_id = 'list-help-fields';
 			$('input#help').val(help_id);
 		}
@@ -1261,7 +1284,7 @@ jQuery(document).ready(function($) {
 		else if(myclass == 'help')
 		{
 			help_id = comp_id;
-			help = $('a#help-object_name').html();
+			help = $('a#help-entity').html();
 		}
 		else if(myclass == 'shortcode')
 		{
@@ -1282,7 +1305,6 @@ jQuery(document).ready(function($) {
                 $('#add-'+myclass+'-div :input[type=checkbox]').attr('checked',false);
                 $('#add-'+myclass+'-div :input[type=radio]').attr('checked',true);
 		
-
                 $.get(ajaxurl,{action:'wpas_edit',type:myclass,app_id:app_id,comp_id:comp_id}, function(response)
                         {
 			if(response) {
@@ -1307,10 +1329,11 @@ jQuery(document).ready(function($) {
 				{
 					$('input#shc').val(response[1]);
 					layout_id= 'shc-sc_layout';
-					$('#shc-theme_type_div').hide();
 					tinymce.get('shc-layout_header').setContent('');
 					tinymce.get('shc-layout_footer').setContent('');
 					tinymce.get('shc-sc_layout').setContent('');
+					$('#shc-sc_pagenav_div').hide();
+					$('#shc-theme_type_div').hide();
 				}
 				else if(myclass == 'widget')
 				{
@@ -1325,9 +1348,10 @@ jQuery(document).ready(function($) {
 				menu_selected = "";
 				show_ui = "";
 				rel_type = "";
-				widg_rel_name = "";
+				widg_rel_id = "";
 				primary_entity = "";
 				dependents = "";
+				view_subtype = "";
 				$.each(response[0],function (key,value) {
 					if(value != undefined)
 					{
@@ -1335,31 +1359,70 @@ jQuery(document).ready(function($) {
                                                 {
                                                         tinymce.get(key).setContent(value);
                                                 }
-						else if(key == 'txn-attach' || key == 'shc-attach' || key == 'help-object_name' || key == 'widg-attach')
+						else if(key == 'help-entity')
+						{
+							$('#help-screen_type-div').show();
+							$('#help-others').show();
+							$('#help-tax-div').hide();
+							$('#help-entity-div').show();
+							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass,values:value}, function(response)
+							{
+								$('#add-'+myclass+'-div #'+ key).html(response);
+							});
+						}
+						else if(key == 'help-tax')
+						{
+							$('#help-screen_type-div').hide();
+							$('#help-others').show();
+							$('#help-tax-div').show();
+							$('#help-entity-div').hide();
+							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:'tax',values:value}, function(response)
+							{
+								$('#add-'+myclass+'-div #'+ key).html(response);
+							});
+						}
+						else if(key == 'txn-attach' || key == 'widg-attach')
 						{
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass,values:value}, function(response)
                                 			{
                                         			$('#add-'+myclass+'-div #'+ key).html(response);
-								if(key == 'help-object_name')
-								{
-									if(value.indexOf('txn-') == 0)
-									{
-										$('#help-screen_type-div').hide();
-									}
-									else
-									{
-										$('#help-screen_type-div').show();
-									}
-								}
                                 			});
-							if(key == 'shc-attach' || key == 'widg-attach')
+							if(key == 'widg-attach')
 							{
 								//for insert entity attributes 
 								app_id = $('input#app').val();	
 								$.fn.getAddons(layout_id,app_id,'entity',value,'');
                                                                 $('#add-'+myclass+'-div #'+ key + '_div').show();
-                                                                $('#shc-attach_form_div').hide();
+								$('#widg-attach-rel_div').hide();
 							}
+						}
+						else if(key == 'shc-attach')
+						{
+							if(view_subtype == 'std')
+							{
+								view_subtype = '';
+							}
+							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass,values:value,subtype:view_subtype}, function(response)
+							{
+								$('#add-'+myclass+'-div #'+ key).html(response);
+								app_id = $('input#app').val();
+								$.fn.getAddons(layout_id,app_id,'entity',value,'');
+								$('#add-'+myclass+'-div #'+ key + '_div').show();
+								$('#shc-attach_form_div').hide();
+								$('#shc-attach_tax_div').hide();
+							});
+						}	
+						else if(key == 'shc-attach_tax')
+						{
+							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:'tax',values:value,subtype:view_subtype}, function(response)
+							{
+								$('#add-'+myclass+'-div #'+ key).html(response);
+								app_id = $('input#app').val();
+								$.fn.getAddons(layout_id,app_id,'entity',value,'');
+								$('#add-'+myclass+'-div #'+ key + '_div').show();
+								$('#shc-attach_form_div').hide();
+								$('#shc-attach_div').hide();
+							});
 						}
 						else if(key == 'shc-attach_form')
 						{
@@ -1368,6 +1431,7 @@ jQuery(document).ready(function($) {
                                                                 $('#shc-attach_form').html(response);
                                                                 $('#shc-attach_form_div').show();
                                                                 $('#shc-attach_div').hide();
+                                                                $('#shc-attach_tax_div').hide();
 								$.fn.getAddons(layout_id,app_id,'form',value,'');
                                                         });
 						}
@@ -1383,15 +1447,16 @@ jQuery(document).ready(function($) {
 							$.get(ajaxurl,{action:'wpas_get_rels',app_id:app_id,value:value}, function(response)
 							{
 								$('#add-'+myclass+'-div #'+ key).html(response);
+								$('#widg-attach_div').hide();
 							});
-							widg_rel_name = value; 
+							widg_rel_id = value; 
 						}
 						else if(key == 'widg-rel-conn-type')
 						{
-							$.get(ajaxurl,{action:'wpas_get_rel_conn_types',app_id:app_id,rel_name:widg_rel_name,value:value},function(response){
+							$.get(ajaxurl,{action:'wpas_get_rel_conn_types',app_id:app_id,rel_id:widg_rel_id,value:value},function(response){
                                 				$('#widg-rel-conn-type').html(response);
                         				});
-							$.fn.getAddons(layout_id,app_id,'relationship',widg_rel_name,value);
+							$.fn.getAddons(layout_id,app_id,'relationship',widg_rel_id,value);
 						}
 						else if(key == 'rel-from-name')
 						{
@@ -1455,10 +1520,25 @@ jQuery(document).ready(function($) {
 						}
 						else if(key == 'shc-view_type')
 						{
-							if(value == 'std')
+							if(value == 'single' || value == 'archive' || value == 'tax')
 							{
+								$('#shctabs-2-li').hide();
+								$('#shc-sc_pagenav_div').hide();
 								$('#shc-theme_type_div').show();
 							}
+							else if(value == 'search')
+							{
+								$('#shc-theme_type_div').hide();
+								$('#shc-sc_pagenav_div').show();
+								$('#shctabs-2-li').show();					
+							}
+							else
+							{
+								$('#shc-sc_pagenav_div').show();
+								$('#shctabs-2-li').show();					
+								$('#shc-theme_type_div').show();
+							}
+							view_subtype = value;
 							$('#add-'+myclass+'-div #'+key).val(value);
 						}
 						else if(value == 1)
@@ -1683,9 +1763,16 @@ jQuery(document).ready(function($) {
 							}
 							if(key == 'widg-dash_subtype')
 							{
-								subtype = value;
+								subtype = value;	
+								if(subtype == 'entity')
+								{
+									$('#widg-attach_div').show();
+								}
+								$('#widg-attach-rel_div').hide();
+								$('#widg-rel-conn-type_div').hide();
+								$('#widg-rel-to-title_div').hide();
 							}
-							if(key == 'widg-side_subtype')
+							else if(key == 'widg-side_subtype')
 							{
 								if(subtype != 'admin')
 								{
@@ -1784,9 +1871,9 @@ jQuery(document).ready(function($) {
                                 }
 				
 				} //if response end
-				
+	
 				}, 'json');
-
+				
 		
                 		$(this).getBreadcrumb(myclass);
 				

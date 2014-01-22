@@ -129,24 +129,44 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		</div>
 		<div class="row-fluid">
 		<div class="tablenav top">
-		<div class="tablenav-pages one-page">
+		<div class="alignleft actions">
+		</div>
+		<div class="pagination pagination-right">
 		<?php 
 		if($total > 0)
 		{
 			$base = admin_url('admin.php?page=wpas_app_list&generate=1&app=' . $_GET['app']);
 			$base = wp_nonce_url($base,'wpas_generate');
-			echo $paging_text = paginate_links( array(
-								'total' => ceil($total/10),
-								'current' => $page,
-								'base' => $base .'&%_%',
-								'format' => 'generatepage=%#%',
+
+			$paging = paginate_links( array(
+						'total' => ceil($total/10),
+						'current' => $page,
+						'base' => $base .'&%_%',
+						'format' => 'generatepage=%#%',
+						'type' => 'array',
 					) );
+			$paging_html = "<ul>";
+			if(!empty($paging))
+			{
+				foreach($paging as $key_paging => $my_paging)
+				{
+					$paging_html .= "<li";
+					if(($page == 1 && $key_paging == 0) || ($page > 1 && $page == $key_paging))
+					{
+						$paging_html .= " class='active'";
+					}
+					$paging_html .= ">" . $my_paging . "</li>";
+				}
+				$paging_html .= "</ul>";
+			}
+			
+			echo $paging_html;			
 		}
 		?>
 		</div>
 		</div>
-		<table class="wp-list-table widefat plugins" cellspacing="0">
-		<thead><tr>
+		<table class="table table-striped table-condensed table-bordered" cellspacing="0">
+		<thead><tr class="theader">
 		<th><?php _e("Application Name","wpas"); ?></th>
 		<th><?php _e("Credit Used","wpas"); ?></th>
 		<th><?php _e("Balance","wpas"); ?></th>

@@ -107,7 +107,7 @@ jQuery(document).ready(function() {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e(" Plural Label","wpas"); ?></label>
+		<label class="control-label span3"><?php _e(" Plural","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-label" id="ent-label" type="text" value="" placeholder="<?php _e("e.g. Products","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("A plural descriptive name for the entity marked for translation.","wpas"); ?>">
@@ -115,7 +115,7 @@ jQuery(document).ready(function() {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Singular Label","wpas"); ?></label>
+		<label class="control-label span3"><?php _e("Singular","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-singular-label" id="ent-singular-label" type="text" value="" placeholder="<?php _e("e.g. Product","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("It is the name for one object of this entity.","wpas"); ?>">
@@ -352,10 +352,10 @@ jQuery(document).ready(function() {
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e(" Supports","wpas"); ?></label>
 		<div class="controls span9">
-		<label class="checkbox"><input  name="ent-supports_title" id="ent-supports_title" type="checkbox" value="1"  checked />&nbsp;<?php _e("Title","wpas"); ?>
+		<label class="checkbox"><input  name="ent-supports_title" id="ent-supports_title" type="checkbox" value="1" />&nbsp;<?php _e("Title","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the title entry meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_editor" id="ent-supports_editor" type="checkbox" value="1"  checked />&nbsp;<?php _e("Editor","wpas"); ?>
-		<a href="#" style="cursor: help;" title="<?php _e("Adds the input text area for editor meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
+		<label class="checkbox"><input name="ent-supports_editor" id="ent-supports_editor" type="checkbox" value="1" />&nbsp;<?php _e("Editor","wpas"); ?>
+		<a href="#" style="cursor: help;" title="<?php _e("Adds the input text area for editor meta box","wpas"); ?>" /><i class="icon-info-sign"></i></a></label>
 		<label class="checkbox"><input name="ent-supports_author" id="ent-supports_author" type="checkbox" value="1" />&nbsp;<?php _e("Author","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the author meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
 		<label class="checkbox"><input name="ent-supports_thumbnail" id="ent-supports_thumbnail" type="checkbox" value="1" />&nbsp;<?php _e("Featured Image","wpas"); ?>
@@ -535,7 +535,7 @@ function wpas_view_entity($ent,$ent_id)
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3">' . __("Plural Label","wpas") . '</label>
+		<label class="control-label span3">' . __("Plural","wpas") . '</label>
 		<div class="controls span9"><span id="ent-label" class="input-xlarge uneditable-input">' . esc_html($ent['ent-label']) . '</span>
 		</div>
 		</div>

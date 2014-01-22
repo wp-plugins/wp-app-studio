@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 2.8
+   Version: 2.9
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,8 +14,8 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
 define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "2.8");
-define('WPAS_DATA_VERSION', "2");
+define('WPAS_VERSION', "2.9");
+define('WPAS_DATA_VERSION', "3");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
 	update_option('wpas_version',WPAS_VERSION);
@@ -196,21 +196,392 @@ require_once("views/forms_form.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
+
+add_action('admin_menu', 'wpas_plugin_menu');
+add_action( 'admin_init', 'wpas_update' );
+
 if(get_option('wpas_data_version') != WPAS_DATA_VERSION)
 {
 	$apps = wpas_get_app_list();
-	$new_layout = Array();
 	foreach($apps as $app_key => $myapp)
 	{
+		if(!isset($myapp['ver']) || $myapp['ver'] != WPAS_DATA_VERSION)
+		{
+			$myapp = wpas_update_data_arr($app_key,$myapp);
+			wpas_update_app($myapp,$app_key);
+		}
+	}
+	update_option('wpas_data_version',WPAS_DATA_VERSION);
+}
+
+function wpas_update_data_arr($app_key,$myapp)
+{
+	$entities = Array();
+	$entnames = Array();
+	$taxonomies = Array();
+	$taxnames = Array();
+	$fields = Array();
+	$rfields = Array();
+	$afields = Array();
+	$rels = Array();
+	$relfts = Array();
+	$forms = Array();
+	$relnameids = Array();
+	$change_needed = Array();
+	foreach($myapp['role'] as $keyrole => $myrole)
+	{
+		$roles[$keyrole] = $myrole['role-name'];
+	}
+	foreach($myapp['entity'] as $keyentity => $myentity)
+	{
+		if(!empty($myentity['field']))
+		{
+			$entities[$keyentity] = $myentity['ent-label'];
+			$entnames[$keyentity] = $myentity['ent-name'];
+			foreach($myentity['field'] as $keyfield => $myfield)
+			{
+				$fields[$keyentity . "__" . $keyfield] = $keyentity . "__" . $myfield['fld_name'];
+				$rfields[$keyentity . "__" . $keyfield] = $myfield['fld_name'];
+				$afields[$keyfield] = $myfield['fld_label'];
+			}
+		}
+		if(isset($myentity['ent-has_user_relationship']) && isset($myentity['ent-limit_user_relationsip_role']) && in_array($myentity['ent-limit_user_relationsip_role'],$roles))
+		{
+			$myapp['entity'][$keyentity]['ent-limit_user_relationsip_role'] = array_search($myentity['ent-limit_user_relationsip_role'],$roles);
+		}        
+		if(!empty($myentity['layout']))
+		{
+			foreach($myentity['layout'] as $keyel => $layel)
+			{
+				if(!empty($layel['tabs']))
+				{
+					foreach($layel['tabs'] as $ktab => $tab)
+					{
+						$new_attr = Array();
+						$attr_arr = explode(",",$tab['attr']);
+						foreach($attr_arr as $myattr)
+						{
+							$new_attr[] = array_search($myattr,$afields);
+						}
+						$myapp['entity'][$keyentity]['layout'][$keyel]['tabs'][$ktab]['attr'] = $new_attr;
+					}
+				}
+				if(!empty($layel['accs']))
+				{
+					foreach($layel['accs'] as $kacc => $acc)
+					{
+						$new_attr = Array();
+						$attr_arr = explode(",",$acc['attr']);
+						foreach($attr_arr as $myattr)
+						{
+							$new_attr[] = array_search($myattr,$afields);
+						}
+						$myapp['entity'][$keyentity]['layout'][$keyel]['accs'][$kacc]['attr'] = $new_attr;
+					}
+				}
+			}
+		}
+	}
+	if(!empty($myapp['form']))
+	{
+		foreach($myapp['form'] as $form_key => $myform)
+		{
+			$forms[$form_key] = $myform['form-name'];
+		}
+	}
+	if(!empty($myapp['taxonomy']))
+	{
+		foreach($myapp['taxonomy'] as $keytax => $mytax)
+		{
+			$taxonomies[$keytax] = $mytax['txn-label'];
+			$taxnames[$keytax] = $mytax['txn-name'];
+			$newtax = $mytax;
+			unset($newtax['txn-attach']);
+			foreach($mytax['txn-attach'] as $key_attach => $txn_attach)
+			{
+				if(in_array($txn_attach,$entities))
+				{
+					$newtax['txn-attach'][$key_attach] = array_search($txn_attach,$entities);
+				}
+			}
+			$newtax['modified_date'] = date("Y-m-d H:i:s");
+			$myapp['taxonomy'][$keytax] = $newtax;
+		}
+	}
+	if(!empty($myapp['relationship']))
+	{
+		foreach($myapp['relationship'] as $keyrel => $myrel)
+		{
+			$newrel = $myrel;
+			if(in_array($myrel['rel-from-name'],$entities))
+			{
+				$newrel['rel-from-name'] = array_search($myrel['rel-from-name'],$entities);
+			}
+			if(in_array($myrel['rel-to-name'],$entities))
+			{
+				$newrel['rel-to-name'] = array_search($myrel['rel-to-name'],$entities);
+			}
+			if(!empty($myrel['rel-name-id']))
+			{
+				$rels[$myrel['rel-from-name'] . "__" . $myrel['rel-name-id']] = $keyrel;
+				$relfts[$myrel['rel-from-name'] . "_" . $myrel['rel-to-name']] = $keyrel;
+				$relnameids[$myrel['rel-name-id']] = $keyrel;
+				unset($newrel['rel-name-id']);
+			}
+			$newrel['modified_date'] = date("Y-m-d H:i:s");
+			$myapp['relationship'][$keyrel] = $newrel;
+		}		
+	}
+	if(!empty($myapp['help']))
+	{
+		foreach($myapp['help'] as $keyhelp => $myhelp)
+		{
+			if(isset($myhelp['help-object_name']) && empty($myhelp['help-type']))
+			{
+				$newhelp = $myhelp;
+				if(array_search($myhelp['help-object_name'],$taxonomies) !== false)
+				{
+					$newhelp['help-tax'] = array_search($myhelp['help-object_name'],$taxonomies);
+					unset($newhelp['help-object_name']);
+					$newhelp['help-type'] = 'tax';
+				}
+				elseif(array_search($myhelp['help-object_name'],$entities) !== false)
+				{
+					$newhelp['help-entity'] = array_search($myhelp['help-object_name'],$entities);
+					$newhelp['help-type'] = 'ent';
+					unset($newhelp['help-object_name']);
+				}
+				$newhelp['modified_date'] = date("Y-m-d H:i:s");
+				$myapp['help'][$keyhelp] = $newhelp;
+			}
+		}
+	}
+	if(!empty($myapp['shortcode']))
+	{
+		foreach($myapp['shortcode'] as $keyshc => $myshc)
+		{
+			$newshc = $myshc;
+			if(!isset($newshc['shc-view_type']))
+			{
+				$newshc['shc-view_type'] = 'std';
+			}
+			if(!empty($newshc['shc-attach_form']) && array_search($newshc['shc-attach_form'] ,$forms) !== false)
+			{
+				$newshc['shc-attach_form'] = array_search($newshc['shc-attach_form'] ,$forms);
+				unset($newshc['shc-attach']);
+			}
+			elseif(!empty($newshc['shc-attach']) && array_search($newshc['shc-attach'] ,$entities) !== false)
+			{
+				$newshc['shc-attach'] = array_search($newshc['shc-attach'] ,$entities);
+			}
+			elseif(!empty($newshc['shc-attach_tax']))
+			{
+				$txn = str_replace("txn-","",$newshc['shc-attach_tax']);
+				if(array_search($txn,$taxonomies) !== false)
+				{
+					$newshc['shc-attach_tax'] = array_search($txn,$taxonomies);
+				}
+			}
+			$newshc['modified_date'] = date("Y-m-d H:i:s");
+			$myapp['shortcode'][$keyshc] = $newshc;
+				
+		}
+	}			
+	if(!empty($myapp['widget']))
+	{
+		$new_widget = Array();
+		foreach($myapp['widget'] as $widg_key => $mywidg)
+		{
+			$new_widget[$widg_key] = $mywidg;
+			if(empty($mywidg['widg-name']))
+			{
+				$new_widget[$widg_key]['widg-name'] = str_replace(" ","_",strtolower($mywidg['widg-title']));
+				$new_widget[$widg_key]['widg-name'] .= "_" . $mywidg['widg-type']; 
+			}
+			if(!empty($mywidg['widg-attach']) && array_search($mywidg['widg-attach'] ,$entities) !== false)
+			{
+				$new_widget[$widg_key]['widg-attach'] = array_search($mywidg['widg-attach'] ,$entities);
+			}
+			if(!empty($mywidg['widg-attach-rel']) && !empty($relfts[$mywidg['widg-attach-rel']]))
+			{
+				$new_widget[$widg_key]['widg-attach-rel'] = $relfts[$mywidg['widg-attach-rel']];
+			}
+			$new_widget[$widg_key]['modified_date'] = date("Y-m-d H:i:s"); 
+		}
+		$myapp['widget'] = $new_widget; 
+	}
+	if(!empty($myapp['role']))
+	{
+		if(!empty($myapp['entity']))
+		{
+			foreach($myapp['entity'] as $keyent => $myent)
+			{
+				if($myent['ent-name'] != 'post' && $myent['ent-name'] != 'page')
+				{
+					$change_needed['emd_' . $myent['ent-name'].'s'] = 'ent_' . $keyent;
+				}
+			}
+		}
+		if(!empty($myapp['taxonomy']))
+		{
+			foreach($myapp['taxonomy'] as $keytax => $mytax)
+			{
+				$label = str_replace(" ","_",$mytax['txn-label']);
+				$change_needed[strtolower($label)] = 'tax_' . $keytax;
+			}
+		}
+		if(!empty($myapp['widget']))
+		{
+			foreach($myapp['widget'] as $keywidg => $mywidg)
+			{
+				$label = str_replace(" ","_",$mywidg['widg-title']);
+				if(isset($mywidg['widg-dash_subtype']))
+				{
+					$label = $mywidg['widg-dash_subtype'] . "_" . strtolower($label);
+					$change_needed[$label] = 'widg_' . $keywidg;
+				}
+			}
+		}
 		if(!empty($myapp['form']))
 		{
-			foreach($myapp['form'] as $form_key => $myform)
+			foreach($myapp['form'] as $keyform => $myform)
 			{
-				if(!empty($myform['form-layout']))
+				$label = strtolower(str_replace(" ","_",$myform['form-name']));
+				$change_needed[$label] = 'form_' . $keyform;
+			}
+		}
+		if(!empty($myapp['shortcode']))
+		{
+			foreach($myapp['shortcode'] as $keyshc => $myshc)
+			{
+				$label = strtolower(str_replace(" ","_",$myshc['shc-label']));
+				$change_needed[$label] = 'shc' . $keyshc;
+			}
+		}
+		foreach($myapp['role'] as $rkey => $myrole)
+		{
+			$new_role = $myrole;
+			foreach($myrole as $role_name => $role_value)
+			{
+				if(!in_array($role_name,Array('role-name','role-label','modified_date','date')))
 				{
-					$seq = 0;
-					$new_layout = Array();
-					foreach($myform['form-layout'] as $layout_key => $layout_field)
+					if($role_value != 0)
+					{
+						$new_role[$role_name] = $role_value;
+					}
+					foreach($change_needed as $old => $new)
+					{
+						if(preg_match('/' . $old .'/',$role_name))
+						{
+							$new_role_name = str_replace($old,$new,$role_name);
+							$new_role[$new_role_name] = $role_value;
+							unset($new_role[$role_name]);
+						}
+					}
+				}
+				
+			}
+			$new_role['modified_date'] = date("Y-m-d H:i:s");
+			$myapp['role'][$rkey] = $new_role;
+		}
+	}
+	if(!empty($myapp['form']))
+	{
+		foreach($myapp['form'] as $form_key => $myform)
+		{
+			$newform = $myform;
+			if(!empty($myform['form-attached_entity_id']))
+			{
+				$newform['form-attached_entity'] = $myform['form-attached_entity_id'];
+				unset($newform['form-attached_entity_id']);
+			}
+			else
+			{
+				$newform['form-attached_entity'] = array_search($myform['form-attached_entity'],$entities);
+			}
+				
+			if(!empty($newform['form-dependents']))
+			{
+				foreach($newform['form-dependents'] as $depkey => $mydep)
+				{
+					if(isset($rels[$mydep]))
+					{
+						$newform['form-dependents'][$depkey] = $rels[$mydep];
+					}
+				}
+			}
+			if(!empty($newform['form-confirm_sendto']))
+			{
+				if(preg_match('/_rel_/',$newform['form-confirm_sendto']))
+				{
+					$send_to = explode('_rel_',$newform['form-confirm_sendto']);
+					if(in_array($send_to[0],$rfields))
+					{
+						$newform['form-confirm_sendto'] = array_search($send_to[0],$rfields);
+						$newform['form-confirm_sendto'] .= "__" . $relnameids[$send_to[1]];
+					}
+				}
+				elseif(in_array($newform['form-attached_entity'] . "__" . $newform['form-confirm_sendto'],$fields))
+				{
+					$newform['form-confirm_sendto'] = array_search($newform['form-attached_entity'] . "__" . $newform['form-confirm_sendto'],$fields);
+				}
+			}
+			if(!empty($myform['form-layout']))
+			{
+				$seq = 0;
+				$new_layout = Array();
+				foreach($myform['form-layout'] as $layout_key => $layout_field)
+				{
+					if(get_option('wpas_data_version') == 2)
+					{
+						//new code
+						if(isset($layout_field['obtype']) && !in_array($layout_field['obtype'],Array('hr','text')))
+						{
+							$new_layout[$layout_key] = $layout_field;
+							foreach($layout_field as $fieldkey => $myfield)
+							{
+								$new_layout[$layout_key][$fieldkey]['obtype'] = $layout_field['obtype'];
+							}
+							unset($new_layout[$layout_key]['obtype']);
+						}
+						else
+						{
+							$new_layout[$layout_key] = $layout_field;
+						}
+						foreach($new_layout[$layout_key] as $fkey => $ffield)
+						{
+							if(!in_array($ffield,Array('hr','text')) && $fkey != 'desc')
+							{
+								$new_ffield = Array();
+								$new_ffield['size'] = $ffield['size'];
+								$new_ffield['obtype'] = $ffield['obtype'];
+								if(isset($ffield['entity']))
+								{
+									$new_ffield['entity'] = array_search($ffield['entity'],$entnames);
+								}
+								if($ffield['obtype'] == 'tax')
+								{
+									$new_ffield['tax'] = array_search($ffield['tax'],$taxnames);
+								}
+								elseif($ffield['obtype'] == 'attr')
+								{
+									$attr = explode('__',array_search($new_ffield['entity'] . "__" . $ffield['attr'],$fields));
+									if(isset($attr[1]))
+									{
+										$new_ffield['attr'] = $attr[1];	
+									}
+									$new_ffield['entity'] = $attr[0];
+								}
+								elseif($ffield['obtype'] == 'relent')
+								{
+									$new_ffield['relent'] = $relnameids[$ffield['relent']];
+									$new_ffield['entity'] = array_search($ffield['entity'],$entities);
+								}
+								$new_layout[$layout_key][$fkey] = $new_ffield;
+							}
+						}
+					}
+					else
 					{
 						if(isset($layout_field['sequence']))
 						{
@@ -247,25 +618,18 @@ if(get_option('wpas_data_version') != WPAS_DATA_VERSION)
 							}
 						}
 					}
-					if(!empty($new_layout))
-					{
-						$myapp['form'][$form_key]['form-layout'] = $new_layout;
-						$myapp['form'][$form_key]['modified_date'] = date("Y-m-d H:i:s");
-					}
 				}
+				$newform['form-layout'] = $new_layout;
 			}
-			//update app in options to have new form data
-			if(!empty($new_layout))
-			{
-				wpas_update_app($myapp,$app_key);
-			}
+			$newform['modified_date'] = date("Y-m-d H:i:s");
+			$myapp['form'][$form_key] = $newform;
 		}
 	}
-	update_option('wpas_data_version',WPAS_DATA_VERSION);
+	$myapp['ver'] = '3';
+	$myapp['modified_date'] = date("Y-m-d H:i:s");
+	$myapp['option']['ao_domain'] = 'http://' . $myapp['option']['ao_domain'];
+	return $myapp;
 }
-
-add_action('admin_menu', 'wpas_plugin_menu');
-add_action( 'admin_init', 'wpas_update' );
 
 
 function wpas_plugin_menu() {
@@ -348,7 +712,7 @@ function wpas_app_list()
 		wpas_modal_confirm_delete();
 		echo "<div class=\"row-fluid\"><div id=\"was-applist\" class=\"span12\">
 			<div id=\"list_apps\" style=\"display: block;\">";
-		echo wpas_list("app",$apps_unserialized,0,"",1);
+		echo wpas_list("app",$apps_unserialized,0,1);
 		echo "</div>";
 		echo "</div></div></div>"; 
 		wpas_branding_footer();
@@ -445,7 +809,7 @@ function wpas_show_page($app,$page)
 		echo "<div id=\"loading\" class=\"group1\" style=\"display: none;\">" . __("Please wait","wpas") . "...</div>";
 		wpas_modal_confirm_delete();
 		echo "<div id=\"list-entity\" class=\"group1\" style=\"display: block;\">";
-		echo wpas_list('entity',$app['entity'],$app_key,$app_name,1);
+		echo wpas_list('entity',$app,$app_key,1);
 		echo "</div>";
 		echo "<div id=\"list-ent-fields\" class=\"group1\" style=\"display: none;\">";
 		echo "</div>";
@@ -523,7 +887,7 @@ function wpas_show_page($app,$page)
 		wpas_nav($app_name);
 		echo "<div id=\"was-editor\" class=\"span9\">";
 		echo "<div id=\"list-entity\" class=\"group1\" style=\"display: block;\">";
-		echo wpas_list('entity',Array(),$app_key,$app_name,1);
+		echo wpas_list('entity',Array(),$app_key,1);
 		echo "</div>"; //for was-editor 
 		echo "</div></div>"; 
 		echo "</div>"; //for wpas 

@@ -38,6 +38,7 @@ function wpas_add_widget_form($app_id)
 					if(jQuery(this).find('option:selected').val() == 'admin')
 					{
 						jQuery('#widg-html_div').show();
+						jQuery('#widg-wdesc_div').show();
 						jQuery('#widg-attach_div').hide();
 						jQuery('#widg-attach-rel_div').hide();
 						jQuery('#widg-rel-conn-type_div').hide();
@@ -52,6 +53,8 @@ function wpas_add_widget_form($app_id)
 					}
 					else if(jQuery(this).find('option:selected').val() == 'entity')
 					{
+						jQuery('#widg-label_div').show();
+						jQuery('#widg-wdesc_div').show();
 						jQuery('#widg-html_div').hide();
 						jQuery('#widg-attach_div').show();
 						jQuery('#widg-attach-rel_div').hide();
@@ -71,6 +74,8 @@ function wpas_add_widget_form($app_id)
 					}
 					else if(jQuery(this).find('option:selected').val() == 'relationship')
 					{
+						jQuery('#widg-label_div').hide();
+						jQuery('#widg-wdesc_div').show();
 						jQuery('#widg-html_div').hide();
 						jQuery('#widg-attach_div').hide();
 						jQuery('#widg-attach-rel_div').show();
@@ -103,6 +108,14 @@ function wpas_add_widget_form($app_id)
 		<fieldset>
 		<div class="well">
 		<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Widgets add content and features to your Sidebars or Dashboard. You can display entity data in a sidebar or dashboard widget.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Widget Name","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="widg-name" id="widg-name" type="text" placeholder="<?php _e("e.g. customer_survey","wpas");?>" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Unique identifier for the widget. Can not contain capital letters,dashes or spaces. Between 3 and 30 characters.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
 		<div class="control-group row-fluid">
                 <label class="control-label span3"><?php _e("Widget Title","wpas"); ?></label>
                 <div class="controls span9">
@@ -182,7 +195,7 @@ function wpas_add_widget_form($app_id)
                 </div>
                 </div>
                 <div class="control-group row-fluid" id="widg-label_div" style="display:none;">
-                <label class="control-label span3"><?php _e("Widget label","wpas"); ?></label>
+                <label class="control-label span3"><?php _e("Widget Label","wpas"); ?></label>
                 <div class="controls span9">
                 <input class="input-xlarge" name="widg-label" id="widg-label" type="text" placeholder="<?php _e("e.g. Recent Products","wpas"); ?>">
                 <a href="#" style="cursor: help;" title="<?php _e("Sets the initial title of the widget which will displayed on the backend.","wpas"); ?>">
@@ -190,7 +203,7 @@ function wpas_add_widget_form($app_id)
                 </div>
                 </div>
                 <div class="control-group row-fluid" id="widg-wdesc_div" style="display:none;">
-                <label class="control-label span3"><?php _e("Widget description","wpas"); ?></label>
+                <label class="control-label span3"><?php _e("Widget Description","wpas"); ?></label>
                 <div class="controls span9">
                 <input class="input-xlarge" name="widg-wdesc" id="widg-wdesc" type="text" placeholder="<?php _e("e.g. The most recent products","wpas"); ?>">
                 <a href="#" style="cursor: help;" title="<?php _e("Sets the initial short description explaining what the widget does.","wpas"); ?>">
@@ -208,42 +221,14 @@ function wpas_add_widget_form($app_id)
 		<div class="control-group row-fluid" id="widg-layout_div" style="display:none;">
 		<label class="control-label span3"><?php _e("Layout","wpas"); ?></label>
 		<div class="controls span9">
-		<?php
-		$initial_data='<table class="content-table" border=0 cellpadding=1 cellspacing=1><tbody><tr><td class="content-cell featured-image">!#featured_img_thumb#</td><td class="content-cell content-title">!#title#</td></tr><tr><td class="content-cell content-excerpt" colspan=2>!#excerpt#</td></tr></tbody></table>';
-
-	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink,mylistbox';
-	$buttons['theme_advanced_buttons2'] = 'tablecontrols,code';
-
-	$settings = array(
-			'text_area_name'=>'widg-layout',//name you want for the textarea
-			'quicktags' => false,
-			'media_buttons' => false,
-			'textarea_rows' => 10,
-			'language' => 'en',
-			'tinymce' => $buttons,
-			);
-	$id = 'widg-layout';//has to be lower case
-	wp_editor($initial_data,$id,$settings);
-	$default_css = ".content-table{
-border:0;
-}
-.featured-image{
-border:0;
-}
-.content-title{
-font-weight:bold;
-}
-.content-excerpt{
-font-style:italic;
-}";
-	?>
+	<?php display_tinymce('widg-layout','',1,1); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("The widget layout defines how the content will be displayed within the widget.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 		</div>
 		</div>
 		<div class="control-group row-fluid" id="widg-css_div" style="display:none;">
 		<label class="control-label span3"><?php _e("Css ","wpas"); ?></label>
 		<div class="controls span9">
-		<textarea class="input-xlarge" id="widg-css" name="widg-css" class="tinymce" placeholder="<?php echo esc_attr($default_css); ?>"></textarea>
+		<textarea class="input-xlarge" id="widg-css" name="widg-css" class="tinymce"></textarea>
 		<a href="#" style="cursor: help;" title="<?php _e("The custom css code to be used when displaying the content. You can leave this field blank and use WPAS app css file.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>

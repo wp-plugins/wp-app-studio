@@ -33,21 +33,24 @@ jQuery(document).ready(function($){
 		mlb.add(ed.getLang('taglist.wp_builtin'), '',{'style':'font-style:italic;font-weight:bold;'});
 		mlb.add(ed.getLang('taglist.title'), '!#title#',{'style':'padding-left:2em;'});
 		mlb.add(ed.getLang('taglist.permalink'), '!#permalink#',{'style':'padding-left:2em;'});
-		if(type != 'relationship' && type != 'email')
+		if(type != 'relationship')
 		{
 			mlb.add(ed.getLang('taglist.excerpt'), '!#excerpt#',{'style':'padding-left:2em;'});
 			mlb.add(ed.getLang('taglist.content'), '!#content#',{'style':'padding-left:2em;'});
+			mlb.add(ed.getLang('taglist.author'), '!#author#',{'style':'padding-left:2em;'});
+		}
+		if(type != 'relationship' && type != 'email')
+		{
+			mlb.add(ed.getLang('taglist.modified_author'), '!#mod_author#',{'style':'padding-left:2em;'});
 			mlb.add(ed.getLang('taglist.modified_date'), '!#modified_date#',{'style':'padding-left:2em;'});
 			mlb.add(ed.getLang('taglist.modified_time'), '!#modified_time#',{'style':'padding-left:2em;'});
 			mlb.add(ed.getLang('taglist.featured_img_large'), '!#featured_img_large#',{'style':'padding-left:2em;'});
 			mlb.add(ed.getLang('taglist.featured_img_medium'), '!#featured_img_medium#',{'style':'padding-left:2em;'});
 			mlb.add(ed.getLang('taglist.featured_img_thumb'), '!#featured_img_thumb#',{'style':'padding-left:2em;'});
-			mlb.add(ed.getLang('taglist.author'), '!#author#',{'style':'padding-left:2em;'});
-			mlb.add(ed.getLang('taglist.modified_author'), '!#mod_author#',{'style':'padding-left:2em;'});
 		}
 	}
-	$.fn.getAddons = function (layout_id,app_id,type,comp_name,rel_conn_type,rels) {
-		$.get(ajaxurl,{action:'wpas_get_comp_attrs', app_id:app_id,type:type,comp_name:comp_name,rel_conn_type:rel_conn_type,rels:rels}, function(response){
+	$.fn.getAddons = function (layout_id,app_id,type,comp_id,rel_conn_type,rels) {
+		$.get(ajaxurl,{action:'wpas_get_comp_attrs', app_id:app_id,type:type,comp_id:comp_id,rel_conn_type:rel_conn_type,rels:rels}, function(response){
 			layout = tinymce.get(layout_id);
 			listbox = layout.controlManager.get('mylistbox');
 			listbox.items = [];
@@ -62,7 +65,7 @@ jQuery(document).ready(function($){
 			}
 			$.each(response,function (key,value)
 			{
-				if(value == comp_name || value == 'Taxonomies' || key.indexOf('relattr_') == 0 || key == 0)
+				if(value == 'Taxonomies' || key.indexOf('relattr_') == 0 || key == 0)
 				{
 					listbox.add(value,'',{'style':'font-style:italic;font-weight:bold;'});
 				}
@@ -77,42 +80,40 @@ jQuery(document).ready(function($){
 		app_id = $('input#app').val();
 		if($(this).attr('id') == 'shc-attach_form')
 		{
-			comp_name = $('#shc-attach_form :selected').val();
+			comp_id = $('#shc-attach_form :selected').val();
 			layout_id= 'shc-sc_layout';
 			type = "form";
 		}
 		else if($(this).attr('id') == 'shc-attach')
 		{
-			comp_name = $('#shc-attach :selected').val();
+			comp_id = $('#shc-attach :selected').val();
 			layout_id= 'shc-sc_layout';
 			type = "entity";
 		}
 		else if($(this).attr('id') == 'widg-attach')
 		{
-			comp_name = $('#widg-attach :selected').val();
+			comp_id = $('#widg-attach :selected').val();
 			layout_id= 'widg-layout';
 			type = "entity";
-			short_code = '<table class="content-table" border=0 cellpadding=1 cellspacing=1><tbody><tr><td class="content-cell featured-image">';
-			short_code += '!#featured_img_thumb#</td><td class="content-cell content-title">!#title#</td></tr><tr><td class="content-cell content-excerpt" colspan=2>!#excerpt#</td></tr></tbody></table>';
-			tinymce.get('widg-layout').setContent(short_code);
+			tinymce.get('widg-layout').setContent('');
 		}
 		else if($(this).attr('id') == 'widg-attach-rel')
 		{
-			comp_name = $('#widg-attach-rel :selected').val();
+			comp_id = $('#widg-attach-rel :selected').val();
 			layout_id= 'widg-layout';
 			type = "relationship";
-			$.get(ajaxurl,{action:'wpas_get_rel_conn_types',app_id:app_id,rel_name:comp_name},function(response){
+			$.get(ajaxurl,{action:'wpas_get_rel_conn_types',app_id:app_id,rel_id:comp_id},function(response){
 				$('#widg-rel-conn-type').html(response);
 			});
 			tinymce.get('widg-layout').setContent('');
 		}
-		jQuery.fn.getAddons(layout_id,app_id,type,comp_name,'',[]);
+		jQuery.fn.getAddons(layout_id,app_id,type,comp_id,'',[]);
 	});
 	$(document).on('change','#widg-rel-conn-type',function(){
-		comp_name = $('#widg-attach-rel :selected').val();
+		comp_id = $('#widg-attach-rel :selected').val();
 		conn_type = $('#widg-rel-conn-type :selected').val();
 		app_id = $('input#app').val();
-		jQuery.fn.getAddons('widg-layout',app_id,'relationship',comp_name,conn_type,[]);
+		jQuery.fn.getAddons('widg-layout',app_id,'relationship',comp_id,conn_type,[]);
 	});
 	$(document).on('change','#form-email_user_confirm,#form-email_admin_confirm',function(){
 		if($(this).attr('id') == 'form-email_user_confirm')
@@ -123,12 +124,12 @@ jQuery(document).ready(function($){
 		{
 			show = 'form-confirm_admin_msg';
 		}
-		comp_name = $('#form-attached_entity :selected').val();
+		comp_id = $('#form-attached_entity :selected').val();
 		app_id = $('input#app').val();
 		var rels = [];
 		$('#form-dependents :selected').each(function() {
 			rels.push($(this).val()); 
 		});
-		jQuery.fn.getAddons(show,app_id,'email',comp_name,'',rels);	
+		jQuery.fn.getAddons(show,app_id,'email',comp_id,'',rels);	
 	});
 });

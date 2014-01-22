@@ -34,8 +34,7 @@ function wpas_get_ent_tax_rel_count($app,$form_id)
 	$tax_count = 0;
 	$rel_count = 0;
 	$ent_field_count = 0;
-	$ent_id = $app['form'][$form_id]['form-attached_entity_id'];
-	$ent_label = $app['form'][$form_id]['form-attached_entity'];
+	$ent_id = $app['form'][$form_id]['form-attached_entity'];
 	if(!empty($app['entity'][$ent_id]['field']))
 	{
 		foreach($app['entity'][$ent_id]['field'] as $appfield)
@@ -54,7 +53,7 @@ function wpas_get_ent_tax_rel_count($app,$form_id)
 	{
 		foreach($app['taxonomy'] as $mytaxonomy)
 		{
-			if(in_array($ent_label,$mytaxonomy['txn-attach']))
+			if(in_array($ent_id,$mytaxonomy['txn-attach']))
 			{
 				$tax_count ++;
 			}
@@ -67,19 +66,11 @@ function wpas_form_container($layout,$app,$form_id)
 	list($ent_field_count,$rel_count,$tax_count) = wpas_get_ent_tax_rel_count($app,$form_id);
 	$layout_html = "<div class=\"layout-bin span3 pull-left\" data-spy=\"affix\" data-offset-top=50>
 			<ul class=\"ui-draggable\">
-			<li class=\"ui-draggable\"><div class=\"form-hr\" id=\"form-hr\"><div>HR</div></div></li>
-			<li class=\"ui-draggable\"><div class=\"form-text\" id=\"form-text\"><div>" . __("Text","wpas") . "</div></div></li>";
-	if($ent_field_count != 0)
+			<li class=\"ui-draggable\"><div class=\"form-hr\" id=\"form-hr\"><div><i class=\"icon-resize-horizontal\"></i>HR</div></div></li>
+			<li class=\"ui-draggable\"><div class=\"form-text\" id=\"form-text\"><div> <i class=\"icon-text-width\"></i>" . __("Text","wpas") . "</div></div></li>";
+	if($ent_field_count != 0 || $tax_count != 0 || $rel_count != 0)
 	{
-		$layout_html .="<li class=\"ui-draggable\"><div class=\"form-attr\" id=\"form-attr\"><div>" . __("Attribute","wpas") . "</div></div></li>";
-	}
-	if($tax_count != 0)
-	{
-		$layout_html .=	"<li class=\"ui-draggable\"><div class=\"form-tax\" id=\"form-tax\"><div>" . __("Taxonomy","wpas") . "</div></div></li>";
-	}
-	if($rel_count != 0)
-	{
-		$layout_html .= "<li class=\"ui-draggable\"><div class=\"form-relent\" id=\"form-relent\"><div>" . __("Related Entity","wpas") . "</div></div></li>";
+		$layout_html .="<li class=\"ui-draggable\"><div class=\"form-attr\" id=\"form-element\"><div> <i class=\"icon-tasks\"></i>" . __("Element","wpas") . "</div></div></li>";
 	}
 	$layout_html .= "</ul></div><div id=\"form-layout-ctr\" class=\"ui-droppable ui-sortable  span9 pull-right\">";
 	if(!is_array($layout))
@@ -93,23 +84,55 @@ function wpas_form_container($layout,$app,$form_id)
 		$sizes = Array();
 		for($i=1;$i<=count($layout);$i++)
 		{
-			$class = $layout[$i]['obtype'];
+			if(isset($layout[$i]['obtype']) && in_array($layout[$i]['obtype'],Array('hr','text')))
+			{
+				$class = $layout[$i]['obtype'];
+			}
+			else
+			{
+				$class = 'element';
+			}
 			$id = "form-" . $class . "-" . $i;
 			$layout_html .= "<div id='" . esc_attr($id) . "' class='form-" . esc_attr($class) . "'>";
 			$layout_html .= "<div class='row-fluid form-field-str'>";
 			$layout_html .= "<div class='span1 layout-edit-icons'>";
-			if($layout[$i]['obtype'] != 'hr')
+			if(isset($layout[$i]['obtype']) && $layout[$i]['obtype'] != 'hr')
 			{
 				$layout_html .= "<a class='edit'><i class='icon-edit pull-left'></i></a>";
 			}
 			$layout_html .= "</div><div id='field-labels' class='row-fluid span10'>";
 			if(!in_array($class,Array('hr','text')))
 			{
-				for($j=1;$j<count($layout[$i]);$j++)
+				for($j=1;$j<= count($layout[$i]);$j++)
 				{
-					$layout_html .= "<div id='field-label" . $j . "' class='span" . $layout[$i][$j]['size'] . "'>" . esc_html($layout[$i][$j]['label']) . "</div>";
-					$selected_vals[$j] = $layout[$i][$j]['entity'] . "__" . $layout[$i][$j][$class];
-					$sizes[$j] = $layout[$i][$j]['size'];
+					if(isset($layout[$i][$j]))
+				   	{
+						$layout_html .= "<div id='field-label" . $j . "' class='span" . $layout[$i][$j]['size'] . "'>";
+						if(isset($layout[$i][$j]['obtype']))
+						{
+							$connector = "";
+							switch($layout[$i][$j]['obtype']) {
+								case 'attr':
+						 			$layout_html .= esc_html($app['entity'][$layout[$i][$j]['entity']]['field'][$layout[$i][$j]['attr']]['fld_label']);
+									$connector = 'fld';
+									break;
+								case 'tax':
+						 			$layout_html .= esc_html($app['taxonomy'][$layout[$i][$j]['tax']]['txn-label']);
+									$connector='tax';
+									break;
+								case 'relent':
+									$myrel = $app['relationship'][$layout[$i][$j]['relent']];
+						 			$layout_html .= esc_html(wpas_get_rel_full_name($myrel,$app));
+									$connector='rel';
+									break;
+							}
+							
+							
+							$selected_vals[$j] = $layout[$i][$j]['entity'] . "__" . $connector . $layout[$i][$j][$layout[$i][$j]['obtype']];
+						}
+						$layout_html .= "</div>";	
+						$sizes[$j] = $layout[$i][$j]['size'];
+					}
 				}
 			}
 			else
@@ -138,7 +161,7 @@ function wpas_form_container($layout,$app,$form_id)
 			else
 			{
 				$count = $j - 1;
-				$layout_html .= wpas_get_form_layout_select_all($app,$form_id,$class,$count,$i,$selected_vals,$sizes);
+				$layout_html .= wpas_get_form_layout_select_all($app,$form_id,$count,$i,$selected_vals,$sizes);
 			}
 			$layout_html .= "</div></div>";
 		}
@@ -369,8 +392,9 @@ jQuery(document).ready(function($) {
 	<label class="control-label span3"><?php _e("Framework","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-temp_type" id="form-temp_type" class="input-medium">
-	<option value="Pure">jQuery UI</option>
 	<option value="Bootstrap" selected="selected">Twitter's Bootstrap</option>
+	<option value="Pure">jQuery UI</option>
+	<option value="Na">None</option>
 	</select>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the frontend framework which will be used to configure the overall look and feel of the form. If you pick JQuery UI, you can choose your theme from App's Settings under the theme tab. Default is Twitter Bootstrap.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
@@ -540,7 +564,7 @@ jQuery(document).ready(function($) {
 		<div class="controls span9">
 		<input class="input-medium" name="form-submit_button_fa" id="form-submit_button_fa" type="text" placeholder="" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("Sets the font awesome icon which will be displayed next to the button text.","wpas");?>">
-		<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+		<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 		</div>
 	</div>
 	<div class="control-group row-fluid"> 

@@ -267,7 +267,7 @@ jQuery(document).ready(function() {
 
 <?php
     }
-    function wpas_view_relationship($rel,$rel_id)
+    function wpas_view_relationship($rel,$rel_id,$app)
     {
         return '<div class="well form-horizontal">
         <div class="row-fluid">
@@ -281,12 +281,12 @@ jQuery(document).ready(function() {
         <fieldset>
         <div class="control-group row-fluid">
         <label class="control-label span3">' . __("From Entity Name ","wpas") . '</label>
-        <div class="controls span9"><span id="rel-from-name" class="input-xlarge uneditable-input">' . esc_html($rel['rel-from-name']) . '</span>
+        <div class="controls span9"><span id="rel-from-name" class="input-xlarge uneditable-input">' . esc_html($app['entity'][$rel['rel-from-name']]['ent-label']) . '</span>
         </div>
         </div>
         <div class="control-group row-fluid">
         <label class="control-label span3">' . __("To Entity Name","wpas") . '</label>
-        <div class="controls span9"><span id="rel-to-name" class="input-xlarge uneditable-input">' . esc_html($rel['rel-to-name']) . '</span>
+        <div class="controls span9"><span id="rel-to-name" class="input-xlarge uneditable-input">' . esc_html($app['entity'][$rel['rel-to-name']]['ent-label']) . '</span>
         </div>
         </div>
         <div class="control-group row-fluid">

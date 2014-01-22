@@ -254,7 +254,7 @@ function wpas_list_html($list_values)
                         </select>
                         <input id="doaction" class="btn  btn-primary" type="submit" value="' . __("Apply","wpas") . '">
                 </div>
-                <div class="tablenav-pages one-page"> ';
+                <div class="pagination pagination-right"> ';
 	return $ret;
 }
 function wpas_list_table($labels)
@@ -283,36 +283,33 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	$view_url = $url['view'];
 	$url_title = "View";
 
-	if($type == "entity")
-	{
-	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> | </span>
-	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Attribute","wpas") . '">' . __("Add Attribute","wpas") . '</a> | </span>
-	<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Admin Layout","wpas") . '">' . __("Edit Admin Layout","wpas") . '</a>';
-	}
-	else if($type == "form")
-	{
-	$view = ' <span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Layout","wpas") . '">' . __("Edit Layout","wpas") . '</a>';
-	}
-	else if($type == "relationship")
-	{
-	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> </span>
-	<span id="add_field" class="' . $type . '">'; 
-	if($mylist['rel-type'] == 'many-to-many')
-	{
-		$view .= '| <a href="' . $url['add_field'] . '" title="' . __("Add Attribute","wpas") . '">' . __("Add Attribute","wpas") . '</a>';
-	}
-	}
-	else if($type == "help")
-	{
-	$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> | </span>
-	<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Tab","wpas") . '">' . __("Add Tab","wpas") . '</a>';
-	}
-	else if($type == 'app')
-	{
-	$view = '<span id="generate" class="' . $type . '"><a href="' . wp_nonce_url($url['generate'],'wpas_generate') . '" title="' . __("Generate","wpas") . '">' . __("Generate","wpas") . '</a>
-		| <span id="export" class="' . $type . '"><a href="' . wp_nonce_url($url['export'],'wpas_export') . '" title="' . __("Export","wpas") . '">' . __("Export","wpas") . '</a>';
-	$view_url = $url['edit_url'];
-	$url_title = "Edit";
+	switch ($type) {
+		case 'entity':
+			$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> | </span>
+			<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Attribute","wpas") . '">' . __("Add Attribute","wpas") . '</a> | </span>
+			<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Admin Layout","wpas") . '">' . __("Edit Admin Layout","wpas") . '</a>';
+			break;
+		case 'form':
+			$view = ' <span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Layout","wpas") . '">' . __("Edit Layout","wpas") . '</a>';
+			break;
+		case 'relationship':
+			$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> </span>
+			<span id="add_field" class="' . $type . '">'; 
+			if($mylist['rel-type'] == 'many-to-many')
+			{
+				$view .= '| <a href="' . $url['add_field'] . '" title="' . __("Add Attribute","wpas") . '">' . __("Add Attribute","wpas") . '</a>';
+			}
+			break;
+		case 'help':
+			$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> | </span>
+			<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Tab","wpas") . '">' . __("Add Tab","wpas") . '</a>';
+			break;
+		case 'app':
+			$view = '<span id="generate" class="' . $type . '"><a href="' . wp_nonce_url($url['generate'],'wpas_generate') . '" title="' . __("Generate","wpas") . '">' . __("Generate","wpas") . '</a>
+				| <span id="export" class="' . $type . '"><a href="' . wp_nonce_url($url['export'],'wpas_export') . '" title="' . __("Export","wpas") . '">' . __("Export","wpas") . '</a>';
+			$view_url = $url['edit_url'];
+			$url_title = "Edit";
+			break;
 	}
 
 	foreach($other_fields as $myfield)
@@ -346,6 +343,10 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 		}
 	}
 
+	if($field_name == 'help-entity' && !isset($mylist[$field_name]) && isset($mylist['help-tax']))
+	{
+		$mylist[$field_name] = $mylist['help-tax'];
+	}
 	$ret = '<tr valign="top" class="'. $alt . '">
 	<th class="check-column" scope="row">
 	<input type="checkbox" value="' .$key_list .'" name="checkbox[]">
@@ -369,10 +370,25 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	$ret .='</tr>';
 	return $ret;
 }
-function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
+function wpas_list($list_type,$app,$app_id=0,$page=1)
 {
+	$list_array = Array();
+	if($list_type != 'app' && !empty($app))
+	{
+		if(!empty($app[$list_type]))
+		{
+			$list_array = $app[$list_type];
+		}
+		$app_name = $app['app_name'];
+	}
+	else
+	{
+		$list_array = $app;
+		$app_name = "";
+	}
         $return_list = "";
-        $paging_text = "";
+        $paging = Array();
+        $paging_html  = "";
 	$div_table = "";
 	$edit_url = "#";
         $list_values = Array();
@@ -420,7 +436,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "entitypage";
                 $field_name = "ent-name";
                 $other_fields = Array("ent-label","ent-singular-label","ent-hierarchical","ent_fields","date","modified_date");
-                $other_labels = Array(__("Name","wpas"),__("Plural Label","wpas"),__("Singular Label","wpas"),__("Hierarchical","wpas"),__("Attributes","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_labels = Array(__("Name","wpas"),__("Plural","wpas"),__("Singular","wpas"),__("Hierarchical","wpas"),__("Attributes","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['icon'] = "icon-table";
                 $add_field_tag = "#ent";
         }
@@ -431,7 +447,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $format = "taxonomypage";
                 $field_name = "txn-name";
                 $other_fields = Array("txn-label","txn-singular-label","txn-hierarchical","txn-attaches","date","modified_date");
-                $other_labels = Array(__("Name","wpas"),__("Plural Label","wpas"),__("Singular Label","wpas"),__("Hierarchical","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_labels = Array(__("Name","wpas"),__("Plural","wpas"),__("Singular","wpas"),__("Hierarchical","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['icon'] = "icon-tag";
         }
         elseif($list_type == 'relationship')
@@ -440,8 +456,8 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $list_values['title'] = __("Relationships","wpas");
                 $format = "relationshippage";
                 $field_name = "rel-name";
-                $other_fields = Array("rel-from-title","rel-to-title","rel-type","rel_fields","date","modified_date");
-                $other_labels = Array(__("Name","wpas"),__("From Title","wpas"),__("To Title","wpas"),__("Type","wpas"),__("Attributes","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_fields = Array("rel-from-name","rel-to-name","rel-type","rel_fields","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("From","wpas"),__("To","wpas"),__("Type","wpas"),__("Attributes","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['icon'] = "icon-link";
                 $add_field_tag = "#rel";
         }
@@ -450,7 +466,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=help&app=' . $app_id);
                 $list_values['title'] = __("Help","wpas");
                 $format = "helppage";
-                $field_name = "help-object_name";
+                $field_name = "help-entity";
                 $other_fields = Array("help-screen_type","sidebar_on_off","help_tabs","date","modified_date");
                 $other_labels = Array(__("Attached To","wpas"),__("Screen Type","wpas"),__("SideBar","wpas"),__("Tabs","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['icon'] = "icon-info-sign";
@@ -522,7 +538,10 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 				{
 					foreach($mylist['entity'] as $myentity)
 					{
-						$mylist['entities'] .= $myentity['ent-label'] . ", ";
+						if(!empty($myentity['field']))
+						{
+							$mylist['entities'] .= $myentity['ent-label'] . ", ";
+						}
 					}
 					$mylist['entities'] = rtrim($mylist['entities'],', ');
 				}
@@ -574,10 +593,17 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 					}
 					$mylist['rel_fields'] = rtrim($mylist['rel_fields'],', ');
 				}
+				$mylist['rel-from-name'] = $app['entity'][$mylist['rel-from-name']]['ent-label'];
+				$mylist['rel-to-name'] = $app['entity'][$mylist['rel-to-name']]['ent-label'];
                         }
                         elseif($list_type == 'taxonomy')
                         {
-				$mylist['txn-attaches'] = implode(",",$mylist['txn-attach']);
+				$mylist['txn-attaches'] = "";
+				foreach($mylist['txn-attach'] as $txn_att)
+				{
+					$mylist['txn-attaches'] .= $app['entity'][$txn_att]['ent-label'] . ",";
+				}
+				$mylist['txn-attaches'] = rtrim($mylist['txn-attaches'],",");
                         }
 			elseif($list_type == 'help')
                         {
@@ -598,7 +624,7 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 						if($count_help_tabs == 3)
 						{
 							$more_link = "#" . $key_list;
-							$mylist['help_tabs'] .= "<a id=\"help-object_name\" href=\"" . $more_link . "\"> " . __("More","wpas") . " >></a>";
+							$mylist['help_tabs'] .= "<a id=\"help-entity\" href=\"" . $more_link . "\"> " . __("More","wpas") . " >></a>";
 							break;
 						}
 						$mylist['help_tabs'] .= $myfield['help_fld_name'] . ", ";
@@ -606,9 +632,17 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 					}
                                 	$mylist['help_tabs'] = rtrim($mylist['help_tabs'],', ');
 				}
+				if(isset($mylist['help-entity']))
+				{
+					$mylist['help-entity'] = $app['entity'][$mylist['help-entity']]['ent-label'];
+				}
+				elseif(isset($mylist['help-tax']))
+				{
+					$mylist['help-entity'] = $app['taxonomy'][$mylist['help-tax']]['txn-singular-label'];
+				}
                         }
 			elseif($list_type == 'role')
-			{
+			{	
 				$permission_count = count($mylist) - 4;  //count only caps
 				$mylist['role_permissions'] = sprintf(__('%d capabilities set','wpas'),$permission_count);
 			}
@@ -622,6 +656,14 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 				{
 					$subtype = "widg-dash_subtype";
 				}
+				if(isset($mylist['widg-attach']) && ((isset($mylist['widg-side_subtype']) && $mylist['widg-side_subtype'] == 'entity') || (isset($mylist['widg-dash_subtype']) && $mylist['widg-dash_subtype'] == 'entity')))
+				{
+					$mylist['widg-attach'] = $app['entity'][$mylist['widg-attach']]['ent-label'];
+				}
+				elseif($mylist['widg-side_subtype'] == 'relationship' && isset($mylist['widg-attach-rel']))
+				{
+					$mylist['widg-attach'] = wpas_get_rel_full_name($app['relationship'][$mylist['widg-attach-rel']],$app);
+				}
 				$other_fields[1] = $subtype;
 			}
 			elseif($list_type == 'form')
@@ -631,17 +673,34 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
 				{
 					$mylist['form-temp_type'] = 'jQuery UI';
 				}
+				if(isset($mylist['form-attached_entity']))
+				{
+					$mylist['form-attached_entity'] = $app['entity'][$mylist['form-attached_entity']]['ent-label'];
+				}
 			}
 			elseif($list_type == 'shortcode')
 			{
-				if($mylist['shc-view_type'] == 'std')
-				{
-					$mylist['shc-view_type'] = __("Standard","wpas");
-				}
-				else
-				{
-					$mylist['shc-view_type'] = __("Search","wpas");
-					$mylist['shc-attach'] = $mylist['shc-attach_form'];
+				switch ($mylist['shc-view_type']) {
+					case 'std':	
+						$mylist['shc-view_type'] = __("Standard","wpas");
+						$mylist['shc-attach'] = $app['entity'][$mylist['shc-attach']]['ent-label'];
+						break;
+					case 'search':
+						$mylist['shc-view_type'] = __("Search","wpas");
+						$mylist['shc-attach'] = $app['form'][$mylist['shc-attach_form']]['form-name'];
+						break;
+					case 'single':
+						$mylist['shc-view_type'] = __("Single","wpas");
+						$mylist['shc-attach'] = $app['entity'][$mylist['shc-attach']]['ent-label'];
+						break;
+					case 'archive':
+						$mylist['shc-view_type'] = __("Archive","wpas");
+						$mylist['shc-attach'] = $app['entity'][$mylist['shc-attach']]['ent-label'];
+						break;
+					case 'tax':
+						$mylist['shc-view_type'] = __("Taxonomy","wpas");
+						$mylist['shc-attach'] = $app['taxonomy'][$mylist['shc-attach_tax']]['txn-label'];
+						break;
 				}
 			}
                         $url['edit_url'] = $edit_url . $key_list;
@@ -672,15 +731,31 @@ function wpas_list($list_type,$list_array,$app_id=0,$app_name="",$page=1)
                         $count ++;
                 }
 	
-		$paging_text = paginate_links( array(
+		$paging = paginate_links( array(
                                         'total' => ceil($list_values['count']/10),
                                         'current' => $page,
                                         'base' => $base .'&%_%',
                                         'format' => $format . '=%#%',
+					'type' => 'array',
                                         ) );
+		$paging_html = "<ul>";
+		if(!empty($paging))
+		{
+			foreach($paging as $key_paging => $my_paging)
+			{
+				$paging_html .= "<li";
+				if(($page == 1 && $key_paging == 0) || ($page > 1 && $page == $key_paging))
+				{
+					$paging_html .= " class='active'";
+				}
+				$paging_html .= ">" . $my_paging . "</li>";
+			}
+			$paging_html .= "</ul>";
+		}
+
                 $div_table .= "</tbody></table>";
         }
-        $return_list .= $paging_text . "</div><br class=\"clear\"></div>";
+        $return_list .= $paging_html . "</div><br class=\"clear\"></div>";
         $return_list .= wpas_list_table($other_labels);
         $return_list .= $div_table . "</tbody></table></form>";
         return $return_list;

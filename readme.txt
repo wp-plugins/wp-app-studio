@@ -3,15 +3,14 @@ Contributors: emarket-design
 Tags: Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.8
-Stable tag: 2.8
+Stable tag: 2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
-
 Wp App Studio is easy to learn and use design and development tool for creating fully featured custom plugins. No coding required.
 
- ==  Description  == 
+==  Description  == 
 = Are you a WPAS user? =
 * Serious about WordPress.
 * No coding experience.
@@ -38,53 +37,46 @@ Wp App Studio(WPAS) is a cost-effective REST API based service(SaaS) that create
 
 = Tranlations =
 We have machine-translated Wp App Studio in the following languages. We need lead translators to help finish the translations.
+
+
 * Spanish
 * Arabic
 * Turkish
 * Russian
 * Portuguese
 * Japanese
-* Itaian
+* Italian
 * German
 * French
 * Chinese
 
 Please [contact us](http://emarketdesign.com/contact-us/ "Contact eMarket Design") with your gmail account (required for file sharing) if you would like to help in translating WPAS to your own language.
 
-= What's new in 2.8? =
-WPAS 2.8 release offers better support for mobile-first apps as well as new features for precision content retrieval and display through the views module. Some of the changes are below;
+= What's new in 2.9? =
+WPAS 2.9 release offers better enforcement of API rules, stability checks, overall improvement of look and feel as well as introduction additional view types. Some of the changes are below;  
 
-* Introduced a search view type to support customization of  the layout of search form results. Now, you can create a search view and attach it to a search form. One view can be attached to multiple search forms; a handy feature if you want to use the same layout with multiple forms.
-* Introduced a standard view with paged navigation for displaying any entity content.
-* Added Advanced Shortcode Generator(ASG) feature which supports filtering entity content by its attributes and taxonomies. You can use operators to better filter your content and display on a page or post. The ASG can be accessed on a page or post toolbar by clicking on the WPAS button.
-* Added to permission module support for views. You will be able to assign access privileges to views' content based on a user's role in your app; great for role specific reports.
-* Added "No Access Message" feature to views module to alert users who lack appropriate access permissions.
-* Added View header and footer to support custom reporting requirements. The view headers and footers could be used for any static text such as titles, introductions or any text related to the content.
-* Added page navigation component which could be themed as jQuery UI or Bootstrap following our commitment to support both frameworks.
-* Upgraded our WPAS app framework to Bootstrap 3 and Font Awesome 4.
-* Upgraded the form layout editor module to support size(width) for input elements. The form layout editor now supports 12 point grid system for better precision in terms of multi-column form layouts.
-* Removed Pointers module. This module will be developed sometime next year as we continue to develop higher impact modules.
-* Added Targeted Device feature to support mobile-first forms.
-* Added support for inline radio and checkboxes in forms.
-* Added element size(height) support in forms to better match size of the buttons.
-* Added multi-language support to Wp App Studio.
-* Fixed various bugs reported by our customers in our backend servers.
-* Cleaned up some code in the plugin side and reorganized some forms to improve readability.
-* Fixed some tinymce bugs, upgraded to the latest version.
-* Added a new color picker attribute type.
+* Added additional checks, fixed data validation issues and uniqueness checks.
+* Fixed paging issues on some list screens.
+* Added builtin worpdress entity attributes: title, content and excerpt, to form layout editor.
+* Redesigned "Entity Admin Layout" editor to support taxonomy and attribute selection in one dropdown.
+* Added single and archive entity view types.
+* Added taxonomy view type.
+* Added widget name field to the widget screen to better enforce uniqueness.
+* Added Bootstrap, jQueryUI and none options to view types.
+* Added No framework option to forms.
+* Fixed domain name check in the settings page to support .co and country domains.
+* Added edit_ dashboard capability to the list of default roles.
+* Upgraded API Data to the version 3.
+* Added Spanish translation.
 
 = What's in store for the next release? =
 
-Here is our plan for the next release.
-* Adding drag-and-drop support for entity single and archive templetes.
-* Integrating a shopping cart feature to support sellable entity types. Paypal will be the first processor we support, the other will follow in the later releases.
-* Introducing Sources and Targets modules to lay ground for the upcoming Advanced Workflows module which is currently under development.
-* Some other surprises to follow...
+We are planning to focus on the auto installation of preset features and setting pages for the generated plugins as well as adding some additional improvements of the views module.  
 
 = Create your own plugin using Wp App Studio =
-An intro to WPAS system, not updated for 2.0 but still relevant. More video tutorials in the website.
+An intro to WPAS system. More video tutorials in the website.
 
-[youtube http://www.youtube.com/watch?v=od4UuGuA0FA]
+[youtube http://www.youtube.com/watch?feature=player_embedded&v=O-TCwkpuU-k]
 
 = What comes in and out of my computer? =
 
@@ -175,10 +167,6 @@ Your imagination and needs are your limits. Wp App Studio can create advanced ap
 
 Yes, we do. Support service purchases are subject to our [paid support terms and condition of use][2]. All of our developers are based out of U.S. We do not outsource. 
 
-= Will there be a mobile app support? = 
-
-We are planning to create a separate mobile app edition. The development will start after all of main modules are completed. 
-
 = Can multiple developers/designers work on the same app? =
 
 Yes, there is a small scale version control system integrated to Wp App Studio. You can also export and import app meta data from development to production systems. 
@@ -189,7 +177,7 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 
 = Where can I purchase professionally designed apps?  =
 
- We plan to release some of our own designs in  [WPAS Marketplace][3]. It will be soon open to other designers/developers as well. 
+ We plan to release some of our own designs as well as plugins in  [WPAS Marketplace][3]. It will be soon open to other designers/developers as well. 
 
 
  [1]: http://emarketdesign.com/terms-and-conditions/ "Terms and Conditions"
@@ -210,7 +198,10 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 9. Use WPAS button to insert forms and views shortcodes in a post or page.
 
 == Upgrade Notice ==
-= 2.8 = Added many new features supporting mobile-first apps and multi-column forms in addition to the new features in the views module.
+= 2.9 =
+WPAS 2.9 release offers better enforcement of API rules, stability checks, overall improvement of look and feel as well as introduction additional view types.
+= 2.8 = 
+Added many new features supporting mobile-first apps and multi-column forms in addition to the new features in the views module.
 = 2.2 =
 Added search forms functionality, replaced Shortcodes with Views module and many more.
 = 2.0.5 =
@@ -231,6 +222,20 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 2.9 (01/21/14) =
+* Added additional checks, fixed data validation issues and uniqueness checks.
+* Fixed paging issues on some list screens.
+* Redesigned "Form Layout" editor to support taxonomy,relationship and attribute selection in one dropdown.
+* Redesigned "Entity Admin Layout" editor to support attribute selection in one dropdown.
+* Added single and archive entity view types.
+* Added taxonomy view type.
+* Added widget name field to the widget screen to better enforce uniqueness.
+* Added Bootstrap, jQueryUI and none options to view types.
+* Added No framework option to forms.
+* Fixed domain name check in the settings page to support .co and country domains.
+* Added edit_dashboard capability to the list of default roles.
+* Upgraded API Data to the version 3.
+* Added Spanish translation.
 = 2.8 (12/8/13) =
 * Introduced a search view type to support customization of  the layout of search form results. Now, you can create a search view and attach it to a search form. One view can be attached to multiple search forms; a handy feature if you want to use the same layout with multiple forms.
 * Introduced a standard view with paged navigation for displaying any entity content.

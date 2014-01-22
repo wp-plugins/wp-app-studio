@@ -16,9 +16,9 @@ function wpas_view_help_tabs_list($help_tab)
 	$ret .= '<ul id="fields-sort" class="sortable ui-sortable">';
 	foreach($help_tab as $key => $myfield)
 	{
-		$ret .= '<li id="' . esc_attr($key) . '"><div id="field-row"><div class="row-fluid">
+		$ret .= '<li id="' . esc_attr($key) . '"><div class="field-row"><div class="row-fluid">
 			<div class="span1"><i class="icon-sort"></i></div>
-			<div class="span6" id="field-label">' . esc_html($myfield['help_fld_name']) . '</div>
+			<div class="span6" class="field-label">' . esc_html($myfield['help_fld_name']) . '</div>
 			<div class="span2" id="edit-help-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
 			<div class="span2" id="delete-help-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></li>';
 	}
@@ -43,23 +43,7 @@ function wpas_add_help_tab_form($app_id)
 		<div class="control-group">
 		<label class="control-label"><?php _e("Tab Content","wpas"); ?></label>
 		<div class="controls">
-		<?php
-
-	$buttons['theme_advanced_buttons1'] = 'bold,italic,underline,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,outdent,indent,link,unlink';
-	$buttons['theme_advanced_buttons2'] = 'tablecontrols';
-
-		$settings = array(
-				'text_area_name'=>'help_fld_content',//name you want for the textarea
-				'quicktags' => false,
-				'media_buttons' => false,
-				'textarea_rows' => 15,
-				'tinymce' => $buttons,
-		);
-	$id = 'help_fld_content';//has to be lower case
-	wp_editor('',$id,$settings);
-
-	?>
-
+		<?php display_tinymce('help_fld_content',''); ?>
 		</div>
 		</div>
 		</fieldset>

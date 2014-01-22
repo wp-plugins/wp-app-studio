@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
 					<div class="control-group row-fluid">
 							<label class="control-label span3"><?php _e("Domain Name","wpas"); ?></label>
 							 <div class="controls span8">
-								 <input class="input-xlarge" name="ao_domain" id="ao_domain" type="text" placeholder="<?php _e("e.g. example.com","wpas"); ?>" value="" >
+								 <input class="input-xlarge" name="ao_domain" id="ao_domain" type="text" placeholder="<?php _e("e.g. http://example.com","wpas"); ?>" value="" >
 								 <a href="#" style="cursor: help;" title="<?php _e("Enter your domain name.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>

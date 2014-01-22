@@ -39,7 +39,7 @@ function wpas_branding_footer()
 		<div class="row-fluid">
 		<div id="footer" class="span11">
 		<ul class="nav nav-pills">
-		<li><a target="_blank" href="//' . WPAS_URL . '">&copy; 2013 eMarket Design</a></li>
+		<li><a target="_blank" href="//' . WPAS_URL . '">&copy; 2014 eMarket Design</a></li>
 		</ul>
 		</div>
 		<div id="footer-version" class="span1 pull-right"> V ' . WPAS_VERSION . '</div>

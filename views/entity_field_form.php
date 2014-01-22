@@ -16,7 +16,8 @@ function wpas_view_ent_fields_list($ent_field)
         <div class="span1">' . __("Unique","wpas") . '</div>
 	<div class="span1"><div id="edit-field"></div><div id="delete-field"></div></div>
 	</div></div>';
-	$ret .= '<ul id="fields-sort" class="sortable ui-sortable">';
+	$ret_fields = '<ul id="fields-sort" class="sortable ui-sortable">';
+	$ret_builtin = '<ul id="builtin-fields-sort">';
         foreach($ent_field as $key => $myfield)
         {
 		if(isset($myfield['fld_required']) && $myfield['fld_required'] == 1)
@@ -27,7 +28,7 @@ function wpas_view_ent_fields_list($ent_field)
 		{
 			$required = 'N';
 		}
-		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1)
+		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && $myfield['fld_hidden_func'] == 'unique_id'))
 		{
 			$uniq_id = 'Y';
 		}
@@ -35,73 +36,34 @@ function wpas_view_ent_fields_list($ent_field)
 		{
 			$uniq_id = 'N';
 		}
-                $ret .= '<li id="' . esc_attr($key) . '"><div id="field-row"><div class="row-fluid">
-                                <div class="span1"><i class="icon-sort"></i></div>
-                                <div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
-                                <div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
-                                <div class="span2">' . esc_html($myfield['fld_type']) . '</div>
-                                <div class="span1">' . $required . '</div>
-                                <div class="span1">' . $uniq_id . '</div>
-                                <div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
-                                <div id="delete-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></div></li>';
-        }
-        $ret .= '</ul>';
+		if(isset($myfield['fld_builtin']) && $myfield['fld_builtin'] == 1)
+		{
+			$ret_builtin .= '<li id="' . esc_attr($key) . '"><div class="field-blt-row"><div class="row-fluid">
+			<div class="span1"></div>
+			<div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
+			<div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
+			<div class="span2">' . esc_html($myfield['fld_type']) . '</div>
+			<div class="span1">' . $required . '</div>
+			<div class="span1">' . $uniq_id . '</div>
+			<div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
+			</div></div></div></li>';
+		}
+		else
+		{
+			$ret_fields .= '<li id="' . esc_attr($key) . '"><div class="field-row"><div class="row-fluid">
+			<div class="span1">' . '<i class="icon-sort"></i></div>
+			<div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
+			<div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
+			<div class="span2">' . esc_html($myfield['fld_type']) . '</div>
+			<div class="span1">' . $required . '</div>
+			<div class="span1">' . $uniq_id . '</div>
+			<div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
+			<div id="delete-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></div></li>';
+		}
+	}
+        $ret .= $ret_builtin . '</ul>';
+        $ret .= $ret_fields . '</ul>';
 	return $ret;
-}
-
-function wpas_list_ent_fields()
-{
-$app_id = $_GET['app_id'];
-$ent_id = $_GET['ent_id'];
-$app = wpas_get_app($app_id);
-$attrs = Array();
-$layout_attrs = "";
-
-if(isset($app['entity'][$ent_id]['layout']) && is_array($app['entity'][$ent_id]['layout']))
-{
-	foreach($app['entity'][$ent_id]['layout'] as $mylayout)
-	{
-		if(isset($mylayout['tabs']))
-		{
-			foreach($mylayout['tabs'] as $mytab)
-			{
-				$layout_attrs .= $mytab['attr'] . ",";
-			}
-		}
-		if(isset($mylayout['accs']))
-		{	
-			foreach($mylayout['accs'] as $myacc)
-			{
-				$layout_attrs .= $myacc['attr'] . ",";
-			}
-		}
-	}
-	$attrs = explode(",",rtrim($layout_attrs,","));
-}
-
-$response = "<ul class=\"ui-draggable\">
-<li class=\"ui-draggable\"><div class=\"tabgrp\" id=\"tabgrp\"><div><i class=\"icon-check-empty\"></i>" . __("Tab Panel","wpas") . "</div></div></li>
-<li class=\"ui-draggable\"><div class=\"tab\"><div><i class=\"icon-folder-close\"></i>" . __("Tab","wpas") . "</div></div></li>
-<li class=\"ui-draggable\"><div class=\"accgrp\" id=\"accgrp\"><div><i class=\"icon-reorder\"></i>" . __("Accordion Panel","wpas") . "</div></div></li>
-<li class=\"ui-draggable\"><div class=\"acc\"><div><i class=\"icon-minus\"></i>" . __("Accordion","wpas") . "</div></div></li>
-</ul>
-<div class=\"attr-bin\"><ul class=\"ui-draggable\">";
-
-if(isset($app['entity'][$ent_id]['field']) && is_array($app['entity'][$ent_id]['field']))
-{
-	foreach($app['entity'][$ent_id]['field'] as $myfield)
-	{
-		if(!in_array($myfield['fld_label'],$attrs))
-		{
-		$response .= "<li class=\"ui-draggable\"><div class=\"tabattr\">" . esc_html($myfield['fld_label']) . "</div></li>";
-		}
-
-	}
-}
-$response .= "</ul></div>";
-
-echo $response;
-die();
 }
 
 function wpas_add_ent_field_form($app_id,$ent_id)
@@ -354,6 +316,7 @@ jQuery(document).ready(function($) {
 <input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
 <input type="hidden" id="ent" name="ent" value="<?php echo $ent_id;  ?>">
 <input type="hidden" id="ent_field" name="ent_field" value="">
+<input type="hidden" id="fld_builtin" name="fld_builtin" value="0">
 <div class="well">
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of an entity, for example, Customer Name is an attribute of the entity Customer.","wpas");?>"><?php _e("HELP","wpas");?></a></div></div>
   <fieldset>
@@ -685,7 +648,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for selected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
@@ -693,7 +656,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
   </fieldset>

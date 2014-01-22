@@ -5,41 +5,44 @@ jQuery(document).ready(function($) {
 		form_data = $('#form-layout').serialize();
 		form_id = $('#form-layout input#form').val();
 		$.post(ajaxurl,{action:'wpas_form_layout_save',app_id:app_id,form_id:form_id,data:form_data,nonce:form_vars.nonce_save_form_layout}, function(response) {
-			if(response == 1)
-			{
-				$(this).getBreadcrumb('app');
-				$('.group1').hide();
-				$('#list-form').show();
+			switch (response) {
+				case '1':
+					$(this).getBreadcrumb('app');
+					$('.group1').hide();
+					$('#list-form').show();
+					break;
+				case '2':
+					$('#errorModalForm .modal-body').html(form_vars.req_missing_error);
+					$('#errorModalForm').modal('show'); //req missing
+					break;
+				case '3':
+					$('#errorModalForm .modal-body').html(form_vars.dupe_error);
+					$('#errorModalForm').modal('show'); //dupe error
+					break;
+				case '4':
+					$('#errorModalForm .modal-body').html(form_vars.dropdown_error);
+					$('#errorModalForm').modal('show'); //empty field
+					break;
+				case '5':
+					$('#errorModalForm .modal-body').html(form_vars.size_error);
+					$('#errorModalForm').modal('show'); //size err total not 12
+					break;
 			}
-			else if(response == 2)
-			{
-				$('#errorModalForm .modal-body').html(form_vars.req_missing_error);
-				$('#errorModalForm').modal('show'); //req missing
-			}
-			else if(response == 3)
-			{
-				$('#errorModalForm .modal-body').html(form_vars.dupe_error);
-				$('#errorModalForm').modal('show'); //dupe error
-			}
-			else if(response == 4)
-			{
-				$('#errorModalForm .modal-body').html(form_vars.dropdown_error);
-				$('#errorModalForm').modal('show'); //dupe error
-			}
+				
 		});
 
 	});
 	 $(document).on('click','button#error-form-close,button#error-form-ok',function(){
                 $('#errorModalForm').modal('hide');
         });
-	$(document).on('click','div.form-hr a.delete,div.form-text a.delete,div.form-relent a.delete,div.form-attr a.delete,div.form-tax a.delete',function(){
+	$(document).on('click','div.form-hr a.delete,div.form-text a.delete,div.form-element a.delete',function(){
                 currentItem = $(this).parent().parent().parent().remove();
 	});
-	$(document).on('click','div.form-text a.edit,div.form-relent a.edit,div.form-attr a.edit,div.form-tax a.edit',function(){
+	$(document).on('click','div.form-text a.edit,div.form-element a.edit',function(){
 		currentItem = $(this).parent().parent().parent().attr('id');
 		$('#'+currentItem +' .form-inside').toggle();
 	});
-	$(document).on('click','.form-attr-select,.form-tax-select,.form-relent-select',function(){
+	$(document).on('click','.form-element-select',function(){
 		label_vars = $(this).attr('id').split('-');
 		label_id = label_vars[4];
 		type = label_vars[1];
@@ -50,7 +53,7 @@ jQuery(document).ready(function($) {
 			$(this).closest('.form-'+type).find('#field-label'+label_id).text(select_label);
 		}
 	});
-	$(document).on('click','.form-attr-size,.form-tax-size,.form-relent-size',function(){
+	$(document).on('click','.form-element-size',function(){
 		label_vars = $(this).attr('id').split('-');
 		type = label_vars[1];
 		label_id = label_vars[4];
@@ -60,7 +63,7 @@ jQuery(document).ready(function($) {
 			$(this).closest('.form-'+type).find('#field-label'+label_id).attr('class','span'+spansize);
 		}
 	});
-	$(document).on('click','.add-attr,.delete-attr,.add-tax,.delete-tax,.add-relent,.delete-relent',function(){
+	$(document).on('click','.add-element,.delete-element',function(){
 		selected_val = [];
 		selected_size = [];
 		i = 1;
@@ -116,11 +119,11 @@ jQuery(document).ready(function($) {
 		$.get(ajaxurl,{action:'wpas_get_form_layout',app_id:app_id,form_id:form_id}, function(response){
 			$('#form-layout-bin-ctr').html(response);
 			$('#edit-form-layout-div').show();
-			$('#form-hr,#form-text,#form-relent,#form-attr,#form-tax').draggable({
+			$('#form-hr,#form-text,#form-element').draggable({
 				helper: 'clone',
 			});
 			$('#form-layout-ctr').droppable({
-				accept: '#form-hr,#form-text,#form-relent,#form-attr,#form-tax',
+				accept: '#form-hr,#form-text,#form-element',
 				drop: function(event, ui) {
 					if($('.dragme'))
 					{
@@ -129,10 +132,6 @@ jQuery(document).ready(function($) {
 					var field_count = $('#form-field-count').val();
 					var drag_id = $(ui.draggable).attr('id');
 					var type_val = $(ui.draggable).text();
-					var subdrag = drag_id.split('-');
-					var class_id = subdrag[0] + '-' + subdrag[1];
-					var type = subdrag[1];
-					var count = subdrag[2];
 					var div_inside = "";
 					var resp_div = '#'+drag_id + "-" + field_count + '-inside';	
 					switch(drag_id)
@@ -144,15 +143,13 @@ jQuery(document).ready(function($) {
 							$(resp_div).html(response);
 						});
 						break;
-					case 'form-attr':
-					case 'form-tax':
-					case 'form-relent':
-						$.get(ajaxurl,{action:'wpas_get_form_html',app_id:app_id,form_id:form_id,type:type,count:count,field_count:field_count},function(response){
+					case 'form-element':
+						$.get(ajaxurl,{action:'wpas_get_form_html',app_id:app_id,form_id:form_id,field_count:field_count},function(response){
 							$(resp_div).html(response);
 						});
 						break;
 					}	
-					var div_html = "<div id='"+ drag_id + "-" + field_count +"' class='"+ class_id + "'>";
+					var div_html = "<div id='"+ drag_id + "-" + field_count +"' class='"+ drag_id + "'>";
 					div_html += "<div class='row-fluid form-field-str'>";
 					div_html += "<div class='span1 layout-edit-icons'>";
 					if(drag_id != 'form-hr')

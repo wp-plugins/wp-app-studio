@@ -29,10 +29,10 @@ function wpas_view_rel_fields_list($rel_field)
                         $required = __("N","wpas");
                 }
 
-                $ret .= '<li id="' . $key . '"><div id="field-row"><div class="row-fluid">
+                $ret .= '<li id="' . $key . '"><div class="field-row"><div class="row-fluid">
                         <div class="span1"><i class="icon-sort"></i></div>
-			<div class="span3" id="field-name">' . esc_html($myfield['rel_fld_name']) . '</div>
-                        <div class="span3" id="field-label">' . esc_html($myfield['rel_fld_label']) . '</div>
+			<div class="span3" class="field-name">' . esc_html($myfield['rel_fld_name']) . '</div>
+                        <div class="span3" class="field-label">' . esc_html($myfield['rel_fld_label']) . '</div>
                         <div class="span2">' . esc_html($myfield['rel_fld_type']) . '</div>
 			<div class="span1">' . $required . '</div>
                         <div class="span1" id="edit-rel-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>

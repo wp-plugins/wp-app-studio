@@ -2,6 +2,7 @@
 function wpas_entity_layout_form()
 {
 ?>
+<input id="ent-layout" type="hidden">
 <div class="modal hide" id="myModal">
   <div class="modal-header">
 	<button id="edit-close" type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -23,7 +24,7 @@ function wpas_entity_layout_form()
   <div class="modal-body" style="clear:both"><?php _e("All attributes must be assigned to at least one panel.","wpas"); ?>
   </div>
   <div class="modal-footer">
-<button id="save-layout-modal" class="btn btn-primary"><?php _e("Save","wpas"); ?></button>
+<button id="error-ok" data-dismiss="errorModal" aria-hidden="true" class="btn btn-primary"><?php _e("OK","wpas"); ?></button>
   </div>
 </div>
 <div class="modal hide" id="errorModal1">
@@ -48,12 +49,45 @@ function wpas_entity_layout_form()
 <button id="error-ok" data-dismiss="errorModal2" aria-hidden="true" class="btn btn-primary"><?php _e("OK","wpas"); ?></button>
   </div>
 </div>
+<div class="modal hide" id="errorModal3">
+  <div class="modal-header">
+	<button id="error-close" type="button" class="close" data-dismiss="errorModal3" aria-hidden="true">x</button>
+    <h3><i class="icon-flag icon-red"></i><?php _e("Error","wpas"); ?></h3>
+  </div>
+  <div class="modal-body" style="clear:both"><?php _e("All element dropdowns must be assigned to an attribute.","wpas"); ?>
+  </div>
+  <div class="modal-footer">
+<button id="error-ok" data-dismiss="errorModal3" aria-hidden="true" class="btn btn-primary"><?php _e("OK","wpas"); ?></button>
+  </div>
+</div>
+<div class="modal hide" id="errorModal4">
+  <div class="modal-header">
+	<button id="error-close" type="button" class="close" data-dismiss="errorModal4" aria-hidden="true">x</button>
+    <h3><i class="icon-flag icon-red"></i><?php _e("Error","wpas"); ?></h3>
+  </div>
+  <div class="modal-body" style="clear:both"><?php _e("Please remove duplicate attributes from the layout.","wpas"); ?>
+  </div>
+  <div class="modal-footer">
+<button id="error-ok" data-dismiss="errorModal4" aria-hidden="true" class="btn btn-primary"><?php _e("OK","wpas"); ?></button>
+  </div>
+</div>
 <div class="row-fluid"><div id="layout-alert" class="span12"></div></div>
 <div class="row-fluid">
 <div class="layout-bin span3 pull-left" data-spy="affix" data-offset-top="50">
-</div>
-<div id="layout-ctr" class="ui-droppable ui-sortable  span9 pull-right">
-<div class="dragme"><?php _e("DRAG AND DROP","wpas"); ?></div>
+<ul class="ui-draggable">
+<li class="ui-draggable"><div class="tabgrp" id="tabgrp"><div><i class="icon-check-empty"></i><?php  _e("Tab Panel","wpas"); ?>
+</div></div></li>
+<li class="ui-draggable"><div class="tab"><div><i class="icon-folder-close"></i><?php _e("Tab","wpas"); ?></div></div></li>
+<li class="ui-draggable"><div class="accgrp" id="accgrp"><div><i class="icon-reorder"></i><?php  _e("Accordion Panel","wpas"); ?>
+</div></div></li>
+<li class="ui-draggable"><div class="acc"><div><i class="icon-minus"></i><?php _e("Accordion","wpas"); ?></div></div></li>
+</ul>
+<div class="attr-bin"><ul class="ui-draggable">
+<li class="ui-draggable"><div class="tabattr"> <i class="icon-tasks"></i><?php _e("Element","wpas"); ?> </div></li>
+</ul></div>
+</div><!-- end of layout-bin -->
+<div id="layout-ctr" class="span9 pull-right">
+<ol class="layout"> </ol>
 </div>
 </div>
 <div class="row-fluid">
@@ -66,7 +100,7 @@ function wpas_entity_layout_form()
 </div>
 <?php
 }
-function wpas_entity_container($layout)
+function wpas_entity_container($layout,$fields)
 {
 $grp_count = 0;
 $tab_count = 0;
@@ -78,24 +112,33 @@ $layout_html ="<div class=\"dragme\">" . __("DRAG AND DROP","wpas") . "</div>";
 }
 else
 {
+$layout_html .='<script type="text/javascript">
+jQuery(document).ready(function($) {
+$("#layout-ctr").sortable();
+$(".multitab-ctr").sortable();
+$(".multiacc-ctr").sortable();
+});
+</script>';
 foreach($layout as $mylayout)
 {
 $grp_count++;
-if(isset($mylayout['tabs']) && is_array($mylayout['tabs']))
+if(!empty($mylayout['tabs']))
 {
 $layout_html .= "<div id=\"tabgrp".$grp_count . "\" class=\"tabgrp-ctr ui-sortable\">
 	<div id=\"tabgrp" . $grp_count . "-row\" class=\"row-fluid\">
-	<div id=\"tabgrp" . $grp_count . "-title\" class=\"tabgrp-title layout-title span11 pull-left\">" . esc_html($mylayout['gr_title']) . "</div>
-	<div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
+	<div class=\"pull-left layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a></div>
+	<div id=\"tabgrp" . $grp_count . "-title\" class=\"tabgrp-title layout-title span10 pull-left\">" . esc_html($mylayout['gr_title']) . "</div>
+	<div class=\"pull-right layout-edit-icons\">
 	<a class=\"delete\"><i class=\"icon-trash\"></i></a></div>
 	</div><div class=\"multitab-ctr ui-droppable ui-sortable\">";
 }
-elseif(is_array($mylayout['accs']))
+elseif(!empty($mylayout['accs']))
 {
 $layout_html .= "<div id=\"accgrp".$grp_count . "\" class=\"accgrp-ctr ui-sortable\">
+	<div class=\"pull-left layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a></div>
         <div id=\"accgrp" . $grp_count . "-row\" class=\"row-fluid\">
-        <div id=\"accgrp" . $grp_count . "-title\" class=\"accgrp-title layout-title span11 pull-left\">" . esc_html($mylayout['gr_title']) . "</div>
-        <div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
+        <div id=\"accgrp" . $grp_count . "-title\" class=\"accgrp-title layout-title span10 pull-left\">" . esc_html($mylayout['gr_title']) . "</div>
+        <div class=\"pull-right layout-edit-icons\">
         <a class=\"delete\"><i class=\"icon-trash\"></i></a></div>
         </div><div class=\"multiacc-ctr ui-droppable ui-sortable\">";
 }
@@ -107,17 +150,16 @@ if(isset($mylayout['tabs']))
 		$tab_count++;
 		$layout_html .= "<div id=\"tab-ctr" . $tab_count . "\" class=\"tab-ctr\">
 				<div id=\"tab-ctr". $tab_count . "-row\" class=\"row-fluid\">
+				<div class=\"pull-left layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a></div>
 				<div id=\"tab-ctr" . $tab_count . "-title\" class=\"tabctr-title layout-title span10 pull-left\">" . $mytab['tab_title'] . "</div>
-				<div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
+				<div class=\"pull-right layout-edit-icons\">
 				<a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>
 				<div id=\"multiattr-ctr\" class=\"multiattr-ctr ui-droppable\">";
-		if($mytab['attr'])
+		if(!empty($mytab['attr']))
 		{
-			$attrs = explode(",",$mytab['attr']);
-			foreach($attrs as $myattr)
+			foreach($mytab['attr'] as $myattr)
 			{
-				$layout_html .= "<div class=\"tabattr ui-draggable\" style=\"position: relative; left: 0px; top: 0px;\">" . esc_html($myattr) . 
-					"<div class=\"pull-right layout-edit-icons\"><a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>";
+				$layout_html .= "<div class=\"el-attr row-fluid\">" . wpas_get_select_attrs($fields,$myattr) . "</div>";
 			}
 		}
 		$layout_html .="</div></div>";
@@ -127,23 +169,22 @@ if(isset($mylayout['accs']))
 {
 	foreach($mylayout['accs'] as $myacc)
 	{
-	$acc_count++;
-	$layout_html .= "<div id=\"acc-ctr" . $acc_count . "\" class=\"acc-ctr\">
-			<div id=\"acc-ctr". $acc_count . "-row\" class=\"row-fluid\">
-			<div id=\"acc-ctr" . $acc_count . "-title\" class=\"accctr-title layout-title span10 pull-left\">" . esc_html($myacc['acc_title']) . "</div>
-			<div class=\"pull-right layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a>
-			<a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>
-			<div id=\"multiattr-ctr\" class=\"multiattr-ctr ui-droppable\">";
-	if($myacc['attr'])
-	{
-	$attrs = explode(",",$myacc['attr']);
-	foreach($attrs as $myattr)
-	{
-	$layout_html .= "<div class=\"tabattr ui-draggable\" style=\"position: relative; left: 0px; top: 0px;\">" . esc_html($myattr) . 
-			"<div class=\"pull-right layout-edit-icons\"><a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>";
-	}
-	}
-	$layout_html .="</div></div>";
+		$acc_count++;
+		$layout_html .= "<div id=\"acc-ctr" . $acc_count . "\" class=\"acc-ctr\">
+				<div id=\"acc-ctr". $acc_count . "-row\" class=\"row-fluid\">
+				<div class=\"pull-left layout-edit-icons\"><a class=\"edit\"><i class=\"icon-edit\"></i></a></div>
+				<div id=\"acc-ctr" . $acc_count . "-title\" class=\"accctr-title layout-title span10 pull-left\">" . esc_html($myacc['acc_title']) . "</div>
+				<div class=\"pull-right layout-edit-icons\">
+				<a class=\"delete\"><i class=\"icon-trash\"></i></a></div></div>
+				<div id=\"multiattr-ctr\" class=\"multiattr-ctr ui-droppable\">";
+		if(!empty($myacc['attr']))
+		{
+			foreach($myacc['attr'] as $myattr)
+			{
+				$layout_html .= "<div class=\"el-attr row-fluid\">" . wpas_get_select_attrs($fields,$myattr) . "</div>";
+			}
+		}
+		$layout_html .="</div></div>";
 	}
 }
 

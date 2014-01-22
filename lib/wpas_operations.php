@@ -84,6 +84,11 @@ function wpas_import_app($app_new)
 			if($inflated_data !== false)
 			{
                         	$data = unserialize(base64_decode($inflated_data));
+				if(!isset($data['ver']) || $data['ver'] != WPAS_DATA_VERSION)
+				{
+					$data = wpas_update_data_arr($data['app_id'],$data);
+				}
+
 			}
 			else
 			{
@@ -328,7 +333,14 @@ function wpas_check_valid_generate($myapp)
 			if(!isset($myhelp['field']) || empty($myhelp['field']))
 			{
 				$generate_error = 6;
-				$error_loc_name = $myhelp['help-object_name'];
+				if(isset($myhelp['help-entity']))
+				{
+					$error_loc_name = $myapp['entity'][$myhelp['help-entity']]['ent-label'];
+				}
+				elseif(isset($myhelp['help-tax']))
+				{
+					$error_loc_name = $myapp['taxonomy'][$myhelp['help-tax']]['txn-label'];
+				}
 				break;
 			}
 		}
@@ -342,7 +354,7 @@ function wpas_check_valid_generate($myapp)
 			$alert = __("Error: You must have at least one entity and each entity must have at least one attribute.","wpas");
 			break;
 		case 3:
-			$alert = __("Error: You must have at least one entity and each entity must have at least one attribute. Please add at least one attribute to: ","wpas") . $error_loc_name;
+			$alert = __("Error: You must have at least one entity and each entity must have at least one attribute. Please add at least one attribute to:","wpas") . " " . $error_loc_name;
 			break;
 		case 4:
 			$alert = sprintf(__('Error: You must have at least one attribute in each panel in %s entity layout.','wpas'),$error_loc_name);
@@ -351,7 +363,7 @@ function wpas_check_valid_generate($myapp)
 			$alert = sprintf(__('Error: You must assign all attributes to a panel in %s entity layout.','wpas'),$error_loc_name);
 			break;
 		case 6:
-			$alert = __("Error: You must assign tabs to the help attached to:","wpas") . $error_loc_name;
+			$alert = __("Error: You must assign tabs to the help attached to:","wpas") . " " . $error_loc_name;
 			break;
 		case 7:
 			$alert = sprintf(__('Error: You must have at least one unique attribute in each entity. Please set at least one attribute unique in %s entity.','wpas'),$error_loc_name);
@@ -374,55 +386,24 @@ function wpas_check_form_rel_uniq($myapp)
 	$error_loc_name = "";
 	foreach($myapp['form'] as $myform)
 	{
+		$myent_ids = Array();
 		if(!empty($myform['form-dependents']))
 		{
 			if(!empty($myform['form-layout']))
 			{
 				foreach($myform['form-layout'] as $myform_layout)
 				{
-					$rel_entity = "";
-					$unique_key = 0;
-					if($myform_layout['obtype'] == 'relent')
+					foreach($myform_layout as $myitem)
 					{
-						foreach($myform_layout as $myitem)
+						if(isset($myitem['relent']) && $myitem['obtype'] == 'relent')
 						{
-							if(isset($myitem['relent']))
+							if($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-from-name'])
+							{	
+								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-to-name'];
+							}
+							elseif($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-to-name'])
 							{
-								foreach($myapp['relationship'] as $myrel)
-								{
-									if($myitem['relent'] == $myrel['rel-name-id'])
-									{
-										if($myitem['entity'] == $myrel['rel-from-name'])
-										{
-											$rel_entity = $myrel['rel-to-name'];
-										}
-										else
-										{
-											$rel_entity = $myrel['rel-from-name'];
-										}
-										break;
-									}
-								}
-								foreach($myapp['entity'] as $myentity)
-								{
-									if($rel_entity == $myentity['ent-label'])
-									{
-										foreach($myentity['field'] as $myfields)
-										{
-											if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
-											{
-												$unique_key = 1;
-												break;
-											}
-										}
-										if($unique_key == 0)
-										{
-											$generate_error = 7;
-											$error_loc_name = $myentity['ent-label'];
-											return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
-										}
-									}
-								}
+								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-from-name'];
 							}
 						}
 					}
@@ -432,49 +413,39 @@ function wpas_check_form_rel_uniq($myapp)
 			{
 				foreach($myform['form-dependents'] as $rel_dep)
 				{
-					$rel_entity = "";
-					$unique_key = 0;
-					$dep= explode("__",$rel_dep);
-					foreach($myapp['relationship'] as $myrel)
+					$myrel = $myapp['relationship'][$rel_dep];
+					if($myrel['rel-required'] == 1)
 					{
-						if($dep[1] == $myrel['rel-name-id'] && $myrel['rel-required'] == 1)
+						if($myform['form-attached_entity'] == $myrel['rel-from-name'])
 						{
-							if($myform['form-attached_entity'] == $myrel['rel-from-name'])
-							{
-								$rel_entity = $myrel['rel-to-name'];
-							}
-							else
-							{
-								$rel_entity = $myrel['rel-from-name'];
-							}
-							break;
+							$myent_ids[] = $myrel['rel-to-name'];
 						}
-					}
-					if($rel_entity != "")
-					{
-						foreach($myapp['entity'] as $myentity)
+						else
 						{
-							if($rel_entity == $myentity['ent-label'])
-							{
-								foreach($myentity['field'] as $myfields)
-								{
-									if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
-									{
-										$unique_key = 1;
-										break;
-									}
-								}
-								if($unique_key == 0)
-								{
-									$generate_error = 7;
-									$error_loc_name = $myentity['ent-label'];
-									return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
-								}
-							}
+							$myent_ids[] = $myrel['rel-from-name'];
 						}
+						break;
 					}
 				}
 					
+			}
+			$unique_key = 0;
+			foreach($myent_ids as $ent_id)
+			{
+				foreach($myapp['entity'][$ent_id]['field'] as $myfields)
+				{
+					if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
+					{
+						$unique_key = 1;
+						break;
+					}
+				}
+				if($unique_key == 0)
+				{
+					$generate_error = 7;
+					$error_loc_name = $myapp['entity'][$ent_id]['ent-label'];
+					return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
+				}
 			}
 		}
 	}
@@ -551,7 +522,14 @@ function wpas_check_entity_field($myapp_entity)
 		}
 		if(isset($myentity['field']))
 		{
-			$ent_attr_count = count($myentity['field']);
+			$ent_attr_count = 0;
+			foreach($myentity['field'] as $myfield)
+			{
+				if(!isset($myfield['fld_builtin']))
+				{
+					$ent_attr_count++;
+				}
+			}
 		}
 		if(!in_array($myentity['ent-name'],Array('page','post')))
 		{
@@ -606,8 +584,7 @@ function wpas_check_layout_attr($mylayout_panel)
 		}
 		else
 		{
-			$my_attrs = explode(",",$mypanel['attr']);
-			$layout_attr_count = $layout_attr_count + count($my_attrs);
+			$layout_attr_count = $layout_attr_count + count($mypanel['attr']);
 		}
 	}
 	return $layout_attr_count;
@@ -616,7 +593,7 @@ function wpas_check_search_form($myapp)
 {
 	$generate_error = 0;
 	$error_loc_name = "";
-	foreach($myapp['form'] as $myform)
+	foreach($myapp['form'] as $keyform => $myform)
 	{
 		$form_linked = 0;
 		if($myform['form-form_type'] == 'search' && empty($myform['form-layout']))
@@ -631,7 +608,7 @@ function wpas_check_search_form($myapp)
 			{
 				foreach($myapp['shortcode'] as $myview)
 				{
-					if($myview['shc-view_type'] == 'search' && $myview['shc-attach_form'] == $myform['form-name'])
+					if($myview['shc-view_type'] == 'search' && $myview['shc-attach_form'] == $keyform)
 					{
 						$form_linked = 1;
 					}

@@ -6,31 +6,77 @@ function wpas_add_shortcode_form($app_id)
 jQuery(document).ready(function($) {
         $('#shc-view_type').click(function() {
 		app_id = jQuery('input#app').val();
-                if($(this).find('option:selected').val() == 'std')
-                {
-			$('#shc-theme_type_div').show();
-			$.get(ajaxurl,{action:'wpas_get_entities',type:'shortcode',app_id:app_id}, function(response)
-			{
-				$('#add-shortcode-div #shc-attach').html(response);
-				$('#shc-attach_div').show();
-			});
-			$('#shc-attach_form_div').hide();
-		}
-                else if($(this).find('option:selected').val() == 'search')
-		{
-			$('#shc-theme_type_div').hide();
-			$.get(ajaxurl,{action:'wpas_get_search_forms',app_id:app_id}, function(response)
-                        {
-                                $('#shc-attach_form').html(response);
-				$('#shc-attach_form_div').show();
-                        });
-			$('#shc-attach_div').hide();
-		}
-		else
-		{
-			$('#shc-theme_type_div').hide();
-			$('#shc-attach_form_div').hide();
-			$('#shc-attach_div').hide();
+		var selected_type = $(this).find('option:selected').val();
+		switch (selected_type) {
+			case 'std':
+				$('#shc-theme_type_div').show();
+				$('#shc-sc_pagenav_div').show();
+				$('#shctabs-2-li').show();
+				$.get(ajaxurl,{action:'wpas_get_entities',type:'shortcode',app_id:app_id}, function(response)
+				{
+					$('#add-shortcode-div #shc-attach').html(response);
+					$('#shc-attach_div').show();
+				});
+				$('#shc-attach_tax_div').hide();
+				$('#shc-attach_form_div').hide();
+				break;
+			case 'search':
+				$('#shc-theme_type_div').hide();
+				$('#shc-sc_pagenav_div').show();
+				$('#shctabs-2-li').show();
+				$.get(ajaxurl,{action:'wpas_get_search_forms',app_id:app_id}, function(response)
+				{
+					$('#shc-attach_form').html(response);
+					$('#shc-attach_form_div').show();
+				});
+				$('#shc-attach_tax_div').hide();
+				$('#shc-attach_div').hide();
+				break;
+			case 'single':
+				$('#shc-theme_type_div').show();
+				$('#shc-sc_pagenav_div').hide();
+				$.get(ajaxurl,{action:'wpas_get_entities',type:'shortcode',app_id:app_id,subtype:selected_type}, function(response)
+				{
+					$('#add-shortcode-div #shc-attach').html(response);
+					$('#shc-attach_div').show();
+				});
+				$('#shc-attach_tax_div').hide();
+				$('#shc-attach_form_div').hide();
+				$('#shctabs-2-li').hide();
+				break;	
+			case 'archive':
+				$('#shc-theme_type_div').show();
+				$('#shc-sc_pagenav_div').hide();
+				$('#shctabs-2-li').hide();
+				$.get(ajaxurl,{action:'wpas_get_entities',type:'shortcode',app_id:app_id,subtype:selected_type}, function(response)
+				{
+					$('#add-shortcode-div #shc-attach').html(response);
+					$('#shc-attach_div').show();
+				});
+				$('#shc-attach_tax_div').hide();
+				$('#shc-attach_form_div').hide();
+				break;
+			case 'tax':
+				$('#shc-theme_type_div').show();
+				$('#shc-sc_pagenav_div').hide();
+				$('#shctabs-2-li').hide();
+				$.get(ajaxurl,{action:'wpas_get_entities',type:'tax',app_id:app_id,subtype:selected_type}, function(response)
+				{
+					$('#add-shortcode-div #shc-attach_tax').html(response);
+					$('#shc-attach_tax_div').show();
+				});
+				$('#shc-attach_div').hide();
+				$('#shc-attach_form_div').hide();
+				break;
+			//$('#shc-sc_pagenav_div').hide();
+			default:
+				$('#shc-theme_type_div').hide();
+				$('#shc-sc_pagenav_div').hide();
+				$('#shc-attach_form_div').hide();
+				$('#shc-attach_tax_div').hide();
+				$('#shc-attach_div').hide();
+				$('#shctabs-2-li').show();
+				break;
 		}
 	});
 });			
@@ -42,7 +88,7 @@ jQuery(document).ready(function($) {
 		<div class="well">
 		<div class="row-fluid">
 		<div class="alert alert-info pull-right">
-		<i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Views help you display entity content where and how you wanted on the frontend. If you'd like to sort, filter,and reformat content, you need to use views. Just put a view's shortcode on a page and you are good to go. Views can also be attached ta a search form if you need to display a search form and the results on a page.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
+		<i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Views help you display content where and how you wanted on the frontend.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Name","wpas"); ?></label>
 		<div class="controls span9">
@@ -58,8 +104,11 @@ jQuery(document).ready(function($) {
 		<option value="" selected="selected"><?php _e("Please select","wpas"); ?></option>
 		<option value="std"><?php _e("Standard","wpas"); ?></option>
 		<option value="search"><?php _e("Search","wpas"); ?></option>
+		<option value="single"><?php _e("Single","wpas"); ?></option>
+		<option value="archive"><?php _e("Archive","wpas"); ?></option>
+		<option value="tax"><?php _e("Taxonomy","wpas"); ?></option>
 		</select>
-		<a href="#" style="cursor: help;" title="<?php _e("Sets the type of view to be created. Standard views are for displaying content on a page or post without any dependency to any other wpas component such as a search form. Search views are for displaying the results of search query and can be attached to a search form. To attach a search results view to a search form, create a search form then select the view to be attached in the form configuration screen. Standard views can not be attached to search forms. Both types are available for further filtering using the WPAS toolbar button on a page or post.","wpas"); ?>">
+		<a href="#" style="cursor: help;" title="<?php _e("Sets the type of view to be created.You can create search, standard, single, archive, and taxonomy views. All views except single view produce a list of content. The single views display individual entity content. Each entity can only have one single view. Search views are for displaying search results and must be attached to at least one search form. Taxonomy views display the content of a taxonomy. Each taxonomy can have only one taxonomy view. Archive views display a list of entity content. Each entity can have only one archive view. In addition, you can sort, filter the archived content of views using the filter tab. Single views diplay only one record so can not be filtered or sorted. If you like to display multiple versions of the archived content of an entity, you can create a standard view. There is no limitation of the number of standard views that can be attached to an entity. Standard views can be put on a page or post using the wpas toolbar button.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
@@ -75,7 +124,15 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Attach to Form","wpas"); ?></label>
 		<div class="controls span9">
 		<select id="shc-attach_form" name="shc-attach_form">
-		</select><a href="#" style="cursor: help;" title="<?php _e("Search forms must be attched to a already created view. A search view defines the format of how search results will be displayed.","wpas"); ?>">
+		</select><a href="#" style="cursor: help;" title="<?php _e("Search forms must be attached to an already created view. A search view defines the format of how search results will be displayed.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="shc-attach_tax_div" name="shc-attach_tax_div" style="display:none;">
+		<label class="control-label span3"><?php _e("Attach to Taxonomy","wpas"); ?></label>
+		<div class="controls span9">
+		<select id="shc-attach_tax" name="shc-attach_tax">
+		</select><a href="#" style="cursor: help;" title="<?php _e("Taxonomy views must be attached to a predefined taxonomy.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
@@ -83,7 +140,7 @@ jQuery(document).ready(function($) {
 		<div id="view-tabs">
         <ul id="shcTab" class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#shctabs-1"><?php _e("Display Options","wpas"); ?></a></li>
-        <li><a data-toggle="tab" href="#shctabs-2"><?php _e("Filters","wpas"); ?></a></li>
+        <li id="shctabs-2-li"><a data-toggle="tab" href="#shctabs-2"><?php _e("Filters","wpas"); ?></a></li>
         <li id="shctabs-3-li"><a data-toggle="tab" href="#shctabs-3"><?php _e("Messages","wpas"); ?></a></li>
         </ul>
         <div id="ShcTabContent" class="tab-content">
@@ -93,14 +150,15 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Template","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="shc-theme_type" id="shc-theme_type" class="input-medium">
+		<option value="Na">None</option>
+		<option value="Bootstrap">Twitter's Bootstrap</option>
 		<option value="Pure">jQuery UI</option>
-		<option value="Bootstrap" selected="selected">Twitter's Bootstrap</option>
 		</select>
 		<a href="#" style="cursor: help;" title="<?php _e("Sets the frontend framework which will be used to configure the overall look and feel of the view. If you pick jQuery UI, you can choose your theme from App's Settings under the theme tab. Default is Twitter Bootstrap.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
-		<div class="control-group row-fluid">
+		<div class="control-group row-fluid" id="shc-sc_pagenav_div">
                 <label class="control-label span3"></label>
                 <label class="checkbox span9"><?php _e("Enable paged navigation.","wpas"); ?>
                 <input type="checkbox" value="1" id="shc-sc_pagenav" name="shc-sc_pagenav">
@@ -125,18 +183,18 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Footer","wpas"); ?></label>
-		<div class="controls span9">
-		<?php display_tinymce('shc-layout_footer','',1);  ?>
-		<a href="#" style="cursor: help;" title="<?php _e("It defines the footer content of the view. The footer content is static and displayed on the bottom section of your view's content.","wpas"); ?>"><i class="icon-info-sign"></i></a>
-		</div>
-		</div>
-		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Css","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea class="input-xlarge" id="shc-sc_css" name="shc-sc_css" class="tinymce"></textarea>
 		<a href="#" style="cursor: help;" title="<?php _e("The custom css code to be used when displaying the content. It is handy when you added custom classes in the layout editor and want to add css class definitions. You can leave this field blank and use a common css file for all.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Footer","wpas"); ?></label>
+		<div class="controls span9">
+		<?php display_tinymce('shc-layout_footer','',1);  ?>
+		<a href="#" style="cursor: help;" title="<?php _e("It defines the footer content of the view. The footer content is static and displayed on the bottom section of your view's content.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 		</div>
 		</div>
 		</div> <!-- end of tab1 -->

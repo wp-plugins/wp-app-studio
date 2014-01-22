@@ -71,7 +71,7 @@ jQuery(document).ready(function() {
                 </div>
 
                 <div class="control-group row-fluid">
-						<label class="control-label span3"><?php _e("Plural Label","wpas"); ?></label>
+						<label class="control-label span3"><?php _e("Plural","wpas"); ?></label>
 						<div class="controls span9">
 						<input class="input-xlarge" name="txn-label" id="txn-label" type="text" placeholder="<?php _e("e.g. Product Tags","wpas"); ?>"> <a href="#" title="<?php _e("Taxonomy label.  Used in the admin menu for displaying custom taxonomy.","wpas"); ?>" style="cursor: help;">
 						<i class="icon-info-sign"></i></a>
@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
                 </div>
 
                 <div class="control-group row-fluid">
-                    <label class="control-label span3"><?php _e("Singular Label","wpas"); ?></label>
+                    <label class="control-label span3"><?php _e("Singular","wpas"); ?></label>
                     <div class="controls span9">
                     <input class="input-xlarge" name="txn-singular-label" id="txn-singular-label" type="text" placeholder="<?php _e("e.g. Product Tag","wpas"); ?>">
                     <a href="#" title="<?php _e("Taxonomy Singular label. Used when a singular label is needed.","wpas"); ?>" style="cursor: help;">

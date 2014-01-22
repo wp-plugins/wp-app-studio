@@ -35,6 +35,7 @@ $form_vars = Array(
 'req_missing_error' => __("Please add all required fields to the form layout.","wpas"),
 'dupe_error' => __("Please check duplicate entries and try again.","wpas"),
 'dropdown_error' => __("Please select an option for all dropdowns.","wpas"),
+'size_error' => __("Please update element row sizes to the total of 12.","wpas"),
 );
 $layout_vars = Array(
 'edit_tab_title' => __("Tab Title (edit me)","wpas"),
@@ -55,12 +56,9 @@ $validate_vars = Array(
 'check_alpha_num_und' => __("Must contain only letters, numbers or underscores.","wpas"),
 'check_alpha_num_und_dash' => __("Must contain only letters, numbers, underscores or dashes.","wpas"),
 'check_alpha_num_comma' => __("Must contain only letters, numbers and commas.","wpas"),
-'check_domain' => __("Must be a valid domain name.","wpas"),
 'check_version' => __("Must contain only numbers and dots.","wpas"),
 'check_semico' => __("You need to seperate each option value with a semicolon.","wpas"),
 'no_reserved' => __("You cannot use reserved words.","wpas"),
-'check_rel' => __("Please select a different entity name.","wpas"),
-'check_widget' => __("Please enter a unique widget title.","wpas"),
 'check_help' => __("Please select a different attach to or screen type.","wpas"),
 'check_unique' => __("Please enter a unique name.","wpas"),
 );

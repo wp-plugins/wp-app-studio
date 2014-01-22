@@ -1,60 +1,57 @@
-jQuery(document).ready(function() {
+jQuery(document).ready(function($) {
 		var unique;
 		// reserved words for entity and taxonomy
 		var arr_ent = ['post','page','attachment','revision','nav_menu_item'];
 		var arr_txn = ['attachment','attachment_id','author','author_name','calendar','cat','category','category__and','category__in','category__not_in','category_name','comments_per_page','comments_popup','cpage','day','debug','error','exact','feed','hour','link_category','m','minute','monthnum','more','name','nav_menu','nopaging','offset','order','orderby','p','page','page_id','paged','pagename','pb','perm','post','post__in','post__not_in','post_format','post_mime_type','post_status','post_tag','post_type','posts','posts_per_archive_page','posts_per_page','preview','robots','s','search','second','sentence','showposts','static','subpost','subpost_id','tag','tag__and','tag__in','tag__not_in','tag_id','tag_slug__and','tag_slug__in','taxonomy','tb','term','type','w','withcomments','withoutcomments','year'];
-		jQuery.validator.addMethod('noCap', function(value, element) { 
+		$.validator.addMethod('noCap', function(value, element) { 
 			if(value.match(/[A-Z]+/) != null)
 			{
 				return false;
 			}
 			return true;
 		}, validate_vars.nocap_err);
-		jQuery.validator.addMethod('noSpace', function(value, element) { 
-			if(value.indexOf(' ') < 0 && value != '')
+		$.validator.addMethod('noSpace', function(value, element) { 
+			if(value.indexOf(' ') < 0 && value != '' || value == '')
 			{
 				return true;
 			}
 			return false;
 		}, validate_vars.nospace_err);
-		jQuery.validator.addMethod('noDash', function(value, element) { 
+		$.validator.addMethod('noDash', function(value, element) { 
 			if(value.indexOf('-') < 0 && value != '')
 			{
 				return true;
 			}
 			return false;
 		}, validate_vars.nodash_err);
-		jQuery.validator.addMethod('checkNum', function(value, element) { 
+		$.validator.addMethod('checkNum', function(value, element) { 
 			return this.optional(element) || /^(-1|[1-9][0-9]*)$/i.test(value);
 		}, validate_vars.check_num);
-		jQuery.validator.addMethod('checkInt', function(value, element) { 
+		$.validator.addMethod('checkInt', function(value, element) { 
 			return this.optional(element) || /^[1-9][0-9]*$/i.test(value);
 		}, validate_vars.check_int);
-		jQuery.validator.addMethod('checkAlphaNum', function(value, element) { 
+		$.validator.addMethod('checkAlphaNum', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9]+$/i.test(value);
 		}, validate_vars.check_alpha_num);
-		jQuery.validator.addMethod('checkAlphaNumDash', function(value, element) { 
+		$.validator.addMethod('checkAlphaNumDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\-]+$/i.test(value);
 		}, validate_vars.check_alpha_num_dash);
-		jQuery.validator.addMethod('checkAlphaDashFa', function(value, element) { 
+		$.validator.addMethod('checkAlphaDashFa', function(value, element) { 
 			return this.optional(element) || /^fa\-[a-z\-]+$/i.test(value);
 		}, validate_vars.check_alpha_dash_fa);
-		jQuery.validator.addMethod('checkAlphaNumUnder', function(value, element) { 
+		$.validator.addMethod('checkAlphaNumUnder', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und);
-		jQuery.validator.addMethod('checkAlphaNumUnderDash', function(value, element) { 
+		$.validator.addMethod('checkAlphaNumUnderDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_\-]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und_dash);
-		jQuery.validator.addMethod('checkAlphaNumComma', function(value, element) { 
+		$.validator.addMethod('checkAlphaNumComma', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9,]+$/i.test(value);
 		}, validate_vars.check_alpha_num_comma);
-		jQuery.validator.addMethod('checkDomainName', function(value, element) { 
-			return this.optional(element) || /^[a-z0-9\-]+\.(com|net|org)$/i.test(value);
-		}, validate_vars.check_domain);
-		jQuery.validator.addMethod('checkVersion', function(value, element) { 
+		$.validator.addMethod('checkVersion', function(value, element) { 
 			return this.optional(element) || /^[0-9\.]+$/i.test(value);
 		}, validate_vars.check_version);
-		jQuery.validator.addMethod('checkSemiCo', function(value, element) { 
+		$.validator.addMethod('checkSemiCo', function(value, element) { 
 			comma_loc = (value.length - 1);
 			if(value.indexOf(';') < 0 && value != '')
 			{
@@ -73,81 +70,41 @@ jQuery(document).ready(function() {
 				return true;
 			}
 		}, validate_vars.check_semico);
-		jQuery.validator.addMethod('noReservedEnt', function(value, element) { 
-			if(jQuery.inArray(value,arr_ent) == -1)
+		$.validator.addMethod('noReservedEnt', function(value, element) { 
+			if($.inArray(value,arr_ent) == -1)
 			{
 				return true;
 			}
 			return false;
 		}, validate_vars.no_reserved);
-		jQuery.validator.addMethod('noReservedTxn', function(value, element) { 
-			if(jQuery.inArray(value,arr_txn) == -1 )
+		$.validator.addMethod('noReservedTxn', function(value, element) { 
+			if($.inArray(value,arr_txn) == -1 )
 			{
 				return true;
 			}
 			return false;
 		}, validate_vars.no_reserved);
-		jQuery.validator.addMethod('checkRel', function(value, element) { 
-			var app_id = jQuery('input#app').val();
-			var rel_id = jQuery('input#rel').val();
-			var check = true;
-			jQuery.ajax({
-				type: 'GET',
-				url: ajaxurl,
-				cache: false,
-				dataType:'JSON',
-				async: false, 
-				data: {action:'wpas_check_rel',app_id: app_id,rel_id:rel_id,rel_name:value},
-				success: function(response)
-				{
-					check = response;
-				}
-			});
-			return check;
-		}, validate_vars.check_rel);
-		jQuery.validator.addMethod('checkWidg', function(value, element) { 
-			var widg_type = jQuery('#widg-type').val();
-			var widg_title = jQuery('#widg-title').val();
-			if(widg_type === 'sidebar')
+		$.validator.addMethod('checkHelp', function(value, element) { 
+			var help_type = $('#help-type').val();
+			var attached_id;
+			if(help_type == 'ent')
 			{
-				var widg_subtype = jQuery('#widg-side_subtype').val();
+				attached_id = $('#help-entity').val();
 			}
-			else
+			else if(help_type == 'tax')
 			{
-				var widg_subtype = jQuery('#widg-dash_subtype').val();
+				attached_id = $('#help-tax').val();
 			}
-				
-			var app_id = jQuery('input#app').val();
-			var widg_id = jQuery('input#widget').val();
+			var screen_type = $('#help-screen_type').val();
+			var app_id = $('input#app').val();
+			var help_id = $('input#help').val();
 			var check = true;
-
-			jQuery.ajax({
+			$.ajax({
 				type: 'GET',
 				url: ajaxurl,
 				cache: false,
-				dataType:'JSON',
 				async: false, 
-				data: {action:'wpas_check_widg',app_id:app_id,widg_id:widg_id,widg_type:widg_type,widg_subtype:widg_subtype,widg_title:widg_title},
-				success: function(response)
-				{	
-					check = response;
-				}
-			}); 
-			return check;
-		}, validate_vars.check_widget);
-		jQuery.validator.addMethod('checkHelp', function(value, element) { 
-			var object_name = jQuery('select#help-object_name').val();
-			var screen_type = jQuery('select#help-screen_type').val();
-			var app_id = jQuery('input#app').val();
-			var help_id = jQuery('input#help').val();
-			var check = true;
-			jQuery.ajax({
-				type: 'GET',
-				url: ajaxurl,
-				cache: false,
-				dataType:'JSON',
-				async: false, 
-				data: {action:'wpas_check_help',app_id: app_id,help_id:help_id,object_name:object_name,screen_type:screen_type},
+				data: {action:'wpas_check_help',app_id:app_id,help_id:help_id,help_type:help_type,attached_id:attached_id,screen_type:screen_type},
 				success: function(response)
 				{
 					check = response;
@@ -156,27 +113,56 @@ jQuery(document).ready(function() {
 			return check;
 		}, validate_vars.check_help);
 
-		jQuery.validator.addMethod('uniqueName',function(val,element,params){
+		$.validator.addMethod('uniqueName',function(val,element,params){
 		var type = params[0];
-		var app_id = jQuery('#app_form input#app').val();
-		var ent_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#ent').val();
-		var fld_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#ent_field').val();
-		var txn_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#txn').val();
-		var rel_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#rel').val();
-		var help_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#help').val();
-		var help_fld_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#help_field').val();
-		var rel_fld_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#rel_field').val();
-		var shc_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#shc').val();
-		var role_id = jQuery('#' + jQuery(element.form).attr('id') + ' input#role').val();
+		var app_id = $('#app_form input#app').val();
+		var comp_id;	
+		var par_id;	
+		var form_id = $(element.form).attr('id');
+		switch (type) {
+			case 'ent':
+				comp_id = $('#' + form_id + ' input#ent').val();
+				break;
+			case 'ent_field':
+				par_id = $('#' + form_id + ' input#ent').val();
+				comp_id = $('#' + form_id + ' input#ent_field').val();
+				break;
+			case 'rel_field':
+				par_id = $('#' + form_id + ' input#rel').val();
+				comp_id = $('#' + form_id + ' input#rel_field').val();
+				break;
+			case 'rel':
+				comp_id = $('#' + form_id + ' input#rel').val();
+				break;	
+			case 'txn':
+				comp_id = $('#' + form_id + ' input#txn').val();
+				break;
+			case 'help_fld':
+				par_id = $('#' + form_id + ' input#help').val();
+				comp_id = $('#' + form_id + ' input#help_field').val();
+				break;
+			case 'widg':
+				comp_id = $('#' + form_id + ' input#widget').val();
+				break;	
+			case 'form':
+				comp_id = $('#' + form_id + ' input#form').val();
+				break;	
+			case 'shc':
+				comp_id = $('#' + form_id + ' input#shc').val();
+				break;
+			case 'role':
+				comp_id = $('#' + form_id + ' input#role').val();
+				break;
+		}
+			
 		var unique = true;
 		
-		jQuery.ajax({
+		$.ajax({
 			type: 'GET',
 			url: ajaxurl,
 			cache: false,
-			dataType:'JSON',
 			async: false, 
-			data: {action:'wpas_check_unique',value:val, app_id: app_id, ent_id: ent_id, fld_id: fld_id, txn_id: txn_id, rel_fld_id: rel_fld_id,rel_id:rel_id, help_id: help_id, help_fld_id: help_fld_id, shc_id: shc_id, role_id: role_id, type:type},
+			data: {action:'wpas_check_unique',value:val,app_id:app_id,par_id:par_id,comp_id:comp_id,type:type},
 			success: function(response)
 			{
 				unique = response;
@@ -185,7 +171,7 @@ jQuery(document).ready(function() {
 		return unique; 
 		}, validate_vars.check_unique);
 
-		jQuery('#app_form').validate(
+		$('#app_form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -202,7 +188,7 @@ jQuery(document).ready(function() {
 				label.addClass('valid');
 			}
 		});
-		jQuery('#entity-form').validate(
+		$('#entity-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -212,10 +198,11 @@ jQuery(document).ready(function() {
 			'ent-name':{
 			minlength:3,
 			maxlength:16,
-			uniqueName:['ent'],
 			noSpace:true,
+			noCap:true,
 			checkAlphaNumUnder: true,
 			noReservedEnt:true,
+			uniqueName:['ent'],
 			required:true
 			},
 			'ent-label': {
@@ -279,19 +266,21 @@ jQuery(document).ready(function() {
 			'ent-rewrite_slug':{
 			maxlength:16,
 			checkAlphaNum: true,
+			noSpace:true,
+			noCap:true,
 			},
-			'ent-display-idx':{
+			'ent-display_idx':{
 			maxlength:2,
 			checkInt: true,
 			}
 			},
 			success: function(label) {
-				 label.addClass('valid');
-				 jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				label.addClass('valid');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
 
-		jQuery('#ent-field-form').validate(
+		$('#ent-field-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -303,6 +292,7 @@ jQuery(document).ready(function() {
 			maxlength:50,
 			uniqueName:['ent_field'],
 			noSpace:true,
+			noCap:true,
 			checkAlphaNumUnderDash: true,
 			required:true,
 			},
@@ -377,10 +367,10 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#taxonomy-form').validate(
+		$('#taxonomy-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -393,6 +383,7 @@ jQuery(document).ready(function() {
 			uniqueName:['txn'],
 			noReservedTxn:true,
 			noSpace:true,
+			noCap: true,
 			checkAlphaNumUnderDash: true,
 			required:true,
 			},
@@ -445,25 +436,27 @@ jQuery(document).ready(function() {
 			'txn-custom_rewrite_slug':{
 			maxlength:32,
 			checkAlphaNum:true,
+			noCap: true,
 			},
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#relationship-form').validate(
+		$('#relationship-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
 			onclick: false,
 			rules: {
 			'rel-name':{
-			checkRel:true,
+			uniqueName:['rel'],
 			required:true,
 			minlength:3,
 			maxlength:32,
 			noSpace:true,
+			noCap:true,
 			checkAlphaNumUnder: true,
 			},
 			'rel-to-name':{
@@ -493,10 +486,10 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 			label.addClass('valid');
-			jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+			$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#rel-field-form').validate(
+		$('#rel-field-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -508,6 +501,7 @@ jQuery(document).ready(function() {
 			maxlength:50,
 			uniqueName:['rel_field'],
 			noSpace:true,
+			noCap:true,
 			required:true,
 			checkAlphaNumUnderDash: true,
 			},
@@ -530,10 +524,10 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#option-form').validate(
+		$('#option-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -542,7 +536,7 @@ jQuery(document).ready(function() {
 			rules: {
 			'ao_domain':{
 			required:true,
-			checkDomainName: true,
+			url: true,
 			maxlength:255,
 			},
 			'ao_blog_name':{
@@ -589,22 +583,29 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#help-form').validate(
+		$('#help-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
 			onclick: false,
 			ignore: ":hidden",
 			rules: {
-			'help-object_name':{
+			'help-type':{
 			required:true
 			},
-			'help-screen_type':{
+			'help-entity':{
+			required:true,
+			},
+			'help-tax':{
+			required:true,
 			checkHelp:true,
-			required:true
+			},
+			'help-screen_type':{
+			required:true,
+			checkHelp:true,
 			},              
 			'help-screen_sidebar':{
 			maxlength:1000,
@@ -612,10 +613,10 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#help-field-form').validate(
+		$('#help-field-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -642,10 +643,10 @@ jQuery(document).ready(function() {
 			}, 
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			 }
 		});
-		jQuery('#shortcode-form').validate(
+		$('#shortcode-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -657,6 +658,7 @@ jQuery(document).ready(function() {
 			maxlength:30,
 			uniqueName:['shc'],
 			noSpace:true,
+			noCap:true,
 			checkAlphaNumUnder: true,
 			required:true,
 			},
@@ -667,6 +669,9 @@ jQuery(document).ready(function() {
 			required:true,
 			},
 			'shc-attach_form':{
+			required:true,
+			},
+			'shc-attach_tax':{
 			required:true,
 			},
 			'shc-sc_layout':{
@@ -683,16 +688,25 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#widget-form').validate(
+		$('#widget-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
 			onclick: false,
 			ignore: ":hidden",
 			rules: {
+			'widg-name':{
+			minlength:3,
+			maxlength:30,
+			required:true,
+			noSpace:true,
+			noCap:true,
+			checkAlphaNumUnder: true,
+			uniqueName:['widg'],
+			},
 			'widg-attach':{
 			required:true,
 			},
@@ -715,7 +729,6 @@ jQuery(document).ready(function() {
 			minlength:3,
 			maxlength:50,
 			required:true,
-			checkWidg:true,
 			},
 			'widg-rel-to-title':{
 			minlength:3,
@@ -746,10 +759,10 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-		jQuery('#form-form').validate(
+		$('#form-form').validate(
 		{
 			onfocusout: false,
 			onkeyup: false,
@@ -761,6 +774,7 @@ jQuery(document).ready(function() {
 			maxlength:30,
 			uniqueName:['form'],
 			noSpace:true,
+			noCap:true,
 			checkAlphaNumUnder: true,
 			required:true,
 			},
@@ -832,7 +846,7 @@ jQuery(document).ready(function() {
 			},
 			success: function(label) {
 				label.addClass('valid');
-				jQuery('label.valid').html('<i class=\"icon-check\"></i>');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
 

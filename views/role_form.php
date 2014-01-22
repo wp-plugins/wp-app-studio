@@ -10,12 +10,6 @@ function wpas_is_def_role($myrole)
 }
 function wpas_admin_entity($label)
 {
-	$suff = '';
-	if($label != 'posts' || $label != 'pages')
-	{
-		$suff = 'emd_';
-	}
-	$label = $suff . $label;
 	$admin_role = Array('role-edit_' . $label => 1,
 			'role-delete_' . $label => 1,
 			'role-edit_others_' . $label => 1,
@@ -78,7 +72,8 @@ $def_caps = array(
                 'update_core',
                 'update_plugins',
                 'update_themes',
-                'upload_files'
+                'upload_files',
+		'edit_dashboard'
 		);
 
 
@@ -94,7 +89,7 @@ foreach($def_caps as $mycap)
 	}
 	$html .= '<label class="checkbox inline span3">' . $mycap;
 	$html .= '<input name="role-' . $mycap . '" id="role-' . $mycap . '" type="checkbox" value="1"';
-	if(isset($myrole['role-'.$mycap]))
+	if(isset($myrole['role-'.$mycap]) && $myrole['role-'.$mycap] == 1)
 	{
 		$html .= ' checked';
 	}	
@@ -107,13 +102,7 @@ foreach($def_caps as $mycap)
 		$count = 1;
 	}
 }
-if($count <= 5)
-{
-	$count = 1;
-}
-
-$html .= "</div>";
-
+$html .= "</div></div>";
 return $html;
 }
 function wpas_entity_capabilities($app_id,$entities,$myrole)
@@ -121,20 +110,25 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 	$html ="";
 	$entcount = 0;
 	$ent_caps = Array();
-	foreach($entities as $myentity)
+	foreach($entities as $keyent => $myentity)
 	{
-		$heading_label = $myentity['ent-label'];
+		$show_cap = 0;
+		$label = 'ent_' . $keyent;
 		if(isset($myentity['ent-capability_type']) && $myentity['ent-capability_type'] != 'post')
 		{
-			$label = $myentity['ent-name'];
-			$label = strtolower($label);
-			$label = $label . "s";
-		
-			if(!in_array($label,Array('posts','pages')))
+			if(!in_array($myentity['ent-name'],Array('posts','pages')))
 			{	
-				$label = 'emd_' . $label;
+				$label = 'ent_' . $keyent;
+				$show_cap = 1;
 			}
-			$ent_caps[$entcount]['heading'] = $heading_label;
+		}
+		if($myentity['ent-name'] == 'page' || $myentity['ent-name'] == 'post')
+		{
+			$label = $myentity['ent-name'] ."s";
+			$show_cap = 1;
+		}
+		if($show_cap == 1)
+		{
 			$ent_caps[$entcount]['edit'] = "edit_" . $label;
 			$ent_caps[$entcount]['delete'] = "delete_" . $label;
 			$ent_caps[$entcount]['edit_others'] = "edit_others_" . $label;
@@ -146,28 +140,9 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 			$ent_caps[$entcount]['edit_private'] = "edit_private_" . $label;
 			$ent_caps[$entcount]['edit_published'] = "edit_published_" . $label;
 			$ent_caps[$entcount]['manage_operations'] = "manage_operations_" . $label;
+			$ent_caps[$entcount]['name'] = $myentity['ent-name'];
 			$entcount++;
 		}
-		elseif(in_array($myentity['ent-name'],Array('post','page')))
-		{
-			$label = $myentity['ent-name'];
-                        $label = strtolower($label);
-                        $label = $label . "s";
-			$ent_caps[$entcount]['heading'] = $heading_label;
-                        $ent_caps[$entcount]['edit'] = "edit_" . $label;
-                        $ent_caps[$entcount]['delete'] = "delete_" . $label;
-                        $ent_caps[$entcount]['edit_others'] = "edit_others_" . $label;
-                        $ent_caps[$entcount]['publish'] = "publish_" . $label;
-                        $ent_caps[$entcount]['read_private'] = "read_private_" . $label;
-                        $ent_caps[$entcount]['delete_private'] = "delete_private_" . $label;
-                        $ent_caps[$entcount]['delete_published'] = "delete_published_" . $label;
-                        $ent_caps[$entcount]['delete_others'] = "delete_others_" . $label;
-                        $ent_caps[$entcount]['edit_private'] = "edit_private_" . $label;
-                        $ent_caps[$entcount]['edit_published'] = "edit_published_" . $label;
-                        $ent_caps[$entcount]['manage_operations'] = "manage_operations_" . $label;
-                        $entcount++;
-		}
-			
 	}
 	$html = wpas_display_caps($ent_caps,'edit','entity',5, $myrole);
 	return $html;
@@ -176,15 +151,14 @@ function wpas_tax_capabilities($app_id,$taxonomies,$myrole)
 {
 	$html ="";
 	$taxcount = 0;
-	foreach($taxonomies as $mytax)
+	foreach($taxonomies as $keytax => $mytax)
 	{
-		$label = $mytax['txn-label'];
-		$label = str_replace(" ","_",$label);
-		$label = strtolower($label);
+		$label = "tax_" . $keytax;
 		$tax_caps[$taxcount]['manage'] = "manage_" . $label;
 		$tax_caps[$taxcount]['edit'] = "edit_" . $label;
 		$tax_caps[$taxcount]['delete'] = "delete_" . $label;
 		$tax_caps[$taxcount]['assign'] = "assign_" . $label;
+		$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
 		$taxcount++;
 	}
 	if(empty($tax_caps))
@@ -201,16 +175,14 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 {
 	$html ="";
 	$widgcount = 0;
-	foreach($widgets as $mywidg)
+	foreach($widgets as $keywidg => $mywidg)
 	{
 		if($mywidg['widg-type'] == 'dashboard')
 		{
-			$label = $mywidg['widg-title'];
-			$label = str_replace(" ","_",$label);
-			$label = strtolower($label);
-			$label = $mywidg['widg-dash_subtype'] . "_" . $label;
+			$label = 'widg_' . $keywidg;
 			$widg_caps[$widgcount]['view'] = "view_" . $label;
 			$widg_caps[$widgcount]['configure'] = "configure_" . $label;
+			$widg_caps[$widgcount]['name'] = $mywidg['widg-name'];
 			$widgcount++;
 		}
 	}
@@ -229,12 +201,10 @@ function wpas_form_capabilities($app_id,$forms,$myrole)
 {
 	$html ="";
 	$formcount = 0;
-	foreach($forms as $myform)
+	foreach($forms as $keyform => $myform)
 	{
-		$label = $myform['form-name'];
-		$label = str_replace(" ","_",$label);
-		$label = strtolower($label);
-		$form_caps[$formcount]['view'] = "view_" . $label;
+		$form_caps[$formcount]['view'] = "view_form_" . $keyform;
+		$form_caps[$formcount]['name'] = $myform['form-name'];
 		$formcount++;
 	}
 	if(empty($form_caps))
@@ -243,7 +213,7 @@ function wpas_form_capabilities($app_id,$forms,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($form_caps,'view','form',5,$myrole);
+		$html = wpas_display_caps($form_caps,'view','form',2,$myrole);
 	}
 	return $html;
 }
@@ -251,12 +221,10 @@ function wpas_view_capabilities($app_id,$views,$myrole)
 {
 	$html ="";
 	$viewcount = 0;
-	foreach($views as $myview)
+	foreach($views as $keyview => $myview)
 	{
-		$label = $myview['shc-label'];
-		$label = str_replace(" ","_",$label);
-		$label = strtolower($label);
-		$view_caps[$viewcount]['view'] = "view_" . $label;
+		$view_caps[$viewcount]['view'] = "view_shc_" . $keyview;
+		$view_caps[$viewcount]['name'] = $myview['shc-label'];
 		$viewcount++;
 	}
 	if(empty($view_caps))
@@ -265,7 +233,7 @@ function wpas_view_capabilities($app_id,$views,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($view_caps,'view','view',5,$myrole);
+		$html = wpas_display_caps($view_caps,'view','view',2,$myrole);
 	}
 	return $html;
 }
@@ -278,48 +246,27 @@ function wpas_display_caps($type_caps,$type_key,$type,$pnum,$myrole)
 	{
 		foreach($mytype_cap as $key => $mycap)
 		{
-			if($type == 'entity' && $key == 'heading')
+			$nav_in = "";
+			if($key == $type_key)
 			{
-				$heading_label = $mycap;
+				if($navcount == 0)
+				{
+					$nav_in = "in";
+					$navcount ++;
+				}
+				
+				$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-' . $type . '">' . ucfirst($type) . ': ' . esc_html($mytype_cap['name']) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner">';
+				if(in_array($type, Array('widget','taxonomy','entity')))
+				{
+					$html .= '<label class="checkbox inline span12"><b>' . __("Check All","wpas") . '</b><input name="' . esc_attr($mytype_cap['name']) . '-all" id="' . esc_attr($mytype_cap['name']) . '-all" class="checkall" type="checkbox" value="1" /></label>';
+				}
 			}
-			else
+			if($count == 1 && $pnum > 2)
 			{
-				$nav_in = "";
-				if($key == $type_key)
-				{
-					if($navcount == 0)
-					{
-						$nav_in = "in";
-						$navcount ++;
-					}
-					if($type == 'entity')
-					{
-						$type_name = str_replace($type_key . '_emd_','',$mycap);
-					}
-					$type_name = str_replace($type_key .'_','',$mycap);
-					$div_name = $type_name;
-					if($type == 'widget')
-					{
-						$type_name = preg_replace('/^entity_/',' ' . __("Entity","wpas") . ' : ',$type_name);
-						$type_name = preg_replace('/^admin_/',' ' . __("Admin","wpas") . ' : ',$type_name);
-					}	
-					$type_name = str_replace('_',' ',$type_name);
-					$type_name = ucwords($type_name);
-					if($type != 'entity')
-					{
-						$heading_label = $type_name;
-					}
-					
-					$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-' . $type . '">' . ucfirst($type) . ': ' . esc_html($heading_label) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner">';
-					if(in_array($type, Array('widget','taxonomy','entity')))
-					{
-						$html .= '<label class="checkbox inline span12"><b>' . __("Check All","wpas") . '</b><input name="' . esc_attr($div_name) . '-all" id="' . esc_attr($div_name) . '-all" class="checkall" type="checkbox" value="1" /></label>';
-					}
-				}
-				if($count == 1)
-				{
-					$html .= '<div class="control-group" id="' . esc_attr($div_name) . '">';
-				}
+				$html .= '<div class="control-group" id="' . esc_attr($mytype_cap['name']) . '">';
+			}
+			if($key != 'name')
+			{
 				$html .= '<label class="checkbox inline span3">' . $key;
 				$html .= '<input name="role-' . $mycap . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
 				if(isset($myrole['role-'.$mycap]) && $myrole['role-'.$mycap] != 0)
@@ -327,23 +274,20 @@ function wpas_display_caps($type_caps,$type_key,$type,$pnum,$myrole)
 					$html .= ' checked';
 				}	
 				$html .= '/> </label>';
-				$count ++;
-				if($count  == $pnum)
-				{
-					$html .= "</div>";
-					$count = 1;
-				}
 			}
-		}
-		if($count <= $pnum)
-		{
-			$html .= "</div></div></div>";
-			if(!in_array($type, Array('widget','taxonomy')))
+			$count ++;
+			if($count  == $pnum && $pnum >2)
 			{
 				$html .= "</div>";
+				$count = 1;
 			}
-			$count = 1;
 		}
+		if($count < $pnum && $count != 1)
+		{
+			$html .= "</div>";
+		}
+		$html .= "</div></div></div>";
+		$count = 1;
 	}
 	return $html;
 }
@@ -423,16 +367,16 @@ function wpas_add_role_form($app_id,$role_id)
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Labeli","wpas"); ?></label>
+		<label class="control-label span3"><?php _e("Label","wpas"); ?></label>
 		<div class="controls span9">
-		<input class="input-xlarge" name="role-label" id="role-label" type="text" placeholder="<?php _e("e.g. Product Owneri","wpas"); ?>"
+		<input class="input-xlarge" name="role-label" id="role-label" type="text" placeholder="<?php _e("e.g. Product Owner","wpas"); ?>"
 		<?php 
 		 if(isset($myrole['role-label']))
 		 {
 			 echo ' value="' . esc_attr($myrole['role-label']) . '" ' . $disable ;
 		 }
 		?>
-		></input><a href="#" title="<?php _e("Sets a role label to represent your role.i","wpas");?>" style="cursor: help;">
+		></input><a href="#" title="<?php _e("Sets a role label to represent your role.","wpas");?>" style="cursor: help;">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div> 
@@ -480,9 +424,9 @@ function wpas_add_role_form($app_id,$role_id)
 		<div id="tab-view" class="tab-pane">
 		<?php echo wpas_view_capabilities($app_id,$views,$myrole); ?>
 		</div>
-		</div>
-		</div> 
-		</div> 
+		</div> <!-- end of role-tabs -->
+		</div> <!-- end of tabbable -->
+		</div> <!-- end of well -->
 		<div class="control-group">
 		<button class="btn  btn-danger layout-buttons" id="cancel" name="cancel" type="button">
 		<i class="icon-ban-circle"></i><?php _e("Cancel","wpas");?></button>
