@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
         var $ = jQuery;
-	$(document).on('click','div.tablenav-pages a',function(){
+	$(document).on('click','div.pagination a',function(){
 		$(this).checkColumn();
 		pageType = "";
 		pageNum = 1;
@@ -25,6 +25,10 @@ jQuery(document).ready(function() {
 					appId = paramArr[1];
 				}
 				
+			}
+			if(pageType == 'widg')
+			{
+				pageType = 'widget';
 			}
 			$('#list-'+pageType).empty();
 			$.get(ajaxurl,{action:'wpas_list_all',type:pageType,app_id:appId,page:pageNum}, function(response)
