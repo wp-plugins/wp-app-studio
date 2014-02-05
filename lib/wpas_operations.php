@@ -461,11 +461,12 @@ function wpas_check_entity_field($myapp_entity)
 	$attrs_left = 0;
 	$generate_error = 0;
 	$error_loc_name = "";
-	$layout_attr_count =0;
 	
 	//check if entities have at least one field
 	foreach($myapp_entity as $myentity)
 	{
+		$ent_attr_count = 0;
+		$layout_attr_count =0;
 		if($myentity['ent-name'] == 'post' && !empty($myentity['field']))
 		{
 			$no_post = 1;
@@ -522,10 +523,9 @@ function wpas_check_entity_field($myapp_entity)
 		}
 		if(isset($myentity['field']))
 		{
-			$ent_attr_count = 0;
 			foreach($myentity['field'] as $myfield)
 			{
-				if(!isset($myfield['fld_builtin']))
+				if(!isset($myfield['fld_builtin']) || $myfield['fld_builtin'] == 0)
 				{
 					$ent_attr_count++;
 				}
@@ -534,7 +534,6 @@ function wpas_check_entity_field($myapp_entity)
 		if(!in_array($myentity['ent-name'],Array('page','post')))
 		{
 			$error_loc_name = $myentity['ent-label'];
-			break;
 		}
 		if(!empty($myentity['layout']) && $layout_attr_count < $ent_attr_count)
 		{

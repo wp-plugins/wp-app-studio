@@ -75,7 +75,7 @@ jQuery(document).ready(function() {
 <input type="hidden" id="rel_field" name="rel_field" value="">
 
 <div class="well">
-<div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of a relationship, for example, Quantity Ordered is an attribute of the relationship between the products and the orders entities.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div>
+<div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of a relationship. For example; quantity ordered is an attribute of the relationship between products and orders entities.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div>
                 <fieldset>
 <div class="control-group row-fluid">
       <label class="control-label span3"><?php _e("Name","wpas"); ?></label>

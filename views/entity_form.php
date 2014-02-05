@@ -408,7 +408,7 @@ jQuery(document).ready(function() {
 		<option selected="selected" value="1"><?php _e("True","wpas"); ?></option>
 		<option value="0"><?php _e("False","wpas"); ?></option>
 		<option value="2"><?php _e("Define Top Level Page","wpas"); ?></option></select>
-		<a href="#" style="cursor: help;" title="<?php _e("Where to show the entity in the admin menu. Show UI must be true. \'false\' - do not display in the admin menu.\'true\' - display as a top level menu.","wpas"); ?>  "><i class="icon-info-sign"></i></a> (<?php _e("default: True","wpas"); ?>)
+		<a href="#" style="cursor: help;" title="<?php _e("Where to show the entity in the admin menu. Show UI must be true. False - do not display in the admin menu. True - display as a top level menu.","wpas"); ?>  "><i class="icon-info-sign"></i></a> (<?php _e("default: True","wpas"); ?>)
 		</div>
 		</div>
 		<div class="control-group row-fluid" id="ent-menu_icon_div">
@@ -493,7 +493,7 @@ jQuery(document).ready(function() {
 		<option value="subscriber"><?php _e("Only Subscriber can be related","wpas"); ?></option>
 		<option value="administrator"><?php _e("Only Administrator can be related","wpas"); ?></option>
 		</select>
-		<a href="#" title="<?php _e("Super Admin - Someone with access to the blog network administration features controlling the entire network (See Create a Network). Administrator - Somebody who has access to all the administration features. Editor - Somebody who can publish and manage posts and pages as well as manage other users\' posts, etc. Author - Somebody who can publish and manage their own posts. Contributor - Somebody who can write and manage their posts but not publish them. Subscriber - Somebody who can only manage their profile.","wpas"); ?>" style="cursor: help;">
+		<a href="#" title="<?php _e("Super Admin - Someone with access to the blog network administration features controlling the entire network (See Create a Network). Administrator - Somebody who has access to all the administration features. Editor - Somebody who can publish and manage posts and pages as well as manage other users's posts, etc. Author - Somebody who can publish and manage their own posts. Contributor - Somebody who can write and manage their posts but not publish them. Subscriber - Somebody who can only manage their profile.","wpas"); ?>" style="cursor: help;">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

@@ -409,8 +409,8 @@ jQuery(document).ready(function($) {
 			if(response)
 			{
 			$('#fld_name').attr('readonly',false);
-			$('#fld_label').attr('readonly',false);
 			$('#fld_type').attr('disabled',false);
+			$('#fld_required').attr('disabled',false);
 			$.each(response[0],function (key,value) {
 				if(value != undefined)
 				{
@@ -423,7 +423,6 @@ jQuery(document).ready(function($) {
 						if(key == 'fld_builtin')
 						{
 							$('#fld_name').attr('readonly',true);
-							$('#fld_label').attr('readonly',true);
 							$('#fld_type').attr('disabled',true);
 							$('#fld_builtin').val(1);
 						}	
@@ -444,6 +443,11 @@ jQuery(document).ready(function($) {
 						}
 					}
 					else{
+						if(key == 'fld_name' && value == 'blt_title')
+						{
+							$('#fld_required').attr('checked', true);
+							$('#fld_required').attr('disabled',true);
+						}
                                                 if(key == 'fld_values')
                                                 {
                                                      $('#fld_values_div').show();
@@ -600,8 +604,9 @@ jQuery(document).ready(function($) {
 				field_id = "";
 				field = "";
 				$('#fld_name').attr('readonly',false);
-				$('#fld_label').attr('readonly',false);
 				$('#fld_type').attr('disabled',false);
+				$('#fld_required').attr('disabled',false);
+				$('#fld_builtin').val(0);
 				$('#validation-message').hide();
 				$('#validation-options').hide();
 				$('#fld_values_div').hide();
@@ -824,6 +829,8 @@ jQuery(document).ready(function($) {
 				$('#form-schedule_div').hide();
 				$('#form-tabs').hide();
 				$('#formtabs-3-li').show();
+				$('#formtabs-4-li').show();
+				$('#formtabs-5-li').show();
 				$('#form-submit_status_div').show();
 				$('#form-noresult_msg_div').hide();
 				$('#form-result_msg_div').hide();
@@ -1402,6 +1409,7 @@ jQuery(document).ready(function($) {
 							{
 								view_subtype = '';
 							}
+							ent_tax_id = value;
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass,values:value,subtype:view_subtype}, function(response)
 							{
 								$('#add-'+myclass+'-div #'+ key).html(response);
@@ -1409,19 +1417,30 @@ jQuery(document).ready(function($) {
 								$.fn.getAddons(layout_id,app_id,'entity',value,'');
 								$('#add-'+myclass+'-div #'+ key + '_div').show();
 								$('#shc-attach_form_div').hide();
-								$('#shc-attach_tax_div').hide();
+								if(view_subtype != 'tax')
+								{
+									$('#shc-attach_tax_div').hide();
+								}
 							});
 						}	
 						else if(key == 'shc-attach_tax')
 						{
+							tax_id = value;
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:'tax',values:value,subtype:view_subtype}, function(response)
 							{
 								$('#add-'+myclass+'-div #'+ key).html(response);
-								app_id = $('input#app').val();
-								$.fn.getAddons(layout_id,app_id,'entity',value,'');
 								$('#add-'+myclass+'-div #'+ key + '_div').show();
+								app_id = $('input#app').val();
+								$.fn.getAddons(layout_id,app_id,'entity',ent_tax_id,'');
 								$('#shc-attach_form_div').hide();
-								$('#shc-attach_div').hide();
+							});
+						}
+						else if(key == 'shc-attach_taxterm')
+						{
+							app_id = $('input#app').val();
+							$.get(ajaxurl,{action:'wpas_get_tax_values',app_id:app_id,tax_id:tax_id,value:value}, function(response)
+							{
+								$('#add-shortcode-div #shc-attach_taxterm').html(response);
 							});
 						}
 						else if(key == 'shc-attach_form')
@@ -1494,6 +1513,8 @@ jQuery(document).ready(function($) {
 							if(value == 'search')
 							{
 								$('#formtabs-3-li').hide();
+								$('#formtabs-4-li').hide();
+								$('#formtabs-5-li').hide();
 								$('#form-submit_status_div').hide();
 								$('#form-noresult_msg_div').show();
 								$('#form-result_msg_div').show();
@@ -1503,6 +1524,8 @@ jQuery(document).ready(function($) {
 							else
 							{
 								$('#formtabs-3-li').show();
+								$('#formtabs-4-li').show();
+								$('#formtabs-5-li').show();
 								$('#form-submit_status_div').show();
 								$('#form-noresult_msg_div').hide();
 								$('#form-result_msg_div').hide();

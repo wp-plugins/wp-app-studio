@@ -446,8 +446,8 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['title'] = __("Taxonomies","wpas");
                 $format = "taxonomypage";
                 $field_name = "txn-name";
-                $other_fields = Array("txn-label","txn-singular-label","txn-hierarchical","txn-attaches","date","modified_date");
-                $other_labels = Array(__("Name","wpas"),__("Plural","wpas"),__("Singular","wpas"),__("Hierarchical","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_fields = Array("txn-label","txn-singular-label","txn-hierarchical","txn-attaches","txn-display_type","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Plural","wpas"),__("Singular","wpas"),__("Hierarchical","wpas"),__("Attached To","wpas"),__("Display","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['icon'] = "icon-tag";
         }
         elseif($list_type == 'relationship')
@@ -464,7 +464,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 	elseif($list_type == 'help')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=help&app=' . $app_id);
-                $list_values['title'] = __("Help","wpas");
+                $list_values['title'] = __("Help Screens","wpas");
                 $format = "helppage";
                 $field_name = "help-entity";
                 $other_fields = Array("help-screen_type","sidebar_on_off","help_tabs","date","modified_date");
@@ -475,7 +475,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
         elseif($list_type == 'role')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=role&app=' . $app_id);
-                $list_values['title'] = __("Roles","wpas");
+                $list_values['title'] = __("Permissions","wpas");
                 $format = "rolepage";
                 $field_name = "role-name";
                 $other_fields = Array("role-label","role_permissions","date","modified_date");
@@ -486,7 +486,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 	elseif($list_type == 'shortcode')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=shortcode&app=' . $app_id);
-                $list_values['title'] = __("View","wpas");
+                $list_values['title'] = __("Views","wpas");
                 $format = "shortcodepage";
                 $field_name = "shc-label";
                 $other_fields = Array("shc-attach","shc-view_type","date","modified_date");
@@ -497,7 +497,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 	elseif($list_type == 'widget')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=widg&app=' . $app_id);
-                $list_values['title'] = __("Widget","wpas");
+                $list_values['title'] = __("Widgets","wpas");
                 $format = "widgpage";
                 $field_name = "widg-title";
                 $other_fields = Array("widg-type","widg-subtype","widg-attach","date","modified_date");
@@ -604,6 +604,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 					$mylist['txn-attaches'] .= $app['entity'][$txn_att]['ent-label'] . ",";
 				}
 				$mylist['txn-attaches'] = rtrim($mylist['txn-attaches'],",");
+				$mylist['txn-display_type'] = ucfirst($mylist['txn-display_type']);
                         }
 			elseif($list_type == 'help')
                         {
@@ -699,7 +700,14 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 						break;
 					case 'tax':
 						$mylist['shc-view_type'] = __("Taxonomy","wpas");
+						$ent = $app['entity'][$mylist['shc-attach']]['ent-label'];
 						$mylist['shc-attach'] = $app['taxonomy'][$mylist['shc-attach_tax']]['txn-label'];
+						$mylist['shc-attach'] .= " (";
+						if(!empty($mylist['shc-attach_taxterm']))
+						{
+						 	$mylist['shc-attach'] .= $mylist['shc-attach_taxterm'] . "-";
+						}
+						$mylist['shc-attach'] .= $ent . ")";
 						break;
 				}
 			}

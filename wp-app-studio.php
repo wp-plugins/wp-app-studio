@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 2.9
+   Version: 2.9.8
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
 define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "2.9");
+define('WPAS_VERSION', "2.9.8");
 define('WPAS_DATA_VERSION', "3");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
@@ -660,7 +660,7 @@ function wpas_enqueue_scripts($hook_suffix){
 
 		wp_enqueue_style('wpas-admin-css', plugin_dir_url( __FILE__ ) . 'css/wpas-admin.css');
 		wp_enqueue_style('wpas-core',plugin_dir_url( __FILE__ ) . 'css/wpas-core.css');
-		wp_enqueue_style('font-awesome',plugin_dir_url( __FILE__ ) . 'css/font-awesome.css');
+		wp_enqueue_style('font-awesome',plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css');
 		wp_enqueue_style("wp-jquery-ui-draggable");
 		wp_enqueue_style("wp-jquery-ui-droppable");
 		wp_enqueue_style("wp-jquery-ui-sortable");
@@ -673,14 +673,13 @@ function wpas_enqueue_scripts($hook_suffix){
 		wp_enqueue_script("jquery-ui-droppable");
 		wp_enqueue_script("jquery-ui-sortable");
 		wp_enqueue_script('jquery-ui-accordion');
-		wp_enqueue_script('jquery-ui-slider');
 	
 		wp_enqueue_script('wpas-js', plugin_dir_url( __FILE__ ) . 'js/wpas.js',array(),false,true);
 		wp_enqueue_script('wpas-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_layout.js',array(),false,true);
 		wp_enqueue_script('wpas-paging-js',plugin_dir_url( __FILE__ ) . 'js/wpas_paging.js',array(),false,true);
 		wp_enqueue_script('wpas-validate-js',plugin_dir_url( __FILE__ ) . 'js/wpas_validate.js',array(),false,true);
-		wp_enqueue_script('jquery-ui-datepicker',plugin_dir_url( __FILE__ ) . 'js/jquery-ui-datepicker.js');
-		wp_enqueue_script('jquery-time-js',plugin_dir_url( __FILE__ ) . 'js/jquery-ui-timepicker-addon.js',array('jquery-ui-datepicker', 'jquery-ui-slider'));
+		wp_enqueue_script('jquery-time-js',plugin_dir_url( __FILE__ ) . 'js/jquery-ui-timepicker-addon.js',array('jquery-ui-datepicker', 'jquery-ui-slider'),null, true);
+
 		wp_enqueue_script( 'wpas-form-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_form_layout.js',array(),false,true);
 
 		wp_localize_script('wpas-js','wpas_vars',$local_vars);

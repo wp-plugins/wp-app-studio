@@ -160,13 +160,24 @@ jQuery(document).ready(function($) {
 			$('#max-file-uploads').show();		
 			$('#fld_file_ext').val('');	
 		}
-		if(myItem == 'date' || myItem == 'datetime')
+		if(myItem == 'date')
 		{
 			$('#date-format').show();
+			$('#fld_dflt_value').datetimepicker("destroy");
+			$('#fld_dflt_value').datepicker({dateFormat:'yy-mm-dd'});
 		}
-		if(myItem == 'time' || myItem == 'datetime')
+ 		else if(myItem == 'datetime')
+		{
+			$('#date-format').show();
+			$('#time-format').show();
+			$('#fld_dflt_value').datetimepicker("destroy");
+			$('#fld_dflt_value').datetimepicker({dateFormat:'yy-mm-dd',timeFormat:'hh:mm'});
+		}
+		else if(myItem == 'time')
 		{
 			$('#time-format').show();
+			$('#fld_dflt_value').datetimepicker("destroy");
+			$('#fld_dflt_value').datetimepicker({timeFormat:'hh:mm',dateFormat: '',timeOnly:true});
 		}
 		if($.inArray(myItem,min_max_value_arr) != -1)
                 {
@@ -284,6 +295,7 @@ jQuery(document).ready(function($) {
 		$('#fld_required_div').show();
 		$('#fld_srequired_div').show();
 		$('#fld_dflt_value_div').show();
+		$('#fld_dflt_value').val('');
 		$('#fld_file_size_div').hide();
 		$('#fld_file_ext_div').hide();
 		$('#fld_multiple_div').hide();
@@ -629,7 +641,7 @@ jQuery(document).ready(function($) {
 			<label class="control-label span3"><?php _e("Default Value","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_dflt_value" id="fld_dflt_value" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="<?php _e("Sets a default value for the attribute.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value or values for the attribute. Multiple default values can only be set for select with multiple option and checkbox list types.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -644,7 +656,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_chkd_div" name="fld_fa_chkd_div" style="display:none;">
-			<label class="control-label span3"><?php _e("Font Awesome Checked Icon Class","wpas");?></label>
+			<label class="control-label span3"><?php _e("Checked Icon Class","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for selected values.","wpas");?>">
@@ -652,7 +664,7 @@ jQuery(document).ready(function($) {
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
-			<label class="control-label span3"><?php _e("Font Awesome Unchecked Icon Class","wpas");?></label>
+			<label class="control-label span3"><?php _e("Unchecked Icon Class","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">

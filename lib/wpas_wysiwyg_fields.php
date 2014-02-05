@@ -14,6 +14,7 @@ function wpas_unhide_kitchensink( $args ) {
 		if($screen->parent_base == 'wpas_app_list')
 		{
 			$args['wordpress_adv_hidden'] = false;
+			$args['valid_elements'] = '+*[*]';
 		}
 	}
         return $args;

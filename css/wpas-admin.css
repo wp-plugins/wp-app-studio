@@ -71,6 +71,13 @@ border-radius:4px;
 #title-bar {
     margin:30px;
 }
+.wpas #title-bar h4 {
+ font-size:20px !important;
+}
+#title-bar h4 i{
+padding-right:3px; 
+}
+
 #add-new a {
 margin-left:5px;	
 }
@@ -414,7 +421,7 @@ padding:10px;
 color:#6495ED;
 font-weight:bold;
 }
-.form-inside{
+.wpas .form-inside{
 padding-top:10px;
 padding-left:10px;
 padding-right:10px;
@@ -423,7 +430,7 @@ padding-right:10px;
 padding-left:5px;
 padding-right:5px;
 }
-.pagination .current{
+.wpas .pagination .current{
     background-color: #428BCA;
     border-color: #428BCA;
     color: #FFFFFF;
@@ -434,6 +441,16 @@ padding-right:5px;
     position: relative;
     text-decoration: none;
 }
-.tablenav{
+.wpas .tablenav{
 padding-bottom: 10px;
+}
+.wpas .dots{
+    border-color: #DDDDDD;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    float: left;
+    line-height: 34px;
+    padding: 0 14px;
+    text-decoration: none;
 }

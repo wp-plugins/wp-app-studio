@@ -143,6 +143,22 @@ jQuery(document).ready(function() {
 				<i class="icon-info-sign"></i></a> (<?php _e("default: Multiple Select","wpas"); ?>)
 			</div>
 		</div>
+        <div class="control-group row-fluid" id="txn-values_div" >
+        <label class="control-label span3"><?php _e("Values","wpas");?></label>
+        <div class="controls span9">
+        <textarea id="txn-values" name="txn-values" class="input-xlarge" rows="3" placeholder="e.g. blue{color blue};red{color red};white{color white}" ></textarea>
+        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the taxonomy. There must be only one semicolon between the values. You can not put a semicolon at the end of the values as well. Term descriptions can be entered using 'term{term-description}' format.","wpas");?>">
+        <i class="icon-info-sign"></i></a>
+        </div>
+</div>
+        <div class="control-group row-fluid" id="txn-dflt_value_div" name="txn-dflt_value_div">
+                        <label class="control-label span3"><?php _e("Default Value","wpas");?></label>
+                        <div class="controls span9">
+                        <input class="input-xlarge" name="txn-dflt_value" id="txn-dflt_value" type="text" placeholder="" value="" >
+                        <a href="#" style="cursor: help;" title="<?php _e("Sets the default value or values separated by a semicolon for the taxonomy.","wpas");?>">
+                        <i class="icon-info-sign"></i></a>
+                        </div>
+        </div>
 		
 		<div class="control-group row-fluid">
 		<label class="control-label span3"></label>

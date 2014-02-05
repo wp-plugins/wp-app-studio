@@ -96,7 +96,7 @@ function wpas_form_container($layout,$app,$form_id)
 			$layout_html .= "<div id='" . esc_attr($id) . "' class='form-" . esc_attr($class) . "'>";
 			$layout_html .= "<div class='row-fluid form-field-str'>";
 			$layout_html .= "<div class='span1 layout-edit-icons'>";
-			if(isset($layout[$i]['obtype']) && $layout[$i]['obtype'] != 'hr')
+			if((isset($layout[$i]['obtype']) && $layout[$i]['obtype'] != 'hr') || !isset($layout[$i]['obtype']))
 			{
 				$layout_html .= "<a class='edit'><i class='icon-edit pull-left'></i></a>";
 			}
@@ -214,6 +214,8 @@ jQuery(document).ready(function($) {
 		{
 			app_id = $('input#app').val();
 			$('#formtabs-3-li').hide();
+			$('#formtabs-4-li').hide();
+			$('#formtabs-5-li').hide();
 			$('#form-submit_status_div').hide();
 			$('#form-noresult_msg_div').show();
 			$('#form-result_msg_div').show();
@@ -223,6 +225,8 @@ jQuery(document).ready(function($) {
 		else
 		{
 			$('#formtabs-3-li').show();
+			$('#formtabs-4-li').show();
+			$('#formtabs-5-li').show();
 			$('#form-submit_status_div').show();
 			$('#form-noresult_msg_div').hide();
 			$('#form-result_msg_div').hide();
@@ -380,7 +384,9 @@ jQuery(document).ready(function($) {
 	<li class="active"><a data-toggle="tab" href="#formtabs-1"><?php _e("Display Options","wpas");?></a></li>
 	<li><a data-toggle="tab" href="#formtabs-2"><?php _e("Submissions","wpas");?></a></li>
 	<li id="formtabs-3-li"><a data-toggle="tab" href="#formtabs-3"><?php _e("Confirmations","wpas");?></a></li>
-	<li><a data-toggle="tab" href="#formtabs-4"><?php _e("Scheduling","wpas");?></a></li>
+	<li id="formtabs-4-li"><a data-toggle="tab" href="#formtabs-4"><?php _e("User Notification","wpas");?></a></li>
+	<li id="formtabs-5-li"><a data-toggle="tab" href="#formtabs-5"><?php _e("Admin Notification","wpas");?></a></li>
+	<li><a data-toggle="tab" href="#formtabs-6"><?php _e("Scheduling","wpas");?></a></li>
 	</ul>
 	<div id="FormTabContent" class="tab-content">
 	<div class="row-fluid">
@@ -389,7 +395,7 @@ jQuery(document).ready(function($) {
 	
 	<div id="formtabs-1" class="tab-pane fade in active">
 	<div class="control-group row-fluid" id="form-temp_type_div"> 
-	<label class="control-label span3"><?php _e("Framework","wpas");?></label>
+	<label class="control-label span3"><?php _e("Template","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-temp_type" id="form-temp_type" class="input-medium">
 	<option value="Bootstrap" selected="selected">Twitter's Bootstrap</option>
@@ -514,7 +520,7 @@ jQuery(document).ready(function($) {
 	<option value="private"><?php _e("Private","wpas");?></option>
 	<option value="trash"><?php _e("Trash","wpas");?></option>
 	</select>
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the status of all form entries. 'publish' - Entry is available immediately.'pending' - Entry is pending review. 'draft' - Entry is in draft status. 'future' - Entry is will be published in the future. 'private' - Entry is not visible to users who are not logged in. 'trash' - Entry is in trashbin. Default is publish.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the status of all form entries. Publish - Entry is available immediately. Pending - Entry is pending review. Draft - Entry is in draft status. Future - Entry is will be published in the future. Private - Entry is not visible to users who are not logged in. Trash - Entry is in trashbin. Default is publish.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -602,7 +608,7 @@ jQuery(document).ready(function($) {
 	<option value="show-to-visitors"><?php _e("Visitors Only","wpas");?></option>
 	<option value="never-show"><?php _e("Never Show","wpas");?></option>
 	</select>
-	<a href="#" style="cursor: help;" title="<?php _e("Sets Captcha display option. WPAS forms use the 'honeypot' technique by default however CAPTCHAs can also be used for even stronger protection. Always Show displays captcha for everybody. Visitors Only option shows it for only visitors. Never Show option disables it.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets Captcha display option. WPAS forms use the - honeypot - technique by default however CAPTCHAs can also be used for even stronger protection. Always Show displays captcha for everybody. Visitors Only option shows it for only visitors. Never Show option disables it.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>		
@@ -679,17 +685,19 @@ jQuery(document).ready(function($) {
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
+	</div>	<!--formtabs-3-->
+	<div id="formtabs-4" class="tab-pane fade in">
 	<div class="control-group row-fluid">
 	<label class="control-label span3"></label>
-	<div class="controls span9"><label class="checkbox"><?php _e("Email User Confirmation","wpas");?>
+	<div class="controls span9"><label class="checkbox"><?php _e("Enable User Notification","wpas");?>
 	<input name="form-email_user_confirm" id="form-email_user_confirm" type="checkbox" value="1"/>
-	<a href="#" style="cursor: help;" title="<?php _e("When checked user confirmation emails are enabled.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("When checked, the user will be notified via email.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
 	<div id="form-email_user_div" style="display:none;"> 
 	<div class="control-group row-fluid"> 
-	<label class="control-label span3"><?php _e("User Email Send To","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Send To","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-confirm_sendto" id="form-confirm_sendto" class="input-medium">
 	</select>
@@ -698,23 +706,39 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("User Email Reply To","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Reply To","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_replyto" id="form-confirm_replyto" type="text" placeholder="<?php _e("e.g. user-emails@example.com","wpas");?>" value="" >
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the email address users can reply to the receipt. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the email address users can reply to the receipt. Multiple email addresses must be separated by coma. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("User Email Subject","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email CC","wpas");?></label>
+	<div class="controls span9">
+	<input class="input-xlarge" name="form-confirm_user_cc" id="form-confirm_user_cc" type="text" placeholder="<?php _e("e.g. user-emails@example.com","wpas");?>" value="" >
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the email address that user notification will be CCed. Multiple email addresses must be separated by coma. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>	
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("Email BCC","wpas");?></label>
+	<div class="controls span9">
+	<input class="input-xlarge" name="form-confirm_user_bcc" id="form-confirm_user_bcc" type="text" placeholder="<?php _e("e.g. user-emails@example.com","wpas");?>" value="" >
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the email address that user notification will be BCCed. Multiple email addresses must be separated by coma. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>	
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("Email Subject","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_subject" id="form-confirm_subject" type="text" placeholder="<?php _e("e.g. Thanks for filling out my form","wpas");?>" value="" >
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject of user emails. Max:255 Char.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject field of user emails. Max:255 Char.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("User Email Message","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Message","wpas");?></label>
 	<div class="controls span9">
 <?php display_tinymce('form-confirm_msg','',0,1); ?>
 	<a href="#" style="cursor: help;" title="<?php _e("A short message confirming a successful submission.","wpas");?>">
@@ -722,33 +746,51 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	</div>
+	</div> <!--formtabs-4-->	
+	<div id="formtabs-5" class="tab-pane fade in">
 	<div class="control-group row-fluid">
 	<label class="control-label span3"></label>
-	<div class="controls span9"><label class="checkbox"><?php _e("Email Admin Confirmation","wpas");?>
+	<div class="controls span9"><label class="checkbox"><?php _e("Enable Admin Notification","wpas");?>
 	<input name="form-email_admin_confirm" id="form-email_admin_confirm" type="checkbox" value="1"/>
-	<a href="#" style="cursor: help;" title="<?php _e("When checked, enables admin confirmation emails.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("When checked, enables admin notification for each submission via email.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
 	<div id="form-email_admin_div" style="display:none;"> 
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Admin Email Send To","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Send To","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_sendto" id="form-confirm_admin_sendto" type="text" placeholder="<?php _e("e.g. admin-emails@example.com","wpas");?>" value="" >
-	<a href="#" style="cursor: help;" title="<?php _e("The email address admins to get messages when a successful entry occurred. Leave it blank if you don't want them to get emails. Max:255 Char.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("The email address admins to get messages when a successful entry occurred. Multiple email addresses must be separated by coma.Leave it blank if you don't want them to get emails. Max:255 Char.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Admin Email Reply To","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Reply To","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_replyto" id="form-confirm_admin_replyto" type="text" placeholder="<?php _e("e.g. admin-emails@example.com","wpas");?>" value="" >
-	<a href="#" style="cursor: help;" title="<?php _e("The email address admins to reply to the receipt. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("The email address admins to reply to the receipt. Multiple email addresses must be separated by coma. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Admin Email Subject","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Cc","wpas");?></label>
+	<div class="controls span9">
+	<input class="input-xlarge" name="form-confirm_admin_cc" id="form-confirm_admin_cc" type="text" placeholder="<?php _e("e.g. user-emails@example.com","wpas");?>" value="" >
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the email address that the admin notification will be CCed. Multiple email addresses must be separated by coma. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>	
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("Email Bcc","wpas");?></label>
+	<div class="controls span9">
+	<input class="input-xlarge" name="form-confirm_admin_bcc" id="form-confirm_admin_bcc" type="text" placeholder="<?php _e("e.g. user-emails@example.com","wpas");?>" value="" >
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the email address that the admin notification will be BCCed. Multiple email addresses must be separated by coma. Leave it blank if you don't want them to email you. Max:255 Char.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>	
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("Email Subject","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_subject" id="form-confirm_admin_subject" type="text" placeholder="<?php _e("e.g. Someone filled out my form","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject of admin emails. Max:255 Char.","wpas");?>">
@@ -756,7 +798,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Admin Email Message","wpas");?></label>
+	<label class="control-label span3"><?php _e("Email Message","wpas");?></label>
 	<div class="controls span9">
 <?php display_tinymce('form-confirm_admin_msg','',0,1); ?>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets a message confirming a successful submission.","wpas");?>">
@@ -764,9 +806,8 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	</div>
-	</div>	<!--formtabs-3-->
-	
-	<div id="formtabs-4" class="tab-pane fade in">
+	</div> <!--formtabs-5-->	
+	<div id="formtabs-6" class="tab-pane fade in">
 	<div class="control-group row-fluid">
 	<label class="control-label span3"></label>
 	<div class="controls span9"><label class="checkbox"><?php _e("Enable Form Scheduling","wpas");?>
@@ -794,7 +835,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	</div>
-	</div>	<!--formtabs-4-->	
+	</div>	<!--formtabs-6-->	
 	
 	</div>	<!--tab-contform-->	
 	</div><!--field-container-->

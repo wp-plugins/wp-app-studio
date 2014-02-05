@@ -79,6 +79,22 @@ jQuery(document).ready(function($) {
 				break;
 		}
 	});
+        $('#shc-attach_tax').click(function() {
+		var app_id = jQuery('input#app').val();
+		var tax_id = $('#shc-attach_tax').val();
+		if(tax_id != '')
+		{
+			$.get(ajaxurl,{action:'wpas_get_tax_values',app_id:app_id,tax_id:tax_id}, function(response)
+			{
+				$('#add-shortcode-div #shc-attach_taxterm').html(response);
+			});
+			$.get(ajaxurl,{action:'wpas_get_entities',type:'shortcode',app_id:app_id,tax_id:tax_id}, function(response)
+                        {
+                                $('#add-shortcode-div #shc-attach').html(response);
+                                $('#shc-attach_div').show();
+                        });
+		}
+	});
 });			
 </script>
 		<form action="" method="post" id="shortcode-form" class="form-horizontal">
@@ -112,14 +128,6 @@ jQuery(document).ready(function($) {
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
-		<div class="control-group row-fluid" id="shc-attach_div" name="shc-attach_div" style="display:none;">
-		<label class="control-label span3"><?php _e("Attach to Entity","wpas"); ?></label>
-		<div class="controls span9">
-		<select id="shc-attach" name="shc-attach">
-		</select><a href="#" title="<?php _e("Views must be attached to a predefined entity. The attached entity's content is returned by the view after query filters applied.","wpas"); ?>" style="cursor: help;">
-		<i class="icon-info-sign"></i></a>
-		</div>
-		</div>
 		<div class="control-group row-fluid" id="shc-attach_form_div" name="shc-attach_form_div" style="display:none;">
 		<label class="control-label span3"><?php _e("Attach to Form","wpas"); ?></label>
 		<div class="controls span9">
@@ -128,7 +136,8 @@ jQuery(document).ready(function($) {
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
-		<div class="control-group row-fluid" id="shc-attach_tax_div" name="shc-attach_tax_div" style="display:none;">
+		<div id="shc-attach_tax_div" name="shc-attach_tax_div" style="display:none;">
+		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Attach to Taxonomy","wpas"); ?></label>
 		<div class="controls span9">
 		<select id="shc-attach_tax" name="shc-attach_tax">
@@ -136,7 +145,25 @@ jQuery(document).ready(function($) {
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
+                <div class="control-group row-fluid">
+                <label class="control-label span3"><?php _e("Attach to Term","wpas"); ?></label>
+                <div class="controls span9">
+                <select id="shc-attach_taxterm" name="shc-attach_taxterm">
+		<option value=''><?php _e("Apply to all","wpas"); ?></option>
+                </select><a href="#" style="cursor: help;" title="<?php _e("Taxonomy views can be attached to a predefined taxonomy term.","wpas"); ?>">
+                <i class="icon-info-sign"></i></a>
+                </div>
+                </div>
 		</div>
+		<div class="control-group row-fluid" id="shc-attach_div" name="shc-attach_div" style="display:none;">
+		<label class="control-label span3"><?php _e("Attach to Entity","wpas"); ?></label>
+		<div class="controls span9">
+		<select id="shc-attach" name="shc-attach">
+		</select><a href="#" title="<?php _e("Views must be attached to a predefined entity. The attached entity's content is returned by the view after query filters applied.","wpas"); ?>" style="cursor: help;">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+                </div>
 		<div id="view-tabs">
         <ul id="shcTab" class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#shctabs-1"><?php _e("Display Options","wpas"); ?></a></li>
@@ -146,7 +173,8 @@ jQuery(document).ready(function($) {
         <div id="ShcTabContent" class="tab-content">
         <div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Display Options tab configures how the view will be displayed on the frontend. Filters tab defines how the content will be returned by setting sort order, number of records etc. Messages tab helps you define the messages to be displayed to users when the view's content is requested.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 	<div id="shctabs-1" class="tab-pane fade in active">
-		<div class="control-group row-fluid" id="shc-theme_type_div" style="display:none;">
+		<div id="shc-theme_type_div" name="shc-theme_type_div" style="display:none;">
+		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Template","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="shc-theme_type" id="shc-theme_type" class="input-medium">
@@ -156,6 +184,17 @@ jQuery(document).ready(function($) {
 		</select>
 		<a href="#" style="cursor: help;" title="<?php _e("Sets the frontend framework which will be used to configure the overall look and feel of the view. If you pick jQuery UI, you can choose your theme from App's Settings under the theme tab. Default is Twitter Bootstrap.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
+		</div>
+		</div> 
+		<div class="control-group row-fluid">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Enable Font Awesome","wpas");?>
+		<input name="shc-font_awesome" id="shc-font_awesome" type="checkbox" value="1" checked/>
+		<a href="#" style="cursor: help;" title="<?php _e("Enables Font Awesome webfont for radios, checkboxes and other icons. Can not be disabled for the Bootstrap framework.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</label>
+		</div>
 		</div>
 		</div>
 		<div class="control-group row-fluid" id="shc-sc_pagenav_div">

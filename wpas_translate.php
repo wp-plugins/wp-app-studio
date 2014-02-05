@@ -58,9 +58,11 @@ $validate_vars = Array(
 'check_alpha_num_comma' => __("Must contain only letters, numbers and commas.","wpas"),
 'check_version' => __("Must contain only numbers and dots.","wpas"),
 'check_semico' => __("You need to seperate each option value with a semicolon.","wpas"),
+'check_default' => __("You cannot have multiple default values.","wpas"),
 'no_reserved' => __("You cannot use reserved words.","wpas"),
 'check_help' => __("Please select a different attach to or screen type.","wpas"),
 'check_unique' => __("Please enter a unique name.","wpas"),
+'check_email' => __("Please enter valid email(s).","wpas"),
 );
 
 ?>

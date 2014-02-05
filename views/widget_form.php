@@ -120,7 +120,7 @@ function wpas_add_widget_form($app_id)
                 <label class="control-label span3"><?php _e("Widget Title","wpas"); ?></label>
                 <div class="controls span9">
                 <input class="input-xlarge" name="widg-title" id="widg-title" type="text" placeholder="<?php _e("e.g. Recent Orders","wpas"); ?>">
-                <a href="#" style="cursor: help;" title="<?php _e("Sets the title of the widget on sidebar or dashboard. For relationship widgets, it is used as 'from entity' relationship title.","wpas"); ?>">
+                <a href="#" style="cursor: help;" title="<?php _e("Sets the title of the widget on sidebar or dashboard. For relationship widgets, it is used as - from entity - relationship title.","wpas"); ?>">
                 <i class="icon-info-sign"></i></a>
                 </div>
                 </div>
@@ -182,7 +182,7 @@ function wpas_add_widget_form($app_id)
                 <select name="widg-rel-conn-type" id="widg-rel-conn-type" class="input-medium">
 		<option value=""><?php _e("Please select","wpas"); ?></option>
                 </select>
-                <a href="#" style="cursor: help;" title="<?php _e("Sets the connection type of a relationship. Connection type could be either connected or related. Connected type displays the 'many' side objects of a relationship. Related type is only used in many-to-many relationships and displays similar related objects. For example, in a products to orders many-to-many relationship; connected shows the orders which include the product selected and related shows the products which are also included in the same order of the selected product i.e. 'Customer who purchased this also purchased' type.","wpas"); ?>">
+                <a href="#" style="cursor: help;" title="<?php _e("Sets the connection type of a relationship. Connection type could be either connected or related. Connected type displays the - many - side objects of a relationship. Related type is only used in many-to-many relationships and displays similar related objects. For example, in a products to orders many-to-many relationship; connected shows the orders which include the product selected and related shows the products which are also included in the same order of the selected product i.e. Customer who purchased this also purchased type.","wpas"); ?>">
                 <i class="icon-info-sign"></i></a>
                 </div>
                 </div>

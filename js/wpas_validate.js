@@ -51,6 +51,41 @@ jQuery(document).ready(function($) {
 		$.validator.addMethod('checkVersion', function(value, element) { 
 			return this.optional(element) || /^[0-9\.]+$/i.test(value);
 		}, validate_vars.check_version);
+		$.validator.addMethod('checkDefault', function(value, element) { 
+			console.log($(element).attr('id'));
+			if($(element).attr('id') == 'txn-dflt_value')
+			{
+				var is_multiple = $('#txn-display_type').val();
+				var fld_type = 'tax';
+			}
+			else
+			{
+				var is_multiple = $('#fld_multiple').attr('checked');
+				var fld_type = $('#fld_type').val();
+			}
+			if(value.indexOf(';') > 0 && value != '')
+			{
+				if(fld_type == 'tax' && is_multiple != 'multi')
+				{
+					return false;
+				}
+				else if(fld_type == 'select' && is_multiple == undefined)
+				{
+					return false;
+				}
+				else if($.inArray(fld_type,Array('checkbox_list','select','tax')) == -1)
+				{
+					return false;
+				}
+				return true;
+			}
+			else
+			{
+				return true;
+			}
+		}, validate_vars.check_default);
+				
+				
 		$.validator.addMethod('checkSemiCo', function(value, element) { 
 			comma_loc = (value.length - 1);
 			if(value.indexOf(';') < 0 && value != '')
@@ -112,6 +147,25 @@ jQuery(document).ready(function($) {
 			});
 			return check;
 		}, validate_vars.check_help);
+
+		$.validator.addMethod('checkEmail', function(value,element) {
+			var check = true;
+			if(value != '')
+			{
+				$.ajax({
+					type: 'GET',
+					url: ajaxurl,
+					cache: false,
+					async: false, 
+					data: {action:'wpas_check_email',email_list:value},
+					success: function(response)
+					{
+						check = response;
+					}
+				});
+			}
+			return check;
+		}, validate_vars.check_email);
 
 		$.validator.addMethod('uniqueName',function(val,element,params){
 		var type = params[0];
@@ -331,7 +385,8 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'fld_dflt_value': {
-			maxlength:50,
+			maxlength:150,
+			checkDefault: true,
 			},
 			'fld_desc': {
 			maxlength:300,
@@ -399,6 +454,14 @@ jQuery(document).ready(function($) {
 			minlength:3,
 			maxlength:50,
 			required:true,
+			},
+			'txn-dflt_value': {
+                        maxlength:150,
+                        checkDefault: true,
+                        },
+			'txn-values': {
+			maxlength:3500,
+			checkSemiCo:true,
 			},
 			'txn-menu_name':{
 			maxlength:50,
@@ -815,8 +878,13 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'form-confirm_replyto':{
-			maxlength:255,
-			email:true,
+			checkEmail: true,
+			},
+			'form-confirm_user_cc':{
+			checkEmail: true,
+			},
+			'form-confirm_user_bcc':{
+			checkEmail: true,
 			},
 			'form-confirm_subject':{
 			required:true,
@@ -827,13 +895,17 @@ jQuery(document).ready(function($) {
 			maxlength:5000,
 			},
 			'form-confirm_admin_sendto':{
-			maxlength:255,
-			email:true,
 			required:true,
+			checkEmail: true,
 			},
 			'form-confirm_admin_replyto':{
-			maxlength:255,
-			email:true,
+			checkEmail: true,
+			},
+			'form-confirm_admin_cc':{
+			checkEmail: true,
+			},
+			'form-confirm_admin_bcc':{
+			checkEmail: true,
 			},
 			'form-confirm_admin_subject':{
 			required:true,
