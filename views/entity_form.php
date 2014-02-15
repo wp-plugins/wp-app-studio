@@ -99,7 +99,7 @@ jQuery(document).ready(function() {
 		<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("The entity is a person, object, place or event for which data is collected.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 		<div class="field-container">
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Name","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Name","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-name" id="ent-name" type="text" placeholder="<?php _e("e.g. product","wpas"); ?>" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("General name for the entity, usually singular max. 16 characters, can not contain capital letters,reserved words,dashes or spaces.","wpas"); ?>">
@@ -107,7 +107,7 @@ jQuery(document).ready(function() {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e(" Plural","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e(" Plural","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-label" id="ent-label" type="text" value="" placeholder="<?php _e("e.g. Products","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("A plural descriptive name for the entity marked for translation.","wpas"); ?>">
@@ -115,7 +115,7 @@ jQuery(document).ready(function() {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Singular","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Singular","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-singular-label" id="ent-singular-label" type="text" value="" placeholder="<?php _e("e.g. Product","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("It is the name for one object of this entity.","wpas"); ?>">

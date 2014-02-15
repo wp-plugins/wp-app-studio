@@ -3,16 +3,17 @@ Contributors: emarket-design
 Tags: Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only,access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite,mail,custom mail,contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms,saas, software as a service
 Requires at least: 3.3
 Tested up to: 3.8.1
-Stable tag: 2.9.8
+Stable tag: 2.9.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
-Wp App Studio is a fully featured custom plugin design and development tool. No coding required.
+Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
 
 ==  Description  == 
 = Are you a WPAS user? =
 * Serious about WordPress.
+* Want to start up a WordPress plugin business?
 * No coding experience.
 * Tired of writing code.
 * Tired of people not updating and supporting plugins.
@@ -38,7 +39,7 @@ Wp App Studio(WPAS) is a cost-effective REST API based service(SaaS) that create
 = Get involved =
 We are in the business of making your life easier as a developer, designer or power user. Let us know how we can do our job better by suggesting new features, reporting bugs, or telling us simply something we developed worked for you. We tweet about our development, new releases, tips and tricks @eMarket_Design. We have a contact form in our site and free support ticket system in the emd playground. Thanks in advance.
 
-= Tranlations =
+= Translations =
 We have machine-translated Wp App Studio in the following languages. We need lead translators to help finish the translations.
 
 * Spanish
@@ -55,25 +56,21 @@ We have machine-translated Wp App Studio in the following languages. We need lea
 Please [contact us](http://emarketdesign.com/contact-us/ "Contact eMarket Design") with your gmail account (required for file sharing) if you would like to help in translating WPAS to your own language.
 
 = Upgrading from the previous versions =
-Each WPAS version adds to the functionality of our platform. Although the plugin automatically upgrades your apps to the new version. It is *strongly recommended* to go through your app's screens and validate/edit/save your data to avoid data related issues in the plugin generation time. Test your app in the playground, take advantage of the free support.
+Each WPAS version adds to the functionality of our platform. Wp App Studio plugin automatically upgrades your apps to the new version. However, it is *strongly recommended* to go through your app's screens and validate/edit/save your data to avoid data related issues in the plugin generation time. Test your app in the playground, take advantage of the free support.
 
-= What's new in 2.9.8? =
-WPAS 2.9.8 release builds on the views module with the introduction of taxonomy views at the term level. With this release, you can create separate views for each custom taxonomy term. For example; you can create priority - high or priority - low taxonomy term views in an issue tracking app.
+= What's new in 2.9.9? =
+WPAS 2.9.9 release strengthens API rules on the client side by color coding required fields as well as gives us the ability to set up predefined hierarchies for hierarchical taxonomies. We also added ability to create custom name/label pairs for selects, checkbox lists, and radio attribute types.
 
-In addition, a list of predefined taxonomy terms can be entered in the taxonomy values field of any taxonomy, including their definitions. You can also set the default value(s) for your taxonomies. The taxonomy values entered in the WPAS are automatically created (if they don't already exist) for the corresponding taxonomy when the generated plugin is activated. This new feature also allows setting different views for taxonomies shared by different entities. For example; The Office(Entity) - Cities(Taxonomy) view can be different than the Customer(Entity) - Cities(Taxonomy) view.
-
-WordPress currently lacks single-value taxonomy metaboxes. To ensure only one term can be selected for each entity, we implemented radio button based taxonomy metaboxes in the admin backend in the release as well. This feature was already implemented in the WPAS forms.
 A summary of all new features are below;
 
-* Updated font awesome css version in the plugin to 3.2.1
-* Ability set default value(s) for taxonomies
-* Miscellaneous bug fixes, look and feel improvements.
-* Addition of CC and BCC in the form user and admin notifications
-* Ability to customize the labels of builtin fields such as content, excerpt, title when used in the forms.
-* Ability to create Taxonomy term views.
-* Ability to create Entity Taxonomy views.
-* Enabled Font Awesome usage in the views module.
-* Ability to predefine taxonomy terms and their descriptions.
+* Color coded all required fields as red.
+* Added ability to duplicate Apps; very handy feature if you want to create free and pro versions of your apps.
+* Added extra API rule checks to minimize errors on the generation time.
+* Added ability to set up predefined hierarchies on the taxonomies module.
+* Added ability to set up name/label pairs for selects, checkbox lists and radios.
+* Converted "Generate" link to a button.
+* Added ability to display "Connected" and "Related" relationship data on the single view layouts.
+* Fixed miscellaneous bugs which prevented saving of app data correctly in some user paths.
 
 = Create your own plugin using Wp App Studio =
 An intro to WPAS system. More video tutorials in the website.
@@ -122,7 +119,7 @@ See Other Notes tab or project links below.
 == Features ==
 Please visit the Wp App Studio platform site to get more information on the features that the current version of the API supports.
 
-[Wp App Studio Features](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/) "Wp App Studio Features")
+[Wp App Studio Features](http://emarketdesign.com/automate-wordpress-development/wp-app-studio/)
 
 
  ==  Installation  == 
@@ -200,6 +197,8 @@ The Wp App Studio apps are licensed as GPLv2 or later.
 9. Use WPAS button to insert forms and views shortcodes in a post or page.
 
 == Upgrade Notice ==
+= 2.9.9 =
+WPAS 2.9.9 release strengthens API rules on the client side by color coding required fields as well as gives us the ability to set up predefined hierarchies for hierarchical taxonomies. We also added ability to create custom name/label pairs for selects, checkbox lists, and radio attribute types.
 = 2.9.8 =
 WPAS 2.9.8 release builds on the views module with the introduction of taxonomy views at the term level and many other new features.
 = 2.9 =
@@ -226,6 +225,16 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 2.9.9 (02/14/2014) =
+* Color coded all required fields as red.
+* Added ability to duplicate Apps in the app list; very handy feature if you want to create free and pro versions of your apps
+* Ability to predefine taxonomy terms and their descriptions.
+* Added extra API rule checks to minimize errors on the generation time.
+* Added ability to set up predefined hierarchies on the taxonomies module.
+* Added ability to set up name/label pairs for selects, checkbox lists and radios.
+* Converted "Generate" link to a button.
+* Added ability to display "Connected" and "Related" relationship data on the single view layouts.
+* Fixed miscellaneous bugs which prevented saving of app data correctly in some user paths
 = 2.9.8 (02/05/2014) =
 * Updated font awesome css version in the plugin to 3.2.1
 * Ability set default value(s) for taxonomies

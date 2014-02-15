@@ -58,13 +58,13 @@ jQuery(document).ready(function() {
         <div class="well">
         <div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Relationships are connections between entities. You can create one-to-many(1-M), many-to-many(M-M) relationships. Each relationship may have one to many attributes.","wpas");?>"> <?php _e("HELP","wpas");?></a></div></div>
         <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("Name","wpas");?></label>
+        <label class="control-label req span3"><?php _e("Name","wpas");?></label>
         <div class="controls span9">
         <input name="rel-name" id="rel-name" type="text" placeholder="<?php _e("orders_products","wpas");?>">
         <a href="#" title="<?php _e("Relationship name should be in slug form (must not contain capital letters or spaces) and not more than 32 characters long. Previously used relationship names are not allowed. Underscores are allowed.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
         <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("From Entity Name","wpas");?></label>
+        <label class="control-label req span3"><?php _e("From Entity Name","wpas");?></label>
         <div class="controls span9">
         <select id="rel-from-name" name="rel-from-name">
         <option value=""><?php _e("Please select","wpas");?></option>
@@ -75,7 +75,7 @@ jQuery(document).ready(function() {
         <a href="#" title="<?php _e("FROM entity is the related entity in a relationship. Many entity instances from the related entity can reference any one entity instance from the primary entity.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
         <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("To Entity Name","wpas");?></label>
+        <label class="control-label req span3"><?php _e("To Entity Name","wpas");?></label>
         <div class="controls span9">
         <select id="rel-to-name" name="rel-to-name">
         <option value=""><?php _e("Please select","wpas");?></option>

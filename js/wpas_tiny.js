@@ -65,7 +65,7 @@ jQuery(document).ready(function($){
 			}
 			$.each(response,function (key,value)
 			{
-				if(value == 'Taxonomies' || key.indexOf('relattr_') == 0 || key == 0)
+				if(value == 'Taxonomies' || value == 'Relationships' || key.indexOf('relattr_') == 0 || key == 0)
 				{
 					listbox.add(value,'',{'style':'font-style:italic;font-weight:bold;'});
 				}
@@ -88,7 +88,12 @@ jQuery(document).ready(function($){
 		{
 			comp_id = $('#shc-attach :selected').val();
 			layout_id= 'shc-sc_layout';
+			shc_type = $('#shc-view_type').val();
 			type = "entity";
+			if(shc_type == 'single')
+			{
+				type = "entity-rel";
+			}
 		}
 		else if($(this).attr('id') == 'widg-attach')
 		{

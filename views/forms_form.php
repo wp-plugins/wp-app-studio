@@ -318,7 +318,7 @@ jQuery(document).ready(function($) {
 	<div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Forms allow a user to enter data directly to your entities,taxonomies, and relationships. Forms are the main data entry interface for your web and mobile apps.","wpas");?>">
 	<?php _e("HELP","wpas");?></a></div></div>
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Name","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-name" id="form-name" type="text" placeholder="<?php _e("e.g. customer_survey","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Unique identifier for the form. Can not contain capital letters,dashes or spaces. Between 3 and 30 characters.","wpas");?>">
@@ -326,7 +326,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid"> 
-	<label class="control-label span3"><?php _e("Type","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Type","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-form_type" id="form-form_type" class="input-medium">
 	<option value="" selected="selected"><?php _e("Please select","wpas");?></option>
@@ -338,7 +338,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid" id="form-form-attached_entity_div"> 
-	<label class="control-label span3"><?php _e("Attached to Entity","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Attached to Entity","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-attached_entity" id="form-attached_entity" class="input-medium">
 	</select>
@@ -697,7 +697,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="form-email_user_div" style="display:none;"> 
 	<div class="control-group row-fluid"> 
-	<label class="control-label span3"><?php _e("Email Send To","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Send To","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-confirm_sendto" id="form-confirm_sendto" class="input-medium">
 	</select>
@@ -730,7 +730,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Email Subject","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Subject","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_subject" id="form-confirm_subject" type="text" placeholder="<?php _e("e.g. Thanks for filling out my form","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject field of user emails. Max:255 Char.","wpas");?>">
@@ -758,7 +758,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="form-email_admin_div" style="display:none;"> 
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Email Send To","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Send To","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_sendto" id="form-confirm_admin_sendto" type="text" placeholder="<?php _e("e.g. admin-emails@example.com","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("The email address admins to get messages when a successful entry occurred. Multiple email addresses must be separated by coma.Leave it blank if you don't want them to get emails. Max:255 Char.","wpas");?>">
@@ -790,7 +790,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Email Subject","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Subject","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_subject" id="form-confirm_admin_subject" type="text" placeholder="<?php _e("e.g. Someone filled out my form","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject of admin emails. Max:255 Char.","wpas");?>">
@@ -819,7 +819,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="form-schedule_div" style="display:none;"> 
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Start Datetime","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Start Datetime","wpas");?></label>
 	<div id="form-datetime_start" class="controls span9">
 	<input class="input-medium" name="form-schedule_start" id="form-schedule_start" type="text">
 	<a href="#" style="cursor: help;" title="<?php _e("The start datetime after which form will be active.","wpas");?>">

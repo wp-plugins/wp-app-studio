@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wpas 2.8\n"
 "Report-Msgid-Bugs-To: info@emarketdesign.com\n"
-"POT-Creation-Date: 2014-01-21 22:56-0500\n"
+"POT-Creation-Date: 2014-02-14 13:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,160 +17,169 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/wpas_ajax_funcs.php:51 lib/wpas_ajax_funcs.php:59
-#: lib/wpas_ajax_funcs.php:83 lib/wpas_ajax_funcs.php:467
-#: lib/wpas_ajax_funcs.php:588 lib/wpas_ajax_funcs.php:645
-#: lib/wpas_ajax_funcs.php:674 lib/wpas_ajax_funcs.php:1237
-#: views/entity_field_form.php:351 views/entity_field_form.php:488
-#: views/entity_field_form.php:524 views/entity_field_form.php:542
-#: views/forms_form.php:328 views/generate_form.php:4 views/help_form.php:49
+#: lib/wpas_ajax_funcs.php:49 views/view_form.php:152
+msgid "Apply to all"
+msgstr ""
+
+#: lib/wpas_ajax_funcs.php:113 lib/wpas_ajax_funcs.php:121
+#: lib/wpas_ajax_funcs.php:145 lib/wpas_ajax_funcs.php:535
+#: lib/wpas_ajax_funcs.php:656 lib/wpas_ajax_funcs.php:713
+#: lib/wpas_ajax_funcs.php:742 lib/wpas_ajax_funcs.php:1333
+#: views/entity_field_form.php:363 views/entity_field_form.php:500
+#: views/entity_field_form.php:536 views/entity_field_form.php:554
+#: views/forms_form.php:332 views/generate_form.php:4 views/help_form.php:49
 #: views/help_form.php:74 views/relationship_form.php:70
 #: views/relationship_form.php:81 views/settings_form.php:264
 #: views/settings_form.php:284 views/settings_form.php:352
-#: views/view_form.php:104 views/widget_form.php:131 views/widget_form.php:143
+#: views/view_form.php:120 views/widget_form.php:131 views/widget_form.php:143
 #: views/widget_form.php:155 views/widget_form.php:183
 msgid "Please select"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:504 views/entity_field_form.php:340
-#: views/entity_form.php:137 views/forms_form.php:148 views/forms_form.php:363
-#: views/relationship_field_form.php:122 views/relationship_form.php:89
-#: views/taxonomy_form.php:90
+#: lib/wpas_ajax_funcs.php:572 views/entity_field_form.php:352
+#: views/entity_form.php:137 views/forms_form.php:148 views/forms_form.php:367
+#: views/relationship_field_form.php:112 views/relationship_form.php:89
+#: views/taxonomy_form.php:90 views/widget_form.php:206
 msgid "Description"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:584
+#: lib/wpas_ajax_funcs.php:652
 msgid "First define an email attribute type."
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:612 views/entity_form.php:489
+#: lib/wpas_ajax_funcs.php:680 views/entity_form.php:489
 msgid "Do not limit"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:626
+#: lib/wpas_ajax_funcs.php:694
 #, php-format
 msgid "Only %s can be related"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:656 views/relationship_form.php:147
+#: lib/wpas_ajax_funcs.php:724 views/relationship_form.php:147
 msgid "Related"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:663 views/relationship_form.php:146
+#: lib/wpas_ajax_funcs.php:731 views/relationship_form.php:146
 msgid "Connected"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:812
+#: lib/wpas_ajax_funcs.php:908
 msgid ""
 "Your application is in queue and will be generated soon. Thank you for your "
 "patience."
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:841
+#: lib/wpas_ajax_funcs.php:937
 msgid "System error, please try again later."
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:848 views/entity_layout_form.php:22
+#: lib/wpas_ajax_funcs.php:944 views/entity_layout_form.php:22
 #: views/entity_layout_form.php:33 views/entity_layout_form.php:44
 #: views/entity_layout_form.php:55 views/entity_layout_form.php:66
 #: views/forms_form.php:8 views/role_form.php:340
 msgid "Error"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:870
+#: lib/wpas_ajax_funcs.php:966
 msgid "No Change Detected"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:874
+#: lib/wpas_ajax_funcs.php:970
 msgid "Success"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:2080
+#: lib/wpas_ajax_funcs.php:2215
 #, php-format
 msgid "My %s Site"
 msgstr ""
 
-#: lib/wpas_ajax_funcs.php:2088
+#: lib/wpas_ajax_funcs.php:2223
 msgid "Owner"
 msgstr ""
 
-#: lib/wpas_operations.php:10
+#: lib/wpas_operations.php:11
 msgid "You do not have permission to access."
 msgstr ""
 
-#: lib/wpas_operations.php:182
+#: lib/wpas_operations.php:199
 msgid "Error: Please enter valid email."
 msgstr ""
 
-#: lib/wpas_operations.php:187
+#: lib/wpas_operations.php:204
 msgid "Error: Please enter passcode."
 msgstr ""
 
-#: lib/wpas_operations.php:192
+#: lib/wpas_operations.php:209
 msgid "Error: Please select an application to generate."
 msgstr ""
 
-#: lib/wpas_operations.php:230 lib/wpas_operations.php:251
+#: lib/wpas_operations.php:247 lib/wpas_operations.php:268
 msgid "Error: System error, please try again later."
 msgstr ""
 
-#: lib/wpas_operations.php:235 lib/wpas_operations.php:256
+#: lib/wpas_operations.php:252 lib/wpas_operations.php:273
 msgid "Error:"
 msgstr ""
 
-#: lib/wpas_operations.php:271
+#: lib/wpas_operations.php:288
 msgid "Refresh"
 msgstr ""
 
-#: lib/wpas_operations.php:351
+#: lib/wpas_operations.php:369
 msgid ""
 "Error: You must fill out the domain name field in the application's settings "
 "app info tab."
 msgstr ""
 
-#: lib/wpas_operations.php:354
+#: lib/wpas_operations.php:372
 msgid ""
 "Error: You must have at least one entity and each entity must have at least "
 "one attribute."
 msgstr ""
 
-#: lib/wpas_operations.php:357
+#: lib/wpas_operations.php:375
 msgid ""
 "Error: You must have at least one entity and each entity must have at least "
 "one attribute. Please add at least one attribute to:"
 msgstr ""
 
-#: lib/wpas_operations.php:360
+#: lib/wpas_operations.php:378
 #, php-format
 msgid ""
 "Error: You must have at least one attribute in each panel in %s entity "
 "layout."
 msgstr ""
 
-#: lib/wpas_operations.php:363
+#: lib/wpas_operations.php:381
 #, php-format
 msgid "Error: You must assign all attributes to a panel in %s entity layout."
 msgstr ""
 
-#: lib/wpas_operations.php:366
+#: lib/wpas_operations.php:384
 msgid "Error: You must assign tabs to the help attached to:"
 msgstr ""
 
-#: lib/wpas_operations.php:369
+#: lib/wpas_operations.php:387
 #, php-format
 msgid ""
 "Error: You must have at least one unique attribute in each entity. Please "
 "set at least one attribute unique in %s entity."
 msgstr ""
 
-#: lib/wpas_operations.php:372
+#: lib/wpas_operations.php:390
 #, php-format
 msgid "Error: You must have a form layout for %s search form."
 msgstr ""
 
-#: lib/wpas_operations.php:375
+#: lib/wpas_operations.php:393
 #, php-format
 msgid "Error: You must have a view attached for %s search form."
+msgstr ""
+
+#: lib/wpas_operations.php:396
+#, php-format
+msgid "Error: You must have an entity attached for %s form."
 msgstr ""
 
 #: lib/wpas_taglist_translate.php:4
@@ -183,7 +192,8 @@ msgstr ""
 
 #: lib/wpas_taglist_translate.php:6 views/application_form.php:504
 #: views/application_form.php:516 views/entity_form.php:355
-#: views/forms_form.php:355 views/view_form.php:228 views/widget_form.php:262
+#: views/forms_form.php:359 views/view_form.php:267 views/widget_form.php:120
+#: views/widget_form.php:262
 msgid "Title"
 msgstr ""
 
@@ -220,7 +230,7 @@ msgid "Featured Img Thumb"
 msgstr ""
 
 #: lib/wpas_taglist_translate.php:15 views/entity_form.php:359
-#: views/settings_form.php:135 views/view_form.php:227
+#: views/settings_form.php:135 views/view_form.php:266
 #: views/widget_form.php:261
 msgid "Author"
 msgstr ""
@@ -272,11 +282,12 @@ msgstr ""
 msgid "Relationships"
 msgstr ""
 
-#: views/application_form.php:154 views/role_form.php:395
+#: views/application_form.php:154 views/application_form.php:500
+#: views/role_form.php:395
 msgid "Widgets"
 msgstr ""
 
-#: views/application_form.php:165
+#: views/application_form.php:165 views/application_form.php:467
 msgid "Help Screens"
 msgstr ""
 
@@ -285,11 +296,12 @@ msgstr ""
 msgid "Forms"
 msgstr ""
 
-#: views/application_form.php:187 views/role_form.php:401
+#: views/application_form.php:187 views/application_form.php:489
+#: views/role_form.php:401
 msgid "Views"
 msgstr ""
 
-#: views/application_form.php:198
+#: views/application_form.php:198 views/application_form.php:478
 msgid "Permissions"
 msgstr ""
 
@@ -307,7 +319,7 @@ msgstr ""
 
 #: views/application_form.php:253 views/application_form.php:366
 #: views/entity_field_form.php:61 views/help_tab_form.php:23
-#: views/relationship_field_form.php:39 wp-app-studio.php:903
+#: views/relationship_field_form.php:39 wp-app-studio.php:902
 msgid "Delete"
 msgstr ""
 
@@ -316,8 +328,7 @@ msgid "Apply"
 msgstr ""
 
 #: views/application_form.php:288 views/application_form.php:296
-#: views/application_form.php:304 views/application_form.php:489
-#: wpas_translate.php:13
+#: views/application_form.php:304 wpas_translate.php:13
 msgid "View"
 msgstr ""
 
@@ -337,9 +348,8 @@ msgstr ""
 msgid "Add Tab"
 msgstr ""
 
-#: views/application_form.php:308 views/generate_form.php:81
-#: views/generate_form.php:118
-msgid "Generate"
+#: views/application_form.php:308
+msgid "Duplicate"
 msgstr ""
 
 #: views/application_form.php:309
@@ -352,9 +362,9 @@ msgstr ""
 #: views/entity_form.php:315 views/entity_form.php:334
 #: views/entity_form.php:345 views/entity_form.php:398
 #: views/entity_form.php:409 views/taxonomy_form.php:130
-#: views/taxonomy_form.php:282 views/taxonomy_form.php:293
-#: views/taxonomy_form.php:303 views/taxonomy_form.php:313
-#: views/taxonomy_form.php:323 views/taxonomy_form.php:334
+#: views/taxonomy_form.php:298 views/taxonomy_form.php:309
+#: views/taxonomy_form.php:319 views/taxonomy_form.php:329
+#: views/taxonomy_form.php:339 views/taxonomy_form.php:350
 msgid "False"
 msgstr ""
 
@@ -364,9 +374,9 @@ msgstr ""
 #: views/entity_form.php:314 views/entity_form.php:333
 #: views/entity_form.php:344 views/entity_form.php:397
 #: views/entity_form.php:408 views/taxonomy_form.php:131
-#: views/taxonomy_form.php:281 views/taxonomy_form.php:292
-#: views/taxonomy_form.php:302 views/taxonomy_form.php:312
-#: views/taxonomy_form.php:322 views/taxonomy_form.php:333
+#: views/taxonomy_form.php:297 views/taxonomy_form.php:308
+#: views/taxonomy_form.php:318 views/taxonomy_form.php:328
+#: views/taxonomy_form.php:338 views/taxonomy_form.php:349
 msgid "True"
 msgstr ""
 
@@ -394,6 +404,11 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
+#: views/application_form.php:428 views/generate_form.php:81
+#: views/generate_form.php:118
+msgid "Generate"
+msgstr ""
+
 #: views/application_form.php:428 views/application_form.php:439
 #: views/application_form.php:450 views/application_form.php:460
 #: views/application_form.php:471 views/application_form.php:482
@@ -406,11 +421,12 @@ msgstr ""
 #: views/application_form.php:450 views/application_form.php:460
 #: views/application_form.php:482 views/application_form.php:493
 #: views/application_form.php:516 views/entity_field_form.php:12
-#: views/entity_field_form.php:324 views/entity_form.php:102
-#: views/entity_form.php:533 views/forms_form.php:317
+#: views/entity_field_form.php:336 views/entity_form.php:102
+#: views/entity_form.php:533 views/forms_form.php:321
 #: views/relationship_field_form.php:13 views/relationship_field_form.php:81
 #: views/relationship_form.php:61 views/role_form.php:356
-#: views/taxonomy_form.php:65 views/view_form.php:93
+#: views/taxonomy_form.php:65 views/view_form.php:109
+#: views/widget_form.php:112
 msgid "Name"
 msgstr ""
 
@@ -440,6 +456,10 @@ msgstr ""
 msgid "Attached To"
 msgstr ""
 
+#: views/application_form.php:450
+msgid "Display"
+msgstr ""
+
 #: views/application_form.php:460
 msgid "From"
 msgstr ""
@@ -450,16 +470,12 @@ msgstr ""
 
 #: views/application_form.php:460 views/application_form.php:493
 #: views/application_form.php:504 views/application_form.php:516
-#: views/entity_field_form.php:14 views/entity_field_form.php:348
-#: views/forms_form.php:325 views/help_form.php:46 views/help_form.php:118
+#: views/entity_field_form.php:14 views/entity_field_form.php:360
+#: views/forms_form.php:329 views/help_form.php:46 views/help_form.php:118
 #: views/relationship_field_form.php:15 views/relationship_field_form.php:97
-#: views/relationship_form.php:117 views/view_form.php:101
+#: views/relationship_form.php:117 views/view_form.php:117
 #: views/widget_form.php:128
 msgid "Type"
-msgstr ""
-
-#: views/application_form.php:467 wpas_translate.php:8
-msgid "Help"
 msgstr ""
 
 #: views/application_form.php:471 views/help_form.php:71
@@ -474,22 +490,15 @@ msgstr ""
 msgid "Tabs"
 msgstr ""
 
-#: views/application_form.php:478
-msgid "Roles"
-msgstr ""
-
 #: views/application_form.php:482
 msgid "Capabilities"
 msgstr ""
 
 #: views/application_form.php:482 views/entity_field_form.php:13
-#: views/entity_field_form.php:332 views/relationship_field_form.php:14
+#: views/entity_field_form.php:344 views/relationship_field_form.php:14
 #: views/relationship_field_form.php:89 views/role_form.php:370
+#: views/widget_form.php:198
 msgid "Label"
-msgstr ""
-
-#: views/application_form.php:500 wpas_translate.php:14
-msgid "Widget"
 msgstr ""
 
 #: views/application_form.php:504 views/widget_form.php:140
@@ -501,7 +510,8 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: views/application_form.php:516 views/view_form.php:150
+#: views/application_form.php:516 views/forms_form.php:398
+#: views/view_form.php:178
 msgid "Template"
 msgstr ""
 
@@ -510,57 +520,57 @@ msgstr ""
 msgid "No %s found."
 msgstr ""
 
-#: views/application_form.php:568 views/application_form.php:588
-#: views/application_form.php:627
+#: views/application_form.php:569 views/application_form.php:589
+#: views/application_form.php:629
 msgid "More"
 msgstr ""
 
-#: views/application_form.php:612
+#: views/application_form.php:614
 msgid "Yes"
 msgstr ""
 
-#: views/application_form.php:616
+#: views/application_form.php:618
 msgid "No"
 msgstr ""
 
-#: views/application_form.php:647
+#: views/application_form.php:649
 #, php-format
 msgid "%d capabilities set"
 msgstr ""
 
-#: views/application_form.php:685 views/forms_form.php:551
-#: views/forms_form.php:574 views/view_form.php:105
+#: views/application_form.php:691 views/forms_form.php:557
+#: views/forms_form.php:580 views/view_form.php:121
 msgid "Standard"
 msgstr ""
 
-#: views/application_form.php:689 views/forms_form.php:330
-#: views/view_form.php:106
+#: views/application_form.php:695 views/forms_form.php:334
+#: views/view_form.php:122
 msgid "Search"
 msgstr ""
 
-#: views/application_form.php:693 views/view_form.php:107
+#: views/application_form.php:699 views/view_form.php:123
 msgid "Single"
 msgstr ""
 
-#: views/application_form.php:697 views/view_form.php:108
+#: views/application_form.php:703 views/view_form.php:124
 msgid "Archive"
 msgstr ""
 
-#: views/application_form.php:701 views/view_form.php:109
+#: views/application_form.php:707 views/view_form.php:125
 #: wpas_translate.php:10
 msgid "Taxonomy"
 msgstr ""
 
-#: views/application_form.php:771 views/generate_form.php:78
+#: views/application_form.php:784 views/generate_form.php:78
 #: views/import_form.php:11
 msgid "Home"
 msgstr ""
 
-#: views/application_form.php:775
+#: views/application_form.php:788
 msgid "Add New Application"
 msgstr ""
 
-#: views/application_form.php:781
+#: views/application_form.php:794
 msgid "Edit Application"
 msgstr ""
 
@@ -620,7 +630,7 @@ msgstr ""
 msgid "Req"
 msgstr ""
 
-#: views/entity_field_form.php:16 views/entity_field_form.php:401
+#: views/entity_field_form.php:16 views/entity_field_form.php:413
 msgid "Unique"
 msgstr ""
 
@@ -637,10 +647,10 @@ msgstr ""
 #: views/entity_field_form.php:122 views/entity_field_form.php:125
 #: views/entity_field_form.php:128 views/entity_field_form.php:131
 #: views/entity_field_form.php:134 views/entity_field_form.php:137
-#: views/entity_field_form.php:452 views/entity_field_form.php:460
-#: views/entity_field_form.php:559 views/entity_field_form.php:567
-#: views/entity_field_form.php:577 views/entity_field_form.php:585
-#: views/entity_field_form.php:595 views/entity_field_form.php:603
+#: views/entity_field_form.php:464 views/entity_field_form.php:472
+#: views/entity_field_form.php:571 views/entity_field_form.php:579
+#: views/entity_field_form.php:589 views/entity_field_form.php:597
+#: views/entity_field_form.php:607 views/entity_field_form.php:615
 msgid "Validation Message:"
 msgstr ""
 
@@ -708,213 +718,213 @@ msgstr ""
 msgid "Please enter a valid IP v6 address."
 msgstr ""
 
-#: views/entity_field_form.php:321
+#: views/entity_field_form.php:333
 msgid ""
 "An attribute is a property or descriptor of an entity, for example, Customer "
 "Name is an attribute of the entity Customer."
 msgstr ""
 
-#: views/entity_field_form.php:321 views/entity_form.php:99
-#: views/entity_form.php:164 views/forms_form.php:315 views/forms_form.php:387
+#: views/entity_field_form.php:333 views/entity_form.php:99
+#: views/entity_form.php:164 views/forms_form.php:319 views/forms_form.php:393
 #: views/help_form.php:41 views/relationship_field_form.php:78
 #: views/relationship_form.php:59 views/role_form.php:353
 #: views/settings_form.php:99 views/taxonomy_form.php:62
-#: views/taxonomy_form.php:161 views/view_form.php:91 views/view_form.php:147
+#: views/taxonomy_form.php:177 views/view_form.php:107 views/view_form.php:174
 #: views/widget_form.php:110
 msgid "HELP"
 msgstr ""
 
-#: views/entity_field_form.php:326
+#: views/entity_field_form.php:338
 msgid "e.g. product_name"
 msgstr ""
 
-#: views/entity_field_form.php:327
+#: views/entity_field_form.php:339
 msgid ""
 "General name for the attribute, single word, no spaces, all lower case. "
 "Underscores and dashes allowed"
 msgstr ""
 
-#: views/entity_field_form.php:334
+#: views/entity_field_form.php:346
 msgid "e.g. Product Name"
 msgstr ""
 
-#: views/entity_field_form.php:335
+#: views/entity_field_form.php:347
 msgid ""
 "User friendly name for your attribute. It will appear on the EDIT page of "
 "the entity."
 msgstr ""
 
-#: views/entity_field_form.php:342
+#: views/entity_field_form.php:354
 msgid "Write a brief description on how the attribute will be used."
 msgstr ""
 
-#: views/entity_field_form.php:343
+#: views/entity_field_form.php:355
 msgid "Instructions or help-text related to your attribute."
 msgstr ""
 
-#: views/entity_field_form.php:352 views/entity_field_form.php:370
+#: views/entity_field_form.php:364 views/entity_field_form.php:382
 #: views/forms_form.php:70 views/relationship_field_form.php:100
 msgid "Text"
 msgstr ""
 
-#: views/entity_field_form.php:353
+#: views/entity_field_form.php:365
 msgid "AlphaNumeric"
 msgstr ""
 
-#: views/entity_field_form.php:354
+#: views/entity_field_form.php:366
 msgid "Color Picker"
 msgstr ""
 
-#: views/entity_field_form.php:355
+#: views/entity_field_form.php:367
 msgid "Credit Card"
 msgstr ""
 
-#: views/entity_field_form.php:356
+#: views/entity_field_form.php:368
 msgid "Decimal"
 msgstr ""
 
-#: views/entity_field_form.php:357
+#: views/entity_field_form.php:369
 msgid "Digits Only"
 msgstr ""
 
-#: views/entity_field_form.php:358 views/generate_form.php:91
+#: views/entity_field_form.php:370 views/generate_form.php:91
 msgid "Email"
 msgstr ""
 
-#: views/entity_field_form.php:359
+#: views/entity_field_form.php:371
 msgid "Integer"
 msgstr ""
 
-#: views/entity_field_form.php:360
+#: views/entity_field_form.php:372
 msgid "IP Address V4"
 msgstr ""
 
-#: views/entity_field_form.php:361
+#: views/entity_field_form.php:373
 msgid "IP Address V6"
 msgstr ""
 
-#: views/entity_field_form.php:362
+#: views/entity_field_form.php:374
 msgid "Letters Only"
 msgstr ""
 
-#: views/entity_field_form.php:363
+#: views/entity_field_form.php:375
 msgid "Letters with Punctuation"
 msgstr ""
 
-#: views/entity_field_form.php:364
+#: views/entity_field_form.php:376
 msgid "Mobile UK"
 msgstr ""
 
-#: views/entity_field_form.php:365
+#: views/entity_field_form.php:377
 msgid "No WhiteSpace"
 msgstr ""
 
-#: views/entity_field_form.php:366
+#: views/entity_field_form.php:378
 msgid "Password"
 msgstr ""
 
-#: views/entity_field_form.php:367
+#: views/entity_field_form.php:379
 msgid "Phone UK"
 msgstr ""
 
-#: views/entity_field_form.php:368
+#: views/entity_field_form.php:380
 msgid "Phone US"
 msgstr ""
 
-#: views/entity_field_form.php:369
+#: views/entity_field_form.php:381
 msgid "Postal Code UK"
 msgstr ""
 
-#: views/entity_field_form.php:371
+#: views/entity_field_form.php:383
 msgid "URL"
 msgstr ""
 
-#: views/entity_field_form.php:372
+#: views/entity_field_form.php:384
 msgid "VIN Number US"
 msgstr ""
 
-#: views/entity_field_form.php:373
+#: views/entity_field_form.php:385
 msgid "Zipcode US"
 msgstr ""
 
-#: views/entity_field_form.php:374
+#: views/entity_field_form.php:386
 msgid "Date/Time"
 msgstr ""
 
-#: views/entity_field_form.php:375 views/view_form.php:225
+#: views/entity_field_form.php:387 views/view_form.php:264
 #: views/widget_form.php:259
 msgid "Date"
 msgstr ""
 
-#: views/entity_field_form.php:376
+#: views/entity_field_form.php:388
 msgid "DateTime"
 msgstr ""
 
-#: views/entity_field_form.php:377
+#: views/entity_field_form.php:389
 msgid "Time"
 msgstr ""
 
-#: views/entity_field_form.php:378
+#: views/entity_field_form.php:390
 msgid "Textarea"
 msgstr ""
 
-#: views/entity_field_form.php:379 views/relationship_field_form.php:101
+#: views/entity_field_form.php:391 views/relationship_field_form.php:101
 msgid "Text Area"
 msgstr ""
 
-#: views/entity_field_form.php:380
+#: views/entity_field_form.php:392
 msgid "Wysiwyg Editor"
 msgstr ""
 
-#: views/entity_field_form.php:381
+#: views/entity_field_form.php:393
 msgid "Uploaders"
 msgstr ""
 
-#: views/entity_field_form.php:382
+#: views/entity_field_form.php:394
 msgid "File Uploader"
 msgstr ""
 
-#: views/entity_field_form.php:383
+#: views/entity_field_form.php:395
 msgid "Image Uploader"
 msgstr ""
 
-#: views/entity_field_form.php:384
+#: views/entity_field_form.php:396
 msgid "Hidden"
 msgstr ""
 
-#: views/entity_field_form.php:385
+#: views/entity_field_form.php:397
 msgid "Hidden Constant"
 msgstr ""
 
-#: views/entity_field_form.php:386 views/entity_field_form.php:485
+#: views/entity_field_form.php:398 views/entity_field_form.php:497
 msgid "Hidden Function"
 msgstr ""
 
-#: views/entity_field_form.php:387
+#: views/entity_field_form.php:399
 msgid "Selectors"
 msgstr ""
 
-#: views/entity_field_form.php:388 views/relationship_field_form.php:102
+#: views/entity_field_form.php:400 views/relationship_field_form.php:102
 msgid "Checkbox"
 msgstr ""
 
-#: views/entity_field_form.php:389 views/relationship_field_form.php:103
+#: views/entity_field_form.php:401 views/relationship_field_form.php:103
 msgid "Checkbox List"
 msgstr ""
 
-#: views/entity_field_form.php:390
+#: views/entity_field_form.php:402
 msgid "Radios"
 msgstr ""
 
-#: views/entity_field_form.php:391 views/relationship_field_form.php:104
+#: views/entity_field_form.php:403 views/relationship_field_form.php:104
 msgid "Select"
 msgstr ""
 
-#: views/entity_field_form.php:393
+#: views/entity_field_form.php:405
 msgid "Defines the attribute display and validation type."
 msgstr ""
 
-#: views/entity_field_form.php:403
+#: views/entity_field_form.php:415
 msgid ""
 "An identifier which is guaranteed to be unique among all identifiers used "
 "for those objects and for a specific purpose. Exp; VIN of a car uniquely "
@@ -922,350 +932,359 @@ msgid ""
 "searchable dropdown to link related entities."
 msgstr ""
 
-#: views/entity_field_form.php:411 views/relationship_form.php:99
+#: views/entity_field_form.php:423 views/relationship_form.php:99
 #: views/taxonomy_form.php:108
 msgid "Required for Submit"
 msgstr ""
 
-#: views/entity_field_form.php:413 views/relationship_field_form.php:136
+#: views/entity_field_form.php:425 views/relationship_field_form.php:126
 msgid "Makes the attribute required so it can not be blank."
 msgstr ""
 
-#: views/entity_field_form.php:421 views/relationship_form.php:109
+#: views/entity_field_form.php:433 views/relationship_form.php:109
 #: views/taxonomy_form.php:118
 msgid "Required for Search"
 msgstr ""
 
-#: views/entity_field_form.php:423
+#: views/entity_field_form.php:435
 msgid ""
 "Makes the attribute required for search form submissions so it can not be "
 "blank."
 msgstr ""
 
-#: views/entity_field_form.php:431
+#: views/entity_field_form.php:443
 msgid "Filterable"
 msgstr ""
 
-#: views/entity_field_form.php:433
+#: views/entity_field_form.php:445
 msgid "Makes the attribute filterable in admin list page of the entity."
 msgstr ""
 
-#: views/entity_field_form.php:441
+#: views/entity_field_form.php:453
 msgid "Advanced"
 msgstr ""
 
-#: views/entity_field_form.php:443
+#: views/entity_field_form.php:455
 msgid ""
 "Enables support for searching, remote data sets, and infinite scrolling of "
 "results."
 msgstr ""
 
-#: views/entity_field_form.php:449
+#: views/entity_field_form.php:461
 msgid "Maximum File Size"
 msgstr ""
 
-#: views/entity_field_form.php:452
+#: views/entity_field_form.php:464
 msgid "Please upload no greater than X kbytes."
 msgstr ""
 
-#: views/entity_field_form.php:452
+#: views/entity_field_form.php:464
 msgid ""
 "Set maximum file size in kilobytes. exp. 100K. Leave it blank for no limit."
 msgstr ""
 
-#: views/entity_field_form.php:457
+#: views/entity_field_form.php:469
 msgid "Allowed Extensions"
 msgstr ""
 
-#: views/entity_field_form.php:460
+#: views/entity_field_form.php:472
 msgid "Please upload a valid file type."
 msgstr ""
 
-#: views/entity_field_form.php:460
+#: views/entity_field_form.php:472
 msgid ""
 "Sets the file extensions allowed to upload. exp. for files : pdf,txt for "
 "images: jpg,png. Leave it blank for all types."
 msgstr ""
 
-#: views/entity_field_form.php:467
+#: views/entity_field_form.php:479
 msgid "Multiple"
 msgstr ""
 
-#: views/entity_field_form.php:469
+#: views/entity_field_form.php:481
 msgid "Allows users to select multiple values when set."
 msgstr ""
 
-#: views/entity_field_form.php:477
+#: views/entity_field_form.php:489
 msgid "Thickbox"
 msgstr ""
 
-#: views/entity_field_form.php:479
+#: views/entity_field_form.php:491
 msgid "Sets thickbox option."
 msgstr ""
 
-#: views/entity_field_form.php:489
+#: views/entity_field_form.php:501
 msgid "Username"
 msgstr ""
 
-#: views/entity_field_form.php:490
+#: views/entity_field_form.php:502
 msgid "User Email"
 msgstr ""
 
-#: views/entity_field_form.php:491
+#: views/entity_field_form.php:503
 msgid "User Firstname"
 msgstr ""
 
-#: views/entity_field_form.php:492
+#: views/entity_field_form.php:504
 msgid "User Lastname"
 msgstr ""
 
-#: views/entity_field_form.php:493
+#: views/entity_field_form.php:505
 msgid "User Display Name"
 msgstr ""
 
-#: views/entity_field_form.php:494
+#: views/entity_field_form.php:506
 msgid "User ID"
 msgstr ""
 
-#: views/entity_field_form.php:495
+#: views/entity_field_form.php:507
 msgid "Current Date (MM-DD-YYYY)"
 msgstr ""
 
-#: views/entity_field_form.php:496
+#: views/entity_field_form.php:508
 msgid "Current Date (DD-MM-YYYY)"
 msgstr ""
 
-#: views/entity_field_form.php:497
+#: views/entity_field_form.php:509
 msgid "Current Year (YYYY)"
 msgstr ""
 
-#: views/entity_field_form.php:498
+#: views/entity_field_form.php:510
 msgid "Current Month Name (January)"
 msgstr ""
 
-#: views/entity_field_form.php:499
+#: views/entity_field_form.php:511
 msgid "Current Month (01)"
 msgstr ""
 
-#: views/entity_field_form.php:500
+#: views/entity_field_form.php:512
 msgid "Current Day (01)"
 msgstr ""
 
-#: views/entity_field_form.php:501
+#: views/entity_field_form.php:513
 msgid "Now (YYYY-MM-DD HH:mm:ss)"
 msgstr ""
 
-#: views/entity_field_form.php:502
+#: views/entity_field_form.php:514
 msgid "Current Time (HH:mm:ss)"
 msgstr ""
 
-#: views/entity_field_form.php:503
+#: views/entity_field_form.php:515
 msgid "Unique Identifier"
 msgstr ""
 
-#: views/entity_field_form.php:505 views/entity_field_form.php:632
+#: views/entity_field_form.php:517
 msgid "Sets a default value for the attribute."
 msgstr ""
 
-#: views/entity_field_form.php:512
+#: views/entity_field_form.php:524
 msgid "Searchable"
 msgstr ""
 
-#: views/entity_field_form.php:514
+#: views/entity_field_form.php:526
 msgid ""
 "Makes the hidden function or hidden constant attribute searchable in the "
 "front end. Searchable hidden attributes can be used in the search forms."
 msgstr ""
 
-#: views/entity_field_form.php:521
+#: views/entity_field_form.php:533
 msgid "Date Format"
 msgstr ""
 
-#: views/entity_field_form.php:525
+#: views/entity_field_form.php:537
 msgid "MM-DD-YYYY"
 msgstr ""
 
-#: views/entity_field_form.php:526
+#: views/entity_field_form.php:538
 msgid "YYYY-MM-DD"
 msgstr ""
 
-#: views/entity_field_form.php:527
+#: views/entity_field_form.php:539
 msgid "DD-MM-YYYY"
 msgstr ""
 
-#: views/entity_field_form.php:528
+#: views/entity_field_form.php:540
 msgid "MM/DD/YYYY"
 msgstr ""
 
-#: views/entity_field_form.php:529
+#: views/entity_field_form.php:541
 msgid "YYYY/MM/DD"
 msgstr ""
 
-#: views/entity_field_form.php:530
+#: views/entity_field_form.php:542
 msgid "DD/MM/YYYY"
 msgstr ""
 
-#: views/entity_field_form.php:532
+#: views/entity_field_form.php:544
 msgid "Select a date format."
 msgstr ""
 
-#: views/entity_field_form.php:539
+#: views/entity_field_form.php:551
 msgid "Time Format"
 msgstr ""
 
-#: views/entity_field_form.php:543
+#: views/entity_field_form.php:555
 msgid "HH:mm:ss"
 msgstr ""
 
-#: views/entity_field_form.php:544
+#: views/entity_field_form.php:556
 msgid "HH:mm"
 msgstr ""
 
-#: views/entity_field_form.php:546
+#: views/entity_field_form.php:558
 msgid "Select a time format."
 msgstr ""
 
-#: views/entity_field_form.php:552
+#: views/entity_field_form.php:564
 msgid "Validation Options"
 msgstr ""
 
-#: views/entity_field_form.php:556
+#: views/entity_field_form.php:568
 msgid "Minimum Length"
 msgstr ""
 
-#: views/entity_field_form.php:559
+#: views/entity_field_form.php:571
 msgid "Create a minumum length for the attribute."
 msgstr ""
 
-#: views/entity_field_form.php:559
+#: views/entity_field_form.php:571
 msgid "Please enter at least X characters."
 msgstr ""
 
-#: views/entity_field_form.php:564
+#: views/entity_field_form.php:576
 msgid "Maximum Length"
 msgstr ""
 
-#: views/entity_field_form.php:567
+#: views/entity_field_form.php:579
 msgid "Create a maximum length for the attribute"
 msgstr ""
 
-#: views/entity_field_form.php:567
+#: views/entity_field_form.php:579
 msgid "Please enter no more than X characters."
 msgstr ""
 
-#: views/entity_field_form.php:574
+#: views/entity_field_form.php:586
 msgid "Minimum Value"
 msgstr ""
 
-#: views/entity_field_form.php:577
+#: views/entity_field_form.php:589
 msgid "Create a minumum value for the attribute."
 msgstr ""
 
-#: views/entity_field_form.php:577
+#: views/entity_field_form.php:589
 msgid "Please enter a value greater than or equal to X."
 msgstr ""
 
-#: views/entity_field_form.php:582
+#: views/entity_field_form.php:594
 msgid "Maximum Value"
 msgstr ""
 
-#: views/entity_field_form.php:585
+#: views/entity_field_form.php:597
 msgid "Create a maximum value for the attribute."
 msgstr ""
 
-#: views/entity_field_form.php:585
+#: views/entity_field_form.php:597
 msgid "Please enter a value less than or equal to X."
 msgstr ""
 
-#: views/entity_field_form.php:592
+#: views/entity_field_form.php:604
 msgid "Minimum Words"
 msgstr ""
 
-#: views/entity_field_form.php:595
+#: views/entity_field_form.php:607
 msgid "Create a minumum number of words for the attribute."
 msgstr ""
 
-#: views/entity_field_form.php:595
+#: views/entity_field_form.php:607
 msgid "Please enter at least X words."
 msgstr ""
 
-#: views/entity_field_form.php:600
+#: views/entity_field_form.php:612
 msgid "Maximum Words"
 msgstr ""
 
-#: views/entity_field_form.php:603
+#: views/entity_field_form.php:615
 msgid "Create a maximum number of words for the attribute."
 msgstr ""
 
-#: views/entity_field_form.php:603
+#: views/entity_field_form.php:615
 msgid "Please enter X words or less."
 msgstr ""
 
-#: views/entity_field_form.php:610
+#: views/entity_field_form.php:622
 msgid "Max File Uploads"
 msgstr ""
 
-#: views/entity_field_form.php:613
+#: views/entity_field_form.php:625
 msgid "Sets the number of maximum allowable file uploads."
 msgstr ""
 
-#: views/entity_field_form.php:621 views/relationship_field_form.php:112
+#: views/entity_field_form.php:633 views/relationship_field_form.php:132
+#: views/taxonomy_form.php:147
 msgid "Values"
 msgstr ""
 
-#: views/entity_field_form.php:624
+#: views/entity_field_form.php:636 views/relationship_field_form.php:135
 msgid ""
-"Enter semicolon separated option values for the field. There must be only "
-"one semicolon between the values. You can not put a semicolon at the end of "
-"the values as well."
+"Enter semicolon separated option labels for the field. There must be only "
+"one semicolon between the values. Optionally, you can define value-label "
+"combinations using {Value}Label format. If the predined value does not "
+"exist, it is automatically created based on the label."
 msgstr ""
 
-#: views/entity_field_form.php:629 views/entity_field_form.php:639
-#: views/relationship_field_form.php:142
+#: views/entity_field_form.php:641 views/entity_field_form.php:651
+#: views/relationship_field_form.php:141 views/taxonomy_form.php:155
 msgid "Default Value"
 msgstr ""
 
-#: views/entity_field_form.php:641
+#: views/entity_field_form.php:644
+msgid ""
+"Sets the default value(s) for the attribute, separated by a semicolon. "
+"Multiple default values can only be set for select with multiple option and "
+"checkbox list types."
+msgstr ""
+
+#: views/entity_field_form.php:653
 msgid "Default is unchecked."
 msgstr ""
 
-#: views/entity_field_form.php:647
-msgid "Font Awesome Checked Icon Class"
+#: views/entity_field_form.php:659
+msgid "Checked Icon Class"
 msgstr ""
 
-#: views/entity_field_form.php:650
+#: views/entity_field_form.php:662
 msgid "Sets font awesome web font icon class for selected values."
 msgstr ""
 
-#: views/entity_field_form.php:651 views/entity_field_form.php:659
-#: views/forms_form.php:567
+#: views/entity_field_form.php:663 views/entity_field_form.php:671
+#: views/forms_form.php:573
 msgid "Cheatsheet"
 msgstr ""
 
-#: views/entity_field_form.php:655
-msgid "Font Awesome Unchecked Icon Class"
+#: views/entity_field_form.php:667
+msgid "Unchecked Icon Class"
 msgstr ""
 
-#: views/entity_field_form.php:658
+#: views/entity_field_form.php:670
 msgid "Sets font awesome web font icon class for unselected values."
 msgstr ""
 
-#: views/entity_field_form.php:666 views/entity_form.php:506
+#: views/entity_field_form.php:678 views/entity_form.php:506
 #: views/entity_layout_form.php:15 views/entity_layout_form.php:95
-#: views/forms_form.php:23 views/forms_form.php:802 views/help_form.php:89
-#: views/help_tab_form.php:53 views/relationship_field_form.php:153
+#: views/forms_form.php:23 views/forms_form.php:843 views/help_form.php:89
+#: views/help_tab_form.php:53 views/relationship_field_form.php:152
 #: views/relationship_form.php:262 views/role_form.php:432
-#: views/settings_form.php:459 views/taxonomy_form.php:354
-#: views/view_form.php:270 views/widget_form.php:294 wp-app-studio.php:908
+#: views/settings_form.php:459 views/taxonomy_form.php:370
+#: views/view_form.php:309 views/widget_form.php:294 wp-app-studio.php:907
 msgid "Cancel"
 msgstr ""
 
-#: views/entity_field_form.php:667 views/entity_form.php:508
+#: views/entity_field_form.php:679 views/entity_form.php:508
 #: views/entity_layout_form.php:16 views/entity_layout_form.php:97
-#: views/forms_form.php:25 views/forms_form.php:803 views/help_form.php:90
-#: views/help_tab_form.php:54 views/relationship_field_form.php:154
+#: views/forms_form.php:25 views/forms_form.php:844 views/help_form.php:90
+#: views/help_tab_form.php:54 views/relationship_field_form.php:153
 #: views/relationship_form.php:263 views/role_form.php:434
-#: views/taxonomy_form.php:356 views/view_form.php:272
+#: views/taxonomy_form.php:372 views/view_form.php:311
 #: views/widget_form.php:296 wpas_translate.php:4
 msgid "Save"
 msgstr ""
@@ -1320,16 +1339,16 @@ msgstr ""
 msgid "A short descriptive summary of what the entity is."
 msgstr ""
 
-#: views/entity_form.php:147 views/forms_form.php:372
-#: views/taxonomy_form.php:149
+#: views/entity_form.php:147 views/forms_form.php:376
+#: views/taxonomy_form.php:165
 msgid "Show Advanced Options"
 msgstr ""
 
-#: views/entity_form.php:156 views/taxonomy_form.php:157
+#: views/entity_form.php:156 views/taxonomy_form.php:173
 msgid "Label Options"
 msgstr ""
 
-#: views/entity_form.php:157 views/taxonomy_form.php:158
+#: views/entity_form.php:157 views/taxonomy_form.php:174
 msgid "Options"
 msgstr ""
 
@@ -1337,9 +1356,9 @@ msgstr ""
 msgid "Menu Options"
 msgstr ""
 
-#: views/entity_form.php:159 views/forms_form.php:380
+#: views/entity_form.php:159 views/forms_form.php:384
 #: views/relationship_form.php:145 views/settings_form.php:93
-#: views/view_form.php:142
+#: views/view_form.php:169
 msgid "Display Options"
 msgstr ""
 
@@ -1354,7 +1373,7 @@ msgid ""
 "configuration."
 msgstr ""
 
-#: views/entity_form.php:169 views/taxonomy_form.php:164
+#: views/entity_form.php:169 views/taxonomy_form.php:180
 msgid "Menu Name"
 msgstr ""
 
@@ -1499,7 +1518,7 @@ msgid ""
 "types. In hierarchical ones the default is Parent."
 msgstr ""
 
-#: views/entity_form.php:260 views/taxonomy_form.php:278
+#: views/entity_form.php:260 views/taxonomy_form.php:294
 msgid "Available for Public"
 msgstr ""
 
@@ -1570,7 +1589,7 @@ msgstr ""
 msgid "default: post or page"
 msgstr ""
 
-#: views/entity_form.php:311 views/taxonomy_form.php:330
+#: views/entity_form.php:311 views/taxonomy_form.php:346
 msgid "Rewrite"
 msgstr ""
 
@@ -1580,7 +1599,7 @@ msgid ""
 "to false. Default: true and use entity name as slug"
 msgstr ""
 
-#: views/entity_form.php:322 views/taxonomy_form.php:341
+#: views/entity_form.php:322 views/taxonomy_form.php:357
 msgid "Custom Rewrite Slug"
 msgstr ""
 
@@ -1594,7 +1613,7 @@ msgstr ""
 msgid "default: Entity name"
 msgstr ""
 
-#: views/entity_form.php:330 views/taxonomy_form.php:319
+#: views/entity_form.php:330 views/taxonomy_form.php:335
 msgid "Query Var"
 msgstr ""
 
@@ -1710,7 +1729,7 @@ msgid ""
 "submenu when enabled."
 msgstr ""
 
-#: views/entity_form.php:394 views/taxonomy_form.php:289
+#: views/entity_form.php:394 views/taxonomy_form.php:305
 msgid "Show UI"
 msgstr ""
 
@@ -1729,9 +1748,8 @@ msgstr ""
 
 #: views/entity_form.php:411
 msgid ""
-"Where to show the entity in the admin menu. Show UI must be true. \\'false"
-"\\' - do not display in the admin menu.\\'true\\' - display as a top level "
-"menu."
+"Where to show the entity in the admin menu. Show UI must be true. False - do "
+"not display in the admin menu. True - display as a top level menu."
 msgstr ""
 
 #: views/entity_form.php:415
@@ -1883,7 +1901,7 @@ msgid ""
 "features controlling the entire network (See Create a Network). "
 "Administrator - Somebody who has access to all the administration features. "
 "Editor - Somebody who can publish and manage posts and pages as well as "
-"manage other users\\' posts, etc. Author - Somebody who can publish and "
+"manage other users's posts, etc. Author - Somebody who can publish and "
 "manage their own posts. Contributor - Somebody who can write and manage "
 "their posts but not publish them. Subscriber - Somebody who can only manage "
 "their profile."
@@ -1909,7 +1927,7 @@ msgstr ""
 #: views/entity_layout_form.php:27 views/entity_layout_form.php:38
 #: views/entity_layout_form.php:49 views/entity_layout_form.php:60
 #: views/entity_layout_form.php:71 views/forms_form.php:13
-#: views/role_form.php:345 wp-app-studio.php:909
+#: views/role_form.php:345 wp-app-studio.php:908
 msgid "OK"
 msgstr ""
 
@@ -1958,84 +1976,92 @@ msgstr ""
 msgid "Please add all required fields to the form layout."
 msgstr ""
 
-#: views/forms_form.php:314
+#: views/forms_form.php:318
 msgid ""
 "Forms allow a user to enter data directly to your entities,taxonomies, and "
 "relationships. Forms are the main data entry interface for your web and "
 "mobile apps."
 msgstr ""
 
-#: views/forms_form.php:319 views/widget_form.php:114
+#: views/forms_form.php:323 views/widget_form.php:114
 msgid "e.g. customer_survey"
 msgstr ""
 
-#: views/forms_form.php:320
+#: views/forms_form.php:324
 msgid ""
 "Unique identifier for the form. Can not contain capital letters,dashes or "
 "spaces. Between 3 and 30 characters."
 msgstr ""
 
-#: views/forms_form.php:329
+#: views/forms_form.php:333
 msgid "Submit"
 msgstr ""
 
-#: views/forms_form.php:332
+#: views/forms_form.php:336
 msgid ""
 "Sets the type of form to be created. Submit forms are for sending and saving "
 "data. Search forms are for searching content and displaying results on a "
 "page."
 msgstr ""
 
-#: views/forms_form.php:337
+#: views/forms_form.php:341
 msgid "Attached to Entity"
 msgstr ""
 
-#: views/forms_form.php:341
+#: views/forms_form.php:345
 msgid ""
 "Sets the primary entity for your form. The selected entity will be main "
 "entry point and will be used for the dependent selection."
 msgstr ""
 
-#: views/forms_form.php:346
+#: views/forms_form.php:350
 msgid "Dependents"
 msgstr ""
 
-#: views/forms_form.php:350
+#: views/forms_form.php:354
 msgid ""
 "Sets the dependents of the primary entity for your form. The attributes of "
 "the dependents will be included in the form layout."
 msgstr ""
 
-#: views/forms_form.php:357
+#: views/forms_form.php:361
 msgid "e.g. Customer Survey"
 msgstr ""
 
-#: views/forms_form.php:358
+#: views/forms_form.php:362
 msgid ""
 "Optional. Sets the first piece of text displayed to users when they see your "
 "form. Optional. Max:40 char. Use it to standardize the form's title."
 msgstr ""
 
-#: views/forms_form.php:366
+#: views/forms_form.php:370
 msgid ""
 "Optional. Set a short description or instructions, notes, or guidelines that "
 "users should read when filling out the form. This will appear directly below "
 "the form title and above the fields."
 msgstr ""
 
-#: views/forms_form.php:381
+#: views/forms_form.php:385
 msgid "Submissions"
 msgstr ""
 
-#: views/forms_form.php:382
+#: views/forms_form.php:386
 msgid "Confirmations"
 msgstr ""
 
-#: views/forms_form.php:383
+#: views/forms_form.php:387
+msgid "User Notification"
+msgstr ""
+
+#: views/forms_form.php:388
+msgid "Admin Notification"
+msgstr ""
+
+#: views/forms_form.php:389
 msgid "Scheduling"
 msgstr ""
 
-#: views/forms_form.php:387
+#: views/forms_form.php:393
 msgid ""
 "Display Options tab configures how the form will be displayed on the "
 "frontend. Confirmations tab defines the notifications after data entry "
@@ -2044,68 +2070,64 @@ msgid ""
 "create a form submission schedule."
 msgstr ""
 
-#: views/forms_form.php:392
-msgid "Framework"
-msgstr ""
-
-#: views/forms_form.php:399
+#: views/forms_form.php:405
 msgid ""
 "Sets the frontend framework which will be used to configure the overall look "
 "and feel of the form. If you pick JQuery UI, you can choose your theme from "
 "App's Settings under the theme tab. Default is Twitter Bootstrap."
 msgstr ""
 
-#: views/forms_form.php:406
+#: views/forms_form.php:412 views/view_form.php:192
 msgid "Enable Font Awesome"
 msgstr ""
 
-#: views/forms_form.php:408
+#: views/forms_form.php:414 views/view_form.php:194
 msgid ""
 "Enables Font Awesome webfont for radios, checkboxes and other icons. Can not "
 "be disabled for the Bootstrap framework."
 msgstr ""
 
-#: views/forms_form.php:414
+#: views/forms_form.php:420
 msgid "Targeted Device"
 msgstr ""
 
-#: views/forms_form.php:417
+#: views/forms_form.php:423
 msgid "Desktops"
 msgstr ""
 
-#: views/forms_form.php:418
+#: views/forms_form.php:424
 msgid "Phones"
 msgstr ""
 
-#: views/forms_form.php:419
+#: views/forms_form.php:425
 msgid "Tablets"
 msgstr ""
 
-#: views/forms_form.php:420
+#: views/forms_form.php:426
 msgid "Large Desktops"
 msgstr ""
 
-#: views/forms_form.php:422
+#: views/forms_form.php:428
 msgid "Sets the targeted device that your form will primarily be displayed on."
 msgstr ""
 
-#: views/forms_form.php:427
+#: views/forms_form.php:433
 msgid "Label Placement"
 msgstr ""
 
-#: views/forms_form.php:430
+#: views/forms_form.php:436
 msgid "Top"
 msgstr ""
 
-#: views/forms_form.php:431 views/forms_form.php:589
+#: views/forms_form.php:437 views/forms_form.php:595
 msgid "Left"
 msgstr ""
 
-#: views/forms_form.php:432
+#: views/forms_form.php:438
 msgid "Inside"
 msgstr ""
 
-#: views/forms_form.php:434
+#: views/forms_form.php:440
 msgid ""
 "Sets the field label position relative to the field input location. Options "
 "are Top,Left or Inside. Pick your label placement based on the space you "
@@ -2117,57 +2139,57 @@ msgid ""
 "may always be a good idea."
 msgstr ""
 
-#: views/forms_form.php:440
+#: views/forms_form.php:446
 msgid "Element Size"
 msgstr ""
 
-#: views/forms_form.php:443
+#: views/forms_form.php:449
 msgid "Medium"
 msgstr ""
 
-#: views/forms_form.php:444 views/forms_form.php:554
+#: views/forms_form.php:450 views/forms_form.php:560
 msgid "Small"
 msgstr ""
 
-#: views/forms_form.php:445 views/forms_form.php:553 views/forms_form.php:575
+#: views/forms_form.php:451 views/forms_form.php:559 views/forms_form.php:581
 msgid "Large"
 msgstr ""
 
-#: views/forms_form.php:447
+#: views/forms_form.php:453
 msgid ""
 "Sets the field height to create larger or smaller form controls that match "
 "button sizes."
 msgstr ""
 
-#: views/forms_form.php:454
+#: views/forms_form.php:460
 msgid "Display Radios and Checkboxes Inline"
 msgstr ""
 
-#: views/forms_form.php:456
+#: views/forms_form.php:462
 msgid "Sets a series of checkboxes or radios appear on the same line."
 msgstr ""
 
-#: views/forms_form.php:463 views/forms_form.php:634
+#: views/forms_form.php:469 views/forms_form.php:640
 msgid "Enable Ajax"
 msgstr ""
 
-#: views/forms_form.php:465
+#: views/forms_form.php:471
 msgid "Enables ajax when displaying search results without reloading the page."
 msgstr ""
 
-#: views/forms_form.php:472
+#: views/forms_form.php:478
 msgid "Enable Search Operators"
 msgstr ""
 
-#: views/forms_form.php:474
+#: views/forms_form.php:480
 msgid "Enables operators in search forms such as '<, >, Is, Search' etc."
 msgstr ""
 
-#: views/forms_form.php:480
+#: views/forms_form.php:486
 msgid "Results Header"
 msgstr ""
 
-#: views/forms_form.php:483
+#: views/forms_form.php:489
 msgid ""
 "Sets the text which will be displayed when there are results to show. You "
 "can put in a title and a description of the data returned or a header row "
@@ -2178,107 +2200,107 @@ msgid ""
 "the form shortcode."
 msgstr ""
 
-#: views/forms_form.php:488 views/view_form.php:259
+#: views/forms_form.php:494 views/view_form.php:298
 msgid "No Access Message"
 msgstr ""
 
-#: views/forms_form.php:491
+#: views/forms_form.php:497
 msgid ""
 "Sets the text which will be displayed to users that do not have access to "
 "this form."
 msgstr ""
 
-#: views/forms_form.php:496
+#: views/forms_form.php:502
 msgid "No Results Message"
 msgstr ""
 
-#: views/forms_form.php:498
+#: views/forms_form.php:504
 msgid "Your search returned no results."
 msgstr ""
 
-#: views/forms_form.php:499
+#: views/forms_form.php:505
 msgid ""
 "Sets the text which will be displayed when there are no results to show."
 msgstr ""
 
-#: views/forms_form.php:507
+#: views/forms_form.php:513
 msgid "Submit Status"
 msgstr ""
 
-#: views/forms_form.php:510 views/view_form.php:243 views/widget_form.php:277
+#: views/forms_form.php:516 views/view_form.php:282 views/widget_form.php:277
 msgid "Publish"
 msgstr ""
 
-#: views/forms_form.php:511 views/view_form.php:244 views/widget_form.php:278
+#: views/forms_form.php:517 views/view_form.php:283 views/widget_form.php:278
 msgid "Pending"
 msgstr ""
 
-#: views/forms_form.php:512 views/view_form.php:245 views/widget_form.php:279
+#: views/forms_form.php:518 views/view_form.php:284 views/widget_form.php:279
 msgid "Draft"
 msgstr ""
 
-#: views/forms_form.php:513 views/view_form.php:247 views/widget_form.php:281
+#: views/forms_form.php:519 views/view_form.php:286 views/widget_form.php:281
 msgid "Future"
 msgstr ""
 
-#: views/forms_form.php:514 views/view_form.php:248 views/widget_form.php:282
+#: views/forms_form.php:520 views/view_form.php:287 views/widget_form.php:282
 msgid "Private"
 msgstr ""
 
-#: views/forms_form.php:515 views/view_form.php:249 views/widget_form.php:283
+#: views/forms_form.php:521 views/view_form.php:288 views/widget_form.php:283
 msgid "Trash"
 msgstr ""
 
-#: views/forms_form.php:517
+#: views/forms_form.php:523
 msgid ""
-"Sets the status of all form entries. 'publish' - Entry is available "
-"immediately.'pending' - Entry is pending review. 'draft' - Entry is in draft "
-"status. 'future' - Entry is will be published in the future. 'private' - "
-"Entry is not visible to users who are not logged in. 'trash' - Entry is in "
-"trashbin. Default is publish."
-msgstr ""
-
-#: views/forms_form.php:522
-msgid "Submit Button Type"
-msgstr ""
-
-#: views/forms_form.php:525
-msgid "Standard (White - #FFFFF)"
-msgstr ""
-
-#: views/forms_form.php:526
-msgid "Primary (Blue - #006DCC)"
-msgstr ""
-
-#: views/forms_form.php:527
-msgid "Info (Light Blue - #49AFCD)"
+"Sets the status of all form entries. Publish - Entry is available "
+"immediately. Pending - Entry is pending review. Draft - Entry is in draft "
+"status. Future - Entry is will be published in the future. Private - Entry "
+"is not visible to users who are not logged in. Trash - Entry is in trashbin. "
+"Default is publish."
 msgstr ""
 
 #: views/forms_form.php:528
-msgid "Success (Green - #5BB75B)"
-msgstr ""
-
-#: views/forms_form.php:529
-msgid "Warning (Orange - #FAA732)"
-msgstr ""
-
-#: views/forms_form.php:530
-msgid "Danger (Red - #DA4F49)"
+msgid "Submit Button Type"
 msgstr ""
 
 #: views/forms_form.php:531
-msgid "Inverse (Black - #363636)"
+msgid "Standard (White - #FFFFF)"
 msgstr ""
 
 #: views/forms_form.php:532
-msgid "Link (Blue -  #0088CC)"
+msgid "Primary (Blue - #006DCC)"
 msgstr ""
 
 #: views/forms_form.php:533
-msgid "jQuery UI (Themeable)"
+msgid "Info (Light Blue - #49AFCD)"
+msgstr ""
+
+#: views/forms_form.php:534
+msgid "Success (Green - #5BB75B)"
 msgstr ""
 
 #: views/forms_form.php:535
+msgid "Warning (Orange - #FAA732)"
+msgstr ""
+
+#: views/forms_form.php:536
+msgid "Danger (Red - #DA4F49)"
+msgstr ""
+
+#: views/forms_form.php:537
+msgid "Inverse (Black - #363636)"
+msgstr ""
+
+#: views/forms_form.php:538
+msgid "Link (Blue -  #0088CC)"
+msgstr ""
+
+#: views/forms_form.php:539
+msgid "jQuery UI (Themeable)"
+msgstr ""
+
+#: views/forms_form.php:541
 msgid ""
 "Standard button is a white background button with a darkgray border. Primary "
 "button provides extra visual weight and identifies the primary action in a "
@@ -2290,338 +2312,370 @@ msgid ""
 "a button by making it look like a link while maintaining button behavior."
 msgstr ""
 
-#: views/forms_form.php:540
+#: views/forms_form.php:546
 msgid "Submit Button Label"
 msgstr ""
 
-#: views/forms_form.php:542
+#: views/forms_form.php:548
 msgid "e.g. Submit"
 msgstr ""
 
-#: views/forms_form.php:543
+#: views/forms_form.php:549
 msgid "Sets the submit button label of your form. Max:30 Char."
 msgstr ""
 
-#: views/forms_form.php:544
+#: views/forms_form.php:550
 msgid "Default: Submit"
 msgstr ""
 
-#: views/forms_form.php:548
+#: views/forms_form.php:554
 msgid "Submit Button Size"
 msgstr ""
 
-#: views/forms_form.php:552
+#: views/forms_form.php:558
 msgid "XLarge"
 msgstr ""
 
-#: views/forms_form.php:555
+#: views/forms_form.php:561
 msgid "Mini"
 msgstr ""
 
-#: views/forms_form.php:557
+#: views/forms_form.php:563
 msgid "Sets the submit button size of your form."
 msgstr ""
 
-#: views/forms_form.php:563
+#: views/forms_form.php:569
 msgid "Submit Button Icon Class"
 msgstr ""
 
-#: views/forms_form.php:566
+#: views/forms_form.php:572
 msgid ""
 "Sets the font awesome icon which will be displayed next to the button text."
 msgstr ""
 
-#: views/forms_form.php:571
+#: views/forms_form.php:577
 msgid "Submit Button Icon Size"
 msgstr ""
 
-#: views/forms_form.php:576
+#: views/forms_form.php:582
 msgid "2x"
 msgstr ""
 
-#: views/forms_form.php:577
+#: views/forms_form.php:583
 msgid "3x"
 msgstr ""
 
-#: views/forms_form.php:578
+#: views/forms_form.php:584
 msgid "4x"
 msgstr ""
 
-#: views/forms_form.php:579
+#: views/forms_form.php:585
 msgid "5x"
 msgstr ""
 
-#: views/forms_form.php:581
+#: views/forms_form.php:587
 msgid ""
 "Sets the size of font awesome icon which will be displayed next to the "
 "button text."
 msgstr ""
 
-#: views/forms_form.php:586
+#: views/forms_form.php:592
 msgid "Submit Button Icon Position"
 msgstr ""
 
-#: views/forms_form.php:590
+#: views/forms_form.php:596
 msgid "Right"
 msgstr ""
 
-#: views/forms_form.php:592
+#: views/forms_form.php:598
 msgid "Sets the position of icon within the submit button."
 msgstr ""
 
-#: views/forms_form.php:598
+#: views/forms_form.php:604
 msgid "Show Captcha"
 msgstr ""
 
-#: views/forms_form.php:601
+#: views/forms_form.php:607
 msgid "Always Show"
 msgstr ""
 
-#: views/forms_form.php:602
+#: views/forms_form.php:608
 msgid "Visitors Only"
 msgstr ""
 
-#: views/forms_form.php:603
+#: views/forms_form.php:609
 msgid "Never Show"
 msgstr ""
 
-#: views/forms_form.php:605
+#: views/forms_form.php:611
 msgid ""
-"Sets Captcha display option. WPAS forms use the 'honeypot' technique by "
+"Sets Captcha display option. WPAS forms use the - honeypot - technique by "
 "default however CAPTCHAs can also be used for even stronger protection. "
 "Always Show displays captcha for everybody. Visitors Only option shows it "
 "for only visitors. Never Show option disables it."
 msgstr ""
 
-#: views/forms_form.php:610
+#: views/forms_form.php:616
 msgid "Disable After"
 msgstr ""
 
-#: views/forms_form.php:612
+#: views/forms_form.php:618
 msgid "e.g. 5"
 msgstr ""
 
-#: views/forms_form.php:613
+#: views/forms_form.php:619
 msgid ""
 "Disables form submissions after the set number reached. Leave blank for no "
 "limit."
 msgstr ""
 
-#: views/forms_form.php:621
+#: views/forms_form.php:627
 msgid "Confirmation Method"
 msgstr ""
 
-#: views/forms_form.php:624
+#: views/forms_form.php:630
 msgid "Show text"
 msgstr ""
 
-#: views/forms_form.php:625
+#: views/forms_form.php:631
 msgid "Redirect"
 msgstr ""
 
-#: views/forms_form.php:627
+#: views/forms_form.php:633
 msgid ""
 "Sets the event that will occur after a successful entry. Show text option "
 "display a text message. Redirect option redirects users toanother URL."
 msgstr ""
 
-#: views/forms_form.php:636
+#: views/forms_form.php:642
 msgid "When set ajax form submissions are enabled."
 msgstr ""
 
-#: views/forms_form.php:642
+#: views/forms_form.php:648
 msgid "After Submit"
 msgstr ""
 
-#: views/forms_form.php:645
+#: views/forms_form.php:651
 msgid "Show Form"
 msgstr ""
 
-#: views/forms_form.php:646
+#: views/forms_form.php:652
 msgid "Clear Form"
 msgstr ""
 
-#: views/forms_form.php:647
+#: views/forms_form.php:653
 msgid "Hide Form"
 msgstr ""
 
-#: views/forms_form.php:649
+#: views/forms_form.php:655
 msgid ""
 "Sets what users see after a successful submission. Show Form option shows "
 "the completed form. Clear Form option resets all fields to their defaults. "
 "Hide Form option hides the form from the user who completed the entry."
 msgstr ""
 
-#: views/forms_form.php:654
+#: views/forms_form.php:660
 msgid "Success Text"
 msgstr ""
 
-#: views/forms_form.php:657
+#: views/forms_form.php:663
 msgid "Thanks for your submission."
 msgstr ""
 
-#: views/forms_form.php:659
+#: views/forms_form.php:665
 msgid ""
 "Sets the text which will be displayed to users after a successful entry."
 msgstr ""
 
-#: views/forms_form.php:664
+#: views/forms_form.php:670
 msgid "Error Text"
 msgstr ""
 
-#: views/forms_form.php:667
+#: views/forms_form.php:673
 msgid ""
 "There has been an error when submitting your entry. Please contact the site "
 "administrator."
 msgstr ""
 
-#: views/forms_form.php:669
+#: views/forms_form.php:675
 msgid ""
 "Sets the text which will be displayed to users after an unsuccessful entry."
 msgstr ""
 
-#: views/forms_form.php:675
+#: views/forms_form.php:681
 msgid "Confirmation URL"
 msgstr ""
 
-#: views/forms_form.php:677
+#: views/forms_form.php:683
 msgid "e.g. http://example.com/myform-confirm.php"
 msgstr ""
 
-#: views/forms_form.php:678
+#: views/forms_form.php:684
 msgid ""
 "When set, after a successful entry, users get redirected to another url. "
 "Max:255 Char."
 msgstr ""
 
-#: views/forms_form.php:684
-msgid "Email User Confirmation"
-msgstr ""
-
-#: views/forms_form.php:686
-msgid "When checked user confirmation emails are enabled."
-msgstr ""
-
 #: views/forms_form.php:692
-msgid "User Email Send To"
+msgid "Enable User Notification"
 msgstr ""
 
-#: views/forms_form.php:696
+#: views/forms_form.php:694
+msgid "When checked, the user will be notified via email."
+msgstr ""
+
+#: views/forms_form.php:700 views/forms_form.php:761
+msgid "Email Send To"
+msgstr ""
+
+#: views/forms_form.php:704
 msgid ""
 "Select the email attribute you want to send the receipt to. The user email "
 "address must be available in the attribute selected otherwise no emails are "
 "sent."
 msgstr ""
 
-#: views/forms_form.php:701
-msgid "User Email Reply To"
+#: views/forms_form.php:709 views/forms_form.php:769
+msgid "Email Reply To"
 msgstr ""
 
-#: views/forms_form.php:703
+#: views/forms_form.php:711 views/forms_form.php:719 views/forms_form.php:727
+#: views/forms_form.php:779 views/forms_form.php:787
 msgid "e.g. user-emails@example.com"
 msgstr ""
 
-#: views/forms_form.php:704
-msgid ""
-"Sets the email address users can reply to the receipt. Leave it blank if you "
-"don't want them to email you. Max:255 Char."
-msgstr ""
-
-#: views/forms_form.php:709
-msgid "User Email Subject"
-msgstr ""
-
-#: views/forms_form.php:711
-msgid "e.g. Thanks for filling out my form"
-msgstr ""
-
 #: views/forms_form.php:712
-msgid "Sets the subject of user emails. Max:255 Char."
+msgid ""
+"Sets the email address users can reply to the receipt. Multiple email "
+"addresses must be separated by coma. Leave it blank if you don't want them "
+"to email you. Max:255 Char."
 msgstr ""
 
 #: views/forms_form.php:717
-msgid "User Email Message"
+msgid "Email CC"
 msgstr ""
 
 #: views/forms_form.php:720
-msgid "A short message confirming a successful submission."
+msgid ""
+"Sets the email address that user notification will be CCed. Multiple email "
+"addresses must be separated by coma. Leave it blank if you don't want them "
+"to email you. Max:255 Char."
 msgstr ""
 
-#: views/forms_form.php:727
-msgid "Email Admin Confirmation"
+#: views/forms_form.php:725
+msgid "Email BCC"
 msgstr ""
 
-#: views/forms_form.php:729
-msgid "When checked, enables admin confirmation emails."
+#: views/forms_form.php:728
+msgid ""
+"Sets the email address that user notification will be BCCed. Multiple email "
+"addresses must be separated by coma. Leave it blank if you don't want them "
+"to email you. Max:255 Char."
+msgstr ""
+
+#: views/forms_form.php:733 views/forms_form.php:793
+msgid "Email Subject"
 msgstr ""
 
 #: views/forms_form.php:735
-msgid "Admin Email Send To"
+msgid "e.g. Thanks for filling out my form"
 msgstr ""
 
-#: views/forms_form.php:737 views/forms_form.php:745
-msgid "e.g. admin-emails@example.com"
+#: views/forms_form.php:736
+msgid "Sets the subject field of user emails. Max:255 Char."
 msgstr ""
 
-#: views/forms_form.php:738
-msgid ""
-"The email address admins to get messages when a successful entry occurred. "
-"Leave it blank if you don't want them to get emails. Max:255 Char."
+#: views/forms_form.php:741 views/forms_form.php:801
+msgid "Email Message"
 msgstr ""
 
-#: views/forms_form.php:743
-msgid "Admin Email Reply To"
-msgstr ""
-
-#: views/forms_form.php:746
-msgid ""
-"The email address admins to reply to the receipt. Leave it blank if you "
-"don't want them to email you. Max:255 Char."
-msgstr ""
-
-#: views/forms_form.php:751
-msgid "Admin Email Subject"
+#: views/forms_form.php:744
+msgid "A short message confirming a successful submission."
 msgstr ""
 
 #: views/forms_form.php:753
-msgid "e.g. Someone filled out my form"
+msgid "Enable Admin Notification"
 msgstr ""
 
-#: views/forms_form.php:754
-msgid "Sets the subject of admin emails. Max:255 Char."
+#: views/forms_form.php:755
+msgid "When checked, enables admin notification for each submission via email."
 msgstr ""
 
-#: views/forms_form.php:759
-msgid "Admin Email Message"
+#: views/forms_form.php:763 views/forms_form.php:771
+msgid "e.g. admin-emails@example.com"
 msgstr ""
 
-#: views/forms_form.php:762
-msgid "Sets a message confirming a successful submission."
+#: views/forms_form.php:764
+msgid ""
+"The email address admins to get messages when a successful entry occurred. "
+"Multiple email addresses must be separated by coma.Leave it blank if you "
+"don't want them to get emails. Max:255 Char."
 msgstr ""
 
 #: views/forms_form.php:772
+msgid ""
+"The email address admins to reply to the receipt. Multiple email addresses "
+"must be separated by coma. Leave it blank if you don't want them to email "
+"you. Max:255 Char."
+msgstr ""
+
+#: views/forms_form.php:777
+msgid "Email Cc"
+msgstr ""
+
+#: views/forms_form.php:780
+msgid ""
+"Sets the email address that the admin notification will be CCed. Multiple "
+"email addresses must be separated by coma. Leave it blank if you don't want "
+"them to email you. Max:255 Char."
+msgstr ""
+
+#: views/forms_form.php:785
+msgid "Email Bcc"
+msgstr ""
+
+#: views/forms_form.php:788
+msgid ""
+"Sets the email address that the admin notification will be BCCed. Multiple "
+"email addresses must be separated by coma. Leave it blank if you don't want "
+"them to email you. Max:255 Char."
+msgstr ""
+
+#: views/forms_form.php:795
+msgid "e.g. Someone filled out my form"
+msgstr ""
+
+#: views/forms_form.php:796
+msgid "Sets the subject of admin emails. Max:255 Char."
+msgstr ""
+
+#: views/forms_form.php:804
+msgid "Sets a message confirming a successful submission."
+msgstr ""
+
+#: views/forms_form.php:813
 msgid "Enable Form Scheduling"
 msgstr ""
 
-#: views/forms_form.php:774
+#: views/forms_form.php:815
 msgid ""
 "Set to make the form automatically become active or inactive at a certain "
 "date."
 msgstr ""
 
-#: views/forms_form.php:781
+#: views/forms_form.php:822
 msgid "Start Datetime"
 msgstr ""
 
-#: views/forms_form.php:784
+#: views/forms_form.php:825
 msgid "The start datetime after which form will be active."
 msgstr ""
 
-#: views/forms_form.php:789
+#: views/forms_form.php:830
 msgid "End Datetime"
 msgstr ""
 
-#: views/forms_form.php:792
+#: views/forms_form.php:833
 msgid "The last form submission datetime after which form will be inactive."
 msgstr ""
 
@@ -2781,7 +2835,7 @@ msgstr ""
 msgid "Import Now"
 msgstr ""
 
-#: views/relationship_field_form.php:16 views/relationship_field_form.php:133
+#: views/relationship_field_form.php:16 views/relationship_field_form.php:123
 msgid "Required"
 msgstr ""
 
@@ -2795,9 +2849,9 @@ msgstr ""
 
 #: views/relationship_field_form.php:78
 msgid ""
-"An attribute is a property or descriptor of a relationship, for example, "
-"Quantity Ordered is an attribute of the relationship between the products "
-"and the orders entities."
+"An attribute is a property or descriptor of a relationship. For example; "
+"quantity ordered is an attribute of the relationship between products and "
+"orders entities."
 msgstr ""
 
 #: views/relationship_field_form.php:83
@@ -2829,29 +2883,22 @@ msgid ""
 msgstr ""
 
 #: views/relationship_field_form.php:114
-msgid "e.g. blue;red;white"
-msgstr ""
-
-#: views/relationship_field_form.php:115
-msgid ""
-"Enter semicolon separated option values for the field. There must be only "
-"one semicolon between the values. You can not put a semicolan at the end of "
-"the values as well."
-msgstr ""
-
-#: views/relationship_field_form.php:124
 msgid "e.g please enter the quantity ordered."
 msgstr ""
 
-#: views/relationship_field_form.php:125
+#: views/relationship_field_form.php:115
 msgid "instructions for authors. shown when submitting data."
 msgstr ""
 
-#: views/relationship_field_form.php:144
+#: views/relationship_field_form.php:134
+msgid "e.g. blue;red;white"
+msgstr ""
+
+#: views/relationship_field_form.php:143
 msgid "Default value of the field"
 msgstr ""
 
-#: views/relationship_field_form.php:145
+#: views/relationship_field_form.php:144
 msgid "Create a default value for the attribute."
 msgstr ""
 
@@ -3206,7 +3253,7 @@ msgstr ""
 msgid "Login Screen"
 msgstr ""
 
-#: views/settings_form.php:94 views/view_form.php:194
+#: views/settings_form.php:94 views/view_form.php:233
 msgid "Footer"
 msgstr ""
 
@@ -3221,7 +3268,7 @@ msgid ""
 msgstr ""
 
 #: views/settings_form.php:103
-msgid "Domain Name"
+msgid "Site URL"
 msgstr ""
 
 #: views/settings_form.php:105 views/settings_form.php:145
@@ -3229,7 +3276,7 @@ msgid "e.g. http://example.com"
 msgstr ""
 
 #: views/settings_form.php:106
-msgid "Enter your domain name."
+msgid "Enter your the URL of site starting with http://.."
 msgstr ""
 
 #: views/settings_form.php:111
@@ -3670,7 +3717,7 @@ msgstr ""
 msgid "Taxonomy label.  Used in the admin menu for displaying custom taxonomy."
 msgstr ""
 
-#: views/taxonomy_form.php:76 views/taxonomy_form.php:166
+#: views/taxonomy_form.php:76 views/taxonomy_form.php:182
 msgid "e.g. Product Tags"
 msgstr ""
 
@@ -3689,7 +3736,7 @@ msgid ""
 "Leave it blank if you do not need help text for your taxonomy. Max 500 chars."
 msgstr ""
 
-#: views/taxonomy_form.php:99 views/view_form.php:116
+#: views/taxonomy_form.php:99 views/view_form.php:159
 #: views/widget_form.php:164
 msgid "Attach to Entity"
 msgstr ""
@@ -3733,188 +3780,201 @@ msgstr ""
 msgid "default: Multiple Select"
 msgstr ""
 
-#: views/taxonomy_form.php:161
+#: views/taxonomy_form.php:150
+msgid ""
+"Enter semicolon separated option values for the taxonomy. There must be only "
+"one semicolon between the values. Optiopnally Term descriptions and term "
+"parent can be entered using term{term-description}[term-parent] format. For "
+"example; Monkey{Monkey is a funny animal}[Animal]"
+msgstr ""
+
+#: views/taxonomy_form.php:158
+msgid ""
+"Sets the default value or values separated by a semicolon for the taxonomy."
+msgstr ""
+
+#: views/taxonomy_form.php:177
 msgid ""
 "If you are unfamiliar with these labels and leave them empty they will be "
 "automatically created based on your taxonomy name and the default "
 "configuration."
 msgstr ""
 
-#: views/taxonomy_form.php:167
+#: views/taxonomy_form.php:183
 msgid ""
 "It defines the menu name text. This string is the name to give menu items. "
 "Defaults to value of taxonomy name."
 msgstr ""
 
-#: views/taxonomy_form.php:172
+#: views/taxonomy_form.php:188
 msgid "Search Items"
 msgstr ""
 
-#: views/taxonomy_form.php:174
+#: views/taxonomy_form.php:190
 msgid "e.g. Search Product Tags"
 msgstr ""
 
-#: views/taxonomy_form.php:175
+#: views/taxonomy_form.php:191
 msgid ""
 "Custom taxonomy label for Search Items. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:180
+#: views/taxonomy_form.php:196
 msgid "Popular Items"
 msgstr ""
 
-#: views/taxonomy_form.php:182
+#: views/taxonomy_form.php:198
 msgid "e.g. Popular Product Tags"
 msgstr ""
 
-#: views/taxonomy_form.php:183
+#: views/taxonomy_form.php:199
 msgid ""
 "Custom taxonomy label for Popular Items. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:189
+#: views/taxonomy_form.php:205
 msgid "All Items"
 msgstr ""
 
-#: views/taxonomy_form.php:191
+#: views/taxonomy_form.php:207
 msgid "e.g. All Product Tags"
 msgstr ""
 
-#: views/taxonomy_form.php:192
+#: views/taxonomy_form.php:208
 msgid ""
 "Custom taxonomy label for All Items. Used in the admin menu for displaying "
 "taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:198
+#: views/taxonomy_form.php:214
 msgid "Parent Item"
 msgstr ""
 
-#: views/taxonomy_form.php:200
+#: views/taxonomy_form.php:216
 msgid "e.g. Parent Product Tag"
 msgstr ""
 
-#: views/taxonomy_form.php:201
+#: views/taxonomy_form.php:217
 msgid ""
 "Custom taxonomy label for Parent Item. Used in the admin menu for displaying "
 "taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:207
+#: views/taxonomy_form.php:223
 msgid "Parent Item:"
 msgstr ""
 
-#: views/taxonomy_form.php:209
+#: views/taxonomy_form.php:225
 msgid "e.g. Parent Product Tag:"
 msgstr ""
 
-#: views/taxonomy_form.php:210
+#: views/taxonomy_form.php:226
 msgid ""
 "Custom taxonomy label for Parent Item:. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:215
+#: views/taxonomy_form.php:231
 msgid "Edit Item"
 msgstr ""
 
-#: views/taxonomy_form.php:217
+#: views/taxonomy_form.php:233
 msgid "e.g. Edit Product Tag"
 msgstr ""
 
-#: views/taxonomy_form.php:218
+#: views/taxonomy_form.php:234
 msgid ""
 "Custom taxonomy label for Edit Item. Used in the admin menu for displaying "
 "taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:224
+#: views/taxonomy_form.php:240
 msgid "Update Item"
 msgstr ""
 
-#: views/taxonomy_form.php:226
+#: views/taxonomy_form.php:242
 msgid "e.g. Update Product Tag"
 msgstr ""
 
-#: views/taxonomy_form.php:227
+#: views/taxonomy_form.php:243
 msgid ""
 "Custom taxonomy label for Update Item. Used in the admin menu for displaying "
 "taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:233
+#: views/taxonomy_form.php:249
 msgid "Add New Item"
 msgstr ""
 
-#: views/taxonomy_form.php:235
+#: views/taxonomy_form.php:251
 msgid "e.g. Add New Product Tag"
 msgstr ""
 
-#: views/taxonomy_form.php:236
+#: views/taxonomy_form.php:252
 msgid ""
 "Custom taxonomy label for Add New Item. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:242
+#: views/taxonomy_form.php:258
 msgid "New Item Name"
 msgstr ""
 
-#: views/taxonomy_form.php:244
+#: views/taxonomy_form.php:260
 msgid "e.g. New Product Tag Name"
 msgstr ""
 
-#: views/taxonomy_form.php:245
+#: views/taxonomy_form.php:261
 msgid ""
 "Custom taxonomy label for New Item Name. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:250
+#: views/taxonomy_form.php:266
 msgid "Separate Items with Commas"
 msgstr ""
 
-#: views/taxonomy_form.php:252
+#: views/taxonomy_form.php:268
 msgid "e.g. Separate product tags with commas"
 msgstr ""
 
-#: views/taxonomy_form.php:253
+#: views/taxonomy_form.php:269
 msgid ""
 "Custom taxonomy label for Separate Items with Commas. Used in the admin menu "
 "for displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:259
+#: views/taxonomy_form.php:275
 msgid "Add or Remove Items"
 msgstr ""
 
-#: views/taxonomy_form.php:261
+#: views/taxonomy_form.php:277
 msgid "e.g. Add or remove product tags"
 msgstr ""
 
-#: views/taxonomy_form.php:262
+#: views/taxonomy_form.php:278
 msgid ""
 "Custom taxonomy label for Add or Remove Items. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:268
+#: views/taxonomy_form.php:284
 msgid "Choose From Most Used"
 msgstr ""
 
-#: views/taxonomy_form.php:270
+#: views/taxonomy_form.php:286
 msgid "e.g. Choose from the most used product tags"
 msgstr ""
 
-#: views/taxonomy_form.php:271
+#: views/taxonomy_form.php:287
 msgid ""
 "Custom taxonomy label for Choose From Most Used. Used in the admin menu for "
 "displaying taxonomies."
 msgstr ""
 
-#: views/taxonomy_form.php:284
+#: views/taxonomy_form.php:300
 msgid ""
 "Whether this taxonomy is intended to be used publicly either via the admin "
 "interface or by front-end users. -false- Taxonomy is not intended to be used "
@@ -3924,67 +3984,67 @@ msgid ""
 "interface."
 msgstr ""
 
-#: views/taxonomy_form.php:285 views/taxonomy_form.php:295
-#: views/taxonomy_form.php:305 views/taxonomy_form.php:315
-#: views/taxonomy_form.php:326 views/taxonomy_form.php:336
+#: views/taxonomy_form.php:301 views/taxonomy_form.php:311
+#: views/taxonomy_form.php:321 views/taxonomy_form.php:331
+#: views/taxonomy_form.php:342 views/taxonomy_form.php:352
 msgid "default:True"
 msgstr ""
 
-#: views/taxonomy_form.php:294
+#: views/taxonomy_form.php:310
 msgid "Whether to generate a default UI for managing this taxonomy."
 msgstr ""
 
-#: views/taxonomy_form.php:299
+#: views/taxonomy_form.php:315
 msgid "Show In Menus"
 msgstr ""
 
-#: views/taxonomy_form.php:304
+#: views/taxonomy_form.php:320
 msgid "True makes this taxonomy available for selection in navigation menus."
 msgstr ""
 
-#: views/taxonomy_form.php:309
+#: views/taxonomy_form.php:325
 msgid "Show In Tag Clouds"
 msgstr ""
 
-#: views/taxonomy_form.php:314
+#: views/taxonomy_form.php:330
 msgid "Whether to allow the Tag Cloud widget to use this taxonomy."
 msgstr ""
 
-#: views/taxonomy_form.php:325
+#: views/taxonomy_form.php:341
 msgid ""
 "False to disable the query_var, set as string to use custom query_var "
 "instead of default which is the taxonomy's name."
 msgstr ""
 
-#: views/taxonomy_form.php:336
+#: views/taxonomy_form.php:352
 msgid ""
 "Set to false to prevent automatic URL rewriting a.k.a. pretty permalinks."
 msgstr ""
 
-#: views/taxonomy_form.php:343
+#: views/taxonomy_form.php:359
 msgid "e.g. product_tags"
 msgstr ""
 
-#: views/taxonomy_form.php:344
+#: views/taxonomy_form.php:360
 msgid ""
 "Used as pretty permalink text (i.e. /tag/) - defaults to taxonomy's name "
 "slug."
 msgstr ""
 
-#: views/taxonomy_form.php:345
+#: views/taxonomy_form.php:361
 msgid "default: taxonomy name"
 msgstr ""
 
-#: views/view_form.php:91
+#: views/view_form.php:107
 msgid ""
 "Views help you display content where and how you wanted on the frontend."
 msgstr ""
 
-#: views/view_form.php:95
+#: views/view_form.php:111
 msgid "e.g. sc_products"
 msgstr ""
 
-#: views/view_form.php:96
+#: views/view_form.php:112
 msgid ""
 "General name for the view. By enclosing the view name in square brackets in "
 "a page, post or a text widget, you can display the content returned by the "
@@ -3996,7 +4056,7 @@ msgid ""
 "the WPAS toolbar button on a page or post."
 msgstr ""
 
-#: views/view_form.php:111
+#: views/view_form.php:127
 msgid ""
 "Sets the type of view to be created.You can create search, standard, single, "
 "archive, and taxonomy views. All views except single view produce a list of "
@@ -4014,39 +4074,47 @@ msgid ""
 "button."
 msgstr ""
 
-#: views/view_form.php:119
-msgid ""
-"Views must be attached to a predefined entity. The attached entity's content "
-"is returned by the view after query filters applied."
-msgstr ""
-
-#: views/view_form.php:124
+#: views/view_form.php:132
 msgid "Attach to Form"
 msgstr ""
 
-#: views/view_form.php:127
+#: views/view_form.php:135
 msgid ""
 "Search forms must be attached to an already created view. A search view "
 "defines the format of how search results will be displayed."
 msgstr ""
 
-#: views/view_form.php:132
+#: views/view_form.php:141
 msgid "Attach to Taxonomy"
 msgstr ""
 
-#: views/view_form.php:135
+#: views/view_form.php:144
 msgid "Taxonomy views must be attached to a predefined taxonomy."
 msgstr ""
 
-#: views/view_form.php:143
+#: views/view_form.php:149
+msgid "Attach to Term"
+msgstr ""
+
+#: views/view_form.php:153
+msgid "Taxonomy views can be attached to a predefined taxonomy term."
+msgstr ""
+
+#: views/view_form.php:162
+msgid ""
+"Views must be attached to a predefined entity. The attached entity's content "
+"is returned by the view after query filters applied."
+msgstr ""
+
+#: views/view_form.php:170
 msgid "Filters"
 msgstr ""
 
-#: views/view_form.php:144
+#: views/view_form.php:171
 msgid "Messages"
 msgstr ""
 
-#: views/view_form.php:147
+#: views/view_form.php:174
 msgid ""
 "Display Options tab configures how the view will be displayed on the "
 "frontend. Filters tab defines how the content will be returned by setting "
@@ -4054,46 +4122,46 @@ msgid ""
 "messages to be displayed to users when the view's content is requested."
 msgstr ""
 
-#: views/view_form.php:157
+#: views/view_form.php:185
 msgid ""
 "Sets the frontend framework which will be used to configure the overall look "
 "and feel of the view. If you pick jQuery UI, you can choose your theme from "
 "App's Settings under the theme tab. Default is Twitter Bootstrap."
 msgstr ""
 
-#: views/view_form.php:163
+#: views/view_form.php:202
 msgid "Enable paged navigation."
 msgstr ""
 
-#: views/view_form.php:165
+#: views/view_form.php:204
 msgid "Enables pagination links."
 msgstr ""
 
-#: views/view_form.php:170
+#: views/view_form.php:209
 msgid "Header"
 msgstr ""
 
-#: views/view_form.php:173
+#: views/view_form.php:212
 msgid ""
 "It defines the header content of the view. The header content is static and "
 "displayed on the top section of your view's content."
 msgstr ""
 
-#: views/view_form.php:177 views/widget_form.php:222
+#: views/view_form.php:216 views/widget_form.php:222
 msgid "Layout"
 msgstr ""
 
-#: views/view_form.php:182
+#: views/view_form.php:221
 msgid ""
 "Sets the layout of a single record of your view. You can also edit the "
 "source code, add entity attributes, taxonomies."
 msgstr ""
 
-#: views/view_form.php:186
+#: views/view_form.php:225
 msgid "Css"
 msgstr ""
 
-#: views/view_form.php:189
+#: views/view_form.php:228
 msgid ""
 "The custom css code to be used when displaying the content. It is handy when "
 "you added custom classes in the layout editor and want to add css class "
@@ -4101,95 +4169,95 @@ msgid ""
 "all."
 msgstr ""
 
-#: views/view_form.php:197
+#: views/view_form.php:236
 msgid ""
 "It defines the footer content of the view. The footer content is static and "
 "displayed on the bottom section of your view's content."
 msgstr ""
 
-#: views/view_form.php:203
+#: views/view_form.php:242
 msgid "Entities Per Page"
 msgstr ""
 
-#: views/view_form.php:205
+#: views/view_form.php:244
 msgid "e.g. 16"
 msgstr ""
 
-#: views/view_form.php:206
+#: views/view_form.php:245
 msgid ""
 "Specify the number of content block to show per page. Use any integer value "
 "or -1 to show all."
 msgstr ""
 
-#: views/view_form.php:211
+#: views/view_form.php:250
 msgid "List Order"
 msgstr ""
 
-#: views/view_form.php:214 views/widget_form.php:248
+#: views/view_form.php:253 views/widget_form.php:248
 msgid "Descending"
 msgstr ""
 
-#: views/view_form.php:215 views/widget_form.php:249
+#: views/view_form.php:254 views/widget_form.php:249
 msgid "Ascending"
 msgstr ""
 
-#: views/view_form.php:217
+#: views/view_form.php:256
 msgid ""
 "Allows the content to be sorted ascending or descending by a parameter "
 "selected. Defaults to descending."
 msgstr ""
 
-#: views/view_form.php:222
+#: views/view_form.php:261
 msgid "Sort Retrieved Posts By"
 msgstr ""
 
-#: views/view_form.php:226 views/widget_form.php:260
+#: views/view_form.php:265 views/widget_form.php:260
 msgid "ID"
 msgstr ""
 
-#: views/view_form.php:229 views/widget_form.php:263
+#: views/view_form.php:268 views/widget_form.php:263
 msgid "Post parent id"
 msgstr ""
 
-#: views/view_form.php:230 views/widget_form.php:264
+#: views/view_form.php:269 views/widget_form.php:264
 msgid "Last modified date"
 msgstr ""
 
-#: views/view_form.php:231 views/widget_form.php:265
+#: views/view_form.php:270 views/widget_form.php:265
 msgid "Random"
 msgstr ""
 
-#: views/view_form.php:232 views/widget_form.php:266
+#: views/view_form.php:271 views/widget_form.php:266
 msgid "Number of comments"
 msgstr ""
 
-#: views/view_form.php:233 views/widget_form.php:267
+#: views/view_form.php:272 views/widget_form.php:267
 msgid "None"
 msgstr ""
 
-#: views/view_form.php:235 views/widget_form.php:269
+#: views/view_form.php:274 views/widget_form.php:269
 msgid ""
 "Allows sorting of retrieved content by a parameter selected. Defaults to "
 "date."
 msgstr ""
 
-#: views/view_form.php:240
+#: views/view_form.php:279
 msgid "Show By Status"
 msgstr ""
 
-#: views/view_form.php:246 views/widget_form.php:280
+#: views/view_form.php:285 views/widget_form.php:280
 msgid "With no content"
 msgstr ""
 
-#: views/view_form.php:250 views/widget_form.php:284
+#: views/view_form.php:289 views/widget_form.php:284
 msgid "Any but excluded from search"
 msgstr ""
 
-#: views/view_form.php:252
+#: views/view_form.php:291
 msgid "Retrieves content by status, default value is publish."
 msgstr ""
 
-#: views/view_form.php:262
+#: views/view_form.php:301
 msgid ""
 "Sets the text which will be displayed to users that do not have access to "
 "this view."
@@ -4201,18 +4269,10 @@ msgid ""
 "display entity data in a sidebar or dashboard widget."
 msgstr ""
 
-#: views/widget_form.php:112
-msgid "Widget Name"
-msgstr ""
-
 #: views/widget_form.php:115
 msgid ""
 "Unique identifier for the widget. Can not contain capital letters,dashes or "
 "spaces. Between 3 and 30 characters."
-msgstr ""
-
-#: views/widget_form.php:120
-msgid "Widget Title"
 msgstr ""
 
 #: views/widget_form.php:122
@@ -4222,7 +4282,7 @@ msgstr ""
 #: views/widget_form.php:123
 msgid ""
 "Sets the title of the widget on sidebar or dashboard. For relationship "
-"widgets, it is used as 'from entity' relationship title."
+"widgets, it is used as - from entity - relationship title."
 msgstr ""
 
 #: views/widget_form.php:132
@@ -4280,17 +4340,17 @@ msgstr ""
 #: views/widget_form.php:185
 msgid ""
 "Sets the connection type of a relationship. Connection type could be either "
-"connected or related. Connected type displays the 'many' side objects of a "
+"connected or related. Connected type displays the - many - side objects of a "
 "relationship. Related type is only used in many-to-many relationships and "
 "displays similar related objects. For example, in a products to orders many-"
 "to-many relationship; connected shows the orders which include the product "
 "selected and related shows the products which are also included in the same "
-"order of the selected product i.e. 'Customer who purchased this also "
-"purchased' type."
+"order of the selected product i.e. Customer who purchased this also "
+"purchased type."
 msgstr ""
 
 #: views/widget_form.php:190
-msgid "Widget To Title"
+msgid "To Title"
 msgstr ""
 
 #: views/widget_form.php:192 views/widget_form.php:200
@@ -4303,21 +4363,9 @@ msgid ""
 "the widget's configuration dialog after the widget is created."
 msgstr ""
 
-#: views/widget_form.php:198
-msgid "Widget Label"
-msgstr ""
-
 #: views/widget_form.php:201
 msgid ""
 "Sets the initial title of the widget which will displayed on the backend."
-msgstr ""
-
-#: views/widget_form.php:206
-msgid "Widget Description"
-msgstr ""
-
-#: views/widget_form.php:208
-msgid "e.g. The most recent products"
 msgstr ""
 
 #: views/widget_form.php:209
@@ -4394,16 +4442,20 @@ msgstr ""
 msgid "Add New App"
 msgstr ""
 
-#: wp-app-studio.php:809
+#: wp-app-studio.php:808
 msgid "Please wait"
 msgstr ""
 
-#: wp-app-studio.php:905
+#: wp-app-studio.php:904
 msgid "Are you sure you wish to delete?"
 msgstr ""
 
 #: wpas_translate.php:5
 msgid "Application"
+msgstr ""
+
+#: wpas_translate.php:8
+msgid "Help"
 msgstr ""
 
 #: wpas_translate.php:9
@@ -4412,6 +4464,10 @@ msgstr ""
 
 #: wpas_translate.php:11
 msgid "Attribute"
+msgstr ""
+
+#: wpas_translate.php:14
+msgid "Widget"
 msgstr ""
 
 #: wpas_translate.php:15
@@ -4551,21 +4607,49 @@ msgid "Must contain only letters, numbers and commas."
 msgstr ""
 
 #: wpas_translate.php:59
-msgid "Must contain only numbers and dots."
+msgid ""
+"Must contain only letters, numbers, underscores, semicolon and curly "
+"brackets."
 msgstr ""
 
 #: wpas_translate.php:60
-msgid "You need to seperate each option value with a semicolon."
+msgid ""
+"Must contain only letters, numbers, underscores, semicolon, curly and square "
+"brackets."
 msgstr ""
 
 #: wpas_translate.php:61
-msgid "You cannot use reserved words."
+msgid "Must contain only numbers and dots."
 msgstr ""
 
 #: wpas_translate.php:62
-msgid "Please select a different attach to or screen type."
+msgid ""
+"You need to seperate each option value with a semicolon and each option must "
+"have a value defined within curly brackets."
 msgstr ""
 
 #: wpas_translate.php:63
+msgid ""
+"You need to seperate each option value with a semicolon and each option must "
+"have a value defined within curly  or/and square brackets."
+msgstr ""
+
+#: wpas_translate.php:64
+msgid "You cannot have multiple default values."
+msgstr ""
+
+#: wpas_translate.php:65
+msgid "You cannot use reserved words."
+msgstr ""
+
+#: wpas_translate.php:66
+msgid "Please select a different attach to or screen type."
+msgstr ""
+
+#: wpas_translate.php:67
 msgid "Please enter a unique name."
+msgstr ""
+
+#: wpas_translate.php:68
+msgid "Please enter valid email(s)."
 msgstr ""
