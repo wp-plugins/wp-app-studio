@@ -225,7 +225,7 @@ function wpas_list_html($list_values)
 	if($list_values['type'] == 'app')
 	{
 		$ret .= '<div class="pull-right ' . $list_values['type'] . '" id="add-new">
-			<a class="btn btn-info  pull-left" href="' .  wp_nonce_url($list_values['import'],'wpas_import') . '" class="import">
+			<a class="btn btn-warning  pull-left" href="' .  wp_nonce_url($list_values['import'],'wpas_import') . '" class="import">
 			<i class="icon-signin"></i>' . __("Import","wpas") . '</a>
        			<a class="btn btn-info  pull-right" href="' . esc_url($list_values['add_new_url'])  . '" class="add-new">
 			<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
@@ -305,7 +305,7 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 			<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Tab","wpas") . '">' . __("Add Tab","wpas") . '</a>';
 			break;
 		case 'app':
-			$view = '<span id="generate" class="' . $type . '"><a href="' . wp_nonce_url($url['generate'],'wpas_generate') . '" title="' . __("Generate","wpas") . '">' . __("Generate","wpas") . '</a>
+			$view = '<span id="duplicate" class="' . $type . '"><a href="' . wp_nonce_url($url['duplicate'],'wpas_duplicate') . '" title="' . __("Duplicate","wpas") . '">' . __("Duplicate","wpas") . '</a>
 				| <span id="export" class="' . $type . '"><a href="' . wp_nonce_url($url['export'],'wpas_export') . '" title="' . __("Export","wpas") . '">' . __("Export","wpas") . '</a>';
 			$view_url = $url['edit_url'];
 			$url_title = "Edit";
@@ -419,13 +419,13 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $base = admin_url('admin.php?page=wpas_app_list');
                 $list_values['title'] = __("Applications","wpas");
                 $edit_url = wp_nonce_url(admin_url('admin.php?page=wpas_add_new_app&edit'),'wpas_edit_app_nonce') . '&app=';
-                $generate_url = admin_url('admin.php?page=wpas_app_list&generate=1&app=');
+                $duplicate_url = admin_url('admin.php?page=wpas_app_list&duplicate=1&app=');
                 $export_url = admin_url('admin.php?page=wpas_app_list&export=1&app=');
                 $list_values['import'] = admin_url('admin.php?page=wpas_app_list&import=1');
                 $format = "apppage";
                 $field_name = "app_name";
-                $other_fields = Array('entities','taxonomies','date','modified_date');
-                $other_labels = Array(__("Name","wpas"),__("Entities","wpas"),__("Taxonomies","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_fields = Array('entities','taxonomies','date','modified_date','generate');
+                $other_labels = Array(__("Name","wpas"),__("Entities","wpas"),__("Taxonomies","wpas"),__("Created","wpas"),__("Modified","wpas"),__("Generate","wpas"));
                 $list_values['add_new_url'] = admin_url('admin.php?page=wpas_add_new_app');
                 $list_values['icon'] = "icon-cogs";
         }
@@ -534,6 +534,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                         {
 				$mylist['entities'] = "";
 				$mylist['taxonomies'] = "";
+				$mylist['generate'] = "<div id=\"generate\"><a class=\"btn btn-mini btn-warning\" href=\"". wp_nonce_url(admin_url('admin.php?page=wpas_app_list&generate=1&app=') . $mylist['app_id'],'wpas_generate') . "\">Generate</a></div>";
 				if(isset($mylist['entity']))
 				{
 					foreach($mylist['entity'] as $myentity)
@@ -661,9 +662,13 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 				{
 					$mylist['widg-attach'] = $app['entity'][$mylist['widg-attach']]['ent-label'];
 				}
-				elseif($mylist['widg-side_subtype'] == 'relationship' && isset($mylist['widg-attach-rel']))
+				elseif(isset($mylist['widg-side_subtype']) && $mylist['widg-side_subtype'] == 'relationship' && isset($mylist['widg-attach-rel']))
 				{
 					$mylist['widg-attach'] = wpas_get_rel_full_name($app['relationship'][$mylist['widg-attach-rel']],$app);
+				}
+				elseif(isset($mylist['widg-dash_subtype']) && $mylist['widg-dash_subtype'] == 'admin')
+				{
+					$mylist['widg-attach']  = "";
 				}
 				$other_fields[1] = $subtype;
 			}
@@ -674,7 +679,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 				{
 					$mylist['form-temp_type'] = 'jQuery UI';
 				}
-				if(isset($mylist['form-attached_entity']))
+				if(isset($mylist['form-attached_entity']) && $mylist['form-attached_entity'] != "")
 				{
 					$mylist['form-attached_entity'] = $app['entity'][$mylist['form-attached_entity']]['ent-label'];
 				}
@@ -719,9 +724,9 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                         	$url['add_field'] = $add_field_tag . $key_list;
                         	$url['edit_layout'] =  $add_field_tag .  $key_list;
 			}
-			if(isset($generate_url))
+			if(isset($duplicate_url))
 			{
-                        	$url['generate'] = $generate_url . $key_list;
+                        	$url['duplicate'] = $duplicate_url . $key_list;
 			}
 			if(isset($export_url))
 			{

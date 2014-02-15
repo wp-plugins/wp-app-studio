@@ -106,7 +106,7 @@ jQuery(document).ready(function($) {
 		<div class="alert alert-info pull-right">
 		<i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Views help you display content where and how you wanted on the frontend.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Name","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Name","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="shc-label" id="shc-label" type="text" placeholder="<?php _e("e.g. sc_products","wpas");?>">
 		<a href="#" title="<?php _e("General name for the view. By enclosing the view name in square brackets in a page, post or a text widget, you can display the content returned by the view shortcode's query. The view name should be all lowercase and use all letters, but numbers and underscores (not dashes!) should work fine too. Max 30 characters allowed. If the shortcode is used in a text widget or a page and the content has multiple pages, paginated navigation links are displayed. You can filter the content by generating a shortcode filter using the WPAS toolbar button on a page or post.","wpas"); ?>" style="cursor: help;">
@@ -114,7 +114,7 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Type","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Type","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="shc-view_type" id="shc-view_type" class="input-medium">
 		<option value="" selected="selected"><?php _e("Please select","wpas"); ?></option>
@@ -129,7 +129,7 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div class="control-group row-fluid" id="shc-attach_form_div" name="shc-attach_form_div" style="display:none;">
-		<label class="control-label span3"><?php _e("Attach to Form","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Attach to Form","wpas"); ?></label>
 		<div class="controls span9">
 		<select id="shc-attach_form" name="shc-attach_form">
 		</select><a href="#" style="cursor: help;" title="<?php _e("Search forms must be attached to an already created view. A search view defines the format of how search results will be displayed.","wpas"); ?>">
@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
 		</div>
 		<div id="shc-attach_tax_div" name="shc-attach_tax_div" style="display:none;">
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Attach to Taxonomy","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Attach to Taxonomy","wpas"); ?></label>
 		<div class="controls span9">
 		<select id="shc-attach_tax" name="shc-attach_tax">
 		</select><a href="#" style="cursor: help;" title="<?php _e("Taxonomy views must be attached to a predefined taxonomy.","wpas"); ?>">
@@ -156,7 +156,7 @@ jQuery(document).ready(function($) {
                 </div>
 		</div>
 		<div class="control-group row-fluid" id="shc-attach_div" name="shc-attach_div" style="display:none;">
-		<label class="control-label span3"><?php _e("Attach to Entity","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Attach to Entity","wpas"); ?></label>
 		<div class="controls span9">
 		<select id="shc-attach" name="shc-attach">
 		</select><a href="#" title="<?php _e("Views must be attached to a predefined entity. The attached entity's content is returned by the view after query filters applied.","wpas"); ?>" style="cursor: help;">
@@ -213,7 +213,7 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Layout","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Layout","wpas"); ?></label>
 		<div class="controls span9">
 <?php
 		display_tinymce('shc-sc_layout','',1,1); 

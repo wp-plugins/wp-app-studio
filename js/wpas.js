@@ -943,6 +943,23 @@ jQuery(document).ready(function($) {
 		{
 			return false;
 		}
+		else if(type == 'widget' && $('#widg-dash_subtype').val() != 'admin' && !$('#widg-layout').val())
+		{
+			$('label.error').each(function() {
+                                        $(this).remove();
+                        });
+			$('#widg-layout').after('<label class="error">This field is required.</label');
+			return false;
+		}
+		else if(type == 'shortcode' && !$('#shc-sc_layout').val())
+		{
+			$('label.error').each(function() {
+					$(this).remove();
+			});
+			$('#shc-sc_layout').after('<label class="error">this field is required.</label');
+			return false;
+		}
+
 		form_data = $('#'+type+'-form :input').serialize();
 		var checked_count = 0;
 		$('#'+type+'-form :input[type=checkbox]').each(function() {     
@@ -1091,6 +1108,23 @@ jQuery(document).ready(function($) {
 		tinyMCE.triggerSave();
 		if($("#"+form_name).validate().form() == true)
 		{
+			if(type == 'widget' && $('#widg-dash_subtype').val() != 'admin' && !$('#widg-layout').val())
+			{
+				$('label.error').each(function() {
+						$(this).remove();
+				});
+				$('#widg-layout').after('<label class="error">this field is required.</label');
+				return false;
+			}
+			if(type == 'shortcode' && !$('#shc-sc_layout').val())
+			{
+				$('label.error').each(function() {
+						$(this).remove();
+				});
+				$('#shc-sc_layout').after('<label class="error">this field is required.</label');
+				return false;
+			}
+				
 			var form_data = $('#'+type+'-form :input').serialize();
 			$('#'+ form_name + ' :input[type=checkbox]').each(function() {     
 				if (this.checked) {
@@ -1403,7 +1437,7 @@ jQuery(document).ready(function($) {
 								$('#widg-attach-rel_div').hide();
 							}
 						}
-						else if(key == 'shc-attach')
+						else if(key == 'shc-attach' && view_subtype != 'search')
 						{
 							if(view_subtype == 'std')
 							{
@@ -1414,7 +1448,12 @@ jQuery(document).ready(function($) {
 							{
 								$('#add-'+myclass+'-div #'+ key).html(response);
 								app_id = $('input#app').val();
-								$.fn.getAddons(layout_id,app_id,'entity',value,'');
+								type = "entity";
+								if(view_subtype == 'single')
+								{
+									type = "entity-rel";
+								}
+								$.fn.getAddons(layout_id,app_id,type,value,'');
 								$('#add-'+myclass+'-div #'+ key + '_div').show();
 								$('#shc-attach_form_div').hide();
 								if(view_subtype != 'tax')
@@ -1423,7 +1462,7 @@ jQuery(document).ready(function($) {
 								}
 							});
 						}	
-						else if(key == 'shc-attach_tax')
+						else if(key == 'shc-attach_tax' && view_subtype == 'tax')
 						{
 							tax_id = value;
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:'tax',values:value,subtype:view_subtype}, function(response)
@@ -1443,16 +1482,16 @@ jQuery(document).ready(function($) {
 								$('#add-shortcode-div #shc-attach_taxterm').html(response);
 							});
 						}
-						else if(key == 'shc-attach_form')
+						else if(key == 'shc-attach_form' && view_subtype == 'search')
 						{
 							$.get(ajaxurl,{action:'wpas_get_search_forms',app_id:app_id,val:value}, function(response)
-                                                        {
-                                                                $('#shc-attach_form').html(response);
-                                                                $('#shc-attach_form_div').show();
-                                                                $('#shc-attach_div').hide();
-                                                                $('#shc-attach_tax_div').hide();
+							{
+								$('#shc-attach_form').html(response);
+								$('#shc-attach_form_div').show();
+								$('#shc-attach_div').hide();
+								$('#shc-attach_tax_div').hide();
 								$.fn.getAddons(layout_id,app_id,'form',value,'');
-                                                        });
+							});
 						}
 						else if(key == 'ent-limit_user_relationship_role')
 						{
@@ -2055,7 +2094,8 @@ jQuery(document).ready(function($) {
 				}
 				else if(response[1].search("Error") != -1)
 				{
-					tr_object.find('#download-link').html('<a href="' + response[0] + '">' + wpas_vars.support_ticket + '</a>');				     }	
+					tr_object.find('#download-link').html('<a href="' + response[0] + '">' + wpas_vars.support_ticket + '</a>');				   
+				}	
 			}
 			tr_object.find('#credit-used').html(response[4]);	
 			tr_object.find('#credit-left').html(response[5]);	

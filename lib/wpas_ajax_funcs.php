@@ -788,7 +788,7 @@ function wpas_get_comp_attrs()
 			}
 		}
 	}
-	if($type == 'entity' || $type == 'email')
+	if($type == 'entity' || $type == 'email' || $type == 'entity-rel')
 	{
 		if(!empty($app['entity'][$comp_id]) && !empty($app['entity'][$comp_id]['field']))
 		{
@@ -819,6 +819,33 @@ function wpas_get_comp_attrs()
 		{
 			$tax_attrs = array_merge(Array('tax' => 'Taxonomies'),$tax_attrs);
 			$comp_attrs= array_merge($comp_attrs,$tax_attrs);
+		}
+		if($type == 'entity-rel')
+		{
+			$rel_attrs = Array();
+			foreach($app['relationship'] as $myrelation)
+			{
+				if(isset($myrelation['rel-connected-display']) && $myrelation['rel-connected-display'] == 1)
+				{
+					if($myrelation['rel-from-name'] == $comp_id || $myrelation['rel-to-name'] == $comp_id)
+					{
+						$rel_attrs['entrelconn_' . $myrelation['rel-name']] = "Connected " . $myrelation['rel-name'];
+					}
+				}
+				if($myrelation['rel-type'] == 'many-to-many' && isset($myrelation['rel-related-display']) && $myrelation['rel-related-display'] == 1)
+				{
+					if($myrelation['rel-from-name'] == $comp_id || $myrelation['rel-to-name'] == $comp_id)
+					{
+						$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = "Related " . $myrelation['rel-name'];
+					}
+				}
+			}
+			if(!empty($rel_attrs))
+			{
+				$rel_attrs = array_merge(Array('rel' => 'Relationships'),$rel_attrs);
+				$comp_attrs= array_merge($comp_attrs,$rel_attrs);
+			}
+				
 		}
 		if($type == 'email' && !empty($rels))
 		{
@@ -1749,7 +1776,10 @@ function wpas_save_field()
 
 
 	$app[$type][$comp_id]['modified_date'] = date("Y-m-d H:i:s");
-	$old_field = $app[$type][$comp_id]['field'][$field_id];
+	if(isset($app[$type][$comp_id]['field'][$field_id]))
+	{
+		$old_field = $app[$type][$comp_id]['field'][$field_id];
+	}
 	$app[$type][$comp_id]['field'][$field_id] = $field;
 	if($type == 'entity')
 	{
@@ -2583,19 +2613,19 @@ function wpas_update_all_layout($ftype,$fold,$fnew,$app,$app_id)
 		}
 		foreach($app['form'] as $kform => $myform)
 		{
-			if($myform['form-form_type'] == 'submit' && preg_match('/'.$check.'/',$myform['form-confirm_msg']))
+			if($myform['form-form_type'] == 'submit' && !empty($myform['form-confirm_msg']) && preg_match('/'.$check.'/',$myform['form-confirm_msg']))
 			{
 				$app['form'][$kform]['form-confirm_msg'] = str_replace($check,$new,$myform['form-confirm_msg']);
 			}
-			if($myform['form-form_type'] == 'submit' && preg_match('/'.$check.'/',$myform['form-confirm_admin_msg']))
+			if($myform['form-form_type'] == 'submit' && !empty($myform['form-confirm_admin_msg']) && preg_match('/'.$check.'/',$myform['form-confirm_admin_msg']))
 			{
 				$app['form'][$kform]['form-confirm_admin_msg'] = str_replace($check,$new,$myform['form-confirm_admin_msg']);
 			}
-			if($myform['form-form_type'] == 'submit' && preg_match('/'.$check.'/',$myform['form-confirm_admin_subject']))
+			if($myform['form-form_type'] == 'submit' && !empty($myform['form-confirm_admin_subject']) && preg_match('/'.$check.'/',$myform['form-confirm_admin_subject']))
 			{
 				$app['form'][$kform]['form-confirm_admin_subject'] = str_replace($check,$new,$myform['form-confirm_admin_subject']);
 			}
-			if($myform['form-form_type'] == 'submit' && preg_match('/'.$check.'/',$myform['form-confirm_subject']))
+			if($myform['form-form_type'] == 'submit' && !empty($myform['form-confirm_subject']) && preg_match('/'.$check.'/',$myform['form-confirm_subject']))
 			{
 				$app['form'][$kform]['form-confirm_subject'] = str_replace($check,$new,$myform['form-confirm_subject']);
 			}

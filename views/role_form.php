@@ -353,7 +353,7 @@ function wpas_add_role_form($app_id,$role_id)
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("A role is a collection of capabilities which enable or disable access to your application's data.","wpas");?>"><?php _e("HELP","wpas"); ?></a></div></div>
 
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Name","wpas");?></label>
+		<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="role-name" id="role-name" type="text" placeholder="<?php _e("e.g. product_owner","wpas");?>"
 		<?php 
@@ -367,7 +367,7 @@ function wpas_add_role_form($app_id,$role_id)
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Label","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Label","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="role-label" id="role-label" type="text" placeholder="<?php _e("e.g. Product Owner","wpas"); ?>"
 		<?php 
