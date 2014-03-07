@@ -110,6 +110,22 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 	$html ="";
 	$entcount = 0;
 	$ent_caps = Array();
+	$user_rels= Array();
+	$app = wpas_get_app($app_id);
+	if(!empty($app['relationship']))
+	{
+		foreach($app['relationship'] as $keyrel => $myrel)
+		{
+			if($myrel['rel-from-name'] == 'user')
+			{
+				$user_rels[$myrel['rel-to-name']][$keyrel] = $myrel['rel-name'];
+			}
+			elseif($myrel['rel-to-name'] == 'user')
+			{
+				$user_rels[$myrel['rel-from-name']][$keyrel] = $myrel['rel-name'];
+			}
+		}
+	}
 	foreach($entities as $keyent => $myentity)
 	{
 		$show_cap = 0;
@@ -141,6 +157,13 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 			$ent_caps[$entcount]['edit_published'] = "edit_published_" . $label;
 			$ent_caps[$entcount]['manage_operations'] = "manage_operations_" . $label;
 			$ent_caps[$entcount]['name'] = $myentity['ent-name'];
+			if(!empty($user_rels[$keyent]))
+			{
+				foreach($user_rels[$keyent] as $keyrel => $myuser_rel)
+				{
+					$ent_caps[$entcount]['limitby_' . $myuser_rel] = "limitby_rel_" . $keyrel;
+				}
+			}
 			$entcount++;
 		}
 	}

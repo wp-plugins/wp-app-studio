@@ -9,11 +9,13 @@ function wpas_add_widget_form($app_id)
 					{
 						jQuery('#widg-dash_subtype_div').hide();
 						jQuery('#widg-side_subtype_div').show();
+						jQuery('#widg-label_div').show();
 					}
 					else if(jQuery(this).find('option:selected').val() == 'dashboard')
 					{
 						jQuery('#widg-dash_subtype_div').show();
 						jQuery('#widg-side_subtype_div').hide();
+						jQuery('#widg-label_div').hide();
 					}
 					else
 					{ 
@@ -21,12 +23,10 @@ function wpas_add_widget_form($app_id)
 						jQuery('#widg-side_subtype_div').hide();
 					}
 					jQuery('#widg-html_div').hide();
-					jQuery('#widg-label_div').hide();
 					jQuery('#widg-wdesc_div').hide();
 					jQuery('#widg-attach_div').hide();
 					jQuery('#widg-attach-rel_div').hide();
 					jQuery('#widg-rel-conn-type_div').hide();
-					jQuery('#widg-rel-to-title_div').hide();
 					jQuery('#widg-layout_div').hide();
 					jQuery('#widg-css_div').hide();
 					jQuery('#widg-post_per_page_div').hide();
@@ -42,7 +42,6 @@ function wpas_add_widget_form($app_id)
 						jQuery('#widg-attach_div').hide();
 						jQuery('#widg-attach-rel_div').hide();
 						jQuery('#widg-rel-conn-type_div').hide();
-						jQuery('#widg-rel-to-title_div').hide();
 						jQuery('#widg-layout_div').hide();
 						jQuery('#widg-css_div').hide();
 						jQuery('#widg-post_per_page_div').hide();
@@ -53,13 +52,11 @@ function wpas_add_widget_form($app_id)
 					}
 					else if(jQuery(this).find('option:selected').val() == 'entity')
 					{
-						jQuery('#widg-label_div').show();
 						jQuery('#widg-wdesc_div').show();
 						jQuery('#widg-html_div').hide();
 						jQuery('#widg-attach_div').show();
 						jQuery('#widg-attach-rel_div').hide();
 						jQuery('#widg-rel-conn-type_div').hide();
-						jQuery('#widg-rel-to-title_div').hide();
 						jQuery('#widg-layout_div').show();
 						jQuery('#widg-css_div').show();
 						jQuery('#widg-post_per_page_div').show();
@@ -74,14 +71,12 @@ function wpas_add_widget_form($app_id)
 					}
 					else if(jQuery(this).find('option:selected').val() == 'relationship')
 					{
-						jQuery('#widg-label_div').hide();
 						jQuery('#widg-wdesc_div').show();
 						jQuery('#widg-html_div').hide();
 						jQuery('#widg-attach_div').hide();
 						jQuery('#widg-attach-rel_div').show();
 						jQuery('#widg-rel-conn-type_div').show();
-						jQuery('#widg-rel-to-title_div').show();
-						jQuery('#widg-layout_div').show();
+						jQuery('#widg-layout_div').hide();
 						jQuery('#widg-css_div').show();
 						jQuery('#widg-post_per_page_div').show();
 						jQuery('#widg-order_div').hide();
@@ -116,6 +111,14 @@ function wpas_add_widget_form($app_id)
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
+                <div class="control-group row-fluid" id="widg-label_div" style="display:none;">
+                <label class="control-label span3 req"><?php _e("Label","wpas"); ?></label>
+                <div class="controls span9">
+                <input class="input-xlarge" name="widg-label" id="widg-label" type="text" placeholder="<?php _e("e.g. Recent Products","wpas"); ?>">
+                <a href="#" style="cursor: help;" title="<?php _e("Sets the initial title of the widget which will displayed on the backend.","wpas"); ?>">
+                <i class="icon-info-sign"></i></a>
+                </div>
+                </div>
 		<div class="control-group row-fluid">
                 <label class="control-label req span3"><?php _e("Title","wpas"); ?></label>
                 <div class="controls span9">
@@ -132,7 +135,7 @@ function wpas_add_widget_form($app_id)
                 <option value="sidebar"><?php _e("Sidebar","wpas"); ?></option>
                 <option value="dashboard"<?php _e(">Dashboard","wpas"); ?></option>
                 </select>
-                <a href="#" style="cursor: help;" title="<?php _e("Widgets could be created either on sidebar or dashboard.","wpas"); ?>">
+                <a href="#" style="cursor: help;" title="<?php _e("Sets type of the your widget. You can create a Dashboard or Sidebar widget.","wpas"); ?>">
                 <i class="icon-info-sign"></i></a>
                 </div>
                 </div>
@@ -172,7 +175,7 @@ function wpas_add_widget_form($app_id)
 		<label class="control-label req span3"><?php _e("Attach to Relationship","wpas"); ?></label>
 		<div class="controls span9">
 		<select id="widg-attach-rel" name="widg-attach-rel">
-		</select><a href="#" style="cursor: help;" title="<?php _e("All widgets must be attached to a predefined relationship. Relationship widgets display the attached relationship's content.","wpas"); ?>">
+		</select><a href="#" style="cursor: help;" title="<?php _e("All relationship widgets must be attached to a predefined relationship. Relationship widgets display the content of the attached relationship. You can set the widget's layout in the relationship that is attached.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
@@ -182,23 +185,7 @@ function wpas_add_widget_form($app_id)
                 <select name="widg-rel-conn-type" id="widg-rel-conn-type" class="input-medium">
 		<option value=""><?php _e("Please select","wpas"); ?></option>
                 </select>
-                <a href="#" style="cursor: help;" title="<?php _e("Sets the connection type of a relationship. Connection type could be either connected or related. Connected type displays the - many - side objects of a relationship. Related type is only used in many-to-many relationships and displays similar related objects. For example, in a products to orders many-to-many relationship; connected shows the orders which include the product selected and related shows the products which are also included in the same order of the selected product i.e. Customer who purchased this also purchased type.","wpas"); ?>">
-                <i class="icon-info-sign"></i></a>
-                </div>
-                </div>
-                <div class="control-group row-fluid" id="widg-rel-to-title_div" style="display:none;">
-                <label class="control-label req span3"><?php _e("To Title","wpas"); ?></label>
-                <div class="controls span9">
-                <input class="input-xlarge" name="widg-rel-to-title" id="widg-rel-to-title" type="text" placeholder="<?php _e("e.g. Recent Products","wpas"); ?>">
-                <a href="#" style="cursor: help;" title="<?php _e("Sets the initial 'to entity' relationship title. You can change this from the widget's configuration dialog after the widget is created.","wpas"); ?>">
-                <i class="icon-info-sign"></i></a>
-                </div>
-                </div>
-                <div class="control-group row-fluid" id="widg-label_div" style="display:none;">
-                <label class="control-label span3"><?php _e("Label","wpas"); ?></label>
-                <div class="controls span9">
-                <input class="input-xlarge" name="widg-label" id="widg-label" type="text" placeholder="<?php _e("e.g. Recent Products","wpas"); ?>">
-                <a href="#" style="cursor: help;" title="<?php _e("Sets the initial title of the widget which will displayed on the backend.","wpas"); ?>">
+                <a href="#" style="cursor: help;" title="<?php _e("Sets the connection type of a relationship that will be displayed on your widget. Connection type could be either connected or related. Connected type displays the - many - side objects of a relationship. Related type is only used in many-to-many relationships and displays similar related objects. For example, in a products to orders many-to-many relationship; connected shows the orders which include the product selected and related shows the products which are also included in the same order of the selected product i.e. Customer who purchased this also purchased type.","wpas"); ?>">
                 <i class="icon-info-sign"></i></a>
                 </div>
                 </div>

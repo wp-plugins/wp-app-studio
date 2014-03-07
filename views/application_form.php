@@ -424,8 +424,8 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['import'] = admin_url('admin.php?page=wpas_app_list&import=1');
                 $format = "apppage";
                 $field_name = "app_name";
-                $other_fields = Array('entities','taxonomies','date','modified_date','generate');
-                $other_labels = Array(__("Name","wpas"),__("Entities","wpas"),__("Taxonomies","wpas"),__("Created","wpas"),__("Modified","wpas"),__("Generate","wpas"));
+                $other_fields = Array('generate','entities','taxonomies','date','modified_date');
+                $other_labels = Array(__("Name","wpas"),__("Generate","wpas"),__("Entities","wpas"),__("Taxonomies","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['add_new_url'] = admin_url('admin.php?page=wpas_add_new_app');
                 $list_values['icon'] = "icon-cogs";
         }
@@ -499,9 +499,9 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=widg&app=' . $app_id);
                 $list_values['title'] = __("Widgets","wpas");
                 $format = "widgpage";
-                $field_name = "widg-title";
+                $field_name = "widg-name";
                 $other_fields = Array("widg-type","widg-subtype","widg-attach","date","modified_date");
-                $other_labels = Array(__("Title","wpas"),__("Type","wpas"),__("Subtype","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_labels = Array(__("Name","wpas"),__("Type","wpas"),__("Subtype","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['type'] = 'widg';
                 $list_values['icon'] = "icon-cog";
                 $add_field_tag = "#widg";
@@ -512,8 +512,8 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['title'] = __("Forms","wpas");
                 $format = "formpage";
                 $field_name = "form-name";
-                $other_fields = Array("form-form_type","form-shc","form-attached_entity","form-form_title","form-temp_type","date","modified_date");
-                $other_labels = Array(__("Name","wpas"),__("Type","wpas"),__("Shortcode","wpas"),__("Attached To","wpas"),__("Title","wpas"),__("Template","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_fields = Array("form-form_type","form-attached_entity","form-temp_type","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Type","wpas"),__("Attached To","wpas"),__("Template","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['type'] = 'form';
                 $list_values['icon'] = "icon-list-alt";
                 $add_field_tag = "#form";
@@ -534,7 +534,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                         {
 				$mylist['entities'] = "";
 				$mylist['taxonomies'] = "";
-				$mylist['generate'] = "<div id=\"generate\"><a class=\"btn btn-mini btn-warning\" href=\"". wp_nonce_url(admin_url('admin.php?page=wpas_app_list&generate=1&app=') . $mylist['app_id'],'wpas_generate') . "\">Generate</a></div>";
+				$mylist['generate'] = "<div id=\"generate\"><a class=\"btn btn-mini btn-success\" href=\"". wp_nonce_url(admin_url('admin.php?page=wpas_app_list&generate=1&app=') . $mylist['app_id'],'wpas_generate') . "\">Generate</a></div>";
 				if(isset($mylist['entity']))
 				{
 					foreach($mylist['entity'] as $myentity)
@@ -594,8 +594,22 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 					}
 					$mylist['rel_fields'] = rtrim($mylist['rel_fields'],', ');
 				}
-				$mylist['rel-from-name'] = $app['entity'][$mylist['rel-from-name']]['ent-label'];
-				$mylist['rel-to-name'] = $app['entity'][$mylist['rel-to-name']]['ent-label'];
+				if($mylist['rel-from-name'] != 'user')
+				{
+					$mylist['rel-from-name'] = $app['entity'][$mylist['rel-from-name']]['ent-label'];
+				}
+				else
+				{
+					$mylist['rel-from-name'] = ucfirst($mylist['rel-from-name']);
+				}
+				if($mylist['rel-to-name'] != 'user')
+				{
+					$mylist['rel-to-name'] = $app['entity'][$mylist['rel-to-name']]['ent-label'];
+				}
+				else
+				{
+					$mylist['rel-to-name'] = ucfirst($mylist['rel-to-name']);
+				}
                         }
                         elseif($list_type == 'taxonomy')
                         {
@@ -674,7 +688,6 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 			}
 			elseif($list_type == 'form')
 			{
-				$mylist['form-shc'] = "[" . $mylist['form-name'] . "]";
 				if($mylist['form-temp_type'] == 'Pure')
 				{
 					$mylist['form-temp_type'] = 'jQuery UI';
@@ -773,13 +786,14 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
         $return_list .= $div_table . "</tbody></table></form>";
         return $return_list;
 }
-function wpas_breadcrumb($page)
+function wpas_breadcrumb($page,$app_id)
 {
-        $home = admin_url('admin.php?page=wpas_app_list');
-        echo '<div class="wpas">';
-        wpas_branding_header();
-        echo '<div id="was-container" class="container-fluid">';
-        echo '<ul class="breadcrumb">
+	$home = admin_url('admin.php?page=wpas_app_list');
+	echo '<div class="wpas">';
+	wpas_branding_header();
+	echo '<div id="was-container" class="container-fluid">';
+	echo '<div class="row-fluid">';
+	echo '<ul class="breadcrumb span9">
                 <li id="first">
                 <a href="'. $home . '"><i class="icon-home"></i> ' . __("Home","wpas") . '</a> <span class="divider">/</span>
                 </li>';
@@ -794,6 +808,8 @@ function wpas_breadcrumb($page)
                 echo '<li id="second" class="active">' . __("Edit Application","wpas") . '</li>
                         </ul>';
         }
+	echo '<div class="span3"><a style="padding:7px 14px;" class="btn btn-success pull-right" href="'. wp_nonce_url(admin_url('admin.php?page=wpas_app_list&generate=1&app=') .$app_id,'wpas_generate') . '"><i class="icon-play"></i>' . __("Generate","wpas") .'</a></div>';
+	echo '</div>';
 }
 
 

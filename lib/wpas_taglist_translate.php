@@ -14,6 +14,12 @@ $strings = 'tinyMCE.addI18n( "' . _WP_Editors::$mce_locale . '.taglist", {
     featured_img_thumb: "' . esc_js( __( 'Featured Img Thumb', 'wpas' ) ) . '",
     author: "' . esc_js( __( 'Author', 'wpas' ) ) . '",
     modified_author: "' . esc_js( __( 'Modified Author', 'wpas' ) ) . '",
+    user_nicename: "' . esc_js( __( 'User Nicename', 'wpas' ) ) . '",
+    user_email: "' . esc_js( __( 'User Email', 'wpas' ) ) . '",
+    user_url: "' . esc_js( __( 'User URL', 'wpas' ) ) . '",
+    user_registered: "' . esc_js( __( 'User Registered', 'wpas' ) ) . '",
+    user_display_name: "' . esc_js( __( 'User Display Name', 'wpas' ) ) . '",
+    user_login: "' . esc_js( __( 'User Login', 'wpas' ) ) . '",
 } )';
 
 ?>

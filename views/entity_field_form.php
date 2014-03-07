@@ -530,7 +530,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="date-format" style="display:none;">
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Date Format","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Date Format","wpas");?></label>
 			<div class="controls span9">
 			<select name="fld_date_format" id="fld_date_format">
 			<option value="" selected="selected"><?php _e("Please select","wpas");?></option>

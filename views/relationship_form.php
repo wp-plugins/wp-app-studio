@@ -3,53 +3,76 @@
     {
         ?>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-        jQuery('#rel-connected-display').click(function() {
-		if(jQuery(this).attr('checked'))
+jQuery(document).ready(function($) {
+        $('#rel-connected-display').click(function() {
+		if($(this).attr('checked'))
 		{
-			jQuery('#reltabs-2-li').show();
-			if(jQuery('#rel-type').val() == 'one-to-many')
+			$('#reltabs-2-li').show();
+			if($('#rel-type').val() == 'one-to-many')
 			{
-				jQuery('#rel-connected-show-attributes-div').hide();
+				$('#rel-connected-show-attributes-div').hide();
 			}
 			else
 			{
-				jQuery('#rel-connected-show-attributes-div').show();
+				$('#rel-connected-show-attributes-div').show();
 			}
+			app_id = $('input#app').val();
+			comp_id_from = $('#rel-from-name').val();
+			comp_id_to = $('#rel-to-name').val();
+			rel_id = $('input#rel').val();
+			$.fn.getAddons('rel-con_from_layout',app_id,'rel-con-rel',comp_id_to,'connected',[],rel_id);
+			$.fn.getAddons('rel-con_to_layout',app_id,'rel-con-rel',comp_id_from,'connected',[],rel_id);
 		}
 		else
 		{
-			jQuery('#reltabs-2-li').hide();
+			$('#reltabs-2-li').hide();
 		}
         });
-        jQuery('#rel-related-display').click(function() {
-		if(jQuery(this).attr('checked'))
+        $('#rel-related-display').click(function() {
+		if($(this).attr('checked'))
 		{
-			jQuery('#reltabs-3-li').show();
+			$('#reltabs-3-li').show();
+			app_id = $('input#app').val();
+			comp_id_from = $('#rel-from-name').val();
+			comp_id_to = $('#rel-to-name').val();
+			rel_id = $('input#rel').val();
+			$.fn.getAddons('rel-rel_from_layout',app_id,'rel-con-rel',comp_id_from,'related',[],rel_id);
+			$.fn.getAddons('rel-rel_to_layout',app_id,'rel-con-rel',comp_id_to,'related',[],rel_id);
 		}
 		else
 		{
-			jQuery('#reltabs-3-li').hide();
+			$('#reltabs-3-li').hide();
 		}
         });
-        jQuery('#rel-type').click(function() {
-		if(jQuery(this).val() == 'many-to-many')
+        $('#rel-type').click(function() {
+		if($(this).val() == 'many-to-many')
                 {
-			jQuery('#rel-related-display-div').show();
-			if(jQuery('#rel-connected-display').attr('checked'))
+			$('#rel-related-display-div').show();
+			if($('#rel-connected-display').attr('checked'))
 			{
-				jQuery('#rel-connected-show-attributes-div').show();
+				$('#rel-connected-show-attributes-div').show();
 			}
                 }
                 else
                 {
-			jQuery('#rel-related-display-div').hide();
-			if(jQuery('#rel-connected-display').attr('checked'))
+			$('#rel-related-display-div').hide();
+			if($('#rel-connected-display').attr('checked'))
 			{
-				jQuery('#rel-connected-show-attributes-div').hide();
+				$('#rel-connected-show-attributes-div').hide();
 			}
                 }
 	});
+        $('#rel-from-name,#rel-to-name').click(function() {
+		if($('#rel-from-name').val() == 'user' || $('#rel-to-name').val() == 'user')
+		{
+			$('#rel-limit_user_relationship_role_div').show();
+		}
+		else
+		{
+			$('#rel-limit_user_relationship_role_div').hide();
+		}
+	});
+
 });
 </script>
         <form action="" method="post" id="relationship-form" class="form-horizontal">
@@ -85,6 +108,21 @@ jQuery(document).ready(function() {
         </select>
         <a href="#" title="<?php _e("TO entity is the primary entity in a relationship. Any one entity instance from the primary entity can be referenced by many entity instances from the related entity.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
+	<div class="control-group row-fluid" id="rel-limit_user_relationship_role_div" style="display: none;">
+	<label class="control-label span3"><?php _e("Limit By Role","wpas"); ?></label>
+	<div class="controls span9">
+	<select name="rel-limit_user_relationship_role" id="rel-limit_user_relationship_role">
+	<option selected="selected" value="false"><?php _e("Do not limit","wpas"); ?></option>
+	<option value="editor"><?php _e("Only Editors can be related","wpas"); ?></option>
+	<option value="author"><?php _e("Only Author can be related","wpas"); ?></option>
+	<option value="contributor"><?php _e("Only Contributor can be related","wpas"); ?></option>
+	<option value="subscriber"><?php _e("Only Subscriber can be related","wpas"); ?></option>
+	<option value="administrator"><?php _e("Only Administrator can be related","wpas"); ?></option>
+	</select>
+	<a href="#" title="<?php _e("Limits the relationship to the group of users who belong to the selected role. Builtin roles: Super Admin - Someone with access to the blog network administration features controlling the entire network (See Create a Network). Administrator - Somebody who has access to all the administration features. Editor - Somebody who can publish and manage posts and pages as well as manage other users's posts, etc. Author - Somebody who can publish and manage their own posts. Contributor - Somebody who can write and manage their posts but not publish them. Subscriber - Somebody who can only manage their profile. If you predefined custom roles, you can select them as well. You can create multiple user relationships with the same entity and limit them by different roles. User to User relationships are not allowed.","wpas"); ?>" style="cursor: help;">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("Description","wpas");?></label>
 	<div class="controls span9">
@@ -216,9 +254,10 @@ jQuery(document).ready(function() {
         <select name="rel-connected-display-type" id="rel-connected-display-type" class="input-medium">
         <option selected="selected" value="ul"><?php _e("Unordered List","wpas");?></option>
         <option value="ol"><?php _e("Ordered List","wpas");?></option>
-        <option value="inline"><?php _e("Comma Seperated List","wpas");?></option></select>
-        <a href="#" style="cursor: help;" title="<?php _e("Sets how the connected relationship data will be displayed on the frontend.","wpas");?>">
-        <i class="icon-info-sign"></i></a>(<?php _e("default: Unordered ListList","wpas");?>)
+        <option value="inline"><?php _e("Comma Seperated List","wpas");?></option>
+        <option value="std"><?php _e("Standard","wpas");?></option></select>
+        <a href="#" style="cursor: help;" title="<?php _e("Sets how the connected relationship data will be displayed on the frontend. Standard ,Ordered List, Comma Seperated List, and Unordered List are the options. Standard option creates a div which wraps all relationship data.","wpas");?>">
+        <i class="icon-info-sign"></i></a>
         </div>
         </div>
         <div class="control-group row-fluid" id="rel-connected-show-attributes-div">
@@ -229,6 +268,24 @@ jQuery(document).ready(function() {
         <a href="#" style="cursor: help;" title="<?php _e("When checked, it displays the connected relationship attribute data on the frontend.","wpas");?>"><i class="icon-info-sign"></i></a></label>
         </div>
         </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("From Entity Layout","wpas"); ?></label>
+	<div class="controls span9">
+<?php
+	display_tinymce('rel-con_from_layout','',1,1);
+?>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single -from entity- record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("To Entity Layout","wpas"); ?></label>
+	<div class="controls span9">
+<?php
+	display_tinymce('rel-con_to_layout','',1,1);
+?>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single -to entity- record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 </div><!-- end of tab2 -->
 <div id="reltabs-3" class="tab-pane fade in">
         <div class="control-group row-fluid">
@@ -251,11 +308,30 @@ jQuery(document).ready(function() {
         <select name="rel-related-display-type" id="rel-related-display-type" class="input-medium">
         <option selected="selected" value="ul"><?php _e("Unordered List","wpas");?></option>
         <option value="ol"><?php _e("Ordered List","wpas");?></option>
-        <option value="inline"><?php _e("Comma Seperated List","wpas");?></option></select>
-        <a href="#" style="cursor: help;" title="<?php _e("Sets how the related relationship data will be displayed on the frontend. This option can be used only in Many-to-Many relationships.","wpas");?>">
-        <i class="icon-info-sign"></i></a> (<?php _e("default: Unordered List","wpas");?>)
+        <option value="inline"><?php _e("Comma Seperated List","wpas");?></option>
+        <option value="std"><?php _e("Standard","wpas");?></option></select>
+        <a href="#" style="cursor: help;" title="<?php _e("Sets how the related relationship data will be displayed on the frontend. Standard ,Ordered List, Comma Seperated List, and Unordered List are the options. Standard option creates a div which wraps all relationship data. This option can be used only in Many-to-Many relationships.","wpas");?>">
+        <i class="icon-info-sign"></i></a>
         </div>
         </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("From Entity Layout","wpas"); ?></label>
+	<div class="controls span9">
+<?php
+	display_tinymce('rel-rel_from_layout','',1,1);
+?>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("To Entity Layout","wpas"); ?></label>
+	<div class="controls span9">
+<?php
+	display_tinymce('rel-rel_to_layout','',1,1);
+?>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 </div><!-- end of tab3 -->
 </div> <!-- end of div content -->
         <div class="control-group row-fluid">
@@ -269,6 +345,22 @@ jQuery(document).ready(function() {
     }
     function wpas_view_relationship($rel,$rel_id,$app)
     {
+	if($rel['rel-from-name'] == 'user')
+	{
+		$from_ent_name = "User";
+	}
+	else
+	{
+		$from_ent_name = $app['entity'][$rel['rel-from-name']]['ent-label'];
+	}
+	if($rel['rel-to-name'] == 'user')
+	{
+		$to_ent_name = "User";
+	}
+	else
+	{
+		$to_ent_name = $app['entity'][$rel['rel-to-name']]['ent-label'];
+	}
         return '<div class="well form-horizontal">
         <div class="row-fluid">
         <button class="btn  btn-danger pull-left" id="cancel" name="cancel" type="button">
@@ -281,12 +373,12 @@ jQuery(document).ready(function() {
         <fieldset>
         <div class="control-group row-fluid">
         <label class="control-label span3">' . __("From Entity Name ","wpas") . '</label>
-        <div class="controls span9"><span id="rel-from-name" class="input-xlarge uneditable-input">' . esc_html($app['entity'][$rel['rel-from-name']]['ent-label']) . '</span>
+        <div class="controls span9"><span id="rel-from-name" class="input-xlarge uneditable-input">' . esc_html($from_ent_name) . '</span>
         </div>
         </div>
         <div class="control-group row-fluid">
         <label class="control-label span3">' . __("To Entity Name","wpas") . '</label>
-        <div class="controls span9"><span id="rel-to-name" class="input-xlarge uneditable-input">' . esc_html($app['entity'][$rel['rel-to-name']]['ent-label']) . '</span>
+        <div class="controls span9"><span id="rel-to-name" class="input-xlarge uneditable-input">' . esc_html($to_ent_name) . '</span>
         </div>
         </div>
         <div class="control-group row-fluid">

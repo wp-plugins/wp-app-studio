@@ -421,10 +421,14 @@ padding:10px;
 color:#6495ED;
 font-weight:bold;
 }
-.wpas .form-inside{
+.wpas .form-element .form-inside{
 padding-top:10px;
 padding-left:10px;
 padding-right:10px;
+background-color: #FCFCFC;
+border: 1px solid #D3D3D3;
+border-radius: 4px;
+margin-top: 5px;
 }
 #was-editor .icon-info-sign{
 padding-left:5px;
@@ -457,4 +461,31 @@ padding-bottom: 10px;
 .wpas .req{
     color: #FF0000;
     font-weight: bold;
+}
+.wpas .form-field-str{
+padding:5px;
+}
+#field-labels .btn-std{
+    background-color: #FFEFD5;
+    border: 3px double #CD853F;
+    padding: 5px;
+    text-align: center;
+border-radius: 4px;
+font-size: 11px;
+}
+#field-labels .elmt{
+    background-color: #FFF;
+    border: 3px double #B0C4DE;
+    padding: 5px;
+border-radius: 4px;
+    text-align: center;
+font-size: 11px;
+}
+.wpas hr {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-width: 2px 0 !important;
+    border-color:#808080 !important;
 }

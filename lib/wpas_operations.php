@@ -418,11 +418,11 @@ function wpas_check_form_rel_uniq($myapp)
 					{
 						if(isset($myitem['relent']) && $myitem['obtype'] == 'relent')
 						{
-							if($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-from-name'])
+							if($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-from-name'] && $myapp['relationship'][$myitem['relent']]['rel-to-name'] != 'user')
 							{	
 								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-to-name'];
 							}
-							elseif($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-to-name'])
+							elseif($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-to-name'] && $myapp['relationship'][$myitem['relent']]['rel-from-name'] != 'user')
 							{
 								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-from-name'];
 							}
@@ -435,11 +435,11 @@ function wpas_check_form_rel_uniq($myapp)
 				foreach($myform['form-dependents'] as $rel_dep)
 				{
 					$myrel = $myapp['relationship'][$rel_dep];
-					if($myform['form-attached_entity'] == $myrel['rel-from-name'])
+					if($myform['form-attached_entity'] == $myrel['rel-from-name'] && $myrel['rel-to-name'] != 'user')
 					{
 						$myent_ids[] = $myrel['rel-to-name'];
 					}
-					else
+					else if($myrel['rel-from-name'] != 'user')
 					{
 						$myent_ids[] = $myrel['rel-from-name'];
 					}

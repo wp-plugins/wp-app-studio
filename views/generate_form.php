@@ -114,8 +114,11 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		</div>
 		</div>
 		<div id="frm-btn" class="control-group">
-		<button id="generate" class="btn  btn-primary pull-right" type="submit">
+		<label class="control-label"></label>
+		<div class="controls">
+		<button id="generate" class="btn btn-primary btn-large" type="submit">
 		<i class="icon-play"></i><?php _e("Generate","wpas"); ?></button>
+		</div>
 		</div>
 		</div>
 		</fieldset>
