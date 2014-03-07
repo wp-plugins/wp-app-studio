@@ -33,6 +33,9 @@ jQuery(document).ready(function($) {
 		$.validator.addMethod('checkAlphaNum', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9]+$/i.test(value);
 		}, validate_vars.check_alpha_num);
+		$.validator.addMethod('checkAlphaDash', function(value, element) { 
+			return this.optional(element) || /^[a-z\-]+$/i.test(value);
+		}, validate_vars.check_alpha_dash);
 		$.validator.addMethod('checkAlphaNumDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\-]+$/i.test(value);
 		}, validate_vars.check_alpha_num_dash);
@@ -42,6 +45,12 @@ jQuery(document).ready(function($) {
 		$.validator.addMethod('checkAlphaNumUnder', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und);
+		$.validator.addMethod('checkAlphaNumUnderSemiCurly', function(value, element) { 
+			return this.optional(element) || /^[a-z0-9 \;\_\{\}]+$/i.test(value);
+		}, validate_vars.check_alpha_num_und_semi_cur);
+		$.validator.addMethod('checkTaxChar', function(value, element) { 
+			return this.optional(element) || /^[a-z0-9 \_;\{\}\[\]]+$/i.test(value);
+		}, validate_vars.check_tax_char);
 		$.validator.addMethod('checkAlphaNumUnderDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_\-]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und_dash);
@@ -51,8 +60,14 @@ jQuery(document).ready(function($) {
 		$.validator.addMethod('checkVersion', function(value, element) { 
 			return this.optional(element) || /^[0-9\.]+$/i.test(value);
 		}, validate_vars.check_version);
+		$.validator.addMethod('checkRelUser', function(value, element) { 
+			if($('#rel-from-name').val() == 'user' && value == 'user')
+			{
+				return false;
+			}
+			return true;	
+		}, validate_vars.check_reluser);
 		$.validator.addMethod('checkDefault', function(value, element) { 
-			console.log($(element).attr('id'));
 			if($(element).attr('id') == 'txn-dflt_value')
 			{
 				var is_multiple = $('#txn-display_type').val();
@@ -86,8 +101,8 @@ jQuery(document).ready(function($) {
 		}, validate_vars.check_default);
 				
 				
-		$.validator.addMethod('checkSemiCo', function(value, element) { 
-			comma_loc = (value.length - 1);
+		$.validator.addMethod('checkValues', function(value, element) { 
+			hier = $('#txn-hierarchical').val();
 			if(value.indexOf(';') < 0 && value != '')
 			{
 				return false;
@@ -96,13 +111,127 @@ jQuery(document).ready(function($) {
 			{
 				return false;
 			}
-			else if(comma_loc == value.lastIndexOf(';') && value != '')
+			else
+			{
+				var input = value.split(';');
+				var valid = true;
+				$.each(input, function(key,inp) {
+					inp = $.trim(inp);
+					if(inp.length != 0)
+					{
+						if((inp.match(/{/g) != null && inp.match(/{/g).length > 1) ||  (inp.match(/}/g) != null && inp.match(/}/g).length > 1))
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') > 0 && inp.indexOf('}') < 0)
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') < 0 && inp.indexOf('}') > 0)
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') > 0 && inp.indexOf('}') > 0 && (inp.indexOf('{') + 1 >= inp.indexOf('}')))
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') == 0)
+						{
+							return valid = false;
+						}
+						if(hier == 1)
+						{
+							if((inp.match(/\[/g) != null && inp.match(/\[/g).length > 1) ||  (inp.match(/]/g) != null && inp.match(/]/g).length > 1))
+							{
+								return valid = false;
+							}
+							else if(inp.indexOf('[') > 0 && inp.indexOf(']') < 0)
+							{
+								return valid = false;
+							}
+							else if(inp.indexOf('[') < 0 && inp.indexOf(']') > 0)
+							{
+								return valid = false;
+							}
+							else if(inp.indexOf('[') > 0 && inp.indexOf(']') > 0 && (inp.indexOf('[') + 1 >= inp.indexOf(']')))
+							{
+								return valid = false;
+							}
+							else if(inp.indexOf('[') == 0)
+							{
+								return valid = false;
+							}
+						}
+						else if(hier == 0)
+						{
+							if(inp.indexOf('[') >= 0 || inp.indexOf(']') >= 0)
+							{
+								return valid = false;
+							}
+						}
+					}
+				});
+				return valid;
+			}
+		}, validate_vars.check_values);
+						
+		$.validator.addMethod('checkSemiCo', function(value, element) { 
+			if(value.indexOf(';') < 0 && value != '')
+			{
+				return false;
+			}
+			else if(value.indexOf(';;') >= 0 && value != '')
 			{
 				return false;
 			}
 			else
 			{
-				return true;
+				var input = value.split(';');
+				var valid = true;
+				var curly = false;
+				$.each(input, function(key,inp) {
+					inp = $.trim(inp);
+					if(inp.length != 0)
+					{
+						if(curly && inp.indexOf('{') < 0 && inp.indexOf('}') < 0)
+						{
+							return valid = false;
+						}
+						else if(!curly && key != 0 && inp.indexOf('{') == 0 && inp.indexOf('}') > 0)
+						{
+							return valid = false;
+						}
+						else if((inp.match(/{/g) != null && inp.match(/{/g).length > 1) ||  (inp.match(/}/g) != null && inp.match(/}/g).length > 1))
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') == 0 && inp.indexOf('}') < 0)
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') < 0 && inp.indexOf('}') >= 0)
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') == 0 && inp.indexOf('}') > 0 && (inp.indexOf('{') + 1 >= inp.indexOf('}')))
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') > 0)
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('}') + 1 == inp.length)
+						{
+							return valid = false;
+						}
+						else if(inp.indexOf('{') >= 0)
+						{
+							curly = true;
+						}
+					}
+				});
+				return valid;
 			}
 		}, validate_vars.check_semico);
 		$.validator.addMethod('noReservedEnt', function(value, element) { 
@@ -305,10 +434,20 @@ jQuery(document).ready(function($) {
 			'ent-menu_icon': {
 			maxlength:255,
 			url:true,
+			required:true,
 			},
 			'ent-menu_icon_32': {
 			maxlength:255,
 			url:true,
+			required:true,
+			},
+			'ent-menu_icon_fa': {
+			required:true,
+			checkAlphaDashFa: true,
+			},
+			'ent-menu_icon_dash': {
+			required:true,
+			checkAlphaDash: true,
 			},
 			'ent-top_level_page': {
 			required:true,
@@ -356,8 +495,9 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'fld_values': {
-			maxlength:3500,
+			maxlength: 21844,
 			checkSemiCo:true,
+			checkAlphaNumUnderSemiCurly: true,
 			required:true,
 			},
 			'fld_type': {
@@ -460,8 +600,9 @@ jQuery(document).ready(function($) {
                         checkDefault: true,
                         },
 			'txn-values': {
-			maxlength:3500,
-			checkSemiCo:true,
+			maxlength:21844,
+			checkValues:true,
+			checkTaxChar: true,
 			},
 			'txn-menu_name':{
 			maxlength:50,
@@ -524,16 +665,29 @@ jQuery(document).ready(function($) {
 			},
 			'rel-to-name':{
 			required:true,
+			checkRelUser:true,
 			},
 			'rel-from-name':{
-			required:true
+			required:true,
 			},              
 			'rel-to-title':{
 			maxlength:50,
 			},
 			'rel-from-title':{
 			maxlength:50,
-			},              
+			},
+			'rel-rel_from_layout':{
+			maxlength:5000,
+			},
+			'rel-rel_to_layout':{
+			maxlength:5000,
+			},
+			'rel-con_from_layout':{
+			maxlength:5000,
+			},
+			'rel-con_to_layout':{
+			maxlength:5000,
+			},
 			'rel-connected-display-from-title':{
 			maxlength:50,
 			},              
@@ -574,9 +728,10 @@ jQuery(document).ready(function($) {
 			required:true
 			},
 			'rel_fld_values': {
-			maxlength:3500,
+			maxlength:21844,
 			required:true,
 			checkSemiCo:true,
+			checkAlphaNumUnderSemiCurly: true,
 			},
 			'rel_fld_desc': {
 			maxlength:300,
@@ -737,6 +892,10 @@ jQuery(document).ready(function($) {
 			'shc-attach_tax':{
 			required:true,
 			},
+			'shc-setup_page_title':{
+			required:true,
+			maxlength:255,
+			},
 			'shc-sc_layout':{
 			maxlength:5000,
 			required:true,
@@ -793,14 +952,10 @@ jQuery(document).ready(function($) {
 			maxlength:50,
 			required:true,
 			},
-			'widg-rel-to-title':{
-			minlength:3,
-			maxlength:50,
-			required:true,
-			},
 			'widg-label':{
 			minlength:3,
 			maxlength:50,
+			required:true,
 			},
 			'widg-wdesc':{
 			maxlength:150,
@@ -846,6 +1001,10 @@ jQuery(document).ready(function($) {
 			},
 			'form-form_type':{
 			required:true,
+			},
+			'form-setup_page_title':{
+			required:true,
+			maxlength:255,
 			},
 			'form-not_loggedin_msg':{
 			maxlength:5000,

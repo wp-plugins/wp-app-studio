@@ -42,9 +42,9 @@ function wpas_add_help_form($app_id)
 <form action="" method="post" id="help-form" class="form-horizontal">
 	<input type="hidden" value="" name="help" id="help">
 	<fieldset>
-	<div class="control-group" id="help-type-div" name="help-type-div">
-	<label class="control-label"><?php _e("Type","wpas"); ?></label>
-	<div class="controls">
+	<div class="control-group row-fluid" id="help-type-div" name="help-type-div">
+	<label class="control-label req span3"><?php _e("Type","wpas"); ?></label>
+	<div class="controls span9">
 	<select id="help-type" name="help-type">
 	<option value=""><?php _e("Please select","wpas"); ?></option>
 	<option value="ent"><?php _e("Entities","wpas"); ?></option>
@@ -53,23 +53,23 @@ function wpas_add_help_form($app_id)
 	<a href="#" title="<?php _e("Select the type of help screen.","wpas"); ?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 	</div>
 	<div id="help-others" name="help-others" style="display:none;">
-	<div class="control-group" id="help-entity-div" name="help-entity-div">
-	<label class="control-label"><?php _e("Attach To Entity","wpas"); ?></label>
-	<div class="controls">
+	<div class="control-group row-fluid" id="help-entity-div" name="help-entity-div">
+	<label class="control-label req span3"><?php _e("Attach To Entity","wpas"); ?></label>
+	<div class="controls span9">
 	<select id="help-entity" name="help-entity">
 	</select>
 	<a href="#" title="<?php _e("Select the entity you want to display help screen at.","wpas"); ?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 	</div>
-	<div class="control-group" id="help-tax-div" name="help-tax-div">
-	<label class="control-label"><?php _e("Attach To Taxonomy","wpas"); ?></label>
-	<div class="controls">
+	<div class="control-group row-fluid" id="help-tax-div" name="help-tax-div">
+	<label class="control-label req span3"><?php _e("Attach To Taxonomy","wpas"); ?></label>
+	<div class="controls span9">
 	<select id="help-tax" name="help-tax">
 	</select>
 	<a href="#" title="<?php _e("Select the taxonomy you want to display help screen at.","wpas"); ?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 	</div>
-	<div class="control-group" id="help-screen_type-div" name="help-screen_type-div">
-	<label class="control-label"><?php _e("Screen Type","wpas"); ?></label>
-	<div class="controls">
+	<div class="control-group row-fluid" id="help-screen_type-div" name="help-screen_type-div">
+	<label class="control-label req span3"><?php _e("Screen Type","wpas"); ?></label>
+	<div class="controls span9">
 	<select id="help-screen_type" name="help-screen_type">
 	<option value=""><?php _e("Please select","wpas"); ?></option>
 	<option value="edit"><?php _e("Edit Page","wpas"); ?></option>
@@ -77,9 +77,9 @@ function wpas_add_help_form($app_id)
 	</select>
 	<a href="#" title="<?php _e("Select the location of the help screen. You can select list or edit page.","wpas"); ?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 	</div>
-	<div class="control-group">
-	<label class="control-label"><?php _e("Help SideBar","wpas"); ?></label>
-	<div class="controls">
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("Help SideBar","wpas"); ?></label>
+	<div class="controls span9">
 	<?php display_tinymce('help-screen_sidebar',''); ?>
 	<a href="#" title="<?php _e("The content of the help screen sidebar.","wpas"); ?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 	</div>

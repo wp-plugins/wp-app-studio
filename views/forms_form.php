@@ -100,14 +100,23 @@ function wpas_form_container($layout,$app,$form_id)
 			{
 				$layout_html .= "<a class='edit'><i class='icon-edit pull-left'></i></a>";
 			}
-			$layout_html .= "</div><div id='field-labels' class='row-fluid span10'>";
+			$layout_html .= "</div><div id='field-labels' class='span10'>";
 			if(!in_array($class,Array('hr','text')))
 			{
 				for($j=1;$j<= count($layout[$i]);$j++)
 				{
 					if(isset($layout[$i][$j]))
 				   	{
-						$layout_html .= "<div id='field-label" . $j . "' class='span" . $layout[$i][$j]['size'] . "'>";
+						$layout_html .= "<div id='field-label" . $j . "' class='span" . $layout[$i][$j]['size'];
+						if($layout[$i][$j]['obtype'] == 'btn-std')
+						{
+							$layout_html .= " btn-std";
+						}
+						else
+						{
+							$layout_html .= " elmt";
+						}	
+						$layout_html .= "'>";
 						if(isset($layout[$i][$j]['obtype']))
 						{
 							$connector = "";
@@ -117,23 +126,49 @@ function wpas_form_container($layout,$app,$form_id)
 									$connector = 'fld';
 									break;
 								case 'tax':
-						 			$layout_html .= esc_html($app['taxonomy'][$layout[$i][$j]['tax']]['txn-label']);
-									$connector='tax';
+									if($layout[$i][$j]['tax'] == 'cat')
+									{
+										$layout_html .= "Categories";
+										$connector='blttax_';
+									}
+									elseif($layout[$i][$j]['tax'] == 'tag')
+									{
+										$layout_html .= "Tags";
+										$connector='blttax_';
+									}
+									else
+									{
+						 				$layout_html .= esc_html($app['taxonomy'][$layout[$i][$j]['tax']]['txn-label']);
+										$connector='tax';
+									}	
 									break;
 								case 'relent':
 									$myrel = $app['relationship'][$layout[$i][$j]['relent']];
 						 			$layout_html .= esc_html(wpas_get_rel_full_name($myrel,$app));
 									$connector='rel';
 									break;
+								case 'btn-std':
+									$layout_html .= "Submit Button";
+									break;
 							}
 							
-							
-							$selected_vals[$j] = $layout[$i][$j]['entity'] . "__" . $connector . $layout[$i][$j][$layout[$i][$j]['obtype']];
+							if($layout[$i][$j]['obtype'] == 'btn-std')
+							{	
+								$selected_vals[$j] = "submit";
+							}
+							else
+							{
+								$selected_vals[$j] = $layout[$i][$j]['entity'] . "__" . $connector . $layout[$i][$j][$layout[$i][$j]['obtype']];
+							}
 						}
 						$layout_html .= "</div>";	
 						$sizes[$j] = $layout[$i][$j]['size'];
 					}
 				}
+			}
+			elseif($class == 'hr')
+			{
+				$layout_html .= "<hr>";
 			}
 			else
 			{
@@ -306,6 +341,16 @@ jQuery(document).ready(function($) {
 			$('#form-schedule_div').hide();
 		}
 	});
+	$('#form-setup_page').click(function() {
+		if($(this).attr('checked'))
+		{
+			$('#form-setup_page_title_div').show();
+		}
+		else
+		{
+			$('#form-setup_page_title_div').hide();
+		}
+	});
 });
 </script>
 <form action="" method="post" id="form-form" class="form-horizontal">
@@ -318,7 +363,7 @@ jQuery(document).ready(function($) {
 	<div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Forms allow a user to enter data directly to your entities,taxonomies, and relationships. Forms are the main data entry interface for your web and mobile apps.","wpas");?>">
 	<?php _e("HELP","wpas");?></a></div></div>
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Name","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-name" id="form-name" type="text" placeholder="<?php _e("e.g. customer_survey","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Unique identifier for the form. Can not contain capital letters,dashes or spaces. Between 3 and 30 characters.","wpas");?>">
@@ -326,7 +371,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid"> 
-	<label class="control-label span3"><?php _e("Type","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Type","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-form_type" id="form-form_type" class="input-medium">
 	<option value="" selected="selected"><?php _e("Please select","wpas");?></option>
@@ -338,7 +383,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid" id="form-form-attached_entity_div"> 
-	<label class="control-label span3"><?php _e("Attached to Entity","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Attached to Entity","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-attached_entity" id="form-attached_entity" class="input-medium">
 	</select>
@@ -394,6 +439,24 @@ jQuery(document).ready(function($) {
 	</div>
 	
 	<div id="formtabs-1" class="tab-pane fade in active">
+	<div class="control-group row-fluid">
+	<label class="control-label span3"></label>
+	<div class="controls span9">
+	<label class="checkbox"><?php _e("Create Setup Page","wpas");?>
+	<input name="form-setup_page" id="form-setup_page" type="checkbox" value="1">
+	<a href="#" style="cursor: help;" title="<?php _e("When enabled, creates a setup page for your submit form upon plugin activation.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</label>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="form-setup_page_title_div" style="display:none;">
+	<label class="control-label span3 req"><?php _e("Page Title","wpas");?></label>
+	<div class="controls span9">
+	<input class="input-xlarge" name="form-setup_page_title" id="form-setup_page_title" type="text" placeholder="<?php _e("e.g. Customer Survey","wpas");?>" value="" >
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the title of the setup page for your submit form.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>	
 	<div class="control-group row-fluid" id="form-temp_type_div"> 
 	<label class="control-label span3"><?php _e("Template","wpas");?></label>
 	<div class="controls span9">
@@ -550,6 +613,16 @@ jQuery(document).ready(function($) {
 	<i class="icon-info-sign"></i></a> (<?php _e("Default: Submit","wpas");?>)
 	</div>
 	</div>	
+	<div class="control-group row-fluid">
+	<label class="control-label span3"></label>
+	<div class="controls span9">
+	<label class="checkbox"><?php _e("Create Block Level Button","wpas");?>
+	<input name="form-submit_button_block" id="form-submit_button_block" type="checkbox" value="1">
+	<a href="#" style="cursor: help;" title="<?php _e("Makes the button span the full width of its grid size.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</label>
+	</div>
+	</div>
 	<div class="control-group row-fluid" id="form-submit_button_size_div"> 
 	<label class="control-label span3"><?php _e("Submit Button Size","wpas");?></label>
 	<div class="controls span9">
@@ -604,9 +677,9 @@ jQuery(document).ready(function($) {
 	<label class="control-label span3"><?php _e("Show Captcha","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-show_captcha" id="form-show_captcha" class="input-medium">
+	<option value="never-show"><?php _e("Never Show","wpas");?></option>
 	<option value="show-always"><?php _e("Always Show","wpas");?></option>
 	<option value="show-to-visitors"><?php _e("Visitors Only","wpas");?></option>
-	<option value="never-show"><?php _e("Never Show","wpas");?></option>
 	</select>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets Captcha display option. WPAS forms use the - honeypot - technique by default however CAPTCHAs can also be used for even stronger protection. Always Show displays captcha for everybody. Visitors Only option shows it for only visitors. Never Show option disables it.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
@@ -697,7 +770,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="form-email_user_div" style="display:none;"> 
 	<div class="control-group row-fluid"> 
-	<label class="control-label span3"><?php _e("Email Send To","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Send To","wpas");?></label>
 	<div class="controls span9">
 	<select name="form-confirm_sendto" id="form-confirm_sendto" class="input-medium">
 	</select>
@@ -730,7 +803,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Email Subject","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Subject","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_subject" id="form-confirm_subject" type="text" placeholder="<?php _e("e.g. Thanks for filling out my form","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject field of user emails. Max:255 Char.","wpas");?>">
@@ -758,7 +831,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="form-email_admin_div" style="display:none;"> 
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Email Send To","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Send To","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_sendto" id="form-confirm_admin_sendto" type="text" placeholder="<?php _e("e.g. admin-emails@example.com","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("The email address admins to get messages when a successful entry occurred. Multiple email addresses must be separated by coma.Leave it blank if you don't want them to get emails. Max:255 Char.","wpas");?>">
@@ -790,7 +863,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>	
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Email Subject","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Email Subject","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="form-confirm_admin_subject" id="form-confirm_admin_subject" type="text" placeholder="<?php _e("e.g. Someone filled out my form","wpas");?>" value="" >
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the subject of admin emails. Max:255 Char.","wpas");?>">
@@ -819,7 +892,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="form-schedule_div" style="display:none;"> 
 	<div class="control-group row-fluid">
-	<label class="control-label span3"><?php _e("Start Datetime","wpas");?></label>
+	<label class="control-label req span3"><?php _e("Start Datetime","wpas");?></label>
 	<div id="form-datetime_start" class="controls span9">
 	<input class="input-medium" name="form-schedule_start" id="form-schedule_start" type="text">
 	<a href="#" style="cursor: help;" title="<?php _e("The start datetime after which form will be active.","wpas");?>">

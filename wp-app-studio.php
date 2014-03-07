@@ -3,8 +3,8 @@ defined( 'ABSPATH' ) OR exit;
 /*
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
-   Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 2.9.8
+   Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
+   Version: 3.0
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "emarketdesign.com");
 define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "2.9.8");
+define('WPAS_VERSION', "3.0");
 define('WPAS_DATA_VERSION', "3");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
@@ -245,9 +245,9 @@ function wpas_update_data_arr($app_key,$myapp)
 				$afields[$keyfield] = $myfield['fld_label'];
 			}
 		}
-		if(isset($myentity['ent-has_user_relationship']) && isset($myentity['ent-limit_user_relationsip_role']) && in_array($myentity['ent-limit_user_relationsip_role'],$roles))
+		if(isset($myentity['ent-has_user_relationship']) && isset($myentity['ent-limit_user_relationship_role']) && in_array($myentity['ent-limit_user_relationship_role'],$roles))
 		{
-			$myapp['entity'][$keyentity]['ent-limit_user_relationsip_role'] = array_search($myentity['ent-limit_user_relationsip_role'],$roles);
+			$myapp['entity'][$keyentity]['ent-limit_user_relationship_role'] = array_search($myentity['ent-limit_user_relationship_role'],$roles);
 		}        
 		if(!empty($myentity['layout']))
 		{
@@ -625,7 +625,7 @@ function wpas_update_data_arr($app_key,$myapp)
 			$myapp['form'][$form_key] = $newform;
 		}
 	}
-	$myapp['ver'] = '3';
+	$myapp['ver'] = WPAS_DATA_VERSION;
 	$myapp['modified_date'] = date("Y-m-d H:i:s");
 	$myapp['option']['ao_domain'] = 'http://' . $myapp['option']['ao_domain'];
 	return $myapp;
@@ -762,6 +762,7 @@ function wpas_add_new_app()
 		$app_name = sanitize_text_field(stripslashes($_POST['app_title']));
 		$app['app_name']= $app_name;
 		$app['app_id']= $app_key;
+		$app['ver']= WPAS_DATA_VERSION;
 
 		if(!empty($app_name) && !empty($app_key))
 		{
@@ -794,7 +795,7 @@ function wpas_show_page($app,$page)
 	if($page == "edit_app")
 	{
 		$app_name = $app['app_name'];
-		wpas_breadcrumb("edit_app");
+		wpas_breadcrumb("edit_app",$app_key);
 		wpas_add_app_form("Rename",$app_key,$app_name,"block;");
 		if(isset($app['option']))
 		{
@@ -881,7 +882,7 @@ function wpas_show_page($app,$page)
 	{
 		wp_register_script( 'wpas-fade',plugin_dir_url( __FILE__ ) . 'js/wpas_fade.js');
 		wp_enqueue_script( 'wpas-fade');
-		wpas_breadcrumb("add_new_app");
+		wpas_breadcrumb("add_new_app",$app_key);
 		wpas_add_app_form("Save",$app_key,"","block;");
 		wpas_nav($app_name);
 		echo "<div id=\"was-editor\" class=\"span9\">";

@@ -1,6 +1,7 @@
 <?php
 
 add_action( 'admin_init', 'wpas_export');
+add_action( 'admin_init', 'wpas_duplicate');
 
 function wpas_is_allowed()
 {
@@ -38,6 +39,22 @@ function wpas_remote_request($method,$fields)
 		}
 	}
 	return false;
+}
+function wpas_duplicate()
+{
+        if(isset($_GET['duplicate']) && $_GET['duplicate'] == 1 && !empty($_GET['app']))
+        {
+		wpas_is_allowed();
+		check_admin_referer('wpas_duplicate');
+		$app = wpas_get_app($_GET['app']);
+		if($app !== false && !empty($app))
+		{
+			$app['app_name'] = $app['app_name'] . " Copy";
+			$app_key = uniqid('',true);
+			$app['app_id'] = $app_key;
+			wpas_update_app($app,$app_key,'new');
+		}
+        }
 }
 function wpas_export()
 {
@@ -301,6 +318,7 @@ function wpas_check_valid_generate($myapp)
 	// 7: no unique key in entity
 	// 8: search form layout empty
 	// 9: search form not linked to any view
+	// 10: forms not attached to an entity
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
@@ -374,6 +392,9 @@ function wpas_check_valid_generate($myapp)
 		case 9:
 			$alert = sprintf(__('Error: You must have a view attached for %s search form.','wpas'),$error_loc_name);
 			break;
+		case 10:
+			$alert = sprintf(__('Error: You must have an entity attached for %s form.','wpas'),$error_loc_name);
+			break;
 		default:
 			$alert = "";
 			break;
@@ -397,11 +418,11 @@ function wpas_check_form_rel_uniq($myapp)
 					{
 						if(isset($myitem['relent']) && $myitem['obtype'] == 'relent')
 						{
-							if($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-from-name'])
+							if($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-from-name'] && $myapp['relationship'][$myitem['relent']]['rel-to-name'] != 'user')
 							{	
 								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-to-name'];
 							}
-							elseif($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-to-name'])
+							elseif($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-to-name'] && $myapp['relationship'][$myitem['relent']]['rel-from-name'] != 'user')
 							{
 								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-from-name'];
 							}
@@ -414,18 +435,15 @@ function wpas_check_form_rel_uniq($myapp)
 				foreach($myform['form-dependents'] as $rel_dep)
 				{
 					$myrel = $myapp['relationship'][$rel_dep];
-					if($myrel['rel-required'] == 1)
+					if($myform['form-attached_entity'] == $myrel['rel-from-name'] && $myrel['rel-to-name'] != 'user')
 					{
-						if($myform['form-attached_entity'] == $myrel['rel-from-name'])
-						{
-							$myent_ids[] = $myrel['rel-to-name'];
-						}
-						else
-						{
-							$myent_ids[] = $myrel['rel-from-name'];
-						}
-						break;
+						$myent_ids[] = $myrel['rel-to-name'];
 					}
+					else if($myrel['rel-from-name'] != 'user')
+					{
+						$myent_ids[] = $myrel['rel-from-name'];
+					}
+					break;
 				}
 					
 			}
@@ -594,6 +612,12 @@ function wpas_check_search_form($myapp)
 	$error_loc_name = "";
 	foreach($myapp['form'] as $keyform => $myform)
 	{
+		if($myform['form-attached_entity'] == '' || is_null($myform['form-attached_entity']))
+		{
+			$generate_error = 10;
+			$error_loc_name = $myform['form-name'];
+			break;
+		}
 		$form_linked = 0;
 		if($myform['form-form_type'] == 'search' && empty($myform['form-layout']))
 		{

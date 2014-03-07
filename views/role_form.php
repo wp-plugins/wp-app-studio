@@ -110,6 +110,22 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 	$html ="";
 	$entcount = 0;
 	$ent_caps = Array();
+	$user_rels= Array();
+	$app = wpas_get_app($app_id);
+	if(!empty($app['relationship']))
+	{
+		foreach($app['relationship'] as $keyrel => $myrel)
+		{
+			if($myrel['rel-from-name'] == 'user')
+			{
+				$user_rels[$myrel['rel-to-name']][$keyrel] = $myrel['rel-name'];
+			}
+			elseif($myrel['rel-to-name'] == 'user')
+			{
+				$user_rels[$myrel['rel-from-name']][$keyrel] = $myrel['rel-name'];
+			}
+		}
+	}
 	foreach($entities as $keyent => $myentity)
 	{
 		$show_cap = 0;
@@ -141,6 +157,13 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 			$ent_caps[$entcount]['edit_published'] = "edit_published_" . $label;
 			$ent_caps[$entcount]['manage_operations'] = "manage_operations_" . $label;
 			$ent_caps[$entcount]['name'] = $myentity['ent-name'];
+			if(!empty($user_rels[$keyent]))
+			{
+				foreach($user_rels[$keyent] as $keyrel => $myuser_rel)
+				{
+					$ent_caps[$entcount]['limitby_' . $myuser_rel] = "limitby_rel_" . $keyrel;
+				}
+			}
 			$entcount++;
 		}
 	}
@@ -353,7 +376,7 @@ function wpas_add_role_form($app_id,$role_id)
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("A role is a collection of capabilities which enable or disable access to your application's data.","wpas");?>"><?php _e("HELP","wpas"); ?></a></div></div>
 
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Name","wpas");?></label>
+		<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="role-name" id="role-name" type="text" placeholder="<?php _e("e.g. product_owner","wpas");?>"
 		<?php 
@@ -367,7 +390,7 @@ function wpas_add_role_form($app_id,$role_id)
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Label","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Label","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="role-label" id="role-label" type="text" placeholder="<?php _e("e.g. Product Owner","wpas"); ?>"
 		<?php 

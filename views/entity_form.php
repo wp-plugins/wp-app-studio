@@ -26,16 +26,6 @@ jQuery(document).ready(function() {
 			jQuery('#ent-parent_item_colon_div').hide();
 		}
 	});
-	jQuery('#ent-has_user_relationship').click(function() {
-		if(jQuery(this).attr('checked'))
-		{
-			jQuery('#ent-limit_user_relationship_role_div').show();
-		}
-		else
-		{
-			jQuery('#ent-limit_user_relationship_role_div').hide();
-		}
-	});
 	jQuery('#ent-advanced-option').click(function() {
 		if(jQuery(this).attr('checked'))
 		{
@@ -50,16 +40,19 @@ jQuery(document).ready(function() {
 		if(jQuery(this).find('option:selected').val() == 0)
 		{
 			jQuery('#ent-show_in_menu_div').hide();
+			jQuery('#ent-menu_icon_type_div').hide();
 			jQuery('#ent-menu_icon_div').hide();
 			jQuery('#ent-menu_icon_32_div').hide();
+			jQuery('#ent-menu_icon_fa_div').hide();
+			jQuery('#ent-menu_icon_dash_div').hide();
 			jQuery('#ent-menu_position_div').hide();
 			jQuery('#ent-top_level_page_div').hide();
 		}
 		else
 		{
 			jQuery('#ent-show_in_menu_div').show();
-			jQuery('#ent-menu_icon_div').show();
-			jQuery('#ent-menu_icon_32_div').show();
+			jQuery('#ent-menu_icon_type_div').show();
+			jQuery('#ent-menu_icon_type').val('');
 			jQuery('#ent-menu_position_div').show();
 			jQuery('#ent-top_level_page_div').show();
 		}
@@ -69,24 +62,64 @@ jQuery(document).ready(function() {
 
 		if(menu_selected == 0)
 		{
+			jQuery('#ent-menu_icon_type_div').hide();
 			jQuery('#ent-menu_icon_div').hide();
 			jQuery('#ent-menu_icon_32_div').hide();
+			jQuery('#ent-menu_icon_fa_div').hide();
+			jQuery('#ent-menu_icon_dash_div').hide();
 			jQuery('#ent-menu_position_div').hide();
 			jQuery('#ent-top_level_page_div').hide();
 		}
 		else if(menu_selected == 2)
 		{
-			jQuery('#ent-menu_icon_div').show();
-			jQuery('#ent-menu_icon_32_div').show();
+			jQuery('#ent-menu_icon_type_div').show();
+			jQuery('#ent-menu_icon_type').val('');
+			jQuery('#ent-menu_icon_div').hide();
+			jQuery('#ent-menu_icon_32_div').hide();
+			jQuery('#ent-menu_icon_fa_div').hide();
+			jQuery('#ent-menu_icon_dash_div').hide();
 			jQuery('#ent-menu_position_div').hide();
 			jQuery('#ent-top_level_page_div').show();
 		}
 		else
 		{
-			jQuery('#ent-menu_icon_div').show();
-			jQuery('#ent-menu_icon_32_div').show();
+			jQuery('#ent-menu_icon_type_div').show();
+			jQuery('#ent-menu_icon_type').val('');
+			jQuery('#ent-menu_icon_div').hide();
+			jQuery('#ent-menu_icon_32_div').hide();
+			jQuery('#ent-menu_icon_fa_div').hide();
+			jQuery('#ent-menu_icon_dash_div').hide();
 			jQuery('#ent-menu_position_div').show();
 			jQuery('#ent-top_level_page_div').hide();
+		}
+	});
+	jQuery('#ent-menu_icon_type').click(function() {
+		var icon_type = jQuery(this).val();
+		switch (icon_type) {
+			case 'image':
+				jQuery('#ent-menu_icon_div').show();
+				jQuery('#ent-menu_icon_32_div').show();
+				jQuery('#ent-menu_icon_fa_div').hide();
+				jQuery('#ent-menu_icon_dash_div').hide();
+				break;
+			case 'fa':
+				jQuery('#ent-menu_icon_div').hide();
+				jQuery('#ent-menu_icon_32_div').hide();
+				jQuery('#ent-menu_icon_fa_div').show();
+				jQuery('#ent-menu_icon_dash_div').hide();
+				break;
+			case 'dash':
+				jQuery('#ent-menu_icon_div').hide();
+				jQuery('#ent-menu_icon_32_div').hide();
+				jQuery('#ent-menu_icon_fa_div').hide();
+				jQuery('#ent-menu_icon_dash_div').show();
+				break;
+			default:
+				jQuery('#ent-menu_icon_div').hide();
+				jQuery('#ent-menu_icon_32_div').hide();
+				jQuery('#ent-menu_icon_fa_div').hide();
+				jQuery('#ent-menu_icon_dash_div').hide();
+				break;
 		}
 	});
 
@@ -99,7 +132,7 @@ jQuery(document).ready(function() {
 		<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("The entity is a person, object, place or event for which data is collected.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 		<div class="field-container">
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Name","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Name","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-name" id="ent-name" type="text" placeholder="<?php _e("e.g. product","wpas"); ?>" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("General name for the entity, usually singular max. 16 characters, can not contain capital letters,reserved words,dashes or spaces.","wpas"); ?>">
@@ -107,7 +140,7 @@ jQuery(document).ready(function() {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e(" Plural","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e(" Plural","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-label" id="ent-label" type="text" value="" placeholder="<?php _e("e.g. Products","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("A plural descriptive name for the entity marked for translation.","wpas"); ?>">
@@ -115,7 +148,7 @@ jQuery(document).ready(function() {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Singular","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Singular","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-singular-label" id="ent-singular-label" type="text" value="" placeholder="<?php _e("e.g. Product","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("It is the name for one object of this entity.","wpas"); ?>">
@@ -157,7 +190,6 @@ jQuery(document).ready(function() {
 		<li><a data-toggle="tab" href="#tabs-2"><?php _e("Options","wpas"); ?></a></li>
 		<li><a data-toggle="tab" href="#tabs-3"><?php _e("Menu Options","wpas"); ?></a></li>
 		<li><a data-toggle="tab" href="#tabs-4"><?php _e("Display Options","wpas"); ?></a></li>
-		<li><a data-toggle="tab" href="#tabs-5"><?php _e("User Relationship","wpas"); ?></a></li>
 		</ul>
 		<div id="myTabContent" class="tab-content">
 		<div class="row-fluid">
@@ -352,37 +384,37 @@ jQuery(document).ready(function() {
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e(" Supports","wpas"); ?></label>
 		<div class="controls span9">
-		<label class="checkbox"><input  name="ent-supports_title" id="ent-supports_title" type="checkbox" value="1" />&nbsp;<?php _e("Title","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_title" id="ent-supports_title" type="checkbox" value="1">&nbsp;<?php _e("Title","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the title entry meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_editor" id="ent-supports_editor" type="checkbox" value="1" />&nbsp;<?php _e("Editor","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_editor" id="ent-supports_editor" type="checkbox" value="1">&nbsp;<?php _e("Editor","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the input text area for editor meta box","wpas"); ?>" /><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_author" id="ent-supports_author" type="checkbox" value="1" />&nbsp;<?php _e("Author","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_author" id="ent-supports_author" type="checkbox" value="1">&nbsp;<?php _e("Author","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the author meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_thumbnail" id="ent-supports_thumbnail" type="checkbox" value="1" />&nbsp;<?php _e("Featured Image","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_thumbnail" id="ent-supports_thumbnail" type="checkbox" value="1">&nbsp;<?php _e("Featured Image","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the featured image meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_excerpt" id="ent-supports_excerpt" type="checkbox" value="1" />&nbsp;<?php _e("Excerpt","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_excerpt" id="ent-supports_excerpt" type="checkbox" value="1">&nbsp;<?php _e("Excerpt","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds a customized excerpt meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_comments" id="ent-supports_comments" type="checkbox" value="1" />&nbsp;<?php _e("Comments","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_comments" id="ent-supports_comments" type="checkbox" value="1">&nbsp;<?php _e("Comments","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the comments meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_trackbacks" id="ent-supports_trackbacks" type="checkbox" value="1" />&nbsp;<?php _e("Trackbacks","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_trackbacks" id="ent-supports_trackbacks" type="checkbox" value="1">&nbsp;<?php _e("Trackbacks","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the trackbacks meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_custom_fields" id="ent-supports_custom_fields" type="checkbox" value="1" />&nbsp;<?php _e("Custom Fields","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_custom_fields" id="ent-supports_custom_fields" type="checkbox" value="1">&nbsp;<?php _e("Custom Fields","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the custom fields meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-supports_revisions" id="ent-supports_revisions" type="checkbox" value="1" />&nbsp;<?php _e("Revisions","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_revisions" id="ent-supports_revisions" type="checkbox" value="1">&nbsp;<?php _e("Revisions","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the revisions meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
 		<div id="ent-page-attributes-div" style="display:none;">
-		<label class="checkbox"><input name="ent-supports_page_attributes" id="ent-supports_page_attributes" type="checkbox" value="1" />&nbsp;<?php _e("Page attributes","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_page_attributes" id="ent-supports_page_attributes" type="checkbox" value="1">&nbsp;<?php _e("Page attributes","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the page attribute meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
 		</div>
-		<label class="checkbox"><input name="ent-supports_post_formats" id="ent-supports_post_formats" type="checkbox" value="1" />&nbsp;<?php _e("Post Formats","wpas"); ?>
+		<label class="checkbox"><input name="ent-supports_post_formats" id="ent-supports_post_formats" type="checkbox" value="1">&nbsp;<?php _e("Post Formats","wpas"); ?>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds the post format meta box","wpas"); ?>"><i class="icon-info-sign"></i></a></label>
 		</div>
 		</div>
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Built-in Taxonomies","wpas"); ?></label>
 		<div class="controls span9">
-		<label class="checkbox"><input name="ent-taxonomy_category" id="ent-taxonomy_category" type="checkbox" value="1" />&nbsp;<?php _e("Categories","wpas"); ?>&nbsp; <a href="#" style="cursor: help;" rel="tooltip" title="<?php _e("Enables Built-in Category taxonomy support for the entity. Categories link shows in the entity submenu when enabled.","wpas"); ?>"> <i class="icon-info-sign"></i></a></label>
-		<label class="checkbox"><input name="ent-taxonomy_post_tag" id="ent-taxonomy_post_tag" type="checkbox" value="1" />&nbsp;<?php _e("Tags","wpas"); ?>&nbsp;
+		<label class="checkbox"><input name="ent-taxonomy_category" id="ent-taxonomy_category" type="checkbox" value="1">&nbsp;<?php _e("Categories","wpas"); ?>&nbsp; <a href="#" style="cursor: help;" rel="tooltip" title="<?php _e("Enables Built-in Category taxonomy support for the entity. Categories link shows in the entity submenu when enabled.","wpas"); ?>"> <i class="icon-info-sign"></i></a></label>
+		<label class="checkbox"><input name="ent-taxonomy_post_tag" id="ent-taxonomy_post_tag" type="checkbox" value="1">&nbsp;<?php _e("Tags","wpas"); ?>&nbsp;
 	<a href="#" style="cursor: help;" rel="tooltip" title="<?php _e("Enables Built-in Tags taxonomy support. Tags link shows in the entity submenu when enabled.","wpas"); ?>"> <i class="icon-info-sign"></i></a></label>
 		</div>
 		</div>
@@ -411,20 +443,47 @@ jQuery(document).ready(function() {
 		<a href="#" style="cursor: help;" title="<?php _e("Where to show the entity in the admin menu. Show UI must be true. False - do not display in the admin menu. True - display as a top level menu.","wpas"); ?>  "><i class="icon-info-sign"></i></a> (<?php _e("default: True","wpas"); ?>)
 		</div>
 		</div>
-		<div class="control-group row-fluid" id="ent-menu_icon_div">
-		<label class="control-label span3"><?php _e("Menu-icon 16x16","wpas"); ?></label>
+		<div class="control-group row-fluid" id="ent-menu_icon_type_div">
+		<label class="control-label span3"><?php _e("Icon Type","wpas"); ?></label>
+		<div class="controls span9">
+		<select name="ent-menu_icon_type" id="ent-menu_icon_type" class="input-mini">
+		<option selected="selected" value=""><?php _e("Default","wpas"); ?></option>
+		<option value="image"><?php _e("Image","wpas"); ?></option>
+		<option value="fa"><?php _e("Font Awesome","wpas"); ?></option>
+		<option value="dash"><?php _e("Dashicons","wpas"); ?></option></select>
+		<a href="#" style="cursor: help;" title="<?php _e("Sets the type of icon for your entity. You can assign an image, font-awesome or dashicon icons. If the default icon option is selected, then the pushpin icon is displayed. Dashicon icons can only be used for WordPress Version 3.8+.","wpas"); ?>  "><i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="ent-menu_icon_div" style="display:none;">
+		<label class="control-label req span3"><?php _e("Menu-icon 16x16","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-menu_icon" id="ent-menu_icon" type="text" placeholder="<?php _e("enter the url of the image including http://","wpas");?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("The icon which will be displayed on the menu bar of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>(<?php _e("default: Post icon","wpas"); ?>)
 		</div>
 		</div>
-		<div class="control-group row-fluid" id="ent-menu_icon_32_div">
-		<label class="control-label span3"><?php _e("Menu-icon 32x32","wpas"); ?></label>
+		<div class="control-group row-fluid" id="ent-menu_icon_32_div" style="display:none;">
+		<label class="control-label req span3"><?php _e("Menu-icon 32x32","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-menu_icon_32" id="ent-menu_icon_32" type="text" placeholder="<?php _e("enter the url of the image including http://","wpas"); ?>"/>
 		<a href="#" style="cursor: help;" title="<?php _e("The icon which will be displayed on the edit and list screens of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>(<?php _e("default: Post icon","wpas"); ?>)
 		</div>
-		</div>															
+		</div>
+                <div class="control-group row-fluid" id="ent-menu_icon_fa_div" style="display:none;">
+                <label class="control-label req span3"><?php _e("Icon Class","wpas"); ?></label>
+                <div class="controls span9">
+                <input class="input-small" name="ent-menu_icon_fa" id="ent-menu_icon_fa" type="text" placeholder="<?php _e("exp; fa-rocket","wpas");?>"/>
+                <a href="#" style="cursor: help;" title="<?php _e("Sets the class of the icon which will be displayed on the menu bar of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>
+		<a target="_blank" href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/">Cheatsheet</a>
+                </div>
+                </div>
+                <div class="control-group row-fluid" id="ent-menu_icon_dash_div" style="display:none;">
+                <label class="control-label req span3"><?php _e("Icon Class","wpas"); ?></label>
+                <div class="controls span9">
+                <input class="input-small" name="ent-menu_icon_dash" id="ent-menu_icon_dash" type="text" placeholder="<?php _e("exp; camera","wpas");?>"/>
+                <a href="#" style="cursor: help;" title="<?php _e("Enter the class of the icon  which will be displayed on the menu bar of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>
+                <a target="_blank" href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/dashicons">Cheatsheet</a>
+                </div>
+                </div>															
 		<div class="control-group row-fluid" id="ent-menu_position_div"> 
 		<label class="control-label span3"><?php _e(" Show Menu Below","wpas"); ?></label>
 		<div class="controls span9">
@@ -469,32 +528,6 @@ jQuery(document).ready(function() {
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-default_grp_title" id="ent-default_grp_title" type="text" placeholder="<?php _e("e.g. Product Info","wpas"); ?>" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("Sets the default group title if there is no entity layout defined.","wpas"); ?>"> <i class="icon-info-sign"></i></a>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div id="tabs-5" class="tab-pane fade">
-		<div class="tab-grp-data">
-		<div class="control-group row-fluid">
-		<div class="controls">
-		<label class="checkbox"><input name="ent-has_user_relationship" id="ent-has_user_relationship" type="checkbox" value="1"/>&nbsp;<?php _e("Create relationship with Users","wpas"); ?>
-		<a href="#" style="cursor: help;" title="<?php _e("Creates a relationship with users of the application such as Assign to relationship. You can also limit the relationship using user roles. ","wpas"); ?>">
-		<i class="icon-info-sign"></i></a></label>
-		</div>
-		</div>
-		<div class="control-group row-fluid" id="ent-limit_user_relationship_role_div" style="display: none;">
-		<label class="control-label span3"><?php _e("User role relationship","wpas"); ?></label>
-		<div class="controls span9">
-		<select name="ent-limit_user_relationship_role" id="ent-limit_user_relationship_role">
-		<option selected="selected" value="false"><?php _e("Do not limit","wpas"); ?></option>
-		<option value="editor"><?php _e("Only Editors can be related","wpas"); ?></option>
-		<option value="author"><?php _e("Only Author can be related","wpas"); ?></option>
-		<option value="contributor"><?php _e("Only Contributor can be related","wpas"); ?></option>
-		<option value="subscriber"><?php _e("Only Subscriber can be related","wpas"); ?></option>
-		<option value="administrator"><?php _e("Only Administrator can be related","wpas"); ?></option>
-		</select>
-		<a href="#" title="<?php _e("Super Admin - Someone with access to the blog network administration features controlling the entire network (See Create a Network). Administrator - Somebody who has access to all the administration features. Editor - Somebody who can publish and manage posts and pages as well as manage other users's posts, etc. Author - Somebody who can publish and manage their own posts. Contributor - Somebody who can write and manage their posts but not publish them. Subscriber - Somebody who can only manage their profile.","wpas"); ?>" style="cursor: help;">
-		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
 		</div>

@@ -36,6 +36,7 @@ $form_vars = Array(
 'dupe_error' => __("Please check duplicate entries and try again.","wpas"),
 'dropdown_error' => __("Please select an option for all dropdowns.","wpas"),
 'size_error' => __("Please update element row sizes to the total of 12.","wpas"),
+'multiple_button_error' => __("There must be only one submit button.","wpas"),
 );
 $layout_vars = Array(
 'edit_tab_title' => __("Tab Title (edit me)","wpas"),
@@ -52,17 +53,22 @@ $validate_vars = Array(
 'check_int' => __("Must contain only integers.","wpas"),
 'check_alpha_num' => __("Must contain only letters or numbers.","wpas"),
 'check_alpha_num_dash' => __("Must contain only letters, numbers or dashes.","wpas"),
+'check_alpha_dash' => __("Must contain only letters or dashes.","wpas"),
 'check_alpha_dash_fa' => __("Must contain only letters and dashes and start with fa-.","wpas"),
 'check_alpha_num_und' => __("Must contain only letters, numbers or underscores.","wpas"),
 'check_alpha_num_und_dash' => __("Must contain only letters, numbers, underscores or dashes.","wpas"),
 'check_alpha_num_comma' => __("Must contain only letters, numbers and commas.","wpas"),
+'check_alpha_num_und_semi_cur' => __("Must contain only letters, numbers, underscores, semicolon and curly brackets.","wpas"),
+'check_tax_char' => __("Must contain only letters, numbers, underscores, semicolon, curly and square brackets.","wpas"),
 'check_version' => __("Must contain only numbers and dots.","wpas"),
-'check_semico' => __("You need to seperate each option value with a semicolon.","wpas"),
+'check_semico' => __("You need to seperate each option value with a semicolon and each option must have a value defined within curly brackets.","wpas"),
+'check_values' => __("You need to seperate each option value with a semicolon and each option must have a value defined within curly  or/and square brackets.","wpas"),
 'check_default' => __("You cannot have multiple default values.","wpas"),
 'no_reserved' => __("You cannot use reserved words.","wpas"),
 'check_help' => __("Please select a different attach to or screen type.","wpas"),
 'check_unique' => __("Please enter a unique name.","wpas"),
 'check_email' => __("Please enter valid email(s).","wpas"),
+'check_reluser' => __("You cannot create User to User relationship. Please select a different entity.","wpas"),
 );
 
 ?>

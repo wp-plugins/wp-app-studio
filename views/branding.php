@@ -36,13 +36,9 @@ echo '
 function wpas_branding_footer()
 {
 	echo '<div id="was-container-footer" class="container-fluid">
-		<div class="row-fluid">
-		<div id="footer" class="span11">
-		<ul class="nav nav-pills">
-		<li><a target="_blank" href="//' . WPAS_URL . '">&copy; 2014 eMarket Design</a></li>
-		</ul>
-		</div>
-		<div id="footer-version" class="span1 pull-right"> V ' . WPAS_VERSION . '</div>
+		<div id="footer">
+		<span><a target="_blank" href="//' . WPAS_URL . '">&copy; 2014 eMarket Design LLC. All rights reserved.</a></span>
+		<span id="footer-version" class="pull-right"> V ' . WPAS_VERSION . '</span>
 		</div>
 		</div>';
 }

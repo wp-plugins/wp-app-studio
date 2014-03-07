@@ -333,7 +333,7 @@ jQuery(document).ready(function($) {
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of an entity, for example, Customer Name is an attribute of the entity Customer.","wpas");?>"><?php _e("HELP","wpas");?></a></div></div>
   <fieldset>
   	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Name","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_name" id="fld_name" type="text" placeholder="<?php _e("e.g. product_name","wpas");?>" value="">
 			<a href="#" style="cursor: help;" title="<?php _e("General name for the attribute, single word, no spaces, all lower case. Underscores and dashes allowed","wpas");?>">
@@ -341,7 +341,7 @@ jQuery(document).ready(function($) {
 			</div>
 	</div>
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Label","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Label","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_label" id="fld_label" type="text" placeholder="<?php _e("e.g. Product Name","wpas");?>" value="">
 			<a href="#" style="cursor: help;" title="<?php _e("User friendly name for your attribute. It will appear on the EDIT page of the entity.","wpas");?>">
@@ -357,7 +357,7 @@ jQuery(document).ready(function($) {
 			</div>
     </div>
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Type","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Type","wpas");?></label>
 			<div class="controls span9">
 					<select name="fld_type" id="fld_type">
 						<option selected="selected" value=""><?php _e("Please select","wpas");?></option>
@@ -530,7 +530,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="date-format" style="display:none;">
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Date Format","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Date Format","wpas");?></label>
 			<div class="controls span9">
 			<select name="fld_date_format" id="fld_date_format">
 			<option value="" selected="selected"><?php _e("Please select","wpas");?></option>
@@ -630,10 +630,10 @@ jQuery(document).ready(function($) {
 	</div><!--validation-optiond-->
 	</div>
 	<div class="control-group row-fluid" id="fld_values_div" style="display:none;">
-        <label class="control-label span3"><?php _e("Values","wpas");?></label>
+        <label class="control-label span3 req"><?php _e("Values","wpas");?></label>
         <div class="controls span9">
         <textarea id="fld_values" name="fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue;red;white " ></textarea>
-        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolon at the end of the values as well.","wpas");?>">
+        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option labels for the field. There must be only one semicolon between the values. Optionally, you can define value-label combinations using {Value}Label format. If the predined value does not exist, it is automatically created based on the label.","wpas");?>">
         <i class="icon-info-sign"></i></a>
         </div>
 </div>
@@ -641,7 +641,7 @@ jQuery(document).ready(function($) {
 			<label class="control-label span3"><?php _e("Default Value","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_dflt_value" id="fld_dflt_value" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value or values for the attribute. Multiple default values can only be set for select with multiple option and checkbox list types.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value(s) for the attribute, separated by a semicolon. Multiple default values can only be set for select with multiple option and checkbox list types.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
