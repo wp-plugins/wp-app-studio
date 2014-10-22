@@ -3,8 +3,8 @@ defined( 'ABSPATH' ) OR exit;
 /*
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
-   Description: Wp App Studio is a simple to use WordPress plugin which enables web designers, business users as well as bloggers to create wordpress based fully featured web and mobile apps without any coding.
-   Version: 2.9.8
+   Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
+   Version: 4.0
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -12,10 +12,10 @@ defined( 'ABSPATH' ) OR exit;
 register_activation_hook( __FILE__, 'wpas_activate' );
 register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
-define('WPAS_URL', "emarketdesign.com");
-define('WPAS_SSL_URL', "https://www.emarketdesign.com");
-define('WPAS_VERSION', "2.9.8");
-define('WPAS_DATA_VERSION', "3");
+define('WPAS_URL', "wpas.emdplugins.com");
+define('WPAS_SSL_URL', "https://api.emarketdesign.com");
+define('WPAS_VERSION', "4.0");
+define('WPAS_DATA_VERSION', "4");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
 	update_option('wpas_version',WPAS_VERSION);
@@ -110,6 +110,7 @@ function wpas_activate ()
 					'role-update_plugins' => 1,
 					'role-update_themes' => 1,
 					'role-upload_files' => 1,
+					'role-view_app_dashboard' => 1,
 				);
 		$roles[1] = Array('role-name'=> 'editor',
 				      'role-label' => 'Editor',
@@ -173,7 +174,6 @@ function wpas_deactivate ()
 }
 
 require_once("wpas_translate.php");
-require_once("lib/wpas_wysiwyg_fields.php");
 require_once("lib/wpas_operations.php");
 require_once("lib/wpas_ajax_funcs.php");
 require_once("views/application_form.php");
@@ -193,6 +193,7 @@ require_once("views/view_form.php");
 require_once("views/widget_form.php");
 require_once("views/role_form.php");
 require_once("views/forms_form.php");
+require_once("views/notify_form.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
@@ -205,16 +206,40 @@ if(get_option('wpas_data_version') != WPAS_DATA_VERSION)
 	$apps = wpas_get_app_list();
 	foreach($apps as $app_key => $myapp)
 	{
-		if(!isset($myapp['ver']) || $myapp['ver'] != WPAS_DATA_VERSION)
+		if(!isset($myapp['ver']) || $myapp['ver'] < 3)
 		{
-			$myapp = wpas_update_data_arr($app_key,$myapp);
+			$myapp = wpas_update_data_arr_ver3($app_key,$myapp);
+			$myapp = wpas_update_data_arr_ver4($app_key,$myapp);
+			wpas_update_app($myapp,$app_key);
+		}
+		elseif($myapp['ver'] == 3 && !empty($myapp['widget']))
+		{
+			$myapp = wpas_update_data_arr_ver4($app_key,$myapp);
 			wpas_update_app($myapp,$app_key);
 		}
 	}
+	if(get_option('wpas_data_version') <= 3)
+	{
+		delete_option('wpas_passcode_email');
+	}
 	update_option('wpas_data_version',WPAS_DATA_VERSION);
 }
-
-function wpas_update_data_arr($app_key,$myapp)
+function wpas_update_data_arr_ver4($app_key,$myapp)
+{
+	if(!empty($myapp['widget']))
+	{
+		foreach($myapp['widget'] as $widg_key => $mywidg)
+		{
+			if(!empty($mywidg['widg-attach-rel']))
+			{
+				unset($myapp['widget'][$widg_key]);
+			}
+		}
+	}
+	return $myapp;
+}
+		
+function wpas_update_data_arr_ver3($app_key,$myapp)
 {
 	$entities = Array();
 	$entnames = Array();
@@ -245,9 +270,9 @@ function wpas_update_data_arr($app_key,$myapp)
 				$afields[$keyfield] = $myfield['fld_label'];
 			}
 		}
-		if(isset($myentity['ent-has_user_relationship']) && isset($myentity['ent-limit_user_relationsip_role']) && in_array($myentity['ent-limit_user_relationsip_role'],$roles))
+		if(isset($myentity['ent-has_user_relationship']) && isset($myentity['ent-limit_user_relationship_role']) && in_array($myentity['ent-limit_user_relationship_role'],$roles))
 		{
-			$myapp['entity'][$keyentity]['ent-limit_user_relationsip_role'] = array_search($myentity['ent-limit_user_relationsip_role'],$roles);
+			$myapp['entity'][$keyentity]['ent-limit_user_relationship_role'] = array_search($myentity['ent-limit_user_relationship_role'],$roles);
 		}        
 		if(!empty($myentity['layout']))
 		{
@@ -625,7 +650,7 @@ function wpas_update_data_arr($app_key,$myapp)
 			$myapp['form'][$form_key] = $newform;
 		}
 	}
-	$myapp['ver'] = '3';
+	$myapp['ver'] = WPAS_DATA_VERSION;
 	$myapp['modified_date'] = date("Y-m-d H:i:s");
 	$myapp['option']['ao_domain'] = 'http://' . $myapp['option']['ao_domain'];
 	return $myapp;
@@ -633,19 +658,19 @@ function wpas_update_data_arr($app_key,$myapp)
 
 
 function wpas_plugin_menu() {
-	global $hook_app_list, $hook_app_new;
-	$icon_url = plugin_dir_url( __FILE__ ) . "img/wpas-icon.png";
+	global $hook_app_list, $hook_app_new, $hook_generate;
+	$icon_url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAB1UlEQVQ4ja2VvU4bQRDHN/AMeYM0Ea8AEd6Zis6RLKWIhCCioEVJoApnhTqkgCABO1MkBR+RIkUKD5HGTVzMTE1BhwSV+XCK9Z259fmsKIy0ze1fv53vcy6xObKn6bcae1J729jvziDbhWfbnEQC0vdA2kPWPZdlU2NhyNZHtj6QtMfBPOlSrkO2PpJSCZrC8uNJP47A2DZ9kBUg/Z1AvzjnYs5yGJAdIOt1ItwahiltJLsD0psUCqRXpVeRdRuC7KZeIlvfs7WApA2kPSBZBNLuCJRstZxDloXBxSUG2yheZv2GpFsFjPW7D9IEtj8F9FBeVSebbR3IXiPpeSWM9NQHaSLZsQ+yAmz3nvTt+F5wzgHLWp1nOQzZbjHou1pY4WmQZpVnQHb0zzDnYjXrYbbh2VqPBgOSr2lLVdqLA30eYfpzIqym+aNl2RSQnUGwNwPo6SRY7ZgiKUaBdnIokv7KC+CDNAdhnnu29RFwkKycO1YeCrSDbMtA2ntYTWBZi31qlwPdwzG9GK6+1sk0kH4uhcH2Y/6w+yyNJPcOguzG2Y+wxn53phA1WF8C244n+YSsexhk1tUszzimul0Jc845IFlssCxULsoxBmQfKmH/Y1W/i78fLDHuE0qyfgAAAABJRU5ErkJggg==";
 	
 	$hook_app_list = add_menu_page('WP App Studio', 'WP App Studio', 'design_wpas', 'wpas_app_list', 'wpas_app_list',$icon_url);
 	$hook_app_new = add_submenu_page( 'wpas_app_list', __('Add New App','wpas'), __('Add New App','wpas'), 'design_wpas', 'wpas_add_new_app', 'wpas_add_new_app');
+	$hook_generate = add_submenu_page( 'wpas_app_list', __('Generate','wpas'), __('Generate','wpas'), 'design_wpas', 'wpas_generate_page', 'wpas_generate_page');
 	add_action( 'admin_enqueue_scripts', 'wpas_enqueue_scripts' );
 
 }
 function wpas_enqueue_scripts($hook_suffix){
-	global $hook_app_list, $hook_app_new, $local_vars,$form_vars, $layout_vars, $validate_vars;
-	if($hook_suffix == $hook_app_list || $hook_suffix == $hook_app_new)
+	global $hook_app_list, $hook_app_new, $hook_generate, $local_vars,$form_vars, $layout_vars, $validate_vars;
+	if(in_array($hook_suffix,Array($hook_app_list,$hook_app_new)))
 	{
-		add_filter('user_can_richedit', '__return_true');
 		$local_vars['nonce_update_field_order'] = wp_create_nonce( 'wpas_update_field_order_nonce' );
 		$local_vars['nonce_delete_field'] = wp_create_nonce( 'wpas_delete_field_nonce' );
 		$local_vars['nonce_delete'] = wp_create_nonce( 'wpas_delete_nonce' );
@@ -653,7 +678,6 @@ function wpas_enqueue_scripts($hook_suffix){
 		$local_vars['nonce_save_option_form'] = wp_create_nonce( 'wpas_save_option_form_nonce' );
 		$local_vars['nonce_update_form'] = wp_create_nonce( 'wpas_update_form_nonce' );
 		$local_vars['nonce_save_field'] = wp_create_nonce( 'wpas_save_field_nonce' );
-		$local_vars['nonce_check_status_generate'] = wp_create_nonce( 'wpas_check_status_generate_nonce' );
 		$local_vars['nonce_save_layout'] = wp_create_nonce( 'wpas_save_layout_nonce' );
 
 		$form_vars['nonce_save_form_layout'] = wp_create_nonce('wpas_save_form_layout_nonce');
@@ -673,8 +697,8 @@ function wpas_enqueue_scripts($hook_suffix){
 		wp_enqueue_script("jquery-ui-droppable");
 		wp_enqueue_script("jquery-ui-sortable");
 		wp_enqueue_script('jquery-ui-accordion');
-	
-		wp_enqueue_script('wpas-js', plugin_dir_url( __FILE__ ) . 'js/wpas.js',array(),false,true);
+
+		wp_enqueue_script('wpas-js', plugin_dir_url( __FILE__ ) . 'js/wpas.js',array(),false,'');
 		wp_enqueue_script('wpas-layout-js',plugin_dir_url( __FILE__ ) . 'js/wpas_layout.js',array(),false,true);
 		wp_enqueue_script('wpas-paging-js',plugin_dir_url( __FILE__ ) . 'js/wpas_paging.js',array(),false,true);
 		wp_enqueue_script('wpas-validate-js',plugin_dir_url( __FILE__ ) . 'js/wpas_validate.js',array(),false,true);
@@ -687,16 +711,21 @@ function wpas_enqueue_scripts($hook_suffix){
 		wp_localize_script('wpas-layout-js','layout_vars',$layout_vars);
 		wp_localize_script('wpas-validate-js','validate_vars',$validate_vars);
 	}
+	elseif($hook_suffix == $hook_generate){
+		wp_enqueue_style('wpas-admin-css', plugin_dir_url( __FILE__ ) . 'css/wpas-admin.css');
+		wp_enqueue_style('wpas-core',plugin_dir_url( __FILE__ ) . 'css/wpas-core.css');
+		wp_enqueue_style('font-awesome',plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css');
+		wp_enqueue_script('bootstrap-min-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js');
+		$local_vars['nonce_check_status_generate'] = wp_create_nonce( 'wpas_check_status_generate_nonce' );
+		wp_enqueue_script('wpas-gen-js', plugin_dir_url( __FILE__ ) . 'js/wpas-generate.js',array(),false,'');
+		wp_localize_script('wpas-gen-js','wpas_vars',$local_vars);
+	}
+		
 }
 function wpas_app_list()
 {
 	wpas_is_allowed();
-	if(isset($_GET['generate']) && $_GET['generate'] == 1)
-	{
-		check_admin_referer('wpas_generate');
-		wpas_generate_app();
-	}
-	elseif(isset($_GET['import']) && $_GET['import'] == 1)
+	if(isset($_GET['import']) && $_GET['import'] == 1)
 	{
 		check_admin_referer('wpas_import');
 		$apps_unserialized = wpas_get_app_list();
@@ -762,6 +791,7 @@ function wpas_add_new_app()
 		$app_name = sanitize_text_field(stripslashes($_POST['app_title']));
 		$app['app_name']= $app_name;
 		$app['app_id']= $app_key;
+		$app['ver']= WPAS_DATA_VERSION;
 
 		if(!empty($app_name) && !empty($app_key))
 		{
@@ -794,7 +824,7 @@ function wpas_show_page($app,$page)
 	if($page == "edit_app")
 	{
 		$app_name = $app['app_name'];
-		wpas_breadcrumb("edit_app");
+		wpas_breadcrumb("edit_app",$app_key);
 		wpas_add_app_form("Rename",$app_key,$app_name,"block;");
 		if(isset($app['option']))
 		{
@@ -804,7 +834,7 @@ function wpas_show_page($app,$page)
 		{
 			wpas_nav($app_name);
 		}
-		echo "<div id=\"was-editor\" class=\"span9\">";
+		echo "<div id=\"was-editor\" class=\"span10\">";
 		echo "<div id=\"loading\" class=\"group1\" style=\"display: none;\">" . __("Please wait","wpas") . "...</div>";
 		wpas_modal_confirm_delete();
 		echo "<div id=\"list-entity\" class=\"group1\" style=\"display: block;\">";
@@ -843,6 +873,11 @@ function wpas_show_page($app,$page)
 		echo "</div>";
 		echo "<div id=\"list-shortcode\" class=\"group1\" style=\"display: none;\">";
 		echo "</div>";
+		echo "<div id=\"add-notify-div\" class=\"group1\" style=\"display: none;\">";
+		wpas_add_notify_form($app_key);
+		echo "</div>";
+		echo "<div id=\"list-notify\" class=\"group1\" style=\"display: none;\">";
+		echo "</div>";
 		echo "<div id=\"add-widget-div\" class=\"group1\" style=\"display: none;\">";
 		wpas_add_widget_form($app_key);
 		echo "</div>";
@@ -862,6 +897,7 @@ function wpas_show_page($app,$page)
 		echo "</div>";
 		echo "<div id=\"add-help-div\" class=\"group1\" style=\"display: none;\">";
 		wpas_add_help_form($app_key);
+		echo "</div>";
 		echo "<div id=\"add-help-field-div\" class=\"group1\" style=\"display: none;\">";
 		wpas_add_help_tab_form($app_key);
 		echo "</div>";
@@ -871,7 +907,7 @@ function wpas_show_page($app,$page)
 		wpas_add_role_form($app_key,'');
 		echo "</div>";
 		echo "<div id=\"add-option-div\" class=\"group1\" style=\"display:none;\">";
-		wpas_add_app_option();
+		wpas_add_app_option($app_name);
 		echo "</div>";
 		echo "</div>";
 		echo "</div>";
@@ -881,10 +917,10 @@ function wpas_show_page($app,$page)
 	{
 		wp_register_script( 'wpas-fade',plugin_dir_url( __FILE__ ) . 'js/wpas_fade.js');
 		wp_enqueue_script( 'wpas-fade');
-		wpas_breadcrumb("add_new_app");
+		wpas_breadcrumb("add_new_app",$app_key);
 		wpas_add_app_form("Save",$app_key,"","block;");
 		wpas_nav($app_name);
-		echo "<div id=\"was-editor\" class=\"span9\">";
+		echo "<div id=\"was-editor\" class=\"span10\">";
 		echo "<div id=\"list-entity\" class=\"group1\" style=\"display: block;\">";
 		echo wpas_list('entity',Array(),$app_key,1);
 		echo "</div>"; //for was-editor 
@@ -965,5 +1001,3 @@ function wpas_set_default_ent_roles($app)
 	}
 	return $app;
 }
-
-?>
