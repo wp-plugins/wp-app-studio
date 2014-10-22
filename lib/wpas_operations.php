@@ -100,12 +100,16 @@ function wpas_import_app($app_new)
 			$inflated_data = @gzinflate($data);
 			if($inflated_data !== false)
 			{
-                        	$data = unserialize(base64_decode($inflated_data));
-				if(!isset($data['ver']) || $data['ver'] != WPAS_DATA_VERSION)
+				$data = unserialize(base64_decode($inflated_data));
+				if(!isset($data['ver']) || $data['ver'] < 3)
 				{
-					$data = wpas_update_data_arr($data['app_id'],$data);
+					$data = wpas_update_data_arr_ver3($data['app_id'],$data);
+					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
 				}
-
+				elseif($data['ver'] == 3 && !empty($data['widget']))
+				{
+					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
+				}
 			}
 			else
 			{
