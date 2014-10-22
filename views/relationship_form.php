@@ -4,28 +4,26 @@
         ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$.fn.showRelTags = function (app_id,comp_id,div_id,rel_id){
+		$.get(ajaxurl,{action:'wpas_get_layout_tags',type:'rel',app_id:app_id,comp_id:comp_id,rel_id:rel_id}, function(response){
+			$('#'+div_id).html(response);
+		});
+	}
         $('#rel-connected-display').click(function() {
 		if($(this).attr('checked'))
 		{
 			$('#reltabs-2-li').show();
-			if($('#rel-type').val() == 'one-to-many')
-			{
-				$('#rel-connected-show-attributes-div').hide();
-			}
-			else
-			{
-				$('#rel-connected-show-attributes-div').show();
-			}
 			app_id = $('input#app').val();
+			rel_id = $('input#rel').val();
 			comp_id_from = $('#rel-from-name').val();
 			comp_id_to = $('#rel-to-name').val();
-			rel_id = $('input#rel').val();
-			$.fn.getAddons('rel-con_from_layout',app_id,'rel-con-rel',comp_id_to,'connected',[],rel_id);
-			$.fn.getAddons('rel-con_to_layout',app_id,'rel-con-rel',comp_id_from,'connected',[],rel_id);
+			$(this).showRelTags(app_id,comp_id_to,'rel-con-from-tags',rel_id);
+			$(this).showRelTags(app_id,comp_id_from,'rel-con-to-tags',rel_id);
 		}
 		else
 		{
 			$('#reltabs-2-li').hide();
+			$('#relTab a:first').tab('show');
 		}
         });
         $('#rel-related-display').click(function() {
@@ -33,33 +31,26 @@ jQuery(document).ready(function($) {
 		{
 			$('#reltabs-3-li').show();
 			app_id = $('input#app').val();
+			rel_id = $('input#rel').val();
 			comp_id_from = $('#rel-from-name').val();
 			comp_id_to = $('#rel-to-name').val();
-			rel_id = $('input#rel').val();
-			$.fn.getAddons('rel-rel_from_layout',app_id,'rel-con-rel',comp_id_from,'related',[],rel_id);
-			$.fn.getAddons('rel-rel_to_layout',app_id,'rel-con-rel',comp_id_to,'related',[],rel_id);
+			$(this).showRelTags(app_id,comp_id_from,'rel-rltd-from-tags',rel_id);
+			$(this).showRelTags(app_id,comp_id_to,'rel-rltd-to-tags',rel_id);
 		}
 		else
 		{
 			$('#reltabs-3-li').hide();
+			$('#relTab a:first').tab('show');
 		}
         });
         $('#rel-type').click(function() {
 		if($(this).val() == 'many-to-many')
                 {
 			$('#rel-related-display-div').show();
-			if($('#rel-connected-display').attr('checked'))
-			{
-				$('#rel-connected-show-attributes-div').show();
-			}
                 }
                 else
                 {
 			$('#rel-related-display-div').hide();
-			if($('#rel-connected-display').attr('checked'))
-			{
-				$('#rel-connected-show-attributes-div').hide();
-			}
                 }
 	});
         $('#rel-from-name,#rel-to-name').click(function() {
@@ -76,8 +67,9 @@ jQuery(document).ready(function($) {
 });
 </script>
         <form action="" method="post" id="relationship-form" class="form-horizontal">
-        <input type="hidden" value="" name="rel" id="rel">
         <fieldset>
+	<input type="hidden" id="app" name="app" value="">
+        <input type="hidden" value="" name="rel" id="rel">
         <div class="well">
         <div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Relationships are connections between entities. You can create one-to-many(1-M), many-to-many(M-M) relationships. Each relationship may have one to many attributes.","wpas");?>"> <?php _e("HELP","wpas");?></a></div></div>
         <div class="control-group row-fluid">
@@ -90,10 +82,6 @@ jQuery(document).ready(function($) {
         <label class="control-label req span3"><?php _e("From Entity Name","wpas");?></label>
         <div class="controls span9">
         <select id="rel-from-name" name="rel-from-name">
-        <option value=""><?php _e("Please select","wpas");?></option>
-        <?php
-            echo wpas_entity_types($app_id,'relationship');
-            ?>
         </select>
         <a href="#" title="<?php _e("FROM entity is the related entity in a relationship. Many entity instances from the related entity can reference any one entity instance from the primary entity.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
@@ -101,10 +89,6 @@ jQuery(document).ready(function($) {
         <label class="control-label req span3"><?php _e("To Entity Name","wpas");?></label>
         <div class="controls span9">
         <select id="rel-to-name" name="rel-to-name">
-        <option value=""><?php _e("Please select","wpas");?></option>
-        <?php
-            echo wpas_entity_types($app_id,'relationship');
-            ?>
         </select>
         <a href="#" title="<?php _e("TO entity is the primary entity in a relationship. Any one entity instance from the primary entity can be referenced by many entity instances from the related entity.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
@@ -126,7 +110,7 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("Description","wpas");?></label>
 	<div class="controls span9">
-	<textarea class="input-xlarge" id="rel-desc" name="rel-desc"></textarea>
+	<textarea class="wpas-std-textarea" id="rel-desc" name="rel-desc"></textarea>
 	<a href="#" style="cursor: help;" title="<?php _e("A short descriptive summary of what the relationship is.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
@@ -157,7 +141,6 @@ jQuery(document).ready(function($) {
         <select name="rel-type" id="rel-type">
         <option selected="selected" value="one-to-many"><?php _e("One-to-Many","wpas");?></option>
         <option value="many-to-many"><?php _e("Many-to-Many","wpas");?></option>
-
         </select><a href="#" title="<?php _e("Pick the type of relationship between TO and FROM entity. In a one-to-many relationship, each record in the related to entity can be related to many records in the relating entity. For example, in a customer to an invoice relationship each customer can have many invoices but each invoice can only be generated for a single customer. In a many-to-many relationship, one or more records in a entity can be related to 0, 1 or many records in another entity. For example, Each customer can order many products and each product can be ordered by many customers.","wpas");?>" style="cursor: help;"> <i class="icon-info-sign"></i></a>
         </div>
         </div>
@@ -220,24 +203,12 @@ jQuery(document).ready(function($) {
             </label>
         </div>
         </div>
-        <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("List Column Display","wpas");?></label>
-        <div class="controls span9">
-        <select name="rel-display-type" id="rel-display-type">
-        <option selected="selected" value="from"><?php _e("Display in FROM entity list","wpas");?></option>
-        <option value="to"><?php _e("Display in TO entity list","wpas");?></option>
-        <option value="any"><?php _e("Display in ANY entity record list","wpas");?></option>
-        <option value="false"><?php _e("Do not display","wpas");?></option>
-        </select><a href="#" title="<?php _e("You can display related entity objects in the entity list of from-entity, to-entity or choose not to display at all. List Column Display sets where relationship column will be displayed when viewing lists of an entity records.","wpas");?>" style="cursor: help;">
-        <i class="icon-info-sign"></i></a>
-        </div>
-        </div>
 </div><!-- end of tab1 -->
 <div id="reltabs-2" class="tab-pane fade in">
         <div class="control-group row-fluid">
         <label class="control-label span3"><?php _e("From Entity Title","wpas");?></label>
         <div class="controls span9">
-        <input name="rel-connected-display-from-title" id="rel-connected-display-from-title" type="text" placeholder="<?php _e("e.g. Connected Orders (To Entity)","wpas");?>">
+        <input name="rel-connected-display-from-title" id="rel-connected-display-from-title"  type="text" placeholder="<?php _e("e.g. Connected Orders (To Entity)","wpas");?>">
         <a href="#" title="<?php _e("Sets the connected relationship title on the 'from' entity frontend.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
         </div>
         </div>
@@ -260,30 +231,30 @@ jQuery(document).ready(function($) {
         <i class="icon-info-sign"></i></a>
         </div>
         </div>
-        <div class="control-group row-fluid" id="rel-connected-show-attributes-div">
-        <label class="control-label span3"></label>
-        <div class="controls span9">
-        <label class="checkbox"><?php _e("Display Attributes","wpas");?>
-        <input name="rel-connected-show-attributes" id="rel-connected-show-attributes" type="checkbox" value="1"/>
-        <a href="#" style="cursor: help;" title="<?php _e("When checked, it displays the connected relationship attribute data on the frontend.","wpas");?>"><i class="icon-info-sign"></i></a></label>
-        </div>
-        </div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("From Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
-<?php
-	display_tinymce('rel-con_from_layout','',1,1);
-?>
+	<textarea class="wpas-std-textarea" id="rel-con_from_layout" name="rel-con_from_layout"></textarea>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single -from entity- record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	<div id="rel-con-from-tags-div" style="padding:10px 0;">
+	<div style="padding:10px;">
+	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-con-from-tags">Show Tags</button>
+	</div>
+	<div id="rel-con-from-tags" class="collapse"></div>
+	</div>
 	</div>
 	</div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("To Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
-<?php
-	display_tinymce('rel-con_to_layout','',1,1);
-?>
+	<textarea class="wpas-std-textarea" id="rel-con_to_layout" name="rel-con_to_layout"></textarea>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single -to entity- record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	<div id="rel-con-to-tags-div" style="padding:10px 0;">
+	<div style="padding:10px;">
+	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-con-to-tags">Show Tags</button>
+	</div>
+	<div id="rel-con-to-tags" class="collapse"></div>
+	</div>
 	</div>
 	</div>
 </div><!-- end of tab2 -->
@@ -317,19 +288,27 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("From Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
-<?php
-	display_tinymce('rel-rel_from_layout','',1,1);
-?>
+	<textarea class="wpas-std-textarea" id="rel-rel_from_layout" name="rel-rel_from_layout"></textarea>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	<div id="rel-rltd-from-tags-div" style="padding:10px 0;">
+	<div style="padding:10px;">
+	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-rltd-from-tags">Show Tags</button>
+	</div>
+	<div id="rel-rltd-from-tags" class="collapse"></div>
+	</div>
 	</div>
 	</div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("To Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
-<?php
-	display_tinymce('rel-rel_to_layout','',1,1);
-?>
+	<textarea class="wpas-std-textarea" id="rel-rel_to_layout" name="rel-rel_to_layout"></textarea>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	<div id="rel-rltd-to-tags-div" style="padding:10px 0;">
+	<div style="padding:10px;">
+	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-rltd-to-tags">Show Tags</button>
+	</div>
+	<div id="rel-rltd-to-tags" class="collapse"></div>
+	</div>
 	</div>
 	</div>
 </div><!-- end of tab3 -->
@@ -347,7 +326,7 @@ jQuery(document).ready(function($) {
     {
 	if($rel['rel-from-name'] == 'user')
 	{
-		$from_ent_name = "User";
+		$from_ent_name = "Users";
 	}
 	else
 	{
@@ -355,7 +334,7 @@ jQuery(document).ready(function($) {
 	}
 	if($rel['rel-to-name'] == 'user')
 	{
-		$to_ent_name = "User";
+		$to_ent_name = "Users";
 	}
 	else
 	{

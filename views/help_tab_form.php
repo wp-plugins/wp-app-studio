@@ -43,7 +43,7 @@ function wpas_add_help_tab_form($app_id)
 		<div class="control-group row-fluid">
 		<label class="control-label req span3"><?php _e("Tab Content","wpas"); ?></label>
 		<div class="controls span9">
-		<?php display_tinymce('help_fld_content',''); ?>
+		<textarea class="wpas-std-textarea" id="help_fld_content" name="help_fld_content"></textarea>
 		</div>
 		</div>
 		</fieldset>

@@ -1,5 +1,5 @@
 <?php
-function wpas_add_app_option()
+function wpas_add_app_option($app_name)
 {
 ?>
 <script type="text/javascript">
@@ -86,19 +86,27 @@ jQuery(document).ready(function($) {
 	<div class="tabbable">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#tab1" data-toggle="tab"><?php _e("App Info","wpas"); ?></a></li>
-		<li><a href="#tab2" data-toggle="tab"><?php _e("Navigation","wpas"); ?></a></li>
-		<li><a href="#tab3" data-toggle="tab"><?php _e("Dashboards","wpas"); ?></a></li>
-		<li><a href="#tab4" data-toggle="tab"><?php _e("Toolbar","wpas"); ?></a></li>
-		<li><a href="#tab5" data-toggle="tab"><?php _e("Login Screen","wpas"); ?></a></li>
-		<li><a href="#tab6" data-toggle="tab"><?php _e("Display Options","wpas"); ?></a></li>
+		<li><a href="#tab3" data-toggle="tab"><?php _e("Navigation","wpas"); ?></a></li>
+		<li><a href="#tab4" data-toggle="tab"><?php _e("Dashboards","wpas"); ?></a></li>
+		<li><a href="#tab5" data-toggle="tab"><?php _e("Toolbar","wpas"); ?></a></li>
+		<li><a href="#tab6" data-toggle="tab"><?php _e("Login Screen","wpas"); ?></a></li>
 		<li><a href="#tab7" data-toggle="tab"><?php _e("Footer","wpas"); ?></a></li>
 		<li><a href="#tab8" data-toggle="tab"><?php _e("Mail","wpas"); ?></a></li>
+		<li><a href="#tab9" data-toggle="tab"><?php _e("Misc","wpas"); ?></a></li>
 	</ul>
 	<input type="hidden" value="" name="app" id="app">	
 	<div class="tab-content">
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Settings page offers quick configuration of some of the features of your application.","wpas"); ?>"> <?php _e("HELP","wpas"); ?></a></div></div>
 
 			<div class="tab-pane active" id="tab1">
+					<div class="control-group row-fluid">
+							<label class="control-label span3 req"><?php _e("Textdomain","wpas"); ?></label>
+							 <div class="controls span8">
+								 <input class="input-xlarge" name="ao_plugin_name" id="ao_plugin_name" type="text" placeholder="<?php _e("e.g. sim-ent","wpas"); ?>" value="" >
+								 <a href="#" style="cursor: help;" title="<?php _e("Set a unique textdomain for your app. Textdomains are used in translations and plugin implementation. It can contain only letters and dashes, not more than 10 chars.","wpas"); ?>">
+								<i class="icon-info-sign"></i></a>
+							 </div>
+					</div>
 					<div class="control-group row-fluid">
 							<label class="control-label span3 req"><?php _e("Site URL","wpas"); ?></label>
 							 <div class="controls span8">
@@ -116,15 +124,23 @@ jQuery(document).ready(function($) {
 							</div>
 					</div>	
 					<div class="control-group row-fluid">
-							<label class="control-label span3"><?php _e("Application Desc","wpas"); ?></label>
+							<label class="control-label span3 req"><?php _e("Application Short Desc","wpas"); ?></label>
 							 <div class="controls span8">
-								 <textarea class="input-xlarge" rows="4" name="ao_app_desc" id="ao_app_desc" placeholder="<?php _e("e.g. Product List Application","wpas"); ?>" value="" ></textarea>
-								 <a href="#" style="cursor: help;" title="<?php _e("Enter a brief description of the application","wpas"); ?>">
+								 <textarea class="wpas-std-textarea" name="ao_app_sdesc" id="ao_app_sdesc" placeholder="<?php _e("e.g. Product List Application","wpas"); ?>" value="" ></textarea>
+								 <a href="#" style="cursor: help;" title="<?php _e("Enter a short description of the application","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3"><?php _e("Application Version","wpas"); ?></label>
+							<label class="control-label span3 req"><?php _e("Application Desc","wpas"); ?></label>
+							 <div class="controls span8">
+								 <textarea class="wpas-std-textarea" name="ao_app_desc" id="ao_app_desc" value="" ></textarea>
+								 <a href="#" style="cursor: help;" title="<?php _e("Enter a description of the application","wpas"); ?>">
+								<i class="icon-info-sign"></i></a>
+							 </div>
+					</div>
+					<div class="control-group row-fluid">
+							<label class="control-label span3 req"><?php _e("Application Version","wpas"); ?></label>
 							 <div class="controls span8">
 								 <input class="input-xlarge" name="ao_app_version" id="ao_app_version" type="text" placeholder="<?php _e("e.g 1.0.0","wpas"); ?>" value="" >
 								 <a href="#" style="cursor: help;" title="<?php _e("Enter the application's version number.","wpas"); ?>">
@@ -132,7 +148,7 @@ jQuery(document).ready(function($) {
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3"><?php _e("Author","wpas"); ?></label>
+							<label class="control-label span3 req"><?php _e("Author","wpas"); ?></label>
 							 <div class="controls span8">
 								 <input class="input-xlarge" name="ao_author" id="ao_author" type="text" placeholder="<?php _e("Name Of The Plugin Author","wpas"); ?>" value="" >
 								 <a href="#" style="cursor: help;" title="<?php _e("Name of the application author.","wpas"); ?>">
@@ -140,7 +156,7 @@ jQuery(document).ready(function($) {
 							 </div>
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3"><?php _e("Author Site Url","wpas"); ?></label>
+							<label class="control-label span3 req"><?php _e("Author Site Url","wpas"); ?></label>
 							 <div class="controls span8">
 								 <input class="input-xlarge" name="ao_author_url" id="ao_author_url" type="text" placeholder="<?php _e("e.g. http://example.com","wpas"); ?>" value="" >
 								 <a href="#" style="cursor: help;" title="<?php _e("URI of the application author.","wpas"); ?>">
@@ -148,15 +164,15 @@ jQuery(document).ready(function($) {
 							 </div>                  
 					</div>
 					<div class="control-group row-fluid">
-							<label class="control-label span3"><?php _e("License Text","wpas"); ?></label>
+							<label class="control-label span3 req"><?php _e("Change Log","wpas"); ?></label>
 							 <div class="controls span8">
-								 <textarea class="input-xlarge" rows="10" name="ao_license_text" id="ao_license_text" readonly placeholder="<?php _e("This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License, version 2, as published by the Free Software Foundation.&#013 &#013 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&#013 &#013You should have received a copy of the GNU General Public License  along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA","wpas"); ?>"></textarea>
-								 <a href="#" style="cursor: help;" title="<?php _e("information about licensing for the application","wpas"); ?>">
+								 <textarea class="wpas-std-textarea" name="ao_change_log" id="ao_change_log" placeholder="= 1.0.0 =" value="" ></textarea>
+								 <a href="#" style="cursor: help;" title="<?php _e("Enter a brief description for changes in your app version.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
 			</div>
-			<div class="tab-pane" id="tab2">
+			<div class="tab-pane" id="tab3">
 					<div class="row-fluid">
 					<label class="control-label span1"></label>
 					<div class="control-group">
@@ -240,7 +256,7 @@ jQuery(document).ready(function($) {
 				</div>
 				</div>
 			</div>
-			<div class="tab-pane" id="tab3">	
+			<div class="tab-pane" id="tab4">	
 				<div class="row-fluid">
 				<label class="control-label span1"></label>
 						<div class="controls span8">
@@ -273,7 +289,7 @@ jQuery(document).ready(function($) {
 				</div> <!--controls -->
 				</div><!--row -->	            
 			</div><!--tab -->	
-			<div class="tab-pane" id="tab4">
+			<div class="tab-pane" id="tab5">
 				<div class="row-fluid">
 				<label class="control-label span1"></label>
 					<div class="controls span8">
@@ -293,7 +309,7 @@ jQuery(document).ready(function($) {
 				</div><!--controls -->
 			</div><!--row -->	 		
 		</div><!--tab -->
-		<div class="tab-pane" id="tab5">
+		<div class="tab-pane" id="tab6">
 				<div class="control-group row-fluid">
 					<label class="control-label span3"><?php _e("Login logo image url","wpas"); ?></label>
 					<div class="controls span8">
@@ -312,13 +328,50 @@ jQuery(document).ready(function($) {
 				</div>
 				
 		</div>
-		<div class="tab-pane" id="tab6">
+		<div class="tab-pane" id="tab7">
+			<div class="row-fluid">
+				<div class="control-group row-fluid span6">
+					<label class=""><?php _e("Left footer","wpas"); ?></label>
+					 <div class="controls span8">
+					<textarea class="wpas-std-textarea" id="ao_left_footer_html" name="ao_left_footer_html"></textarea>
+					 <a href="#" style="cursor: help;" title="<?php _e("Displays a message in the left hand side of the backend footer.","wpas"); ?>">
+						<i class="icon-info-sign"></i></a>
+ 	</div></div>
+
+				<div class="control-group row-fluid span6">
+					<label class=""><?php _e("Right footer","wpas"); ?></label>
+					 <div class="controls span8">
+					<textarea class="wpas-std-textarea" id="ao_right_footer_html" name="ao_right_footer_html"></textarea>
+					 <a href="#" style="cursor: help;" title="<?php _e("Displays a short message such as application version number in the right hand side of the backend footer.","wpas"); ?>">
+						<i class="icon-info-sign"></i></a>
+					 </div>
+				</div></div>
+		</div>
+		<div class="tab-pane" id="tab8">
+				<div class="control-group row-fluid">
+					<label class="control-label span3"><?php _e("Mail FROM email address","wpas"); ?></label>
+					 <div class="controls span8">
+						 <input class="input-xlarge" name="ao_mail_from_email" id="ao_mail_from_email" type="text" placeholder="<?php _e("e.g. info@example.com","wpas"); ?>" value="" >
+						 <a href="#" style="cursor: help;" title="<?php _e("Sets the FROM email address for the application wide emails","wpas"); ?>">
+						<i class="icon-info-sign"></i></a>
+					 </div>
+				</div>
+				<div class="control-group row-fluid">
+					<label class="control-label span3"><?php _e("Mail FROM name","wpas"); ?></label>
+					 <div class="controls span8">
+						 <input class="input-xlarge" name="ao_mail_from_name" id="ao_mail_from_name" type="text" placeholder="<?php _e("e.g. Webmaster","wpas"); ?>" value="" >
+						 <a href="#" style="cursor: help;" title="<?php _e("Sets the name of the sender for the application wide emails.","wpas"); ?>">
+						<i class="icon-info-sign"></i></a>
+					 </div>
+				</div>
+		</div>
+		<div class="tab-pane" id="tab9">
 		<div class="row-fluid">
 		<label class="control-label span1"></label>
 		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Filters","wpas"); ?>
 			<input type="checkbox" name="ao_remove_colfilter" id="ao_remove_colfilter" value="1">
-			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove filters and colums component.","wpas"); ?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove filters and columns component.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -329,6 +382,16 @@ jQuery(document).ready(function($) {
 			<label class="checkbox"><?php _e("Remove Operations","wpas"); ?>
 			<input type="checkbox" name="ao_remove_operations" id="ao_remove_operations" value="1">
 			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove operations page and its button.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox"><?php _e("Remove Anayltics","wpas"); ?>
+			<input type="checkbox" name="ao_remove_analytics" id="ao_remove_analytics" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove analytics component.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -377,81 +440,12 @@ jQuery(document).ready(function($) {
                         </select>
                         <a href="#" style="cursor: help;" title="<?php _e("Allows to set a jQuery UI theme for the frontend and backend.","wpas"); ?>">
                         <i class="icon-info-sign"></i> </a></td>
-                        <td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td>
+                        <?php //<td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td> ?>
                         </tr>
             </table>
            </div>
            </div>
 	</div>
-
-		<div class="tab-pane" id="tab7">
-			<div class="row-fluid">
-				<div class="control-group row-fluid span6">
-					<label class=""><?php _e("Left footer","wpas"); ?></label>
-					 <div class="controls span8">
-<?php
-        $buttons['theme_advanced_buttons1'] = 'bold,italic,underline,link,unlink';
-        $buttons['theme_advanced_buttons2'] = 'tablecontrols';
-
-      $settings = array(
-                                'text_area_name'=>'ao_left_footer_html',//name you want for the textarea
-                                'quicktags' => false,
-                                'media_buttons' => false,
-                                'textarea_rows' => 15,
-                        	'tinymce' => $buttons,
-                );
-        $id = 'ao_left_footer_html';//has to be lower case
-
-
-	wp_editor('',$id,$settings);
-
-?>
-					 <a href="#" style="cursor: help;" title="<?php _e("Displays a message in the left hand side of the backend footer.","wpas"); ?>">
-						<i class="icon-info-sign"></i></a>
- 	</div></div>
-
-				<div class="control-group row-fluid span6">
-					<label class=""><?php _e("Right footer","wpas"); ?></label>
-					 <div class="controls span8">
-<?php
-        $buttons['theme_advanced_buttons1'] = 'bold,italic,underline,link,unlink';
-        $buttons['theme_advanced_buttons2'] = 'tablecontrols';
-      $settings = array(
-                                'text_area_name'=>'ao_right_footer_html',//name you want for the textarea
-                                'quicktags' => false,
-                                'media_buttons' => false,
-                                'textarea_rows' => 15,
-                        	'tinymce' => $buttons,
-                );
-        $id = 'ao_right_footer_html';//has to be lower case
-
-
-	wp_editor('',$id,$settings);
-
-?>
-					 <a href="#" style="cursor: help;" title="<?php _e("Displays a short message such as application version number in the right hand side of the backend footer.","wpas"); ?>">
-						<i class="icon-info-sign"></i></a>
-					 </div>
-				</div></div>
-		</div>
-		<div class="tab-pane" id="tab8">
-				<div class="control-group row-fluid">
-					<label class="control-label span3"><?php _e("Mail FROM email address","wpas"); ?></label>
-					 <div class="controls span8">
-						 <input class="input-xlarge" name="ao_mail_from_email" id="ao_mail_from_email" type="text" placeholder="<?php _e("e.g. info@example.com","wpas"); ?>" value="" >
-						 <a href="#" style="cursor: help;" title="<?php _e("Sets the FROM email address for the application wide emails","wpas"); ?>">
-						<i class="icon-info-sign"></i></a>
-					 </div>
-				</div>
-				<div class="control-group row-fluid">
-					<label class="control-label span3"><?php _e("Mail FROM name","wpas"); ?></label>
-					 <div class="controls span8">
-						 <input class="input-xlarge" name="ao_mail_from_name" id="ao_mail_from_name" type="text" placeholder="<?php _e("e.g. Webmaster","wpas"); ?>" value="" >
-						 <a href="#" style="cursor: help;" title="<?php _e("Sets the name of the sender for the application wide emails.","wpas"); ?>">
-						<i class="icon-info-sign"></i></a>
-					 </div>
-				</div>
-		</div>
 	</div>
 </div>
 	<div class="control-group row-fluid">

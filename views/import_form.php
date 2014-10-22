@@ -58,7 +58,7 @@ elseif(!empty($msg))
 
 <form class="form-inline" name="importWpas" enctype="multipart/form-data" method="POST" action="">
 <?php wp_nonce_field('wpas_import_file','wpas_import_nonce'); ?>
-<input type="file" name="wpasimport" class="input-xlarge" id="wpasimport">
+<input type="file" style="padding-bottom:30px;" name="wpasimport" class="input-xlarge" id="wpasimport">
 <button type="submit" class="button-primary"><?php _e("Import Now","wpas"); ?></button>
 </form>
 </div>

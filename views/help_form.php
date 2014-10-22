@@ -80,11 +80,10 @@ function wpas_add_help_form($app_id)
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("Help SideBar","wpas"); ?></label>
 	<div class="controls span9">
-	<?php display_tinymce('help-screen_sidebar',''); ?>
+	<textarea class="wpas-std-textarea" id="help-screen_sidebar" name="help-screen_sidebar"></textarea>
 	<a href="#" title="<?php _e("The content of the help screen sidebar.","wpas"); ?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
 	</div>
 	</div><!-- end help-others div -->
-	</div>                                                                                      
 	<div class="control-group">
 	<button class="btn  btn-danger layout-buttons" id="cancel" name="cancel" type="button"><i class="icon-ban-circle"></i><?php _e("Cancel","wpas"); ?></button>
 	<button class="btn  btn-primary pull-right layout-buttons" id="save-help" type="submit" value="Save"><i class="icon-save"></i><?php _e("Save","wpas"); ?></button>

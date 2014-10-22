@@ -11,6 +11,7 @@ $local_vars = Array(
 'attribute' => __("Attribute","wpas"),
 'tab' => __("Tab","wpas"),
 'view' => __("View","wpas"),
+'notify' => __("Notification","wpas"),
 'widget' => __("Widget","wpas"),
 'add_new_application_settings'  => __("Add New Application Settings","wpas"),
 'update_application_settings'  => __("Update Application Settings","wpas"),
@@ -20,6 +21,7 @@ $local_vars = Array(
 'add_new_form'  => __("Add New Form","wpas"),
 'add_new_widget'  => __("Add New Widget","wpas"),
 'add_new_view'  => __("Add New View","wpas"),
+'add_new_notify' => __("Add New Notification","wpas"),
 'add_new_help'  => __("Add New Help","wpas"),
 'add_new_relationship' => __("Add New Relationship","wpas"),
 'add_new_taxonomy'  => __("Add New Taxonomy","wpas"),
@@ -28,8 +30,11 @@ $local_vars = Array(
 'edit_admin_layout'  => __("Edit Admin Layout","wpas"),
 'add_new_entity'  => __("Add New Entity","wpas"),
 'update_settings'  => __("Update Settings","wpas"),
-'download'  => __("Download","wpas"),
-'support_ticket'  => __("Please open a support ticket.","wpas"),
+'support_ticket'  => __("Open a support ticket","wpas"),
+'free_download'  => __("Download FreeDev version","wpas"),
+'pro_download'  => __("Download ProDev version","wpas"),
+'free_buy'  => __("Purchase ProDev version","wpas"),
+'pro_buy'  => __("Upgrade your license","wpas"),
 );
 $form_vars = Array(
 'req_missing_error' => __("Please add all required fields to the form layout.","wpas"),
@@ -46,6 +51,7 @@ $layout_vars = Array(
 'drag_drop' => __("DRAG AND DROP","wpas"),
 );
 $validate_vars = Array(
+'check_app_title' => __("Must contain only letters, numbers or spaces and must start with a letter.","wpas"),
 'nocap_err' => __("Please remove capital letters.","wpas"),
 'nospace_err' => __("Please remove spaces.","wpas"),
 'nodash_err' => __("Please remove dashes.","wpas"),
@@ -69,6 +75,9 @@ $validate_vars = Array(
 'check_unique' => __("Please enter a unique name.","wpas"),
 'check_email' => __("Please enter valid email(s).","wpas"),
 'check_reluser' => __("You cannot create User to User relationship. Please select a different entity.","wpas"),
+'check_dash' => __("Widget must be displayed at least one location.","wpas"),
+'check_app_dash' => __("Your layout can't contain shortcodes which are already in app dashboard.","wpas"),
+'check_notify' => __("Please setup at least one of user or admin notification.","wpas"),
 );
 
 ?>

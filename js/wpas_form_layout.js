@@ -57,11 +57,18 @@ jQuery(document).ready(function($) {
 			$(this).closest('.form-'+type).find('#field-label'+label_id).text(select_label);
 			if($(this).find('option:selected').val() == 'submit')
 			{
-				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('elmt').addClass('btn-std');
+				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('elmt hidden-fld').addClass('btn-std');
+				$(this).closest('.form-inside .row-fluid').find('.add-element').show();
 			}
+			else if($(this).find('option:selected').attr('ftype') == 'hidden')
+			{
+				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('elmt btn-std').addClass('hidden-fld');
+				$(this).closest('.form-inside .row-fluid').find('.add-element').hide();
+			}	
 			else
 			{
-				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('btn-std').addClass('elmt');
+				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('btn-std hidden-fld').addClass('elmt');
+				$(this).closest('.form-inside .row-fluid').find('.add-element').show();
 			}
 		}
 	});

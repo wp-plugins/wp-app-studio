@@ -1,3 +1,6 @@
+#was-container #was-nav{
+font-size:12px;
+}
 #was-container {
 	background-color:#F2F0F0; 
 	box-shadow: 1px 5px 5px rgba(0,0,0,0.1); 
@@ -100,6 +103,11 @@ color:#778899;
 	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
+}
+.wpas textarea.wp-editor-area {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 .wpas .btn-small {
 margin-bottom:9px !important;
@@ -473,6 +481,14 @@ padding:5px;
 border-radius: 4px;
 font-size: 11px;
 }
+#field-labels .hidden-fld{
+    background-color: #CFEFD5;
+    border: 3px double #FD853F;
+    padding: 5px;
+    text-align: center;
+border-radius: 4px;
+font-size: 11px;
+}
 #field-labels .elmt{
     background-color: #FFF;
     border: 3px double #B0C4DE;
@@ -488,4 +504,11 @@ font-size: 11px;
     -moz-border-top-colors: none;
     border-width: 2px 0 !important;
     border-color:#808080 !important;
+}
+#shc-table_col,#shc-table_ids{
+width:auto;
+}
+.wpas-std-textarea{
+    min-width:60%;
+    min-height:150px;
 }

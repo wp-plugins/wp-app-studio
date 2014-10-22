@@ -115,12 +115,12 @@ function wpas_nav($app_name,$option="")
                 $option_link = '<p id="add-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-picture"></i>' . __("Add New","wpas") . '</a></p>';
 	}
         ?>
-                <div class="row-fluid"><div id="was-nav" class="span3">
+                <div class="row-fluid"><div id="was-nav" class="span2">
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseOne" data-parent="#was-nav" data-toggle="collapse"><i class="icon-table icon-large"></i><?php _e("Entities","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse1" data-parent="#was-nav" data-toggle="collapse"><i class="icon-table icon-large"></i><?php _e("Entities","wpas");?></a>
                 </div>
-                <div id="collapseOne" class="accordion-body in collapse">
+                <div id="collapse1" class="accordion-body in collapse">
                 <div class="accordion-inner">
                 <p id="add-entity"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-table"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="entity"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -129,9 +129,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseTwo" data-parent="#was-nav" data-toggle="collapse"><i class="icon-tag icon-large"></i><?php _e("Taxonomies","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse2" data-parent="#was-nav" data-toggle="collapse"><i class="icon-tag icon-large"></i><?php _e("Taxonomies","wpas");?></a>
                 </div>
-                <div id="collapseTwo" class="accordion-body collapse">
+                <div id="collapse2" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-taxonomy"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-tag"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="taxonomy"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -140,9 +140,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseThree" data-parent="#was-nav" data-toggle="collapse"><i class="icon-link icon-large"></i><?php _e("Relationships","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse3" data-parent="#was-nav" data-toggle="collapse"><i class="icon-link icon-large"></i><?php _e("Relationships","wpas");?></a>
   </div>
-                <div id="collapseThree" class="accordion-body collapse">
+                <div id="collapse3" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-relationship"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-link"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="relationship"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -151,9 +151,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseFour" data-parent="#was-nav" data-toggle="collapse"><i class="icon-cog icon-large"></i><?php _e("Widgets","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse4" data-parent="#was-nav" data-toggle="collapse"><i class="icon-cog icon-large"></i><?php _e("Widgets","wpas");?></a>
   </div>
-                <div id="collapseFour" class="accordion-body collapse">
+                <div id="collapse4" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-widget"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-cog"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="widget"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -162,9 +162,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseFive" data-parent="#was-nav" data-toggle="collapse"><i class="icon-info-sign icon-large"></i><?php _e("Help Screens","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse5" data-parent="#was-nav" data-toggle="collapse"><i class="icon-info-sign icon-large"></i><?php _e("Help Screens","wpas");?></a>
   </div>
-                <div id="collapseFive" class="accordion-body collapse">
+                <div id="collapse5" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-help"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-info-sign"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="help"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -173,9 +173,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseSix" data-parent="#was-nav" data-toggle="collapse"><i class="icon-list-alt icon-large"></i><?php _e("Forms","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse6" data-parent="#was-nav" data-toggle="collapse"><i class="icon-list-alt icon-large"></i><?php _e("Forms","wpas");?></a>
   </div>
-                <div id="collapseSix" class="accordion-body collapse">
+                <div id="collapse6" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-list-alt"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="form"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -184,20 +184,31 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseSeven" data-parent="#was-nav" data-toggle="collapse"><i class="icon-eye-open icon-large"></i><?php _e("Views","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse7" data-parent="#was-nav" data-toggle="collapse"><i class="icon-eye-open icon-large"></i><?php _e("Views","wpas");?></a>
   </div>
-                <div id="collapseSeven" class="accordion-body collapse">
+                <div id="collapse7" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-eye-open"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="shortcode"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
                 </div>
                 </div>
                 </div>
+                <div class="accordion-group">
+                <div class="accordion-heading">
+                <a class="accordion-toggle" href="#collapse8" data-parent="#was-nav" data-toggle="collapse"><i class="icon-volume-up icon-large"></i><?php _e("Notifications","wpas");?></a>
+  </div>
+                <div id="collapse8" class="accordion-body collapse">
+                <div class="accordion-inner">
+                <p id="add-notify"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-volume-up"></i><?php _e("Add New","wpas");?></a></p>
+                <p id="notify"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
+                </div>
+                </div>
+                </div>
 		<div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseEight" data-parent="#was-nav" data-toggle="collapse"><i class="icon-key icon-large"></i><?php _e("Permissions","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse9" data-parent="#was-nav" data-toggle="collapse"><i class="icon-key icon-large"></i><?php _e("Permissions","wpas");?></a>
   </div>
-                <div id="collapseEight" class="accordion-body collapse">
+                <div id="collapse9" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-role"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-key"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="role"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -206,9 +217,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapseNine" data-parent="#was-nav" data-toggle="collapse"><i class="icon-picture icon-large"></i><?php _e("Settings","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse10" data-parent="#was-nav" data-toggle="collapse"><i class="icon-picture icon-large"></i><?php _e("Settings","wpas");?></a>
                 </div>
-                <div id="collapseNine" class="accordion-body collapse">
+                <div id="collapse10" class="accordion-body collapse">
                 <div class="accordion-inner">
 		<?php echo $option_link; ?>
                 </div>
@@ -227,13 +238,13 @@ function wpas_list_html($list_values)
 		$ret .= '<div class="pull-right ' . $list_values['type'] . '" id="add-new">
 			<a class="btn btn-warning  pull-left" href="' .  wp_nonce_url($list_values['import'],'wpas_import') . '" class="import">
 			<i class="icon-signin"></i>' . __("Import","wpas") . '</a>
-       			<a class="btn btn-info  pull-right" href="' . esc_url($list_values['add_new_url'])  . '" class="add-new">
+       			<a class="btn btn-info  pull-right add-new" href="' . esc_url($list_values['add_new_url'])  . '">
 			<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
 	}
 	else
 	{
 		$ret .= '<div class="span9 ' . $list_values['type'] . '" id="add-new">
-			<a class="btn btn-info  pull-right" href="' . esc_url($list_values['add_new_url']) . '" class="add-new">
+			<a class="btn btn-info  pull-right add-new" href="' . esc_url($list_values['add_new_url']) . '">
 			<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
 	}
 	$ret .= '</div>
@@ -494,6 +505,17 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['icon'] = "icon-eye-open";
                 $add_field_tag = "#shortcode";
         }
+	elseif($list_type == 'notify')
+        {
+                $base = admin_url('admin.php?page=wpas_add_new_app&view=notify&app=' . $app_id);
+                $list_values['title'] = __("Notifications","wpas");
+                $format = "notifypage";
+                $field_name = "notify-name";
+                $other_fields = Array("notify-level","notify-attached_to","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Level","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $list_values['icon'] = "icon-volume-up";
+                $add_field_tag = "#notify";
+        }
 	elseif($list_type == 'widget')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=widg&app=' . $app_id);
@@ -534,7 +556,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                         {
 				$mylist['entities'] = "";
 				$mylist['taxonomies'] = "";
-				$mylist['generate'] = "<div id=\"generate\"><a class=\"btn btn-mini btn-success\" href=\"". wp_nonce_url(admin_url('admin.php?page=wpas_app_list&generate=1&app=') . $mylist['app_id'],'wpas_generate') . "\">Generate</a></div>";
+				$mylist['generate'] = "<div id=\"generate\"><a class=\"btn btn-mini btn-success\" href=\"". admin_url('admin.php?page=wpas_generate_page&app=') . $mylist['app_id'] . "\">Generate</a></div>";
 				if(isset($mylist['entity']))
 				{
 					foreach($mylist['entity'] as $myentity)
@@ -663,7 +685,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 				$mylist['role_permissions'] = sprintf(__('%d capabilities set','wpas'),$permission_count);
 			}
 			elseif($list_type == 'widget')
-			{
+			{	
 				if($mylist['widg-type'] == 'sidebar')
 				{
 					$subtype = "widg-side_subtype";
@@ -672,13 +694,9 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 				{
 					$subtype = "widg-dash_subtype";
 				}
-				if(isset($mylist['widg-attach']) && ((isset($mylist['widg-side_subtype']) && $mylist['widg-side_subtype'] == 'entity') || (isset($mylist['widg-dash_subtype']) && $mylist['widg-dash_subtype'] == 'entity')))
+				if(isset($mylist['widg-attach']) && ((isset($mylist['widg-side_subtype']) && in_array($mylist['widg-side_subtype'], Array('entity','comment'))) || (isset($mylist['widg-dash_subtype']) && in_array($mylist['widg-dash_subtype'],Array('entity','comment')))))
 				{
 					$mylist['widg-attach'] = $app['entity'][$mylist['widg-attach']]['ent-label'];
-				}
-				elseif(isset($mylist['widg-side_subtype']) && $mylist['widg-side_subtype'] == 'relationship' && isset($mylist['widg-attach-rel']))
-				{
-					$mylist['widg-attach'] = wpas_get_rel_full_name($app['relationship'][$mylist['widg-attach-rel']],$app);
 				}
 				elseif(isset($mylist['widg-dash_subtype']) && $mylist['widg-dash_subtype'] == 'admin')
 				{
@@ -727,6 +745,40 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 						}
 						$mylist['shc-attach'] .= $ent . ")";
 						break;
+					case 'chart':
+						$mylist['shc-view_type'] = __("Chart","wpas");	
+						$mylist['shc-attach'] = $app['entity'][$mylist['shc-attach']]['ent-label'];
+						break;
+					case 'datagrid':
+						$mylist['shc-view_type'] = __("Data Grid","wpas");	
+						$mylist['shc-attach'] = $app['entity'][$mylist['shc-attach']]['ent-label'];
+						break;
+				}
+			}
+			elseif($list_type == 'notify')
+			{
+				switch($mylist['notify-level']) {
+					case 'entity':
+						$mylist['notify-level'] = "Entity";
+						$mylist['notify-attached_to'] = $app['entity'][$mylist['notify-attached_to']]['ent-label'];
+						break;
+					case 'tax':
+						$mylist['notify-level'] = "Taxonomy";
+						$mylist['notify-attached_to'] = $app['taxonomy'][$mylist['notify-attached_to']]['txn-label'];
+						break;
+					case 'attr':
+						$fids = explode("__",$mylist['notify-attached_to']);
+						$mylist['notify-level'] = "Attribute";
+						$mylist['notify-attached_to'] = $app['entity'][$fids[1]]['field'][$fids[0]]['fld_label'];
+						break;
+					case 'rel':
+						$mylist['notify-level'] = "Relationship";
+						$mylist['notify-attached_to'] = $app['relationship'][$mylist['notify-attached_to']]['rel-name'];
+						break;
+					case 'com':
+						$mylist['notify-level'] = "Comment";
+						$mylist['notify-attached_to'] = $app['entity'][$mylist['notify-attached_to']]['ent-label'];
+						break;
 				}
 			}
                         $url['edit_url'] = $edit_url . $key_list;
@@ -764,9 +816,9 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                                         'format' => $format . '=%#%',
 					'type' => 'array',
                                         ) );
-		$paging_html = "<ul>";
 		if(!empty($paging))
 		{
+			$paging_html = "<ul>";
 			foreach($paging as $key_paging => $my_paging)
 			{
 				$paging_html .= "<li";
@@ -779,7 +831,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 			$paging_html .= "</ul>";
 		}
 
-                $div_table .= "</tbody></table>";
+                //$div_table .= "</tbody></table>";
         }
         $return_list .= $paging_html . "</div><br class=\"clear\"></div>";
         $return_list .= wpas_list_table($other_labels);
@@ -808,7 +860,7 @@ function wpas_breadcrumb($page,$app_id)
                 echo '<li id="second" class="active">' . __("Edit Application","wpas") . '</li>
                         </ul>';
         }
-	echo '<div class="span3"><a style="padding:7px 14px;" class="btn btn-success pull-right" href="'. wp_nonce_url(admin_url('admin.php?page=wpas_app_list&generate=1&app=') .$app_id,'wpas_generate') . '"><i class="icon-play"></i>' . __("Generate","wpas") .'</a></div>';
+	echo '<div class="span3"><a style="padding:7px 14px;" class="btn btn-success pull-right" href="'. admin_url('admin.php?page=wpas_generate_page&app=') .$app_id . '"><i class="icon-play"></i>' . __("Generate","wpas") .'</a></div>';
 	echo '</div>';
 }
 

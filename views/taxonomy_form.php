@@ -89,7 +89,7 @@ jQuery(document).ready(function() {
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Description","wpas"); ?></label>
 		<div class="controls span9">
-		<textarea class="input-xlarge" id="txn-tax_desc" name="txn-tax_desc"></textarea>
+		<textarea class="wpas-std-textarea" id="txn-tax_desc" name="txn-tax_desc"></textarea>
 		<a href="#" style="cursor: help;" title="<?php _e("A short, optional descriptive summary of what the taxonomy is. It will be displayed in the front-end forms if the taxonomy is used in a form layout. Leave it blank if you do not need help text for your taxonomy. Max 500 chars.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
@@ -98,7 +98,7 @@ jQuery(document).ready(function() {
 				<div class="control-group row-fluid">
                     <label class="control-label req span3"><?php _e("Attach to Entity","wpas"); ?></label>
                     <div class="controls span9">
-<select id="txn-attach" name="txn-attach" multiple="multiple">
+<select id="txn-attach" name="txn-attach[]" multiple="multiple">
 </select><a href="#" title="<?php _e("Select one or more entities your taxonomy will be attached to.","wpas"); ?>" style="cursor: help;"> <i class="icon-info-sign"></i></a>
 					</div>
                 </div>
@@ -146,7 +146,7 @@ jQuery(document).ready(function() {
         <div class="control-group row-fluid" id="txn-values_div" >
         <label class="control-label span3"><?php _e("Values","wpas");?></label>
         <div class="controls span9">
-        <textarea id="txn-values" name="txn-values" class="input-xlarge" rows="3" placeholder="e.g. blue{color blue}[color];red{color red}[color];white{color white}[color]" ></textarea>
+        <textarea id="txn-values" name="txn-values" class="wpas-std-textarea" placeholder="e.g. blue{color blue}[color];red{color red}[color];white{color white}[color]" ></textarea>
         <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the taxonomy. There must be only one semicolon between the values. Optiopnally Term descriptions and term parent can be entered using term{term-description}[term-parent] format. For example; Monkey{Monkey is a funny animal}[Animal]","wpas");?>">
         <i class="icon-info-sign"></i></a>
         </div>

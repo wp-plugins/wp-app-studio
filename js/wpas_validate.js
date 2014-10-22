@@ -33,6 +33,9 @@ jQuery(document).ready(function($) {
 		$.validator.addMethod('checkAlphaNum', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9]+$/i.test(value);
 		}, validate_vars.check_alpha_num);
+		$.validator.addMethod('checkAppTitle', function(value, element) { 
+			return this.optional(element) || /^[a-z][a-z0-9 ]+$/i.test(value);
+		}, validate_vars.check_app_title);
 		$.validator.addMethod('checkAlphaDash', function(value, element) { 
 			return this.optional(element) || /^[a-z\-]+$/i.test(value);
 		}, validate_vars.check_alpha_dash);
@@ -46,10 +49,10 @@ jQuery(document).ready(function($) {
 			return this.optional(element) || /^[a-z0-9\_]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und);
 		$.validator.addMethod('checkAlphaNumUnderSemiCurly', function(value, element) { 
-			return this.optional(element) || /^[a-z0-9 \;\_\{\}]+$/i.test(value);
+			return this.optional(element) || /^[a-z0-9 \;\.\_\{\}]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und_semi_cur);
 		$.validator.addMethod('checkTaxChar', function(value, element) { 
-			return this.optional(element) || /^[a-z0-9 \_;\{\}\[\]]+$/i.test(value);
+			return this.optional(element) || /^[a-z0-9 \.\;\,\_\{\}\[\]]+$/i.test(value);
 		}, validate_vars.check_tax_char);
 		$.validator.addMethod('checkAlphaNumUnderDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\_\-]+$/i.test(value);
@@ -60,6 +63,13 @@ jQuery(document).ready(function($) {
 		$.validator.addMethod('checkVersion', function(value, element) { 
 			return this.optional(element) || /^[0-9\.]+$/i.test(value);
 		}, validate_vars.check_version);
+		$.validator.addMethod('checkNotify', function(value, element) {
+			if(!$('#notify-email_admin_confirm').attr('checked') && !$('#notify-email_user_confirm').attr('checked'))
+			{
+				return false;
+			}
+			return true;
+		}, validate_vars.check_notify);
 		$.validator.addMethod('checkRelUser', function(value, element) { 
 			if($('#rel-from-name').val() == 'user' && value == 'user')
 			{
@@ -304,6 +314,7 @@ jQuery(document).ready(function($) {
 		var form_id = $(element.form).attr('id');
 		switch (type) {
 			case 'ent':
+			case 'com':
 				comp_id = $('#' + form_id + ' input#ent').val();
 				break;
 			case 'ent_field':
@@ -353,6 +364,38 @@ jQuery(document).ready(function($) {
 		});
 		return unique; 
 		}, validate_vars.check_unique);
+	
+		$.validator.addMethod('checkAppDash',function(value,element){
+			var resp = true;
+			if($('#shc-app_dash').attr('checked') && $('#shc-view_type').val() == 'integration')
+			{
+				var layout = $('#shc-sc_layout').val();
+				if(layout.indexOf('!#shortcode[') > 0)
+				{
+					var app_id = $('#app_form input#app').val();
+					$.ajax({
+						type: 'GET',
+						url: ajaxurl,
+						cache: false,
+						async: false,
+						data: {action:'wpas_check_app_dash',layout:layout,app_id:app_id},
+						success: function(response)
+						{
+							resp = response;
+						},
+					});
+				}
+			}
+			return resp;
+		},validate_vars.check_app_dash);
+	
+		$.validator.addMethod('checkDash',function(value,element){
+			if(!$('#widg-app_dash').attr('checked') && !$('#widg-wp_dash').attr('checked'))
+			{
+				return false;
+			}
+			return true;
+		}, validate_vars.check_dash);
 
 		$('#app_form').validate(
 		{
@@ -364,6 +407,7 @@ jQuery(document).ready(function($) {
 			minlength:3,
 			maxlength:50,
 			uniqueName:['app'],
+			checkAppTitle:true,
 			required:true,
 			}
 			},
@@ -436,11 +480,6 @@ jQuery(document).ready(function($) {
 			url:true,
 			required:true,
 			},
-			'ent-menu_icon_32': {
-			maxlength:255,
-			url:true,
-			required:true,
-			},
 			'ent-menu_icon_fa': {
 			required:true,
 			checkAlphaDashFa: true,
@@ -448,6 +487,10 @@ jQuery(document).ready(function($) {
 			'ent-menu_icon_dash': {
 			required:true,
 			checkAlphaDash: true,
+			},
+			'ent-menu_icon_base64': {
+			required:true,
+			maxlength:5000,
 			},
 			'ent-top_level_page': {
 			required:true,
@@ -465,7 +508,28 @@ jQuery(document).ready(function($) {
 			'ent-display_idx':{
 			maxlength:2,
 			checkInt: true,
-			}
+			},
+			'ent-com_display_type':{
+			required:true,
+			},	
+			'ent-com_name':{
+			required:true,
+			maxlength:20,
+			noSpace:true,
+			noCap:true,
+			checkAlphaNumUnder: true,
+			uniqueName:['com'],
+			},
+			'ent-com_single_label':{
+			minlength:3,
+			required:true,
+			maxlength:50,
+			},
+			'ent-com_plural_label':{
+			minlength:3,
+			required:true,
+			maxlength:50,
+			},
 			},
 			success: function(label) {
 				label.addClass('valid');
@@ -490,7 +554,7 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'fld_label': {
-			minlength:3,
+			minlength:2,
 			maxlength:50,
 			required:true,
 			},
@@ -601,8 +665,8 @@ jQuery(document).ready(function($) {
                         },
 			'txn-values': {
 			maxlength:21844,
+			//checkTaxChar: true,
 			checkValues:true,
-			checkTaxChar: true,
 			},
 			'txn-menu_name':{
 			maxlength:50,
@@ -653,6 +717,7 @@ jQuery(document).ready(function($) {
 			onfocusout: false,
 			onkeyup: false,
 			onclick: false,
+			ignore: ":hidden",
 			rules: {
 			'rel-name':{
 			uniqueName:['rel'],
@@ -699,13 +764,13 @@ jQuery(document).ready(function($) {
 			},              
 			'rel-related-display-to-title':{
 			maxlength:50,
-			},              
+			},
 			},
 			success: function(label) {
 			label.addClass('valid');
 			$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
-		});
+		}); 
 		$('#rel-field-form').validate(
 		{
 			onfocusout: false,
@@ -752,6 +817,11 @@ jQuery(document).ready(function($) {
 			onclick: false,
 			ignore: ":hidden",
 			rules: {
+			'ao_plugin_name': {
+			required:true,
+			maxlength:10,
+			checkAlphaDash: true,
+			},			
 			'ao_domain':{
 			required:true,
 			url: true,
@@ -760,19 +830,31 @@ jQuery(document).ready(function($) {
 			'ao_blog_name':{
 			maxlength:100,
 			},
+			'ao_app_sdesc':{
+			maxlength:150,
+			required:true,
+			},
 			'ao_app_desc':{
-			maxlength:300,
+			maxlength:5000,
+			required:true,
+			},
+			'ao_change_log':{
+			maxlength:5000,
+			required:true,
 			},
 			'ao_app_version':{
 			checkVersion: true,
+			required:true,
 			maxlength:10,
 			},
 			'ao_author':{
 			maxlength:50,
+			required:true,
 			},
 			'ao_author_url':{
 			maxlength:255,
 			url: true,
+			required:true,
 			},
 			'ao_login_logo_url':{
 			maxlength:255,
@@ -896,6 +978,16 @@ jQuery(document).ready(function($) {
 			required:true,
 			maxlength:255,
 			},
+			'shc-app_dash':{
+			checkAppDash:true,
+			},
+			'shc-app_dash_title':{
+			required:true,
+			maxlength:255,
+			},
+			'shc-app_dash_loc':{
+			required:true,
+			},
 			'shc-sc_layout':{
 			maxlength:5000,
 			required:true,
@@ -906,6 +998,120 @@ jQuery(document).ready(function($) {
 			'shc-sc_post_per_page':{
 			maxlength:3,
 			checkNum:true,
+			},
+			'shc-chart_title':{
+			maxlength:255,
+			},
+			'shc-chart_type':{
+			required:true,
+			},
+			'shc-haxis_type':{
+			required:true,
+			},
+			'shc-haxis_title':{
+			maxlength:255,
+			},
+			'shc-haxis_id':{
+			required:true,
+			},
+			'shc-vaxis_type':{
+			required:true,
+			},
+			'shc-vaxis_title':{
+			maxlength:255,
+			},
+			'shc-vaxis_id':{
+			required:true,
+			},
+			'shc-chart_height':{
+			checkInt:true,
+			maxlength:4,
+			},
+			'shc-chart_width':{
+			checkInt:true,
+			maxlength:4,
+			},
+			},
+			success: function(label) {
+				label.addClass('valid');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
+			}
+		});
+		$('#notify-form').validate(
+		{
+			onfocusout: false,
+			onkeyup: false,
+			onclick: false,
+			ignore: ":hidden",
+			rules: {
+			'notify-name':{
+			minlength:3,
+			maxlength:30,
+			required:true,
+			noSpace:true,
+			noCap:true,
+			checkAlphaNumUnder: true,
+			uniqueName:['notify'],
+			},
+			'notify-label':{
+			minlength:3,
+			maxlength:50,
+			required:true,
+			},	
+			'notify-level':{
+			required:true,
+			},
+			'notify-attached_to':{
+			required:true,
+			},
+			'notify-events[]':{
+			required:true,
+			},
+			'notify-email_user_confirm':{
+			checkNotify:true,
+			},
+			'notify-email_admin_confirm':{
+			checkNotify:true,
+			},
+			'notify-confirm_sendto':{
+			required:true,
+			},
+			'notify-confirm_replyto':{
+			checkEmail: true,
+			},
+			'notify-confirm_user_cc':{
+			checkEmail: true,
+			},
+			'notify-confirm_user_bcc':{
+			checkEmail: true,
+			},
+			'notify-confirm_subject':{
+			required:true,
+			maxlength:255,
+			},
+			'notify-confirm_msg':{
+			required:true,
+			maxlength:5000,
+			},
+			'notify-confirm_admin_sendto':{
+			checkEmail: true,
+			},
+			'notify-confirm_admin_replyto':{
+			checkEmail: true,
+			},
+			'notify-confirm_admin_cc':{
+			checkEmail: true,
+			},
+			'notify-confirm_admin_bcc':{
+			checkEmail: true,
+			},
+			'notify-confirm_admin_subject':{
+			required:true,
+			maxlength:255,
+			},
+			'notify-confirm_admin_msg':{
+			required:true,
+			maxlength:5000,
 			},
 			},
 			success: function(label) {
@@ -941,10 +1147,10 @@ jQuery(document).ready(function($) {
 			'widg-side_subtype':{
 			required:true,
 			},
-			'widg-attach-rel':{
-			required:true,
+			'widg-app_dash':{
+			checkDash:true,
 			},
-			'widg-rel-conn-type':{
+			'widg-app_dash_loc':{
 			required:true,
 			},
 			'widg-title':{
@@ -1032,47 +1238,6 @@ jQuery(document).ready(function($) {
 			maxlength:255,
 			url:true,
 			required:true,
-			},
-			'form-confirm_sendto':{
-			required:true,
-			},
-			'form-confirm_replyto':{
-			checkEmail: true,
-			},
-			'form-confirm_user_cc':{
-			checkEmail: true,
-			},
-			'form-confirm_user_bcc':{
-			checkEmail: true,
-			},
-			'form-confirm_subject':{
-			required:true,
-			maxlength:255,
-			},
-			'form-confirm_msg':{
-			required:true,
-			maxlength:5000,
-			},
-			'form-confirm_admin_sendto':{
-			required:true,
-			checkEmail: true,
-			},
-			'form-confirm_admin_replyto':{
-			checkEmail: true,
-			},
-			'form-confirm_admin_cc':{
-			checkEmail: true,
-			},
-			'form-confirm_admin_bcc':{
-			checkEmail: true,
-			},
-			'form-confirm_admin_subject':{
-			required:true,
-			maxlength:255,
-			},
-			'form-confirm_admin_msg':{
-			required:true,
-			maxlength:5000,
 			},
 			},
 			success: function(label) {
