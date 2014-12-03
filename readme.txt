@@ -52,13 +52,14 @@ WP App Studio AUTOBAHN aims to make WordPress Plugin Development as easy as fill
 >
 = Documentation and Support =
  [Extensive documentation](https://wpas.emdplugins.com/articles "WP App Studio 4 AUTOBAHN Documentation") with step by step instructions is available on WPAS site.<br>
-> Watch AUTOBAHN Intoduction Video
-> [youtube https://www.youtube.com/watch?v=9K4uBRkFJEU]
-<br><br><strong>WPAS created plugins</strong><br>
-We publish [community editions](https://profiles.wordpress.org/emarket-design/#content-plugins) of our plugins in WordPress repository. The premium edition plugins with extensive documentation and demos are available at [emdplugins.com](https://emdplugins.com)
-Take a look at our demos page for available [app signatures](https://wpas.emdplugins.com/wpas-demos/)<br>
-<br><strong>Support</support>
-You can get support( bug reports, feature requests, improvements etc.) on our community and premium plugins at our [support site](https://support.emarketdesign.com) by opening a free support ticket.
+
+**Watch AUTOBAHN Intoduction Video**
+[youtube https://www.youtube.com/watch?v=9K4uBRkFJEU]
+><br><br><strong>WPAS created plugins</strong><br>
+>We publish [community editions](https://profiles.wordpress.org/emarket-design/#content-plugins) of our plugins in WordPress repository. The premium edition plugins with extensive documentation and demos are available at [emdplugins.com](https://emdplugins.com)
+>Take a look at our demos page for available [app signatures](https://wpas.emdplugins.com/wpas-demos/)<br>
+><br><strong>Support</support><br>
+>You can get support( bug reports, feature requests, improvements etc.) on our community and premium plugins at our [support site](https://support.emarketdesign.com) by opening a free support ticket.
 
 = FreeDev Tier - Free Plugin Development Features  =
 * Designed to enable you to get hands-on experience with WP App Studio AUTOBAHN at no charge for 12 months after you sign up.
