@@ -490,7 +490,7 @@ jQuery(document).ready(function($) {
                 <div class="controls span9">
                 <input class="input-small" name="ent-menu_icon_fa" id="ent-menu_icon_fa" type="text" placeholder="<?php _e("exp; fa-rocket","wpas");?>"/>
                 <a href="#" style="cursor: help;" title="<?php _e("Sets the class of the icon which will be displayed on the menu bar of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>
-		<a target="_blank" href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/">Cheatsheet</a>
+		<a target="_blank" href="https://wpas.emdplugins.com/articles/supported-icons/">Cheatsheet</a>
                 </div>
                 </div>
                 <div class="control-group row-fluid" id="ent-menu_icon_dash_div" style="display:none;">
@@ -498,7 +498,7 @@ jQuery(document).ready(function($) {
                 <div class="controls span9">
                 <input class="input-small" name="ent-menu_icon_dash" id="ent-menu_icon_dash" type="text" placeholder="<?php _e("exp; camera","wpas");?>"/>
                 <a href="#" style="cursor: help;" title="<?php _e("Enter the class of the icon  which will be displayed on the menu bar of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>
-                <a target="_blank" href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/dashicons">Cheatsheet</a>
+                <a target="_blank" href="https://wpas.emdplugins.com/articles/supported-icons/dashicons">Cheatsheet</a>
                 </div>
                 </div>															
                 <div class="control-group row-fluid" id="ent-menu_icon_base64_div" style="display:none;">

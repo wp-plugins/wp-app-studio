@@ -788,6 +788,8 @@ jQuery(document).ready(function($) {
 			}
 			else if(button == 'option')
 			{
+			       $('#ao_adm_notice1').attr('checked', false);
+			       $('#ao_adm_notice2').attr('checked', false);
 			       $('#ao_remove_colfilter').attr('checked', true);
 			       $('#ao_remove_operations').attr('checked', true);
 			       $('#ao_remove_analytics').attr('checked', true);
@@ -1429,21 +1431,9 @@ jQuery(document).ready(function($) {
 								});
 							}
 						}
-						else if(key == 'notify-email_user_confirm')
-						{
-							$('#notify-email_user_div').show();
-							$('#'+key).attr('checked',true);
-							$(this).showNotifyTags(app_id,notify_level,'notify-user-tags',response[0]);
-						}
 						else if(key == 'notify-confirm_sendto')
 						{
 							$(this).getEmails(app_id,notify_level,attach_to,attach_tax,value);
-						}
-						else if(key == 'notify-email_admin_confirm')
-						{
-							$('#notify-email_admin_div').show();
-							$('#'+key).attr('checked',true);
-							$(this).showNotifyTags(app_id,notify_level,'notify-admin-tags',response[0]);
 						}
 						else if(key == 'help-entity')
 						{
@@ -1811,6 +1801,18 @@ jQuery(document).ready(function($) {
 								$('#shc-app_dash_loc_div').show();
 								$('#add-'+myclass+'-div #'+key).val(value);
 							}
+							else if(key == 'notify-email_user_confirm')
+							{
+								$('#notify-email_user_div').show();
+								$('#'+key).attr('checked',true);
+								$(this).showNotifyTags(app_id,notify_level,'notify-user-tags',response[0]);
+							}
+							else if(key == 'notify-email_admin_confirm')
+							{
+								$('#notify-email_admin_div').show();
+								$('#'+key).attr('checked',true);
+								$(this).showNotifyTags(app_id,notify_level,'notify-admin-tags',response[0]);
+							}
 							else
 							{
 								$('#add-'+myclass+'-div #'+key).val(value);
@@ -2059,6 +2061,8 @@ jQuery(document).ready(function($) {
                 });
                 $('#add-option-div :input').removeAttr('disabled');
                 $('#add-option-div button').removeAttr('disabled'); 
+		$('#ao_adm_notice1').attr('checked', false);
+		$('#ao_adm_notice2').attr('checked', false);
 		$('#edit-btn-div').hide();
 		app_id = $('#app-save input#app').val();
 		app = $('input#app_title').val();
@@ -2076,6 +2080,14 @@ jQuery(document).ready(function($) {
 							else if(key == 'ao_force_dashboard_to_column')
 							{
 								$('#ao_force_col_div').show();
+							}
+							else if(key == 'ao_adm_notice1')
+							{
+								$('#ao_adm_notice1_detail_div').show();
+							}
+							else if(key == 'ao_adm_notice2')
+							{
+								$('#ao_adm_notice2_detail_div').show();
 							}
 							else if(key == 'ao_set_uitheme')
 							{

@@ -49,6 +49,7 @@ function wpas_get_layout_tags(){
 	$type = isset($_GET['type']) ? $_GET['type'] : '';
 	$comp_id = isset($_GET['comp_id']) ? $_GET['comp_id'] : '';
 	$rel_id = isset($_GET['rel_id']) ? $_GET['rel_id'] : '';
+	$ret = '';
 	if(empty($app_id) || $comp_id == '' || empty($type))
 	{
 		die(-1);
@@ -72,7 +73,7 @@ function wpas_get_layout_tags(){
                 'user_display_name' => __('User Display Name','wpas'),
                 'user_login' => __('User Login','wpas')
         );
-	if(in_array($type,Array('tag','tag-rel','tag-form','rel','notify-rel')) && !empty($comp_id)){
+	if(in_array($type,Array('tag','tag-rel','tag-form','rel','notify-rel')) && isset($comp_id)){
 		if($type == 'tag-form' && !empty($app['form']))
 		{
 			$comp_id_arr[] = $app['form'][$comp_id]['form-attached_entity'];
@@ -240,6 +241,7 @@ function wpas_allowed_html($allowed,$content){
 		$allowed['button']['data-toggle'] = true;
 		$allowed['button']['data-target'] = true;
 		$allowed['button']['data-dismiss'] = true;
+		$allowed['img']['data-src'] = true;
 	}
 	return $allowed;
 }
@@ -2555,7 +2557,7 @@ function wpas_delete()
 							$change = 0;
 							foreach($myform_layout as $keyel => $myform_layout_el)
 							{
-								if(isset($myform_layout_el['entity']) && in_array($myform_layout_el['entity'],$ent_arr) || ($myform_layout_el['obtype'] == 'relent' && in_array($myform_layout_el['relent'],$rel_arr)) || ($myform_layout_el['obtype'] == 'tax' && in_array($myform_layout_el['tax'],$txn_arr)))
+								if(isset($myform_layout_el['entity']) && in_array($myform_layout_el['entity'],$ent_arr) || (isset($myform_layout_el['obtype']) && $myform_layout_el['obtype'] == 'relent' && in_array($myform_layout_el['relent'],$rel_arr)) || (isset($myform_layout_el['obtype']) && $myform_layout_el['obtype'] == 'tax' && in_array($myform_layout_el['tax'],$txn_arr)))
 								{
 									unset($new_layout[$keyel]);
 									$change =1;
@@ -2733,7 +2735,7 @@ function wpas_save_form()
 	foreach($post_array as $pkey => $comp_form_value)
 	{
 		$pos = strpos($pkey,$search_str);
-		if(in_array($pkey, Array('rel-con_from_layout','rel-con_to_layout','rel-rel_from_layout','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
+		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
 		{
 			$comp_form_value_sanitized = wp_kses_post(stripslashes($comp_form_value));
 		}
@@ -2843,7 +2845,7 @@ function wpas_update_form()
 		}
 		$pos = strpos($pkey,$search_str);
 
-		if(in_array($pkey, Array('rel-con_from_layout','rel-con_to_layout','rel-rel_from_layout','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
+		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
 		{
 			$comp_form_value_sanitized = wp_kses_post(stripslashes($comp_form_value));
 		}

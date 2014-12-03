@@ -128,7 +128,7 @@ function wpas_form_container($layout,$app,$form_id)
 							$connector = "";
 							switch($layout[$i][$j]['obtype']) {
 								case 'attr':
-									if(!empty($layout[$i][$j]['attr'])){
+									if(isset($layout[$i][$j]['attr'])){
 						 				$layout_html .= esc_html($app['entity'][$layout[$i][$j]['entity']]['field'][$layout[$i][$j]['attr']]['fld_label']);
 										$connector = 'fld';
 									}
@@ -643,7 +643,7 @@ jQuery(document).ready(function($) {
 		<div class="controls span9">
 		<input class="input-medium" name="form-submit_button_fa" id="form-submit_button_fa" type="text" placeholder="" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("Sets the font awesome icon which will be displayed next to the button text.","wpas");?>">
-		<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+		<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 		</div>
 	</div>
 	<div class="control-group row-fluid"> 

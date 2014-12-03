@@ -738,7 +738,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for selected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
@@ -746,7 +746,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_limit_user_role_div" name="fld_limit_user_role_div" style="display:none;">

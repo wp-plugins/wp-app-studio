@@ -100,14 +100,14 @@ function wpas_import_app($app_new)
 			$inflated_data = @gzinflate($data);
 			if($inflated_data !== false)
 			{
-				$data = unserialize(base64_decode($inflated_data));
-				if(!isset($data['ver']) || $data['ver'] < 3)
+                        	$data = unserialize(base64_decode($inflated_data));
+				if(!isset($myapp['ver']) || $myapp['ver'] < 3)
 				{
 					$data = wpas_update_data_arr_ver3($data['app_id'],$data);
 					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
 				}
-				elseif($data['ver'] == 3 && !empty($data['widget']))
-				{
+                		elseif($myapp['ver'] == 3 && !empty($myapp['widget']))
+                		{
 					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
 				}
 			}
@@ -308,6 +308,7 @@ function wpas_check_valid_generate($myapp)
 	// 9: search form not linked to any view
 	// 10: forms not attached to an entity
 	// 11: no textdomain defined
+	// 12: req app settings not empty
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
@@ -316,6 +317,9 @@ function wpas_check_valid_generate($myapp)
 	}
 	elseif(empty($myapp['option']['ao_plugin_name'])){
 		$generate_error = 11;
+	}
+	elseif(empty($myapp['option']['ao_domain']) || empty($myapp['option']['ao_app_sdesc']) || empty($myapp['option']['ao_app_desc']) || empty($myapp['option']['ao_app_version']) || empty($myapp['option']['ao_author']) || empty($myapp['option']['ao_author_url']) || empty($myapp['option']['ao_change_log'])){
+		$generate_error = 12;
 	}
 	elseif(!empty($myapp['entity']))
 	{
@@ -383,6 +387,9 @@ function wpas_check_valid_generate($myapp)
 			break;
 		case 11:
 			$alert = __("Error: You must fill out the textdomain field in the application's settings app info tab.","wpas");
+			break;
+		case 12:
+			$alert = __("Error: You must fill out all the required fields in the application's settings app info tab.","wpas");
 			break;
 		default:
 			$alert = "";

@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
         <div class="controls span9">
         <select id="rel-to-name" name="rel-to-name">
         </select>
-        <a href="#" title="<?php _e("TO entity is the primary entity in a relationship. Any one entity instance from the primary entity can be referenced by many entity instances from the related entity.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
+        <a href="#" title="<?php _e("- To entity - is the primary entity in a relationship. Any one entity instance from the primary entity can be referenced by many entity instances from the related entity.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a></div>
         </div>
 	<div class="control-group row-fluid" id="rel-limit_user_relationship_role_div" style="display: none;">
 	<label class="control-label span3"><?php _e("Limit By Role","wpas"); ?></label>
@@ -206,20 +206,6 @@ jQuery(document).ready(function($) {
 </div><!-- end of tab1 -->
 <div id="reltabs-2" class="tab-pane fade in">
         <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("From Entity Title","wpas");?></label>
-        <div class="controls span9">
-        <input name="rel-connected-display-from-title" id="rel-connected-display-from-title"  type="text" placeholder="<?php _e("e.g. Connected Orders (To Entity)","wpas");?>">
-        <a href="#" title="<?php _e("Sets the connected relationship title on the 'from' entity frontend.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
-        </div>
-        </div>
-        <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("To Entity Title","wpas");?></label>
-        <div class="controls span9">
-        <input name="rel-connected-display-to-title" id="rel-connected-display-to-title" type="text" placeholder="<?php _e("e.g. Connected Products (From Entity)","wpas");?>">
-        <a href="#" title="<?php _e("Sets the connected relationship title on the 'to' entity frontend.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
-        </div>
-        </div>
-        <div class="control-group row-fluid">
         <label class="control-label span3" ><?php _e("Display Type","wpas");?></label>
         <div class="controls span9">
         <select name="rel-connected-display-type" id="rel-connected-display-type" class="input-medium">
@@ -231,11 +217,26 @@ jQuery(document).ready(function($) {
         <i class="icon-info-sign"></i></a>
         </div>
         </div>
+	<div class="well" style="background-color:#C4E3FC;">
+        <div class="control-group row-fluid">
+        <label class="control-label span3"><?php _e("From Entity Title","wpas");?></label>
+        <div class="controls span9">
+        <input name="rel-connected-display-from-title" id="rel-connected-display-from-title"  type="text" placeholder="<?php _e("e.g. Connected Orders (To Entity)","wpas");?>">
+        <a href="#" title="<?php _e("Sets the connected relationship title on the - from entity - backend and default entity(entity without a single view) frontend.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
+        </div>
+        </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("From Entity Header","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-con_from_header" name="rel-con_from_header"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout header of -from entity- records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("From Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
 	<textarea class="wpas-std-textarea" id="rel-con_from_layout" name="rel-con_from_layout"></textarea>
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single -from entity- record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single - from entity - record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 	<div id="rel-con-from-tags-div" style="padding:10px 0;">
 	<div style="padding:10px;">
 	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-con-from-tags">Show Tags</button>
@@ -245,10 +246,33 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("From Entity Footer","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-con_from_footer" name="rel-con_from_footer"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout footer of - from entity - records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	</div>
+	<div class="well" style="background-color:#F8F1FC;">
+        <div class="control-group row-fluid">
+        <label class="control-label span3"><?php _e("To Entity Title","wpas");?></label>
+        <div class="controls span9">
+        <input name="rel-connected-display-to-title" id="rel-connected-display-to-title" type="text" placeholder="<?php _e("e.g. Connected Products (From Entity)","wpas");?>">
+        <a href="#" title="<?php _e("Sets the connected relationship title on the - to entity - backend and default entity(entity without a single view) frontend..","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
+        </div>
+        </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("To Entity Header","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-con_to_header" name="rel-con_to_header"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout header of - to entity - records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("To Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
 	<textarea class="wpas-std-textarea" id="rel-con_to_layout" name="rel-con_to_layout"></textarea>
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single -to entity- record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single - to entity - record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 	<div id="rel-con-to-tags-div" style="padding:10px 0;">
 	<div style="padding:10px;">
 	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-con-to-tags">Show Tags</button>
@@ -257,22 +281,16 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	</div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("To Entity Footer","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-con_to_footer" name="rel-con_to_footer"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout footer of - to entity - records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	</div>
 </div><!-- end of tab2 -->
 <div id="reltabs-3" class="tab-pane fade in">
-        <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("From Entity Title","wpas");?></label>
-        <div class="controls span9">
-        <input name="rel-related-display-from-title" id="rel-related-display-from-title" type="text" placeholder="<?php _e("e.g. Related Products (From Entity)","wpas");?>">
-        <a href="#" title="<?php _e("Sets the related relationship title on the 'from' entity frontend. This option can be used only in Many-to-Many relationships.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
-        </div>
-        </div>
-        <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("To Entity Title","wpas");?></label>
-        <div class="controls span9">
-        <input name="rel-related-display-to-title" id="rel-related-display-to-title" type="text" placeholder="<?php _e("e.g. Related Orders (To Entity)","wpas");?>">
-        <a href="#" title="<?php _e("Sets the related relationship title on the 'to' entity frontend. This option can be used only in Many-to-Many relationships.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
-        </div>
-        </div>
         <div class="control-group row-fluid">
         <label class="control-label span3" ><?php _e("Display Type","wpas");?></label>
         <div class="controls span9">
@@ -285,6 +303,21 @@ jQuery(document).ready(function($) {
         <i class="icon-info-sign"></i></a>
         </div>
         </div>
+	<div class="well" style="background-color:#C4E3FC;">
+        <div class="control-group row-fluid">
+        <label class="control-label span3"><?php _e("From Entity Title","wpas");?></label>
+        <div class="controls span9">
+        <input name="rel-related-display-from-title" id="rel-related-display-from-title" type="text" placeholder="<?php _e("e.g. Related Products (From Entity)","wpas");?>">
+        <a href="#" title="<?php _e("Sets the related relationship title on the - from entity - backend and default entity(entity without a single view) frontend. This option can be used only in Many-to-Many relationships.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
+        </div>
+        </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("From Entity Header","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-rel_from_header" name="rel-rel_from_header"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout header of -from entity- records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("From Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
@@ -299,6 +332,29 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
 	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("From Entity Footer","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-rel_from_footer" name="rel-rel_from_footer"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout footer of -from entity- records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	</div>
+	<div class="well" style="background-color:#F8F1FC;">
+        <div class="control-group row-fluid">
+        <label class="control-label span3"><?php _e("To Entity Title","wpas");?></label>
+        <div class="controls span9">
+        <input name="rel-related-display-to-title" id="rel-related-display-to-title" type="text" placeholder="<?php _e("e.g. Related Orders (To Entity)","wpas");?>">
+        <a href="#" title="<?php _e("Sets the related relationship title on the - to entity - backend and default entity(entity without a single view) frontend. This option can be used only in Many-to-Many relationships.","wpas");?>" style="cursor: help;"><i class="icon-info-sign"></i></a>
+        </div>
+        </div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("To Entity Header","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-rel_to_header" name="rel-rel_to_header"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout header of -to entity- records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("To Entity Layout","wpas"); ?></label>
 	<div class="controls span9">
 	<textarea class="wpas-std-textarea" id="rel-rel_to_layout" name="rel-rel_to_layout"></textarea>
@@ -308,6 +364,14 @@ jQuery(document).ready(function($) {
 	<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#rel-rltd-to-tags">Show Tags</button>
 	</div>
 	<div id="rel-rltd-to-tags" class="collapse"></div>
+	</div>
+	</div>
+	</div>
+	<div class="control-group row-fluid">
+	<label class="control-label span3"><?php _e("To Entity Footer","wpas"); ?></label>
+	<div class="controls span9">
+	<textarea class="wpas-std-textarea" id="rel-rel_to_footer" name="rel-rel_to_footer"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the layout footer of -to entity- records.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 	</div>
 	</div>
 	</div>

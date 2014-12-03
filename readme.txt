@@ -1,21 +1,21 @@
-===  Wp App Studio  === 
+===  WP App Studio  === 
 Contributors: emarket-design
-Tags: charts, notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views
+Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 4.0
+Stable tag: 4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
-Wp App Studio is the World's #1 Visual WordPress Design and Development Platform for building commercial grade apps in the form of plugins. 
+WP App Studio is the World's #1 Visual WordPress Design and Development Platform for building commercial grade apps in the form of plugins. 
 
 ==  Description  == 
 
-Wp App Studio(WPAS) is a cost-effective REST API based Visual WordPress Design Development Platform offered as a service(PaaS). Use Wp App Studio plugin to interact with the platform; all interactions are done through HTTPS using XML text. No coding required.
+WP App Studio(WPAS) is a cost-effective REST API based Visual WordPress Design Development Platform offered as a service(PaaS). Use WP App Studio plugin to interact with the platform; all interactions are done through HTTPS using XML text. No coding required.
 
-WP App Studio AUTOBAHN aims to make WordPress Development as easy as filling out a form.
+WP App Studio AUTOBAHN aims to make WordPress Plugin Development as easy as filling out a couple of forms.
 
 = What can you do with WPAS 4 AUTOBAHN? =
 * Create a plugin specifically meeting your or your client's needs.
@@ -34,34 +34,33 @@ WP App Studio AUTOBAHN aims to make WordPress Development as easy as filling out
 * Work on multiple projects at the same time spending more time on your requirements or something unique.
 * Respond to requirement changes like a ninja. Click, click you're done!
 
-= Say Hello to WP App Studio 4 AUTOBAHN Edition =
-* More than 8 months of intense development since WPAS 3.
-* Rewrote core to make platform more compliant with WordPress Plugin coding standards and best practices in general.
-* NEW - Added Notifications module to respond to events (backend/frontend) at Entity, Attribute, Taxonomy, Relationship, and Comments level
-* NEW - Added Custom Comments subentity to separate Entity Comments from built-in WordPress comments, including backend only private comments. Many more exciting features here.
-* NEW - Added Charting module display Entity, Taxonomy, Relationship content in bar, donut, or pie charts. More chart types to come..
-* NEW - Added Analytics module to make calculations on attributes supporting summary functions such as SUM, COUNT, MIN, MAX STDDEV etc.
-* NEW - Added Datagrid view for better content summarizations at the entity level.
-* NEW - Added Integration view to support static page customizations such as front page of a site.
-* NEW - Added Ability to integrate any plugin or theme shortcode with your plugin using !#shortcode[SHORT-CODE-HERE]# tag
-* NEW - Added Ability to include any string in your view layouts using !#translate[STRING-HERE]# tag
-* NEW - Streamlined plugin translation files; Now you can get your plugin translated using only two custom built POT files.
-* NEW - Improved Search form display using advanced search operators.
-* NEW - Included Widgets to Permissions module; Now you can restrict Frontend and Backend content access based on user role/capabilities.
-* NEW - Added Relationship connection sorting
-* NEW - Added ability to create App Dashboard page with one-column and two column layouts. You can include views and widgets there to separate them from WP Dashboard. Users can enable/disable components.
-* NEW - Added ability to create setup pages. If you'd like to setup your app upon plugin activation, just check "Create Setup Page" box. The generated plugin will ask users if they want to setup your app.
-* NEW - Improved Default Taxonomy values. You can use this feature create default setup values which will be created upon plugin activation.
-* NEW - Now, every WPAS app comes with its own App Glossary; displaying entity, relationship, and taxonomy definitions in your App settings page. A handy feature for users.
-* NEW - Added Base64 to entity menu icon options.
-* NEW - Dumped TinyMCE for a simple textarea field in view layouts; caused more problems than it solved. Sorry, TinyMCE people. Hint: loose weight, better ajax support, better documentation.
-* NEW - Added ability upgrade and/or get updates from WordPress standard plugin page. Hurrahh!
-* NEW - Changed Pricing model to introduce FreeDev and ProDev tiers
-* NEW - We got a new store for WPAS generated plugins: [eMD Plugins](https://emdplugins.com)
-* NEW - Created a new website for WPAS news, documentation, tutorials: [Wp App Studio](https://wpas.emdplugins.com)
+> <strong> Get started developing your own plugin without writing a single line of PHP </strong><br>
+> 1. [Purchase ProDev account](https://wpas.emdplugins.com/downloads/pro-dev-app) or [sign up for FreeDev account](https://wpas.emdplugins.com/wpas-freedev-signup/)<br>
+> 2. Download and Install WP App Studio plugin.<br>
+>
+> -- FreeDev<br>
+> 3. Design your app and use your activation email to send your app signature for generation.<br>
+> 4. After your is app generated, the download links for app's FreeDev and ProDev versions will be available in the plugin generate page.<br>
+> 5. Download FreeDev version or Purchase and download ProDev version.<br>
+> 6. Enjoy your own plugin.<br>
+> 
+> -- ProDev<br>
+> 3. Design your app and use the email you used to purchase license to send your app signature for generation.<br>
+> 4. After your app is generated, download and activate your plugin.<br>
+> 5. Put your license key in the Licenses tab of your app setting page and activate your license. Your next updates will be through WP Plugins page.<br>
+> 6. Enjoy your own plugin.<br>
+>
+= Documentation and Support =
+ [Extensive documentation](https://wpas.emdplugins.com/articles "WP App Studio 4 AUTOBAHN Documentation") with step by step instructions is available on WPAS site.<br>
+> Watch AUTOBAHN Intoduction Video
+> [youtube https://www.youtube.com/watch?v=9K4uBRkFJEU]
+<br><br><strong>WPAS created plugins</strong><br>
+We publish [community editions](https://profiles.wordpress.org/emarket-design/#content-plugins) of our plugins in WordPress repository. The premium edition plugins with extensive documentation and demos are available at [emdplugins.com](https://emdplugins.com)
+Take a look at our demos page for available [app signatures](https://wpas.emdplugins.com/wpas-demos/)<br>
+<br><strong>Support</support>
+You can get support( bug reports, feature requests, improvements etc.) on our community and premium plugins at our [support site](https://support.emarketdesign.com) by opening a free support ticket.
 
-= Introducing FreeDev =
-* Not a framework that you need to code or jump through some hoops to get something going.
+= FreeDev Tier - Free Plugin Development Features  =
 * Designed to enable you to get hands-on experience with WP App Studio AUTOBAHN at no charge for 12 months after you sign up.
 * Download and use your app in your WordPress installation without any license cost.
 * [1 year free support](https://support.emarketdesign.com) for bug reports, feature requests or platform tips.
@@ -81,9 +80,15 @@ WP App Studio AUTOBAHN aims to make WordPress Development as easy as filling out
 * We would like to continue this service as long as we could; Donations are very welcome.
 * Give us 5 shiny stars on this page to make us more motivated to produce awesome things for you.
 
-= Introducing ProDev =
+= ProDev Tier - Pro Plugin Development Features =
 * Jump on WPAS 4 AUTOBAHN to get where you need to be; The World's most advanced, full featured Visual WordPress Development Platform
 * Endless possibilities.
+* 1 Year Free Support   (Higher priority)
+* 1 Year Unlimited App Customization
+* 1 Year App Platform updates
+* 1 Year App Plugin updates through WordPress plugin page
+* 1 year free WPAS DocGen service for whitelabel or multisite license holders. DocGen creates app documentation based on your app metadata and dictionary.[See Samples](https://docs.emdplugins.com/)
+* Introductory fixed pricing starting at $99.99 for 1 year platform access.
 * Faster, separate lane for support and development compared to the one allocated to FreeDev.
 * Sell the WPAS plugins you designed on our site and make profit/help solve problems; (Check WPAS site for news)[https://wpas.emdplugings.com].
 * [Compare FreeDev vs. ProDev](https://wpas.emdplugins.com/#wpas-tiers)
@@ -129,30 +134,11 @@ WP App Studio AUTOBAHN aims to make WordPress Development as easy as filling out
 * All your app names and text domains are exclusive to you (Only you can generate with those names) as long as you have a valid license.
 * Multisite and whitelabel licenses are available.
 * Create advanced plugins like [Software Issue Manager - Enterprise Edition](https://emdplugins.com/plugins/software-issue-manager-enterprise/)
-* 1 Year Free Support	(Higher priority)
-* 1 Year Unlimited App Customization		
-* 1 Year App Platform updates		
-* 1 Year App Plugin updates through WordPress plugin page	 	
-* 1 year free WPAS DocGen service for whitelabel or multisite license holders. DocGen creates app documentation based on your app metadata and dictionary.[See Samples](https://docs.emdplugins.com/)
-* Introductory fixed pricing starting at $99.99 for 1 year platform access.
-
-= Get Started =
-1. Sign up for FreeDev account
-2. Download and Install WPAS plugin
-3. Design your app and use your activation email to send your app signature for code generation
-4. After your code generated, FreeDev version and ProDev version download links will be available in the plugin generate page.
-5. Download FreeDev version or Purchase and download ProDev version
-6. If you purchased ProDev version, put your license key in the Licenses tab of your app setting page and activate your license. Now, all your plugin updates will be through WP Plugins page
-7. If you decided to download FreeDev version, enjoy your free plugin and do something good for your community. You can use WPAS Playground to test more features.
-
-[LEARN HOW](https://wpas.emdplugins.com/articles "Wp App Studio 4 AUTOBAHN Documentation")
-
-= Feature Requests, Bugs, Improvements =
-[Our Platform Support Site](https://support.emarketdesign.com)
-We are in the business of making your life easier as a developer, designer or power user. Let us know how we can do our job better by suggesting new features, reporting bugs, or telling us simply something we developed worked for you. We tweet about our development, new releases, tips and tricks @eMarket_Design.
+= Custom Plugin Development =
+If you need a custom app to be developed from scratch or require one of our professional/enterprise apps to be modified based on your own requirements, we offer [consulting services](https://emdplugins.com/support/).
 
 = Translations =
-We have machine-translated Wp App Studio in the following languages. We need lead translators to help finish the translations.
+We have machine-translated WP App Studio in the following languages. We need lead translators to help finish the translations.
 
 * Spanish
 * Arabic
@@ -171,7 +157,7 @@ Please [contact us](http://support.emarketdesign.com "Contact eMarket Design") i
 
 = Automatic Installation =
 
-The simplest way to install is to click on 'Plugins' then 'Add' and type 'Wp App Studio' in the search field.
+The simplest way to install is to click on 'Plugins' then 'Add' and type 'WP App Studio' in the search field.
 
 = Manual Installation Type 1 =
 
@@ -188,40 +174,40 @@ The simplest way to install is to click on 'Plugins' then 'Add' and type 'Wp App
 * Copy the plugin zip file (wp-app-studio.zip) up to your server and unzip it somewhere on the file system.
 * Copy the "wp-app-studio" folder into the /wp-content/plugins directory of your WordPress installation.
 * Login to your website and go to the Plugins section of your admin panel.
-* Look for "Wp App Studio" and click Activate.
+* Look for "WP App Studio" and click Activate.
 
 == Frequently Asked Questions ==
-= What are the basic requirements of Wp App Studio? =
+= What are the basic requirements of WP App Studio? =
 
-Wp App Studio creates a custom made plugin. You must be able to install the generated plugin in your wordpress installation. Your hosting environment must meet minimum [system requirements] [4]</a>. All Api access purchases are subject to our [api access terms and condition of use][1]. 
+WP App Studio creates a custom made plugin. You must be able to install the generated plugin in your wordpress installation. Your hosting environment must meet minimum [system requirements] [4]</a>. All Api access purchases are subject to our [api access terms and condition of use][1]. 
 
-= Do I have to install any other plugin to run Wp App Studio plugins? =
+= Do I have to install any other plugin to run WP App Studio plugins? =
 
 Nope, One plugin does it all. No dependencies. Simplicity is a bliss. 
 
-= Is Wp App Studio hard to learn? =
+= Is WP App Studio hard to learn? =
 
-Wp App Studio is designed for non-programmers in mind. We back it up with easy to follow documentation. 
+WP App Studio is designed for non-programmers in mind. We back it up with easy to follow documentation. 
 
-= What kind of Apps I can create using Wp App Studio? =
+= What kind of Apps I can create using WP App Studio? =
 
-Your imagination and needs are your limits. Wp App Studio can create advanced apps like CRM, ERP systems or less complex apps like a issue management or order management. 
+Your imagination and needs are your limits. WP App Studio can create advanced apps like CRM, ERP systems or less complex apps like a issue management or order management. 
 
 = Do you offer paid support? =
 
-Yes, we do. Support service purchases are subject to our [paid support terms and condition of use][2]. All of our developers are based out of U.S. We do not outsource. 
+We offer paid support with SLA and consulting services. For details visit our [support page](https://emdplugins.com/support/) 
 
 = Can multiple developers/designers work on the same app? =
 
-Yes, there is a small scale version control system integrated to Wp App Studio. You can also export and import app meta data from development to production systems. 
+Yes, there is a small scale version control system integrated to WP App Studio. You can also export and import app meta data from development to production systems. 
 
 = What are the license requirements? =
 
-The Wp App Studio apps are licensed as GPLv2 or later.[See licenses page for details](https://emarketdesign.com/emarket-design-licenses/) 
+The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for details](https://emarketdesign.com/emarket-design-licenses/) 
 
 = Where can I purchase professionally designed WPAS apps?  =
 
- [eMD Plugins][3]. It will be soon open to other designers/developers as well. 
+ Visit our [eMD Plugins][3] premium plugin store.
 
 
  [1]: https://emarketdesign.com/terms-and-conditions/ "Terms and Conditions"
@@ -248,6 +234,8 @@ The Wp App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 15. Easily insert WPAS components as shortcodes. Use Analytics module for custom reporting.
 
 == Upgrade Notice ==
+= 4.1 =
+Fixed misc bugs for better compatibility with other WordPress plugins and added admin notices, relationship header and footer to wrap relationship layouts.
 = 4.0 =
 WPAS 4 AUTOBAHN Edition has been released after 8 months of development.
 = 3.0 =
@@ -280,6 +268,10 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 4.1 (12/2/2014) =
+* Fixed misc. bugs for better compatibility with other WordPress plugins.
+* Added admin notices feature to app settings page. Admin notices can be triggered after plugin activation and can be used to display special offers, plugin links, upgrade notices etc. You can create up to 2 notices.
+* Added header and footer textareas for relationship layouts. You can enclose your relationship layout(loop) HTML code with these new header and footer wrappers. The wrappers are available for "To/From Entity connected/related relationships." 
 = 4.0 (10/21/2014) =
 * More than 8 months of intense development since WPAS 3
 * Rewrote core to make platform more compliant with WordPress Plugin coding standards and best practices in general.
@@ -304,7 +296,7 @@ Fixed minor bugs related to entity layout and capabilities.
 * NEW - Added ability upgrade and/or get updates from WordPress standard plugin page. Hurrahh!
 * NEW - Changed Pricing model to introduce FreeDev and ProDev tiers
 * NEW - We got a new store for WPAS generated plugins: [eMD Plugins](https://emdplugins.com)
-* NEW - Created a new website for WPAS news, documentation, tutorials: [Wp App Studio Site](https://wpas.emdplugins.com)
+* NEW - Created a new website for WPAS news, documentation, tutorials: [WP App Studio Site](https://wpas.emdplugins.com)
 
 = 3.0 (03/07/2014) =
 * Moved the user relationship from Entity to Relationship module.
@@ -370,7 +362,7 @@ Fixed minor bugs related to entity layout and capabilities.
 * Added Targeted Device feature to support mobile-first forms.
 * Added support for inline radio and checkboxes in forms.
 * Added element size(height) support in forms to better match size of the buttons.
-* Added multi-language support to Wp App Studio. Please contact us if you would like to help in translating WPAS to your own language.
+* Added multi-language support to WP App Studio. Please contact us if you would like to help in translating WPAS to your own language.
 * Fixed various bugs reported by our customers in our backend servers.
 * Cleaned up some code in the plugin side and reorganized some forms to improve readability.
 * Fixed some tinymce bugs, upgraded to the latest version.
@@ -417,7 +409,7 @@ Fixed minor bugs related to entity layout and capabilities.
 * Ability to selectively enqueue files to eliminate the overhead of unnecessary code.
 * Added WPAS toolbar button to consolidate all shortcodes in one place. Use the button to insert forms, shortcodes, and other WPAS components into posts or pages.
 * Added support for custom user roles in the user relationship dropdown in the advanced section of entity configuration.
-* Added description and optionality to relationship screen. When you set a relationship required and Wp App Studio will enforce it.
+* Added description and optionality to relationship screen. When you set a relationship required and WP App Studio will enforce it.
 * Added description, display type(multi or single select), required fields to Taxonomy screen.
 * Added uniqueness option to attributes types. Setting an attribute unique will set it as a unique key identifier. It will be used when connecting entity records to other entity records.
 * Added max file size, allowable extensions, and max file uploads validations options for file and image uploader attribute type.
@@ -441,7 +433,7 @@ Fixed minor bugs related to entity layout and capabilities.
 * Added link/unlink button Help Sidebar and Help Tab editor screens.
 * Added "Design WPAS" capability so that admins will be able to give designers wpas design permission without assigning them to an admin role.
 * Added visual editor display option independent of user profile for all wpas screens.
-* Wp App Studio Playground is open for designing, building, and testing your plugins without incurring API charges.
+* WP App Studio Playground is open for designing, building, and testing your plugins without incurring API charges.
 
 = 1.1.0 (6/01/13) =
 * Hardened overall plugin security by adding extra nonces, data sanitization/validation rules and Wordpress HTTP API calls.

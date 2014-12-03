@@ -74,6 +74,26 @@ jQuery(document).ready(function($) {
                 theme_name = $(this).find('option:selected').val();
 		$(this).changeTheme(theme_name);
         }); 
+	$('#ao_adm_notice1').click(function(){
+		if($(this).attr('checked')){
+			$('#ao_adm_notice1_detail_div').show();
+		}
+		else {
+			$('#ao_adm_notice1_detail_div').hide();
+			$('#ao_adm_notice1_url').val('');
+			$('#ao_adm_notice1_desc').val('');
+		}
+	});
+	$('#ao_adm_notice2').click(function(){
+		if($(this).attr('checked')){
+			$('#ao_adm_notice2_detail_div').show();
+		}
+		else {
+			$('#ao_adm_notice2_detail_div').hide();
+			$('#ao_adm_notice2_url').val('');
+			$('#ao_adm_notice2_desc').val('');
+		}
+	});
 });
 </script>
 	<div class="row-fluid" style="display:none;" id="edit-btn-div">
@@ -103,7 +123,7 @@ jQuery(document).ready(function($) {
 							<label class="control-label span3 req"><?php _e("Textdomain","wpas"); ?></label>
 							 <div class="controls span8">
 								 <input class="input-xlarge" name="ao_plugin_name" id="ao_plugin_name" type="text" placeholder="<?php _e("e.g. sim-ent","wpas"); ?>" value="" >
-								 <a href="#" style="cursor: help;" title="<?php _e("Set a unique textdomain for your app. Textdomains are used in translations and plugin implementation. It can contain only letters and dashes, not more than 10 chars.","wpas"); ?>">
+								 <a href="#" style="cursor: help;" title="<?php _e("Set a unique textdomain for your app. It can contain only letters and dashes, not more than 15 chars.","wpas"); ?>">
 								<i class="icon-info-sign"></i></a>
 							 </div>
 					</div>
@@ -369,6 +389,62 @@ jQuery(document).ready(function($) {
 		<div class="row-fluid">
 		<label class="control-label span1"></label>
 		<div class="control-group">
+			<label class="checkbox"><?php _e("Set Admin Notice 1","wpas"); ?>
+			<input type="checkbox" name="ao_adm_notice1" id="ao_adm_notice1" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Displays a primary admin notice to users upon plugin activation with a dismiss link.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div id="ao_adm_notice1_detail_div" style="display:none;">
+		<div class="control-group row-fluid">
+		<label class="control-label span3 req"><?php _e("Notice URL 1","wpas"); ?></label>
+		 <div class="controls span8">
+			 <input class="input-xlarge" name="ao_adm_notice1_url" id="ao_adm_notice1_url" type="text" placeholder="<?php echo "e.g. https://wpas.emdplugins.com/articles/"; ?>" value="" >
+			 <a href="#" style="cursor: help;" title="<?php _e("Sets the url of the admin notice 1 linked to.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3 req"><?php _e("Notice Description 1","wpas"); ?></label>
+		 <div class="controls span8">
+			 <input class="input-xxlarge" name="ao_adm_notice1_desc" id="ao_adm_notice1_desc" type="text" placeholder="<?php _e("e.g. New to WP App Studio? Review the Documentation","wpas"); ?>" value="" >
+			 <a href="#" style="cursor: help;" title="<?php _e("Sets the admin notice 1 message. Max 350 chars.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox"><?php _e("Set Admin Notice 2","wpas"); ?>
+			<input type="checkbox" name="ao_adm_notice2" id="ao_adm_notice2" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Displays a secondary admin notice to users upon plugin activation with a dismiss link.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div id="ao_adm_notice2_detail_div" style="display:none;">
+		<div class="control-group row-fluid">
+		<label class="control-label span3 req"><?php _e("Notice URL 2","wpas"); ?></label>
+		 <div class="controls span8">
+			 <input class="input-xlarge" name="ao_adm_notice2_url" id="ao_adm_notice2_url" type="text" placeholder="<?php echo "e.g. https://wpas.emdplugins.com/articles/"; ?>" value="" >
+			 <a href="#" style="cursor: help;" title="<?php _e("Sets the url of the admin notice 2 linked to.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3 req"><?php _e("Notice Description 2","wpas"); ?></label>
+		 <div class="controls span8">
+			 <input class="input-xxlarge" name="ao_adm_notice2_desc" id="ao_adm_notice2_desc" type="text" placeholder="<?php _e("e.g. New to WP App Studio? Review the Documentation","wpas"); ?>" value="" >
+			 <a href="#" style="cursor: help;" title="<?php _e("Sets the admin notice 2 message. Max 350 chars.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Filters","wpas"); ?>
 			<input type="checkbox" name="ao_remove_colfilter" id="ao_remove_colfilter" value="1">
 			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove filters and columns component.","wpas"); ?>">
@@ -389,7 +465,7 @@ jQuery(document).ready(function($) {
 		<div class="row-fluid">
 		<label class="control-label span1"></label>
 		<div class="control-group">
-			<label class="checkbox"><?php _e("Remove Anayltics","wpas"); ?>
+			<label class="checkbox"><?php _e("Remove Analytics","wpas"); ?>
 			<input type="checkbox" name="ao_remove_analytics" id="ao_remove_analytics" value="1">
 			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove analytics component.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
@@ -409,8 +485,8 @@ jQuery(document).ready(function($) {
 		<div class="row-fluid" id="ao_theme_type_div" style="display:none;">
 		<div class="span1"></div>
 		<div class="span10">
-			<table style="background-color:transparent !important;">
-              <tr><td><?php _e("Theme Type","wpas"); ?></td>
+		<table style="background-color:transparent !important;">
+              	<tr><td><?php _e("Theme Type","wpas"); ?></td>
                       <td> <select name="ao_theme_type" id="ao_theme_type">
                         <option value="" selected="selected"><?php _e("Please select","wpas"); ?></option>
                         <option value="smoothness"><?php _e("Smoothness","wpas"); ?></option>
@@ -442,9 +518,9 @@ jQuery(document).ready(function($) {
                         <i class="icon-info-sign"></i> </a></td>
                         <?php //<td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td> ?>
                         </tr>
-            </table>
-           </div>
-           </div>
+		</table>
+		</div>
+		</div>
 	</div>
 	</div>
 </div>

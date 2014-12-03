@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.0
+   Version: 4.1
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.0");
+define('WPAS_VERSION', "4.1");
 define('WPAS_DATA_VERSION', "4");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
@@ -200,6 +200,8 @@ load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . 
 
 add_action('admin_menu', 'wpas_plugin_menu');
 add_action( 'admin_init', 'wpas_update' );
+add_action('admin_notices', 'wpas_notices');
+
 
 if(get_option('wpas_data_version') != WPAS_DATA_VERSION)
 {
@@ -691,6 +693,7 @@ function wpas_enqueue_scripts($hook_suffix){
 		wp_enqueue_style("jq-css","http://code.jquery.com/ui/1.10.3/themes/pepper-grinder/jquery-ui.css");
 
 
+		wp_enqueue_script('share-js', plugin_dir_url( __FILE__ ) . 'js/wpas-share.js');
 		wp_enqueue_script('bootstrap-min-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js');
 		wp_enqueue_script('jquery-validate-js', plugin_dir_url( __FILE__ ) . 'js/jquery.validate.min.js');
 		wp_enqueue_script("jquery-ui-draggable");
@@ -1000,4 +1003,43 @@ function wpas_set_default_ent_roles($app)
 		}
 	}
 	return $app;
+}
+function wpas_notices()
+{
+	if(isset($_GET['wpas_dismiss_docs'])){
+    		update_user_meta(get_current_user_id(), 'wpas_dismiss_docs', true);
+	}
+	if(isset($_GET['wpas_dismiss_buynow'])) {
+		update_user_meta(get_current_user_id(), 'wpas_dismiss_buynow', true);
+	}
+	$dismiss_docs = get_user_option('wpas_dismiss_docs');
+	$dismiss_buynow = get_user_option('wpas_dismiss_buynow');
+
+	if(get_current_screen()->parent_base == 'wpas_app_list'){
+		if($dismiss_docs != 1){ 
+?>
+	<div class="updated">
+                  <?php
+                    printf(
+                        '<p> %1$s <a href="//wpas.emdplugins.com" target="_blank"> %2$s </a> %3$s <a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>',
+                        __( 'New to WP App Studio? Review the', 'wpas' ),
+                        __( 'Documentation', 'wpas' ),
+                        __( '&#187;', 'wpas' ),
+                        esc_url( add_query_arg( 'wpas_dismiss_docs', true ) ),
+                        __( 'Dismiss', 'wpas' )
+                    );
+                    ?>
+                </div>
+<?php
+		}
+		if($dismiss_buynow != 1){
+	?>
+			<div class="updated">
+			<p><a href="//wpas.emdplugins.com/downloads/pro-dev-app/" target="_blank">Buy ProDev License Now and Start Developing Your Own App! &#187;</a>
+			<a style="float:right;" href="<?php echo esc_url( add_query_arg( 'wpas_dismiss_buynow', true )); ?>"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span><?php _e( 'Dismiss', 'wpas' ); ?></a>
+			</p>
+			</div>
+	<?php
+		}
+	}
 }

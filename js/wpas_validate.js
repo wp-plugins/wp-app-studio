@@ -490,7 +490,7 @@ jQuery(document).ready(function($) {
 			},
 			'ent-menu_icon_base64': {
 			required:true,
-			maxlength:5000,
+			maxlength:10000,
 			},
 			'ent-top_level_page': {
 			required:true,
@@ -646,7 +646,7 @@ jQuery(document).ready(function($) {
 			checkAlphaNumUnderDash: true,
 			required:true,
 			},
-			'txn-attach':{
+			'txn-attach[]':{
 			required:true,
 			},
 			'txn-label': {
@@ -819,7 +819,7 @@ jQuery(document).ready(function($) {
 			rules: {
 			'ao_plugin_name': {
 			required:true,
-			maxlength:10,
+			maxlength:15,
 			checkAlphaDash: true,
 			},			
 			'ao_domain':{
@@ -879,6 +879,24 @@ jQuery(document).ready(function($) {
 			},
 			'ao_mail_from_name':{
 			maxlength:150,
+			},
+			'ao_adm_notice1_url':{
+			required:true,
+			url:true,
+			maxlength:255,
+			},
+			'ao_adm_notice2_url':{
+			required:true,
+			url:true,
+			maxlength:255,
+			},
+			'ao_adm_notice1_desc':{
+			required:true,
+			maxlength:350,
+			},
+			'ao_adm_notice2_desc':{
+			required:true,
+			maxlength:350,
 			},
 			},
 			success: function(label) {
@@ -1073,7 +1091,7 @@ jQuery(document).ready(function($) {
 			'notify-email_admin_confirm':{
 			checkNotify:true,
 			},
-			'notify-confirm_sendto':{
+			'notify-confirm_sendto[]':{
 			required:true,
 			},
 			'notify-confirm_replyto':{
