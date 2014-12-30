@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.1
+   Version: 4.1.1
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.1");
+define('WPAS_VERSION', "4.1.1");
 define('WPAS_DATA_VERSION', "4");
 if(get_option('wpas_version') != WPAS_VERSION)
 {

@@ -101,12 +101,12 @@ function wpas_import_app($app_new)
 			if($inflated_data !== false)
 			{
                         	$data = unserialize(base64_decode($inflated_data));
-				if(!isset($myapp['ver']) || $myapp['ver'] < 3)
+				if(!isset($data['ver']) || $data['ver'] < 3)
 				{
 					$data = wpas_update_data_arr_ver3($data['app_id'],$data);
 					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
 				}
-                		elseif($myapp['ver'] == 3 && !empty($myapp['widget']))
+                		elseif($data['ver'] == 3 && !empty($data['widget']))
                 		{
 					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
 				}
