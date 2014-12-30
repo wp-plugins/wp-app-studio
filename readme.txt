@@ -236,7 +236,7 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 
 == Upgrade Notice ==
 = 4.1.2 =
-Fixed data corruption issue related to generation history log. Previous generation log will be deleted upon update to make it compatibale with future updates. Added a clear history log button on generation page.
+Fixed data corruption issue related to generation history log. Previous generation log will be deleted upon update to make it compatible with future relases. Added a clear history log button on generation page.
 = 4.1.1 =
 Fixed issue with importing WPAS applications: "Attached to Entity" was not imported correctly and left blank for forms.
 = 4.1 =
@@ -275,7 +275,7 @@ Fixed minor bugs related to entity layout and capabilities.
 == Changelog ==
 = 4.1.2 (12/30/2014) =
 * Fixed data corruption issue related to generation history log. 
-* Previous generation log will be deleted upon update to make it compatibale with future updates.
+* Previous generation log will be deleted upon update to make it compatible with future releases.
 * Added a clear history log button on generation page.
 = 4.1.1 (12/30/2014) =
 * Fixed issue with importing WPAS applications: "Attached to Entity" was not imported correctly and left blank for forms.
