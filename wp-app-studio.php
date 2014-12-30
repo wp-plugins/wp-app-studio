@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.1.1
+   Version: 4.1.2
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -12,12 +12,15 @@ defined( 'ABSPATH' ) OR exit;
 register_activation_hook( __FILE__, 'wpas_activate' );
 register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
-define('WPAS_URL', "wpas.emdplugins.com");
+define('WPAS_URL', "https://wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.1.1");
+define('WPAS_VERSION', "4.1.2");
 define('WPAS_DATA_VERSION', "4");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
+	if(get_option('wpas_version') < '4.1.2') {
+		update_option('wpas_apps_submit',Array());
+	}
 	update_option('wpas_version',WPAS_VERSION);
 	wpas_add_design_cap();
 }
@@ -720,6 +723,7 @@ function wpas_enqueue_scripts($hook_suffix){
 		wp_enqueue_style('font-awesome',plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css');
 		wp_enqueue_script('bootstrap-min-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js');
 		$local_vars['nonce_check_status_generate'] = wp_create_nonce( 'wpas_check_status_generate_nonce' );
+		$local_vars['nonce_clear_log_generate'] = wp_create_nonce( 'wpas_clear_log_generate_nonce' );
 		wp_enqueue_script('wpas-gen-js', plugin_dir_url( __FILE__ ) . 'js/wpas-generate.js',array(),false,'');
 		wp_localize_script('wpas-gen-js','wpas_vars',$local_vars);
 	}
@@ -933,15 +937,21 @@ function wpas_show_page($app,$page)
 	wpas_branding_footer();
 	echo "</div>"; 
 }
-function wpas_modal_confirm_delete()
+function wpas_modal_confirm_delete($generate=0)
 {
 	echo "<div class=\"modal hide\" id=\"confirmdeleteModal\">
                 <div class=\"modal-header\">
                 <button id=\"delete-close\" type=\"button\" class=\"close\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">x</button>
                 <h3><i class=\"icon-trash icon-red\"></i>" . __("Delete","wpas") . "</h3>
                 </div>
-                <div class=\"modal-body\" style=\"clear:both\">" . __("Are you sure you wish to delete?","wpas") . 
-                "</div>
+                <div class=\"modal-body\" style=\"clear:both\">";
+        if($generate == 1){
+                 _e("Are you sure you wish to delete all your generation log history?","wpas");
+        }
+        else {
+                 _e("Are you sure you wish to delete?","wpas");
+        }
+	echo "</div>
                 <div class=\"modal-footer\">
                 <button id=\"delete-cancel\" class=\"btn btn-danger\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">" . __("Cancel","wpas") . "</button> 
                 <button id=\"delete-ok\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\" class=\"btn btn-primary\">" . __("OK","wpas") . "</button>
@@ -1021,7 +1031,7 @@ function wpas_notices()
 	<div class="updated">
                   <?php
                     printf(
-                        '<p> %1$s <a href="//wpas.emdplugins.com" target="_blank"> %2$s </a> %3$s <a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>',
+                        '<p> %1$s <a href="https://wpas.emdplugins.com?pk_campaign=wpas&pk_source=plugin&pk_medium=link&pk_content=doc-notice" target="_blank"> %2$s </a> %3$s <a style="float:right;" href="%4$s"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span>%5$s</a></p>',
                         __( 'New to WP App Studio? Review the', 'wpas' ),
                         __( 'Documentation', 'wpas' ),
                         __( '&#187;', 'wpas' ),
@@ -1035,7 +1045,7 @@ function wpas_notices()
 		if($dismiss_buynow != 1){
 	?>
 			<div class="updated">
-			<p><a href="//wpas.emdplugins.com/downloads/pro-dev-app/" target="_blank">Buy ProDev License Now and Start Developing Your Own App! &#187;</a>
+			<p><a href="https://wpas.emdplugins.com/downloads/pro-dev-app/?pk_campaign=wpas&pk_source=plugin&pk_medium=link&pk_content=buyprodev-notice" target="_blank">Buy ProDev License Now and Start Developing Your Own App! &#187;</a>
 			<a style="float:right;" href="<?php echo esc_url( add_query_arg( 'wpas_dismiss_buynow', true )); ?>"><span class="dashicons dashicons-dismiss" style="font-size:15px;"></span><?php _e( 'Dismiss', 'wpas' ); ?></a>
 			</p>
 			</div>

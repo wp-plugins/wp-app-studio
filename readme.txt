@@ -4,7 +4,7 @@ Tags: charts, admin notices,admin notice,notifications, workflow, custom comment
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 4.1.1
+Stable tag: 4.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -235,6 +235,8 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 15. Easily insert WPAS components as shortcodes. Use Analytics module for custom reporting.
 
 == Upgrade Notice ==
+= 4.1.2 =
+Fixed data corruption issue related to generation history log. Previous generation log will be deleted upon update to make it compatibale with future updates. Added a clear history log button on generation page.
 = 4.1.1 =
 Fixed issue with importing WPAS applications: "Attached to Entity" was not imported correctly and left blank for forms.
 = 4.1 =
@@ -271,8 +273,12 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 4.1.2 (12/30/2014) =
+* Fixed data corruption issue related to generation history log. 
+* Previous generation log will be deleted upon update to make it compatibale with future updates.
+* Added a clear history log button on generation page.
 = 4.1.1 (12/30/2014) =
-Fixed issue with importing WPAS applications: "Attached to Entity" was not imported correctly and left blank for forms.
+* Fixed issue with importing WPAS applications: "Attached to Entity" was not imported correctly and left blank for forms.
 = 4.1 (12/2/2014) =
 * Fixed misc. bugs for better compatibility with other WordPress plugins.
 * Added admin notices feature to app settings page. Admin notices can be triggered after plugin activation and can be used to display special offers, plugin links, upgrade notices etc. You can create up to 2 notices.

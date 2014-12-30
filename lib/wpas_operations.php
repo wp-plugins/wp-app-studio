@@ -194,7 +194,7 @@ function wpas_generate_app()
 	}
 	if(get_option('wpas_apps_submit') !== false)
 	{
-        	$submits = unserialize(get_option('wpas_apps_submit'));
+        	$submits = get_option('wpas_apps_submit');
 	}
 	
 	if(!empty($_POST) && (empty($_POST['email']) || !is_email($_POST['email'])))
@@ -277,7 +277,7 @@ function wpas_generate_app()
 							$new_submit['buy_link'] = '';
 							$new_submit['refresh_time'] = time();
 							$submits[] = $new_submit;
-							update_option('wpas_apps_submit',serialize($submits));
+							update_option('wpas_apps_submit',$submits);
 						}
 					}
 				}

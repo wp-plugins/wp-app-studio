@@ -12,14 +12,14 @@ $email_body="WP App Studio is a Visual WordPress Design and Development Platform
 	<div class="row-fluid">
 		<div id="header-branding">
 		<div class="span2">
-		<a title="Wp App Studio <?php _e("home page","wpas") ?>" target="_blank" href="//<?php echo WPAS_URL; ?>">
+		<a title="Wp App Studio <?php _e("home page","wpas") ?>" target="_blank" href="<?php echo WPAS_URL . "/?pk_campaign=wpas&pk_source=plugin&pk_medium=img&pk_content=logo"; ?>">
 		<img src="<?php echo plugins_url('../img/WpAppStudioLogo.png',__FILE__); ?>"></a>
 		</div>
 	        <div class="span5">
 		<table border="0" cellspacing="1px" cellpadding="4px" style="background-color:#222222 !important;"><tr>
-		<td><a title="<?php _e("Buy Prodev Now!","wpas"); ?>" target="_blank" href="//<?php echo WPAS_URL . '/downloads/pro-dev-app/'; ?>" class="btn btn-danger btn-mini"><?php _e("Buy ProDev Now!","wpas"); ?></a></td>
-		<td><a title="<?php _e("Sign up for FreeDev account","wpas"); ?>" target="_blank" href="//<?php echo WPAS_URL . '/wpas-freedev-signup/'; ?>" class="btn btn-primary btn-mini"><?php _e("FreeDev Signup","wpas"); ?></a></td>
-		<td><a title="<?php _e("Buy Wp App Studio created plugins and designs","wpas"); ?>" target="_blank" href="//emdplugins.com" class="btn btn-success btn-mini"><?php _e("Store","wpas"); ?></a></td>
+		<td><a title="<?php _e("Buy Prodev Now!","wpas"); ?>" target="_blank" href="<?php echo WPAS_URL . '/downloads/pro-dev-app/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=buy-prodev'; ?>" class="btn btn-danger btn-mini"><?php _e("Buy ProDev Now!","wpas"); ?></a></td>
+		<td><a title="<?php _e("Sign up for FreeDev account","wpas"); ?>" target="_blank" href="<?php echo WPAS_URL . '/wpas-freedev-signup//?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=freedev-signup'; ?>" class="btn btn-primary btn-mini"><?php _e("FreeDev Signup","wpas"); ?></a></td>
+		<td><a title="<?php _e("Buy Wp App Studio created plugins and designs","wpas"); ?>" target="_blank" href="https://emdplugins.com/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=store" class="btn btn-success btn-mini"><?php _e("Store","wpas"); ?></a></td>
 		</tr>
 		</table>
 		</div>
@@ -46,12 +46,12 @@ function wpas_branding_footer()
 {
 	echo '<div id="was-container-footer" class="container-fluid">
 		<div id="footer">
-		<a target="_blank" href="//' . WPAS_URL . '">&copy; 2014 eMarket Design</a>
+		<a target="_blank" href="' . WPAS_URL . '/?pk_campaign=wpas&pk_source=plugin&pk_medium=link&pk_content=copyr-site">&copy; 2014 eMarket Design</a>
 		<span class="wpas-links">
-		<a class="btn btn-inverse btn-mini" title="' . __("Create your own plugin for free","wpas") . '" target="_blank" href="//' . WPAS_URL . '/wp-app-studio-playground/">' . __("Playground","wpas") . '</a>
-		<a class="btn btn-danger btn-mini" title="' . __("See sample plugins created by Wp App Studio","wpas") . '" target="_blank" href="//' . WPAS_URL . '/wpas-demos/" >' . __("Demo","wpas") . '</a>
-		<a class="btn btn-warning btn-mini" title="' . __("See Wp App Studio Documentation","wpas") . '" target="_blank" href="//' . WPAS_URL . '/articles">' . __("Docs","wpas") . '</a>
-		<a class="btn btn-default btn-mini" title="' . __("Open a free support ticket","wpas") . '" target="_blank" href="//support.emarketdesign.com">' . __("Support","wpas") . '</a>
+		<a class="btn btn-inverse btn-mini" title="' . __("Create your own plugin for free","wpas") . '" target="_blank" href="' . WPAS_URL . '/wp-app-studio-playground/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=playground">' . __("Playground","wpas") . '</a>
+		<a class="btn btn-danger btn-mini" title="' . __("See sample plugins created by Wp App Studio","wpas") . '" target="_blank" href="' . WPAS_URL . '/wpas-demos/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=demo" >' . __("Demo","wpas") . '</a>
+		<a class="btn btn-warning btn-mini" title="' . __("See Wp App Studio Documentation","wpas") . '" target="_blank" href="' . WPAS_URL . '/articles/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=docs">' . __("Docs","wpas") . '</a>
+		<a class="btn btn-default btn-mini" title="' . __("Open a free support ticket","wpas") . '" target="_blank" href="//support.emarketdesign.com/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=support">' . __("Support","wpas") . '</a>
 		</span>
 		<span id="footer-version" class="pull-right"> V ' . WPAS_VERSION . '</span>
 		</div>

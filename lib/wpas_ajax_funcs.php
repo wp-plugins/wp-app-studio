@@ -42,6 +42,16 @@ add_filter('wp_kses_allowed_html','wpas_allowed_html',10,2);
 
 
 add_action('wp_ajax_wpas_get_layout_tags','wpas_get_layout_tags');
+add_action('wp_ajax_wpas_clear_log_generate', 'wpas_clear_log_generate');
+
+function wpas_clear_log_generate()
+{
+        wpas_is_allowed();
+        check_ajax_referer('wpas_clear_log_generate_nonce','nonce');
+        update_option('wpas_apps_submit',Array());
+        echo add_query_arg(array('page'=>'wpas_generate_page'), admin_url('admin.php'));
+        die();
+}
 
 function wpas_get_layout_tags(){
 	wpas_is_allowed();
@@ -1312,7 +1322,7 @@ function wpas_check_status_generate()
 	$queue_id = isset($_POST['queue_id']) ? $_POST['queue_id'] : '';
 	$resp = Array();
 
-	$submits = unserialize(get_option('wpas_apps_submit'));
+	$submits = get_option('wpas_apps_submit');
 	$no_check = 0;
 	//check last submit time and send request to check status
 	if(isset($submits) && !empty($submits))
@@ -1411,7 +1421,7 @@ function wpas_check_status_generate()
 				$newsubmits[] = $mysubmit;	
 			}
 		}
-		update_option('wpas_apps_submit',serialize($newsubmits));
+		update_option('wpas_apps_submit',$newsubmits);
 	}
 	//send return back
 	echo json_encode($resp);

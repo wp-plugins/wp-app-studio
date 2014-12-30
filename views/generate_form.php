@@ -110,7 +110,7 @@ function wpas_display_generate_page($email, $submits,$alert,$success)
 		<?php wp_nonce_field('wpas_generate_app','wpas_generate_nonce'); ?>
 		<div class="well">
 		<div class="alert"><h3>
-		<?php printf(__('<a href="%s" target="_blank">Open a FreeDev account</a> to hop on WP App Studio 4 AUTOBAHN.','wpas'),'https://wpas.emdplugins.com/wpas-freedev-signup/'); ?>
+		<?php printf(__('<a href="%s" target="_blank">Open a FreeDev account</a> to hop on WP App Studio 4 AUTOBAHN.','wpas'),'https://wpas.emdplugins.com/wpas-freedev-signup/?pk_campaign=wpas&pk_source=plugin&pk_medium=link&pk_content=open-freedev'); ?>
 		</h3>
 		<p><h3><small>
 		<?php _e('If you have one just enter your email and click generate below.','wpas'); ?>
@@ -147,9 +147,11 @@ function wpas_display_generate_page($email, $submits,$alert,$success)
 		<div class="row-fluid">
 		<div id='status_error' class='alert alert-error span12' style='display:none;'></div>
 		</div>
+		<?php wpas_modal_confirm_delete(1); ?>
 		<div class="row-fluid">
 		<div class="tablenav top">
 		<div class="alignleft actions">
+		<a id="clear-log" class="btn btn-danger" href="" title="<?php _e("Clear Log","wpas"); ?>"><?php _e("Clear Log History","wpas"); ?></a>
 		</div>
 		<div class="pagination pagination-right">
 		<?php 
