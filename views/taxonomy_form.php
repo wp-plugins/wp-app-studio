@@ -62,7 +62,7 @@ jQuery(document).ready(function() {
 		<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("A taxonomy is a way to group things together. It might contain only one attribute of interest to users.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 		
                 <div class="control-group row-fluid">
-						<label class="control-label span3"><?php _e("Name","wpas"); ?></label>
+						<label class="control-label req span3"><?php _e("Name","wpas"); ?></label>
 						<div class="controls span9">
 						<input class="input-xlarge" name="txn-name" id="txn-name" type="text" placeholder="<?php _e("e.g. product_tag","wpas"); ?>">
 						<a href="#" title="<?php _e(" General name for the taxonomy, usually singular. Name should be in slug form (must not contain capital letters or spaces or reserved words) and not more than 32 characters long. Previously used entity or taxonomy names are not allowed. Dashes and underscores are allowed.","wpas"); ?>" style="cursor: help;">
@@ -71,7 +71,7 @@ jQuery(document).ready(function() {
                 </div>
 
                 <div class="control-group row-fluid">
-						<label class="control-label span3"><?php _e("Plural","wpas"); ?></label>
+						<label class="control-label req span3"><?php _e("Plural","wpas"); ?></label>
 						<div class="controls span9">
 						<input class="input-xlarge" name="txn-label" id="txn-label" type="text" placeholder="<?php _e("e.g. Product Tags","wpas"); ?>"> <a href="#" title="<?php _e("Taxonomy label.  Used in the admin menu for displaying custom taxonomy.","wpas"); ?>" style="cursor: help;">
 						<i class="icon-info-sign"></i></a>
@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
                 </div>
 
                 <div class="control-group row-fluid">
-                    <label class="control-label span3"><?php _e("Singular","wpas"); ?></label>
+                    <label class="control-label req span3"><?php _e("Singular","wpas"); ?></label>
                     <div class="controls span9">
                     <input class="input-xlarge" name="txn-singular-label" id="txn-singular-label" type="text" placeholder="<?php _e("e.g. Product Tag","wpas"); ?>">
                     <a href="#" title="<?php _e("Taxonomy Singular label. Used when a singular label is needed.","wpas"); ?>" style="cursor: help;">
@@ -89,16 +89,16 @@ jQuery(document).ready(function() {
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Description","wpas"); ?></label>
 		<div class="controls span9">
-		<textarea class="input-xlarge" id="txn-tax_desc" name="txn-tax_desc"></textarea>
+		<textarea class="wpas-std-textarea" id="txn-tax_desc" name="txn-tax_desc"></textarea>
 		<a href="#" style="cursor: help;" title="<?php _e("A short, optional descriptive summary of what the taxonomy is. It will be displayed in the front-end forms if the taxonomy is used in a form layout. Leave it blank if you do not need help text for your taxonomy. Max 500 chars.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
 
 				<div class="control-group row-fluid">
-                    <label class="control-label span3"><?php _e("Attach to Entity","wpas"); ?></label>
+                    <label class="control-label req span3"><?php _e("Attach to Entity","wpas"); ?></label>
                     <div class="controls span9">
-<select id="txn-attach" name="txn-attach" multiple="multiple">
+<select id="txn-attach" name="txn-attach[]" multiple="multiple">
 </select><a href="#" title="<?php _e("Select one or more entities your taxonomy will be attached to.","wpas"); ?>" style="cursor: help;"> <i class="icon-info-sign"></i></a>
 					</div>
                 </div>
@@ -146,8 +146,8 @@ jQuery(document).ready(function() {
         <div class="control-group row-fluid" id="txn-values_div" >
         <label class="control-label span3"><?php _e("Values","wpas");?></label>
         <div class="controls span9">
-        <textarea id="txn-values" name="txn-values" class="input-xlarge" rows="3" placeholder="e.g. blue{color blue};red{color red};white{color white}" ></textarea>
-        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the taxonomy. There must be only one semicolon between the values. You can not put a semicolon at the end of the values as well. Term descriptions can be entered using 'term{term-description}' format.","wpas");?>">
+        <textarea id="txn-values" name="txn-values" class="wpas-std-textarea" placeholder="e.g. blue{color blue}[color];red{color red}[color];white{color white}[color]" ></textarea>
+        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the taxonomy. There must be only one semicolon between the values. Optiopnally Term descriptions and term parent can be entered using term{term-description}[term-parent] format. For example; Monkey{Monkey is a funny animal}[Animal]","wpas");?>">
         <i class="icon-info-sign"></i></a>
         </div>
 </div>
