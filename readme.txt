@@ -1,10 +1,10 @@
 ===  WP App Studio  === 
 Contributors: emarket-design
-Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views
+Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 4.1.2
+Stable tag: 4.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,10 @@ WP App Studio AUTOBAHN aims to make WordPress Plugin Development as easy as fill
 >
 = Documentation and Support =
  [Extensive documentation](https://wpas.emdplugins.com/articles "WP App Studio 4 AUTOBAHN Documentation") with step by step instructions is available on WPAS site.<br>
+
+= Extensions =
+The following extensions are included(free of charge) in your ProDev apps when you create a connection and choose the desired extension in your app signature.
+* [Incoming Email](https://emdplugins.com/plugins/incoming-email-extension/) extension to pull email content including attachments to your entities.
 
 **Watch AUTOBAHN Intoduction Video**
 [youtube https://www.youtube.com/watch?v=9K4uBRkFJEU]
@@ -233,8 +237,11 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 13. Create Custom comments which do not mix with post or page comments. Many options to configure.
 14. Create datagrids and display them in your app dashboard, wp dashboard, or a page.
 15. Easily insert WPAS components as shortcodes. Use Analytics module for custom reporting.
+16. Create Connections to integrate your ProDev plugin to external apps such incoming email app. In future, we will add Facebook, Twitter, Paypal etc.
 
 == Upgrade Notice ==
+= 4.2.0 =
+Added Connections menu to WPAS, separate Setting menu for ProDev plugins  and an Incoming Email extension for ProDev account holders, misc bug fixes and improvements
 = 4.1.2 =
 Fixed data corruption issue related to generation history log. Previous generation log will be deleted upon update to make it compatible with future relases. Added a clear history log button on generation page.
 = 4.1.1 =
@@ -273,6 +280,15 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 4.2.0 (01/15/2014) =
+* NEW Added plugin settings menu for ProDev plugins which include separate pages for Glossary, Notifications, Licenses, and Add-ons
+* NEW Added Connection menu for creating mappings from/to external apps and platforms. It will be used to connect your ProDev plugin to external apps. You can use it for importing/exporting entity content to external apps such as incoming email or in future Facebook, Twitter, Google etc.
+* Fixed pending comment counts for ProDev plugins.
+* Added auto entity record creation for new WordPress user registrations. Exp; if you have  entity called a member and it  has an attribute type of User List then every time a user registers to WP then it will automatically create a member record. 
+* Fixed navigation paging issue for ProDev plugins. It was not showing correctly for some permalink configurations in Standard views.
+* NEW Create a new connection type of "incoming mail". ProDev plugins can use it to create entity records through incoming email. You can create connections to multiple entities.
+* Fixed ProDev form search operators displaying incorrect operator list for text attributes.
+* Added EXISTS, NOT EXISTS to the ProDev admin area filters for text and boolean attributes.
 = 4.1.2 (12/30/2014) =
 * Fixed data corruption issue related to generation history log. 
 * Previous generation log will be deleted upon update to make it compatible with future releases.

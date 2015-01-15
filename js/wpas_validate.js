@@ -821,7 +821,12 @@ jQuery(document).ready(function($) {
 			required:true,
 			maxlength:15,
 			checkAlphaDash: true,
-			},			
+			},
+			'ao_set_menu_label':{
+			required:true,
+			maxlength:15,
+			checkAppTitle: true,
+			},
 			'ao_domain':{
 			required:true,
 			url: true,
@@ -1255,6 +1260,55 @@ jQuery(document).ready(function($) {
 			'form-confirm_url':{
 			maxlength:255,
 			url:true,
+			required:true,
+			},
+			},
+			success: function(label) {
+				label.addClass('valid');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
+			}
+		});
+		$('#connection-form').validate(
+		{
+			onfocusout: false,
+			onkeyup: false,
+			onclick: false,
+			ignore: ":hidden",
+			rules: {
+			'connection-name':{
+			minlength:3,
+			maxlength:30,
+			uniqueName:['connection'],
+			noSpace:true,
+			noCap:true,
+			checkAlphaNumUnder: true,
+			required:true,
+			},
+			'connection-entity':{
+			required:true,
+			},
+			'connection-type':{
+			required:true,
+			},
+			'connection-inc_email':{
+			required:true,
+			},
+			'connection-inc_name[]':{
+			required:true,
+			},
+			'connection-inc_subject':{
+			required:true,
+			},
+			'connection-inc_date[]':{
+			required:true,
+			},
+			'connection-inc_body':{
+			required:true,
+			},
+			'connection-inc_status':{
+			required:true,
+			},
+			'connection-inc_vis_status':{
 			required:true,
 			},
 			},

@@ -245,7 +245,7 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($widg_caps,'view','widget',3,$myrole);
+		$html = wpas_display_caps_noacc($widg_caps,'widget',$myrole);
 	}
 	return $html;
 }
@@ -265,7 +265,7 @@ function wpas_form_capabilities($app_id,$forms,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($form_caps,'view','form',2,$myrole);
+		$html = wpas_display_caps_noacc($form_caps,'form',$myrole);
 	}
 	return $html;
 }
@@ -285,8 +285,48 @@ function wpas_view_capabilities($app_id,$views,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($view_caps,'view','view',2,$myrole);
+		$html = wpas_display_caps_noacc($view_caps,'view',$myrole);
 	}
+	return $html;
+}
+function wpas_display_caps_noacc($type_caps,$type_key,$myrole)
+{
+	$html = "";
+	$count = 1;
+	$html .= '<label class="checkbox inline"><b>' . __("Check All","wpas") . '</b><input name="' . esc_attr($type_key) . '-all" id="' . esc_attr($type_key) . '-all" class="checkall" type="checkbox" value="1" /></label><div id="' . $type_key . '" class="well-white">';
+	foreach($type_caps as $mytype_cap)
+	{
+		foreach($mytype_cap as $key => $mycap)
+		{
+			if($key != 'name' && $count == 1)
+			{
+				$html .= '<div class="control-group">';
+			}
+			if($key != 'name')
+			{
+				$html .= '<label class="checkbox inline span4">' . $key . " " . $mytype_cap['name'];
+				$html .= '<input name="role-' . $mycap . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
+				if(isset($myrole['role-'.$mycap]) && $myrole['role-'.$mycap] != 0)
+				{
+					$html .= ' checked';
+				}	
+				$html .= '/> </label>';
+				$count ++;
+			}
+			if($key != 'name' && $count == 4)
+			{
+				$html .= "</div>";
+				$count = 1;
+			}
+				
+		}
+	}
+	if($count < 4 && $count != 1)
+	{
+		$html .= "</div>";
+	}
+		
+	$html .= "</div>";
 	return $html;
 }
 function wpas_display_caps($type_caps,$type_key,$type,$pnum,$myrole)

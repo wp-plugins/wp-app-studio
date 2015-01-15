@@ -4,12 +4,12 @@ jQuery(document).ready(function($) {
 			return false;
 		});
 		$(document).on('click','button#delete-cancel',function(event){
-			$('#confirmdeleteModal').modal('hide');
+                	$('#confirmdeleteModal').modal('hide');
 			event.preventDefault();
-		});
+        	});
 		$(document).on('click','button#delete-ok',function(event){
 			event.preventDefault();
-			$('#confirmdeleteModal').modal('hide');
+                	$('#confirmdeleteModal').modal('hide');
 			$.post(ajaxurl,{action:'wpas_clear_log_generate',nonce:wpas_vars.nonce_clear_log_generate}, function(response){
 				document.location.href = response;
 			});

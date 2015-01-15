@@ -204,11 +204,22 @@ function wpas_nav($app_name,$option="")
                 </div>
                 </div>
                 </div>
-		<div class="accordion-group">
+                <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapse9" data-parent="#was-nav" data-toggle="collapse"><i class="icon-key icon-large"></i><?php _e("Permissions","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse9" data-parent="#was-nav" data-toggle="collapse"><i class="icon-external-link icon-large"></i><?php _e("Connections","wpas");?></a>
   </div>
                 <div id="collapse9" class="accordion-body collapse">
+                <div class="accordion-inner">
+                <p id="add-connection"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-external-link"></i><?php _e("Add New","wpas");?></a></p>
+                <p id="connection"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
+                </div>
+                </div>
+                </div>
+		<div class="accordion-group">
+                <div class="accordion-heading">
+                <a class="accordion-toggle" href="#collapse10" data-parent="#was-nav" data-toggle="collapse"><i class="icon-key icon-large"></i><?php _e("Permissions","wpas");?></a>
+  </div>
+                <div id="collapse10" class="accordion-body collapse">
                 <div class="accordion-inner">
                 <p id="add-role"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-key"></i><?php _e("Add New","wpas");?></a></p>
                 <p id="role"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
@@ -217,9 +228,9 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapse10" data-parent="#was-nav" data-toggle="collapse"><i class="icon-picture icon-large"></i><?php _e("Settings","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse11" data-parent="#was-nav" data-toggle="collapse"><i class="icon-picture icon-large"></i><?php _e("Settings","wpas");?></a>
                 </div>
-                <div id="collapse10" class="accordion-body collapse">
+                <div id="collapse11" class="accordion-body collapse">
                 <div class="accordion-inner">
 		<?php echo $option_link; ?>
                 </div>
@@ -516,6 +527,17 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['icon'] = "icon-volume-up";
                 $add_field_tag = "#notify";
         }
+	elseif($list_type == 'connection')
+        {
+                $base = admin_url('admin.php?page=wpas_add_new_app&view=connection&app=' . $app_id);
+                $list_values['title'] = __("Connections","wpas");
+                $format = "connectionpage";
+                $field_name = "connection-name";
+                $other_fields = Array("connection-type","connection-entity","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Type","wpas"),__("Attached To","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $list_values['icon'] = "icon-external-link";
+                $add_field_tag = "#connection";
+        }
 	elseif($list_type == 'widget')
         {
                 $base = admin_url('admin.php?page=wpas_add_new_app&view=widg&app=' . $app_id);
@@ -713,6 +735,17 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 				if(isset($mylist['form-attached_entity']) && $mylist['form-attached_entity'] != "")
 				{
 					$mylist['form-attached_entity'] = $app['entity'][$mylist['form-attached_entity']]['ent-label'];
+				}
+			}
+			elseif($list_type == 'connection')
+			{
+				if($mylist['connection-type'] == 'inc_email')
+				{
+					$mylist['connection-type'] = __('Incoming Email','wpas');
+				}
+				if(isset($mylist['connection-entity']) && $mylist['connection-entity'] != "")
+				{
+					$mylist['connection-entity']= $app['entity'][$mylist['connection-entity']]['ent-label'];
 				}
 			}
 			elseif($list_type == 'shortcode')

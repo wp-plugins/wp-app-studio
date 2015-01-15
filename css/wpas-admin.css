@@ -528,3 +528,12 @@ width:auto;
 .wpas .wpas-links{
 margin-left:20px;
 }
+.well-white{
+background-color: #FFF;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 19px;
+}

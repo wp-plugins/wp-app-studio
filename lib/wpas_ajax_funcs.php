@@ -49,8 +49,8 @@ function wpas_clear_log_generate()
         wpas_is_allowed();
         check_ajax_referer('wpas_clear_log_generate_nonce','nonce');
         update_option('wpas_apps_submit',Array());
-        echo add_query_arg(array('page'=>'wpas_generate_page'), admin_url('admin.php'));
-        die();
+	echo add_query_arg(array('page'=>'wpas_generate_page'), admin_url('admin.php'));
+	die();
 }
 
 function wpas_get_layout_tags(){
@@ -169,22 +169,51 @@ function wpas_get_layout_tags(){
 					{
 						if($myrelation['rel-from-name'] == $cid && !empty($myrelation['rel-con_from_layout']))
 						{
-							$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-from-title'];
+							if(!empty($myrelation['rel-connected-display-from-title']))
+							{
+								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-from-title'];
+							}
+							else
+							{
+								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-to-name']]['ent-label'];
+							}		
 						}
 						elseif($myrelation['rel-to-name'] == $cid && !empty($myrelation['rel-con_to_layout']))
 						{
-							$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-to-title'];
+							if(!empty($myrelation['rel-connected-display-to-title']))
+							{
+								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-to-title'];
+							}
+							else
+							{
+								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-from-name']]['ent-label'];
+							}
+								
 						}
 					}
 					if($myrelation['rel-type'] == 'many-to-many' && isset($myrelation['rel-related-display']) && $myrelation['rel-related-display'] == 1)
 					{
 						if($myrelation['rel-from-name'] == $cid && !empty($myrelation['rel-rel_from_layout']))
 						{
-							$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-to-title'];
+							if(!empty($myrelation['rel-related-display-to-title']))
+							{
+								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-to-title'];
+							}
+							else
+							{
+								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-to-name']]['ent-label'];
+							}
 						}
 						elseif($myrelation['rel-to-name'] == $cid && !empty($myrelation['rel-rel_to_layout']))
 						{
-							$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-from-title'];
+							if(!empty($myrelation['rel-related-display-from-title']))
+							{
+								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-from-title'];
+							}
+							else
+							{
+								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-from-name']]['ent-label'];
+							}
 						}
 					}
 				}
@@ -443,7 +472,8 @@ function wpas_get_date_ranges()
 function wpas_get_ent_fields()
 {
 	wpas_is_allowed();
-	$return = "<option value=''>" . __("Please select","wpas") . "</option>";
+	$return = Array();
+	$return['pre'] = "<option value=''>" . __("Please select","wpas") . "</option>";
 	$type = isset($_GET['type']) ? $_GET['type'] : '';
 	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
 	$ent_id = isset($_GET['ent_id']) ? $_GET['ent_id'] : '';
@@ -452,8 +482,8 @@ function wpas_get_ent_fields()
 	{
 		die(-1);
 	}
-	$return .= wpas_entity_fields($type,$app_id,$ent_id,$value);
-	echo $return;
+	$return['list'] = wpas_entity_fields($type,$app_id,$ent_id,$value);
+	echo json_encode($return);
 	die();
 }
 function wpas_entity_fields($type,$app_id,$ent_id,$value)
@@ -464,9 +494,12 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 	$num_types = Array('decimal','integer');
 	$not_allowed_types = Array('password','textarea','wysiwyg','file','image','hidden_function');
 	$not_allowed_all = Array('password');
+	$body_types =  Array('textarea','wysiwyg');
+	$attach_types = Array('file','image');
+	$name_types = Array('text','letters_only','letters_with_punc');
 	if($type == 'date')
 	{
-		$post_dates = Array("post_date"=>"Post Date","post_date_gmt"=>"Post Date GMT","post_modified"=>"Post Modified","post_modified_gmt"=>"Post Modified GMT");
+		$post_dates = Array("post_date"=> __('Post Date','wpas'),"post_date_gmt"=>__('Post Date GMT','wpas'),"post_modified"=>__('Post Modified','wpas'),"post_modified_gmt"=>__('Post Modified GMT','wpas'));
 		foreach($post_dates as $kpdate=> $vpdate)
 		{
 			$return .= "<option value='" . $kpdate . "'";
@@ -477,6 +510,16 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 			$return .= ">" . $vpdate . "</option>";
 		}
 	}
+	if($type == 'pdate')
+	{
+		$return .= "<option value='post_date'";
+		if(!empty($value) && in_array('post_date',$value))
+		{
+			$return .= " selected";
+		}
+		$return .= ">" . __('Post Date','wpas') . "</option>";
+	}
+		
 	$app = wpas_get_app($app_id);
 	if($app !== false && $ent_id != '' && !empty($app['entity'][$ent_id]['field']))
 	{
@@ -503,6 +546,27 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 			{
 				$show_field = 1;
 			}
+			else if($type == 'body' && in_array($myfield['fld_type'],$body_types))
+			{
+				$show_field = 1;
+			}
+			else if($type == 'attach' && in_array($myfield['fld_type'],$attach_types))
+			{
+				$show_field = 1;
+			}
+			else if($type == 'email' && $myfield['fld_type'] == 'email')
+			{
+				$show_field = 1;
+			}
+			else if($type == 'name' && in_array($myfield['fld_type'],$name_types))
+			{
+				$show_field = 1;
+			}
+			else if($type == 'pdate' && in_array($myfield['fld_type'],$date_types))
+			{
+				$show_field = 1;
+			}
+			
 			if($show_field == 1)
 			{
 				if($type == 'all')
@@ -514,10 +578,20 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 					$keyfield = $keyfield . "__" . $ent_id;
 				}
 				$return .= "<option value='" . $keyfield . "'";
-                                if($keyfield == $value)
-                                {
-                                        $return .= " selected";
-                                }
+				if($type == 'pdate')
+				{	
+					if(!empty($value) && in_array($keyfield,$value))
+					{
+						$return .= " selected";
+					}
+				}
+				else
+				{
+					if((!is_array($value) && $keyfield == $value) || (is_array($value) && in_array($keyfield,$value)))
+					{
+						$return .= " selected";
+					}
+				}
                                 $return .= ">" . esc_html($myfield['fld_label']) . "</option>";
 			}
 		}
@@ -1219,7 +1293,7 @@ function wpas_get_email_attrs()
 			if(in_array('com_author_email',$values)){
 				$return .= " selected";
 			}
-			$return .= ">Comment Author Email</option>";
+			$return .= ">" . __('All Commenters except current comment author','wpas') . "</option>";
 		}
 		elseif($level != 'rel')
 		{
@@ -2846,7 +2920,7 @@ function wpas_update_form()
 	$search_str = wpas_get_search_string($type);
 	$comp_type = $type;
 	$comp = Array();
-	$types = Array('ent','txn','rel','help','shc','widget','role','form','notify');
+	$types = Array('ent','txn','rel','help','shc','widget','role','form','notify','connection');
 	foreach($post_array as $pkey => $comp_form_value)
 	{
 		if(in_array($pkey,$types))
@@ -3048,6 +3122,9 @@ function wpas_get_search_string($type)
 			break;
 		case 'notify':
 			$search_str = 'notify-';
+			break;
+		case 'connection':
+			$search_str = 'connection-';
 			break;
 		default:
 			$search_str = "ent-";

@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.1.2
+   Version: 4.2
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,13 +14,13 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "https://wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.1.2");
+define('WPAS_VERSION', "4.2");
 define('WPAS_DATA_VERSION', "4");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
 	if(get_option('wpas_version') < '4.1.2') {
-		update_option('wpas_apps_submit',Array());
-	}
+                update_option('wpas_apps_submit',Array());
+        }
 	update_option('wpas_version',WPAS_VERSION);
 	wpas_add_design_cap();
 }
@@ -197,6 +197,7 @@ require_once("views/widget_form.php");
 require_once("views/role_form.php");
 require_once("views/forms_form.php");
 require_once("views/notify_form.php");
+require_once("views/connection_form.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
@@ -885,6 +886,11 @@ function wpas_show_page($app,$page)
 		echo "</div>";
 		echo "<div id=\"list-notify\" class=\"group1\" style=\"display: none;\">";
 		echo "</div>";
+		echo "<div id=\"add-connection-div\" class=\"group1\" style=\"display: none;\">";
+		wpas_add_connection_form($app_key);
+		echo "</div>";
+		echo "<div id=\"list-connection\" class=\"group1\" style=\"display: none;\">";
+		echo "</div>";
 		echo "<div id=\"add-widget-div\" class=\"group1\" style=\"display: none;\">";
 		wpas_add_widget_form($app_key);
 		echo "</div>";
@@ -945,12 +951,12 @@ function wpas_modal_confirm_delete($generate=0)
                 <h3><i class=\"icon-trash icon-red\"></i>" . __("Delete","wpas") . "</h3>
                 </div>
                 <div class=\"modal-body\" style=\"clear:both\">";
-        if($generate == 1){
-                 _e("Are you sure you wish to delete all your generation log history?","wpas");
-        }
-        else {
-                 _e("Are you sure you wish to delete?","wpas");
-        }
+	if($generate == 1){
+		 _e("Are you sure you wish to delete all your generation log history?","wpas");
+	}
+	else {
+		 _e("Are you sure you wish to delete?","wpas");
+	}
 	echo "</div>
                 <div class=\"modal-footer\">
                 <button id=\"delete-cancel\" class=\"btn btn-danger\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">" . __("Cancel","wpas") . "</button> 

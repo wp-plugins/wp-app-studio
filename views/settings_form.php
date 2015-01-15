@@ -144,6 +144,14 @@ jQuery(document).ready(function($) {
 							</div>
 					</div>	
 					<div class="control-group row-fluid">
+							<label class="control-label span3 req"><?php _e("Settings Menu Label","wpas"); ?></label>
+							 <div class="controls span8">
+								 <input class="input-xlarge" name="ao_set_menu_label" id="ao_set_menu_label" type="text" placeholder="<?php _e("e.g. WP Ticket","wpas");?>" value="" >
+								<a href="#" style="cursor: help;" title="<?php _e("Enter your app settings menu label which will be displayed on the left navigation menu of the admin area. It can contain only letters and spaces, not more than 15 chars.","wpas"); ?>">
+								<i class="icon-info-sign"></i></a>
+							</div>
+					</div>	
+					<div class="control-group row-fluid">
 							<label class="control-label span3 req"><?php _e("Application Short Desc","wpas"); ?></label>
 							 <div class="controls span8">
 								 <textarea class="wpas-std-textarea" name="ao_app_sdesc" id="ao_app_sdesc" placeholder="<?php _e("e.g. Product List Application","wpas"); ?>" value="" ></textarea>
@@ -440,6 +448,16 @@ jQuery(document).ready(function($) {
 			 <a href="#" style="cursor: help;" title="<?php _e("Sets the admin notice 2 message. Max 350 chars.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 		</div>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
+			<label class="checkbox"><?php _e("Use Incoming Email Extension","wpas"); ?>
+			<input name="ao_inc_email_use_ext" id="ao_inc_email_use_ext" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("When checked it configures app to use Incoming Email Extension, when unchecked it includes Incoming Email functionality within this app.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
 		</div>
 		</div>
 		<div class="row-fluid">

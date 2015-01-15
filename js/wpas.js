@@ -22,6 +22,8 @@ jQuery(document).ready(function($) {
 	var role_id = "";
 	var form= "";
 	var form_id = "";
+	var connection = "";
+	var connection_id = "";
 
 	$('#relTab a').click(function (e) {
 		e.preventDefault();
@@ -294,6 +296,11 @@ jQuery(document).ready(function($) {
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.notify + ' - '+notify+'</li>');
 		}
+		else if(type == 'connection')
+		{
+			$('ul.breadcrumb').append(app_url);
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.connection + ' - '+connection+'</li>');
+		}
 		else if(type == 'widget')
 		{
 			$('ul.breadcrumb').append(app_url);
@@ -367,6 +374,11 @@ jQuery(document).ready(function($) {
 		{       
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_notify + '</li>');
+		}
+		else if(type == 'add-connection')
+		{       
+			$('ul.breadcrumb').append(app_url);
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_connection + '</li>');
 		}
 		else if(type == 'add-form')
 		{       
@@ -567,7 +579,7 @@ jQuery(document).ready(function($) {
 		});
 	});	
 
-	$(document).on('click','p#add-option a, p#add-relationship a, p#add-taxonomy a, p#add-help a,p#add-entity a,p#add-shortcode a,p#add-notify a,p#add-widget a,p#add-form a,#add-new.entity a,#add-new.relationship a,#add-new.taxonomy a,#add-new.help a,#add-new.shortcode a,#add-new.notify a,#add-new.widg a,#add-new.form a,#add_field.entity a,#add_field.relationship a,#add_field.help a, #add_field_entity a,#add_field_rel a,#add_field_help a',function(){
+	$(document).on('click','p#add-option a, p#add-relationship a, p#add-taxonomy a, p#add-help a,p#add-entity a,p#add-shortcode a,p#add-notify a,p#add-connection a,p#add-widget a,p#add-form a,#add-new.entity a,#add-new.relationship a,#add-new.taxonomy a,#add-new.help a,#add-new.shortcode a,#add-new.notify a,#add-new.connection a,#add-new.widg a,#add-new.form a,#add_field.entity a,#add_field.relationship a,#add_field.help a, #add_field_entity a,#add_field_rel a,#add_field_help a',function(){
 		var div_id = $(this).parent().attr('id');
 		var class_id = $(this).parent().attr('class');
 		if(class_id != undefined)
@@ -701,6 +713,11 @@ jQuery(document).ready(function($) {
 					button = "notify";
 					hiddenvar = 'notify';	
 				}
+				else if(div_id == 'add-connection')
+				{
+					button = "connection";
+					hiddenvar = 'connection';	
+				}
 				else if(div_id == 'add-widget')
 				{
 					button = "widget";
@@ -750,6 +767,10 @@ jQuery(document).ready(function($) {
 				$('#notify-email_user_div').hide();
 				$('#notify-email_admin_div').hide();
 				$('#notify-level').val('entity');
+			}
+			else if(button == 'connection')
+			{
+				$(this).initConnection(app_id);
 			}
 			else if(button == 'widget')
 			{
@@ -818,7 +839,7 @@ jQuery(document).ready(function($) {
 				
 		}
 	});
-	$(document).on('click','p#entity a, p#taxonomy a, p#relationship a, p#help a,p#shortcode a,p#notify a,p#widget a,p#role a,p#form a',function(){
+	$(document).on('click','p#entity a, p#taxonomy a, p#relationship a, p#help a,p#shortcode a,p#notify a,p#connection a,p#widget a,p#role a,p#form a',function(){
                 app = $(this).attr('href').replace('#','');
                 app_id = $('input#app').val();
                 $(this).getBreadcrumb('app');
@@ -895,7 +916,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$(document).on('click','#save-relationship.btn, #save-taxonomy.btn, #save-entity.btn, #save-help.btn, #save-shortcode.btn, #save-notify.btn, #save-widget.btn,#save-role.btn, #save-form.btn',function(event){
+	$(document).on('click','#save-relationship.btn, #save-taxonomy.btn, #save-entity.btn, #save-help.btn, #save-shortcode.btn, #save-notify.btn, #save-widget.btn,#save-role.btn, #save-form.btn, #save-connection.btn',function(event){
                 event.preventDefault();
 		app_id = $('input#app').val();
 		var btn_id = $(this).attr('id');
@@ -997,7 +1018,7 @@ jQuery(document).ready(function($) {
                        });
 		}, 'json');
 	});
-	$(document).on('click','#update-taxonomy.btn, #update-entity.btn, #update-relationship.btn, #update-help.btn, #update-shortcode.btn, #update-notify.btn, #update-widget.btn,#update-role.btn, #update-form.btn',function(event){
+	$(document).on('click','#update-taxonomy.btn, #update-entity.btn, #update-relationship.btn, #update-help.btn, #update-shortcode.btn, #update-notify.btn, #update-connection.btn, #update-widget.btn,#update-role.btn, #update-form.btn',function(event){
                 event.preventDefault();
 		var btn_id = $(this).attr('id');
 		
@@ -1048,6 +1069,14 @@ jQuery(document).ready(function($) {
 			var form_name = 'notify-form';
 			var type = 'notify';
 			var show_id = '#list-notify';
+		}
+		else if(btn_id == 'update-connection')
+		{
+			$('#add-connection-div input#app').val(app_id);
+			var comp_id = $('input#connection').val();
+			var form_name = 'connection-form';
+			var type = 'connection';
+			var show_id = '#list-connection';
 		}
 		else if(btn_id == 'update-widget')
 		{
@@ -1230,7 +1259,7 @@ jQuery(document).ready(function($) {
 
 
 
-	$(document).on('click','span#edit.entity a,span#edit.relationship a,span#edit.taxonomy a,span#edit.shortcode a,span#edit.notify a,span#edit.widget a,span#edit.help a,span#edit.form a,#edit-entity.btn,#edit-relationship.btn,#edit-help.btn,td#edit_td a#txn-name,td#edit_td a#shc-label,td#edit_td a#widg-name,td#edit_td a#form-name,td#edit_td a#notify-name',function(event){
+	$(document).on('click','span#edit.entity a,span#edit.relationship a,span#edit.taxonomy a,span#edit.shortcode a,span#edit.notify a,span#edit.connection a,span#edit.widget a,span#edit.help a,span#edit.form a,#edit-entity.btn,#edit-relationship.btn,#edit-help.btn,td#edit_td a#txn-name,td#edit_td a#shc-label,td#edit_td a#widg-name,td#edit_td a#form-name,td#edit_td a#notify-name,td#edit_td a#connection-name',function(event){
 		var widg_type = "";
                 app_id = $('#app_form input#app').val();
 		if($(this).parent().attr('class') == 'app')
@@ -1263,6 +1292,11 @@ jQuery(document).ready(function($) {
 			var myclass = 'notify';
                         notify = $(this).html();
 		}
+		else if($(this).attr('id') == 'connection-name')
+		{
+			var myclass = 'connection';
+                        connection = $(this).html();
+		}
 		else
 		{
 			var myclass = $(this).parent().attr('class');
@@ -1271,6 +1305,7 @@ jQuery(document).ready(function($) {
 			widget = $(this).closest('#edit_td').find('a#widg-name').html();
 			form = $(this).closest('#edit_td').find('a#form-name').html();
 			notify = $(this).closest('#edit_td').find('a#notify-name').html();
+			connection = $(this).closest('#edit_td').find('a#connection-name').html();
 		}
 
                 var comp_id = $(this).attr('href').replace('#','');
@@ -1316,6 +1351,10 @@ jQuery(document).ready(function($) {
 		else if(myclass == 'notify')
 		{
 			notify_id = comp_id;
+		}
+		else if(myclass == 'connection')
+		{
+			connection_id = comp_id;
 		}
                 app = $('input#app-name').val();
                 $('#app-save').hide();
@@ -1363,6 +1402,10 @@ jQuery(document).ready(function($) {
 				else if(myclass == 'notify')
 				{
 					$('input#notify').val(response[1]);
+				}
+				else if(myclass == 'connection')
+				{
+					$('input#connection').val(response[1]);
 				}
 				menu_selected = "";
 				show_ui = "";
@@ -1419,6 +1462,42 @@ jQuery(document).ready(function($) {
 								attach_to = value;
 								attach_tax = '';
 							}
+						}
+						else if(key == 'connection-entity')
+						{
+							ent_id = value;
+							$.get(ajaxurl,{action:'wpas_get_entities',type:'form',app_id:app_id,values:value}, function(response)
+							{
+								$('#add-'+myclass+'-div #'+ key).html(response);
+							});
+						}
+						else if(key == 'connection-inc_email')
+						{
+							$(this).incEmail(app_id,ent_id,'from',value);
+						}
+						else if(key == 'connection-inc_name')
+						{
+							$(this).incEmail(app_id,ent_id,'from_name',value);
+						}
+						else if(key == 'connection-inc_tax')
+						{
+							$(this).incEmail(app_id,ent_id,'tax',value);
+						}
+						else if(key == 'connection-inc_subject')
+						{
+							$(this).incEmail(app_id,ent_id,'subject',value);
+						}
+						else if(key == 'connection-inc_date')
+						{
+							$(this).incEmail(app_id,ent_id,'date',value);
+						}
+						else if(key == 'connection-inc_body')
+						{
+							$(this).incEmail(app_id,ent_id,'body',value);
+						}
+						else if(key == 'connection-inc_att')
+						{
+							$(this).incEmail(app_id,ent_id,'att',value);
 						}
 						else if(key == 'notify-attach_ent')
 						{
@@ -1583,6 +1662,7 @@ jQuery(document).ready(function($) {
 							{
 								$('#formtabs-3-li').hide();
 								$('#form-submit_status_div').hide();
+								$('#form-visitor_submit_status_div').hide();
 								$('#form-noresult_msg_div').show();
 								$('#form-ajax_search_div').show();
 								$('#form-enable_operators_div').show();
@@ -1592,6 +1672,7 @@ jQuery(document).ready(function($) {
 							{
 								$('#formtabs-3-li').show();
 								$('#form-submit_status_div').show();
+								$('#form-visitor_submit_status_div').show();
 								$('#form-noresult_msg_div').hide();
 								$('#form-ajax_search_div').hide();
 								$('#form-enable_operators_div').hide();
@@ -2117,7 +2198,7 @@ jQuery(document).ready(function($) {
                         return false;
                 }
 	});
-	$(document).on('click','#tab-tax input.checkall,#tab-ent input.checkall,#tab-def input.checkall,#tab-widg input.checkall',function(){
+	$(document).on('click','#tab-tax input.checkall,#tab-ent input.checkall,#tab-def input.checkall,#tab-widg input.checkall,#tab-form input.checkall,#tab-view input.checkall',function(){
 		if(this.checked == true)
 		{
 			$(this).closest('div').find(':input[type=checkbox]').each(function() {
