@@ -17,9 +17,9 @@ WP App Studio allows you to build fully featured sites without writing a single 
 
 WP App Studio uses following terminology to describe design concepts:
 
-Entity = Custom Post Type
-Attribute = Custom Field
-Taxonomy = Custom Taxonomy
+Entity = Custom Post Type<br>
+Attribute = Custom Field<br>
+Taxonomy = Custom Taxonomy<br>
 App = Plugin
 
 = Quick Start: =
