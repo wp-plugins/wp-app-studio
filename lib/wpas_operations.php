@@ -234,7 +234,7 @@ function wpas_generate_app()
 
 				if($xml_check === false)
 				{
-					$alert = __("Error: System error, please try again later.","wpas");
+					$alert = sprintf(__('Error: Your server settings are not compatible with WP APP Studio Platform. Please copy the content of your <a href="%s" target="_blank">debug</a> page and include it in your <a href="%s" target="_blank">support ticket</a>.','wpas'),admin_url('admin.php?page=wpas_debug_page'),'https://support.emarketdesign.com');	
 					$success = 0;
 				}
 				elseif(isset($xml_check->error))
@@ -255,7 +255,7 @@ function wpas_generate_app()
 		
 					if($xml_generate === false)
 					{
-						$alert = __("Error: System error, please try again later.","wpas");
+						$alert = sprintf(__('Error: Your server settings are not compatible with WP APP Studio Platform. Please copy the content of your <a href="%s" target="_blank">debug</a> page and include it in your <a href="%s" target="_blank">support ticket</a>.','wpas'),admin_url('admin.php?page=wpas_debug_page'),'https://support.emarketdesign.com');	
 						$success = 0;
 					}
 					elseif(isset($xml_generate->error))
@@ -309,6 +309,7 @@ function wpas_check_valid_generate($myapp)
 	// 10: forms not attached to an entity
 	// 11: no textdomain defined
 	// 12: req app settings not empty
+	// 13: more than one entity has user select dropdown
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
@@ -391,6 +392,9 @@ function wpas_check_valid_generate($myapp)
 		case 12:
 			$alert = __("Error: You must fill out all the required fields in the application's settings app info tab.","wpas");
 			break;
+		case 13:
+			$alert = __("Error: You must have only one entity with User List type attribute.","wpas");
+			break;
 		default:
 			$alert = "";
 			break;
@@ -407,6 +411,7 @@ function wpas_check_entity_field($myapp_entity)
 	$attrs_left = 0;
 	$no_unique_key = 0;
 	$generate_error = 0;
+	$user_type = 0;
 	$error_loc_name = "";
 	
 	//check if entities have at least one field
@@ -481,6 +486,10 @@ function wpas_check_entity_field($myapp_entity)
 				{
 					$unique_key = 1;
 				}
+				if($myfield['fld_type'] == 'user')
+				{
+					$user_type++;
+				}
 			}
 		}
 		if(!in_array($myentity['ent-name'],Array('page','post')))
@@ -519,6 +528,10 @@ function wpas_check_entity_field($myapp_entity)
 	elseif($no_unique_key == 1)
 	{
 		$generate_error = 7;
+	}
+	elseif($user_type > 1)
+	{
+		$generate_error = 13;
 	}
 	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
 }

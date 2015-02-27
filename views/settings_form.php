@@ -113,6 +113,7 @@ jQuery(document).ready(function($) {
 		<li><a href="#tab7" data-toggle="tab"><?php _e("Footer","wpas"); ?></a></li>
 		<li><a href="#tab8" data-toggle="tab"><?php _e("Mail","wpas"); ?></a></li>
 		<li><a href="#tab9" data-toggle="tab"><?php _e("Misc","wpas"); ?></a></li>
+		<li><a href="#tab10" data-toggle="tab"><?php _e("Css","wpas"); ?></a></li>
 	</ul>
 	<input type="hidden" value="" name="app" id="app">	
 	<div class="tab-content">
@@ -453,9 +454,9 @@ jQuery(document).ready(function($) {
 		<div class="row-fluid">
 		<label class="control-label span1"></label>
 		<div class="control-group">
-			<label class="checkbox"><?php _e("Use Incoming Email Extension","wpas"); ?>
-			<input name="ao_inc_email_use_ext" id="ao_inc_email_use_ext" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="<?php _e("When checked it configures app to use Incoming Email Extension, when unchecked it includes Incoming Email functionality within this app.","wpas"); ?>">
+			<label class="checkbox"><?php _e("Remove Visual Shortcode Builder","wpas"); ?>
+			<input name="ao_remove_stdfilter" id="ao_remove_stdfilter" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove standard view filters in WPAS button list on admin edit page screen toolbar.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -537,6 +538,16 @@ jQuery(document).ready(function($) {
                         <?php //<td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td> ?>
                         </tr>
 		</table>
+		</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="tab10">
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Css","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea class="wpas-std-textarea" id="ao_css" name="ao_css"></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("The custom css code to be used when displaying the content. It is handy when you added custom classes in the layout editor and want to add css class definitions. You can leave this field blank and use a common css file for all.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
 	</div>

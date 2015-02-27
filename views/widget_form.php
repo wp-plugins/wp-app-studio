@@ -390,7 +390,8 @@ function wpas_add_widget_form($app_id)
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
-		<div class="control-group row-fluid" id="widg-post_status_div" style="display:none;">
+		<div id="widg-post_status_div">
+		<div class="control-group row-fluid" style="display:none;">
 		<label class="control-label span3"><?php _e("Show By Status ","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="widg-post_status" id="widg-post_status" class="input-small">
@@ -405,6 +406,15 @@ function wpas_add_widget_form($app_id)
 		</select>
 		<a href="#" style="cursor: help;" title="<?php _e("Retrieves content by status, default value is publish","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Filter","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="widg-filter" id="widg-filter" type="text" placeholder="<?php _e("e.g. attr::emd_key::is::12;","wpas");?>" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Filter for the widget.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
 		</div>
 		</div>
 		<div class="control-group row-fluid" id="widg-comment_status_div" style="display:none;">

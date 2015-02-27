@@ -20,9 +20,22 @@ jQuery(document).ready(function($) {
 			},'json');
 			$('#shc-table_div').show();
 		}
+		else if($.inArray(shc_type,['single','archive','tax']) != -1 && ent_id != ''){
+			$(this).showShcTags(app_id,ent_id,'tag-nocount');
+		}
 		else if(shc_type != 'chart' && ent_id != ''){
 			$(this).showShcTags(app_id,ent_id,'tag-rel');
 		}
+	});
+	$('#shc-sc_pagenav').click(function(){
+		if($(this).attr('checked'))
+		{
+			$('#shc-pgn_class_div').show();
+		}
+		else {
+			$('#shc-pgn_class_div').hide();
+		}
+		
 	});
         $('#shc-attach_form').click(function() {
 		app_id = $('input#app').val();
@@ -38,6 +51,7 @@ jQuery(document).ready(function($) {
 	$.fn.showShcTabs = function(selected_type,app_id,get_vals){
 		$('#shcTab').show();
 		$('#ShcTabContent').show();
+		$('#shc-pgn_class_div').hide();
 		switch (selected_type) {
 			case 'std':
 				$('#shc-theme_type_div').show();
@@ -54,6 +68,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_form_div').hide();
                         	$('#shc-setup_page_div').show();
+				$('#shc-rmv_wpasbtn_div').show();
                         	$('#shc-app_dash_div').hide();
                         	$('#shc-layout_header_div').show();
                         	$('#shc-layout_footer_div').show();
@@ -78,6 +93,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_div').hide();
                         	$('#shc-setup_page_div').hide();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').hide();
                         	$('#shc-layout_header_div').show();
                         	$('#shc-layout_footer_div').show();
@@ -102,6 +118,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_form_div').hide();
 				$('#shctabs-2-li').hide();
                         	$('#shc-setup_page_div').hide();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').hide();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
@@ -126,6 +143,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_form_div').hide();
                         	$('#shc-setup_page_div').hide();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').hide();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
@@ -150,6 +168,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_div').hide();
 				$('#shc-attach_form_div').hide();
                         	$('#shc-setup_page_div').hide();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').hide();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
@@ -170,6 +189,7 @@ jQuery(document).ready(function($) {
 					});
 				}
                         	$('#shc-setup_page_div').show();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').show();
 				$('#shc-theme_type_div').hide();
 				$('#shc-sc_pagenav_div').hide();
@@ -198,6 +218,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_form_div').hide();
                         	$('#shc-setup_page_div').show();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').show();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
@@ -215,6 +236,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_form_div').hide();
                         	$('#shc-setup_page_div').show();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').show();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
@@ -241,6 +263,7 @@ jQuery(document).ready(function($) {
 				$('#shc-attach_div').hide();
 				$('#shctabs-2-li').show();
                         	$('#shc-setup_page_div').hide();
+				$('#shc-rmv_wpasbtn_div').hide();
                         	$('#shc-app_dash_div').hide();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
@@ -286,13 +309,13 @@ jQuery(document).ready(function($) {
 				break;
 			case 'attribute':
 				$.get(ajaxurl,{action:'wpas_get_ent_fields',type:type,app_id:app_id,ent_id:chart_ent,value:selected}, function(response){
-					$(show_id+ '_id').html(response);
-				});
+					$(show_id+ '_id').html(response['pre']+response['list']);
+				}, 'json');
 				break;
 			case 'date':
 				$.get(ajaxurl,{action:'wpas_get_ent_fields',type:type,app_id:app_id,ent_id:chart_ent,value:selected}, function(response){
-					$(show_id+ '_id').html(response);
-				});
+					$(show_id+ '_id').html(response['pre']+response['list']);
+				}, 'json');
 				break;
 			case 'relationship':
 				$.get(ajaxurl,{action:'wpas_get_entities',type:type,app_id:app_id,primary_entity:chart_ent,add_sel:1,values:selected}, function(response){
@@ -680,12 +703,22 @@ jQuery(document).ready(function($) {
         <div id="ShcTabContent" class="tab-content">
         <div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("Display Options tab configures how the view will be displayed on the frontend. Filters tab defines how the content will be returned by setting sort order, number of records etc. Messages tab helps you define the messages to be displayed to users when the view's content is requested.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
 	<div id="shctabs-1" class="tab-pane fade in active">
-		<div class="control-group row-fluid">
+		<div class="control-group row-fluid" id="shc-setup_page_div" style="display:none;">
 		<label class="control-label span3"></label>
-		<div class="controls span9" id="shc-setup_page_div" style="display:none;">
+		<div class="controls span9">
 		<label class="checkbox"><?php _e("Create Setup Page","wpas");?>
 		<input name="shc-setup_page" id="shc-setup_page" type="checkbox" value="1">
 		<a href="#" style="cursor: help;" title="<?php _e("When set, the view will be created as a page upon activation.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</label>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="shc-rmv_wpasbtn_div" style="display:none;">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Remove from WPAS button list","wpas");?>
+		<input name="shc-rmv_wpasbtn" id="shc-rmv_wpasbtn" type="checkbox" value="1">
+		<a href="#" style="cursor: help;" title="<?php _e("When set, this view is removed from the WPAS button in page toolbar.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</label>
 		</div>
@@ -760,6 +793,15 @@ jQuery(document).ready(function($) {
                 <a title="<?php _e("Enables pagination links.","wpas"); ?>" style="cursor: help;" href="#">
                 <i class="icon-info-sign"></i></a>
                </label>
+                </div>
+		<div class="control-group row-fluid" id="shc-pgn_class_div">
+                <label class="control-label span3"><?php _e("Paging Class","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="shc-pgn_class" id="shc-pgn_class" type="text" placeholder="<?php _e("e.g. visible-lg","wpas");?>" value="" >
+                <a title="<?php _e("Add css class to page navigation.","wpas"); ?>" style="cursor: help;" href="#">
+                <i class="icon-info-sign"></i></a>
+               </label>
+                </div>
                 </div>
 		<div id="shc-table_div" style="display:none;">
 		<div class="control-group row-fluid">
@@ -873,7 +915,7 @@ jQuery(document).ready(function($) {
 		<div class="controls span9">
 		<select name="shc-pie_type" id="shc-pie_type" class="input-medium">
 		<option value="">Please select</option>
-		<option value="pie">Pie</option>
+		<option value="pie">2D</option>
 		<option value="3d">3D</option>
 		<option value="donut">Donut</option>
 		</select>

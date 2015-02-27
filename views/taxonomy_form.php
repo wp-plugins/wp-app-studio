@@ -3,53 +3,90 @@ function wpas_add_taxonomy_form()
 {
 ?>
 <script type="text/javascript">
-jQuery(document).ready(function() {
-	jQuery('#txn-hierarchical').click(function() {
-		if(jQuery(this).find('option:selected').val() == 1)
+jQuery(document).ready(function($) {
+	$('#txn-inline').click(function (){
+		app_id = $('input#app').val();
+		if($(this).attr('checked')){
+			$(this).setInline('inline',app_id,'');
+		}
+		else {
+			$(this).setInline('notinline',app_id,'');
+		}
+	});
+	$.fn.setInline = function (type,app_id){
+		if(type == 'inline')
 		{
-			jQuery('#txn-parent_item_div').show();
-			jQuery('#txn-parent_item_colon_div').show();
-			jQuery('#txn-separate_items_with_comas_div').hide();
-			jQuery('#txn-add_or_remove_items_div').hide();
-			jQuery('#txn-choose_from_most_used_div').hide();
+			$('#txn-srequired-div').hide();
+			$('#txn-required-div').hide();
+			$('#mytxnTab a:first').tab('show');
+			$('#txntabs-2-li').hide();
+			$('#txntabs-2').removeClass('active');
+			if(app_id != ''){
+				$.get(ajaxurl,{action:'wpas_get_entities',type:'inline_tax',app_id:app_id}, function(response)
+				{
+					$('#add-taxonomy-div #txn-attach').html(response);
+				});
+			}
+		}
+		else {
+			$('#txn-srequired-div').show();
+			$('#txn-required-div').show();
+			$('#mytxnTab a:first').tab('show');
+			$('#txntabs-2-li').show();
+			if(app_id != ''){
+				$.get(ajaxurl,{action:'wpas_get_entities',type:'taxonomy',app_id:app_id}, function(response)
+				{
+					$('#add-taxonomy-div #txn-attach').html(response);
+				});
+			}
+		}
+	}
+	$('#txn-hierarchical').click(function() {
+		if($(this).find('option:selected').val() == 1)
+		{
+			$('#txn-parent_item_div').show();
+			$('#txn-parent_item_colon_div').show();
+			$('#txn-separate_items_with_comas_div').hide();
+			$('#txn-add_or_remove_items_div').hide();
+			$('#txn-choose_from_most_used_div').hide();
                 }
                 else
                 {
-                        jQuery('#txn-parent_item_div').hide();
-                        jQuery('#txn-parent_item_colon_div').hide();
-			jQuery('#txn-separate_items_with_comas_div').show();
-			jQuery('#txn-add_or_remove_items_div').show();
-			jQuery('#txn-choose_from_most_used_div').show();
+                        $('#txn-parent_item_div').hide();
+                        $('#txn-parent_item_colon_div').hide();
+			$('#txn-separate_items_with_comas_div').show();
+			$('#txn-add_or_remove_items_div').show();
+			$('#txn-choose_from_most_used_div').show();
                 }
 	});
-	jQuery('#txn-advanced-option').click(function() {
-                if(jQuery(this).attr('checked'))
+	$('#txn-advanced-option').click(function() {
+                if($(this).attr('checked'))
                 {
-			jQuery('#txntabs').show();
+			$('#txntabs').show();
                 }
                 else
                 {
-                        jQuery('#txntabs').hide();
+                        $('#txntabs').hide();
                 }
         });
-	jQuery('#txn-show_ui').click(function() {
-		if(jQuery(this).find('option:selected').val() == 1)
+	$('#txn-show_ui').click(function() {
+		if($(this).find('option:selected').val() == 1)
 		{
-                        jQuery('#txn-show-in-nav-menus-div').show();
+                        $('#txn-show-in-nav-menus-div').show();
                 }
                 else
                 {
-                        jQuery('#txn-show-in-nav-menus-div').hide();
+                        $('#txn-show-in-nav-menus-div').hide();
                 }
         });
-	jQuery('#txn-rewrite').click(function() {
-		if(jQuery(this).find('option:selected').val() == 0)
+	$('#txn-rewrite').click(function() {
+		if($(this).find('option:selected').val() == 0)
                 {
-                        jQuery('#txn-custom_rewrite_slug').attr('disabled',true);
+                        $('#txn-custom_rewrite_slug').attr('disabled',true);
                 }
-                if(jQuery(this).find('option:selected').val() == 1)
+                if($(this).find('option:selected').val() == 1)
                 {
-                        jQuery('#txn-custom_rewrite_slug').removeAttr('disabled');
+                        $('#txn-custom_rewrite_slug').removeAttr('disabled');
                 }
         });
 		
@@ -87,6 +124,14 @@ jQuery(document).ready(function() {
                     </div>
                 </div>
 		<div class="control-group row-fluid">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Inline Taxonomy","wpas"); ?>
+		<input name="txn-inline" id="txn-inline" type="checkbox" value="1"/>
+		</label>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Description","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea class="wpas-std-textarea" id="txn-tax_desc" name="txn-tax_desc"></textarea>
@@ -102,7 +147,7 @@ jQuery(document).ready(function() {
 </select><a href="#" title="<?php _e("Select one or more entities your taxonomy will be attached to.","wpas"); ?>" style="cursor: help;"> <i class="icon-info-sign"></i></a>
 					</div>
                 </div>
-	<div class="control-group row-fluid">
+	<div class="control-group row-fluid" id='txn-required-div'>
     <label class="control-label span3"></label>
 	<div class="controls span9">
 			<label class="checkbox"><?php _e("Required for Submit","wpas"); ?>
@@ -112,7 +157,7 @@ jQuery(document).ready(function() {
 			</label>
 	</div>
 	</div>
-	<div class="control-group row-fluid">
+	<div class="control-group row-fluid" id='txn-srequired-div'>
     <label class="control-label span3"></label>
 	<div class="controls span9">
 			<label class="checkbox"><?php _e("Required for Search","wpas"); ?>
@@ -171,7 +216,7 @@ jQuery(document).ready(function() {
     <div id="txntabs" style="display:none;">
                 <ul id="mytxnTab" class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#txntabs-1"><?php _e("Label Options","wpas"); ?></a></li>
-                        <li><a data-toggle="tab" href="#txntabs-2" ><?php _e("Options","wpas"); ?></a></li>
+                        <li id="txntabs-2-li"><a data-toggle="tab" href="#txntabs-2" ><?php _e("Options","wpas"); ?></a></li>
                 </ul>
         <div id="mytxnTabContent" class="tab-content">
            <div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("If you are unfamiliar with these labels and leave them empty they will be automatically created based on your taxonomy name and the default configuration.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div></div>
@@ -179,7 +224,7 @@ jQuery(document).ready(function() {
 		<div class="control-group row-fluid">
 	<label class="control-label span3"><?php _e("Menu Name","wpas"); ?></label>
 	<div class="controls span9">
-	<input class="input-xlarge" name="txn-menu_name" id="txn-menu_name" type="text" placeholder="<?php _e("e.g. Product Tags","wpas"); ?>" value="" />
+	<input class="input-xlarge" name="txn-menu_name" id="txn-menu_name" type="text" placeholder="<?php _e("e.g. Product Tags","wpas"); ?>">
 	<a href="#" style="cursor: help;" title="<?php _e("It defines the menu name text. This string is the name to give menu items. Defaults to value of taxonomy name.","wpas"); ?> ">
 	<i class="icon-info-sign"></i></a>
 	</div>

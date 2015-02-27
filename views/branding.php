@@ -48,7 +48,6 @@ function wpas_branding_footer()
 		<div id="footer">
 		<a target="_blank" href="' . WPAS_URL . '/?pk_campaign=wpas&pk_source=plugin&pk_medium=link&pk_content=copyr-site">&copy; 2014 eMarket Design</a>
 		<span class="wpas-links">
-		<a class="btn btn-inverse btn-mini" title="' . __("Create your own plugin for free","wpas") . '" target="_blank" href="' . WPAS_URL . '/wp-app-studio-playground/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=playground">' . __("Playground","wpas") . '</a>
 		<a class="btn btn-danger btn-mini" title="' . __("See sample plugins created by Wp App Studio","wpas") . '" target="_blank" href="' . WPAS_URL . '/wpas-demos/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=demo" >' . __("Demo","wpas") . '</a>
 		<a class="btn btn-warning btn-mini" title="' . __("See Wp App Studio Documentation","wpas") . '" target="_blank" href="' . WPAS_URL . '/articles/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=docs">' . __("Docs","wpas") . '</a>
 		<a class="btn btn-default btn-mini" title="' . __("Open a free support ticket","wpas") . '" target="_blank" href="//support.emarketdesign.com/?pk_campaign=wpas&pk_source=plugin&pk_medium=btn&pk_content=support">' . __("Support","wpas") . '</a>

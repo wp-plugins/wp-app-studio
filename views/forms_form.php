@@ -270,6 +270,7 @@ jQuery(document).ready(function($) {
 		$('#form-tabs').hide();
 		$('#formtabs-3-li').show();
 		$('#form-submit_status_div').show();
+		$('#form-visitor_submit_status_div').show();
 		$('#form-noresult_msg_div').hide();
 		$('#form-ajax_search_div').hide();
 		$('#form-enable_operators_div').hide();
@@ -294,6 +295,7 @@ jQuery(document).ready(function($) {
 			app_id = $('input#app').val();
 			$('#formtabs-3-li').hide();
 			$('#form-submit_status_div').hide();
+			$('#form-visitor_submit_status_div').hide();
 			$('#form-noresult_msg_div').show();
 			$('#form-ajax_search_div').show();
 			$('#form-enable_operators_div').show();
@@ -302,6 +304,7 @@ jQuery(document).ready(function($) {
 		{
 			$('#formtabs-3-li').show();
 			$('#form-submit_status_div').show();
+			$('#form-visitor_submit_status_div').show();
 			$('#form-noresult_msg_div').hide();
 			$('#form-ajax_search_div').hide();
 			$('#form-enable_operators_div').hide();
@@ -584,6 +587,20 @@ jQuery(document).ready(function($) {
 	<option value="trash"><?php _e("Trash","wpas");?></option>
 	</select>
 	<a href="#" style="cursor: help;" title="<?php _e("Sets the status of all form entries for the users who have -edit_published- capability for this entity. Publish - Entry is available immediately. Draft - Entry is in draft status. Future - Entry is will be published in the future. Private - Entry is not visible to users who are not logged in. Trash - Entry is in trashbin. Default is publish.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
+	<div class="control-group row-fluid" id="form-visitor_submit_status_div"> 
+	<label class="control-label span3"><?php _e("Visitor Submit Status","wpas");?></label>
+	<div class="controls span9">
+	<select name="form-visitor_submit_status" id="form-visitor_submit_status" class="input-medium">
+	<option value="publish"><?php _e("Publish","wpas");?></option>
+	<option value="draft"><?php _e("Draft","wpas");?></option>
+	<option value="future"><?php _e("Future","wpas");?></option>
+	<option value="private"><?php _e("Private","wpas");?></option>
+	<option value="trash"><?php _e("Trash","wpas");?></option>
+	</select>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the status of all form entries for the users who have NOT -edit_published- capability for this entity. Publish - Entry is available immediately. Draft - Entry is in draft status. Future - Entry is will be published in the future. Private - Entry is not visible to users who are not logged in. Trash - Entry is in trashbin. Default is publish.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>

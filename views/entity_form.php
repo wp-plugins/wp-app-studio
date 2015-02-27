@@ -4,6 +4,40 @@ function wpas_add_entity_form()
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('#ent-inline-ent').click(function (){
+		if($(this).attr('checked')){
+			$(this).setInlineTabs('inline');
+		}
+		else {
+			$(this).setInlineTabs('notinline');
+		}
+	});
+	$.fn.setInlineTabs = function (type){
+		if(type == 'inline')
+		{
+			$('#myTab a:first').tab('show');
+			$('#tabs-3-li').hide();
+			$('#tabs-4-li').hide();
+			$('#tabs-5-li').hide();
+			$('#tabs-6-li').hide();
+			$('#tabs-3').removeClass('active');
+			$('#tabs-4').removeClass('active');
+			$('#tabs-5').removeClass('active');
+			$('#tabs-6').removeClass('active');
+			$('#ent-hierarchical-div').hide();
+			$('#ent-msg-cust-fields-div').hide();
+		}	
+		else {
+			$('#myTab a:first').tab('show');
+			$('#tabs-3-li').show();
+			$('#tabs-4-li').show();
+			$('#tabs-5-li').show();
+			$('#tabs-6-li').show();
+			$('#ent-hierarchical-div').show();
+			$('#ent-msg-cust-fields-div').show();
+		}	
+		
+	}
 	$('#ent-supports_comments').click(function () {
 		if($(this).attr('checked'))
 		{
@@ -180,6 +214,14 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Inline Entity","wpas"); ?>
+		<input name="ent-inline-ent" id="ent-inline-ent" type="checkbox" value="1"/>
+		</label>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id='ent-hierarchical-div'>
 		<label class="control-label span3"><?php _e("Hierarchical","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="ent-hierarchical" id="ent-hierarchical" class="input-mini">
@@ -211,10 +253,11 @@ jQuery(document).ready(function($) {
 		<div id="tabs" style="display:none;">
 		<ul id="myTab" class="nav nav-tabs">
 		<li class="active"><a data-toggle="tab" href="#tabs-1"><?php _e("Label Options","wpas"); ?></a></li>
-		<li><a data-toggle="tab" href="#tabs-2"><?php _e("Options","wpas"); ?></a></li>
-		<li><a data-toggle="tab" href="#tabs-3"><?php _e("Menu Options","wpas"); ?></a></li>
-		<li><a data-toggle="tab" href="#tabs-4"><?php _e("Display Options","wpas"); ?></a></li>
-		<li><a data-toggle="tab" href="#tabs-5"><?php _e("Comments","wpas"); ?></a></li>
+		<li id='tabs-2-li'><a data-toggle="tab" href="#tabs-2"><?php _e("Messages","wpas"); ?></a></li>
+		<li id='tabs-3-li'><a data-toggle="tab" href="#tabs-3"><?php _e("Options","wpas"); ?></a></li>
+		<li id='tabs-4-li'><a data-toggle="tab" href="#tabs-4"><?php _e("Menu Options","wpas"); ?></a></li>
+		<li id='tabs-5-li'><a data-toggle="tab" href="#tabs-5"><?php _e("Display Options","wpas"); ?></a></li>
+		<li id='tabs-6-li'><a data-toggle="tab" href="#tabs-6"><?php _e("Comments","wpas"); ?></a></li>
 		</ul>
 		<div id="myTabContent" class="tab-content">
 		<div class="row-fluid">
@@ -312,6 +355,92 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div id="tabs-2" class="tab-pane fade">
+		<div class="field_groups">
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Updated","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_upd" id="ent-msg_upd" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when entity updated.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div id="ent-msg-cust-fields-div">
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Custom Field Updated","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_cust_upd" id="ent-msg_cust_upd" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when a custom field is updated. Entity must support custom fields for this message to be displayed.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Custom Field Deleted","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_cust_dlt" id="ent-msg_cust_dlt" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when a custom field is deleted. Entity must support custom fields for this message to be displayed.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Default Updated","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_dflt_upd" id="ent-msg_dflt_upd" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays default entity updated message when no other entity message applicable.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Revision","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_revision" id="ent-msg_revision" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays entity restored to revision from message.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Published","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_published" id="ent-msg_published" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when entity published.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Saved","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_saved" id="ent-msg_saved" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when entity saved.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Pending Submitted","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_pending" id="ent-msg_pending" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Future Submitted","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_future" id="ent-msg_future" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when entity scheduled to be published in future.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Draft Updated","wpas"); ?></label>
+		<div class="controls span9">
+		<input class="input-xlarge" name="ent-msg_draft" id="ent-msg_draft" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
+		<a href="#" style="cursor: help;" title="<?php _e("Displayes when entity draft updated.","wpas"); ?> ">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		</div>
+		</div> 
+		<div id="tabs-3" class="tab-pane fade">
 		<div class="field_groups">
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Available for Public","wpas"); ?></label>
@@ -442,9 +571,9 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		</div>
-		</div>
-		<div id="tabs-3" class="tab-pane fade">
-		<div class="tab-grp-data">
+		</div> 
+		<div id="tabs-4" class="tab-pane fade">
+		<div class="field_groups">
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Show UI","wpas"); ?></label>
 		<div class="controls span9">
@@ -543,22 +672,22 @@ jQuery(document).ready(function($) {
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
-		</div>
-		</div>
-		<div id="tabs-4" class="tab-pane fade">
-		<div class="tab-grp-data">
+		</div> 
+		</div> 
+		<div id="tabs-5" class="tab-pane fade">
+		<div class="field_groups">
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Default Group Title","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-default_grp_title" id="ent-default_grp_title" type="text" placeholder="<?php _e("e.g. Product Info","wpas"); ?>" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("Sets the default group title if there is no entity layout defined.","wpas"); ?>"> <i class="icon-info-sign"></i></a>
 		</div>
+		</div> 
 		</div>
-		</div>
-		</div> <!-- end if tab4-->
+		</div> <!-- end if tab5-->
 		
-		<div id="tabs-5" class="tab-pane fade">
-		<div class="tab-grp-data">
+		<div id="tabs-6" class="tab-pane fade">
+		<div class="field_groups">
 		<div class="control-group row-fluid">
 		<label class="control-label span3"></label>
 		<div class="controls span9">
@@ -629,7 +758,7 @@ jQuery(document).ready(function($) {
 		</div>
 		</div><!-- end of detail div-->
 		</div>
-		</div> <!-- end if tab4-->
+		</div><!-- end of tab6-->
 
 		</div>
 		</div>

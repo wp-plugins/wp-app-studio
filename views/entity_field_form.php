@@ -1,10 +1,12 @@
 <?php
-function wpas_view_ent_fields($ent_name)
+function wpas_view_ent_fields($ent_name,$ent)
 {
-return '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>' . __("Attributes","wpas") . '</h3></div>
-                <div class="span9 field" id="add_field_entity">
-<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>
-</div></div></div>';
+	$html = '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>' . __("Attributes","wpas") . '</h3></div>';
+	if(empty($ent['ent-inline-ent'])){
+		$html .= '<div class="span9 field" id="add_field_entity">
+<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a></div></div></div>';
+	}
+	return $html;
 }
 function wpas_view_ent_fields_list($ent_field)
 {
@@ -80,7 +82,7 @@ jQuery(document).ready(function($) {
 	var srequired_arr = ['file','image'];
 	var not_uniq_arr = ['file','image','hidden_constant','hidden_function','checkbox','checkbox_list','radio','select','textarea','wysiwyg','password'];
 
-	$.fn.changeValidateMsg = function(myItem){
+	$.fn.changeValidateMsg = function(myItem,page_type){
 		switch(myItem) {
 		case 'email':
 			$('#validation-message').text('<?php _e("Validation Message:","wpas") . ' ' . _e("Please enter a valid email address.","wpas");?>');		
@@ -233,11 +235,13 @@ jQuery(document).ready(function($) {
 		}
 		if(myItem == 'user')
 		{
-			app_id = $('input#app').val();
-			$.get(ajaxurl,{action:'wpas_get_roles',type:'user',app_id:app_id}, function(response){
-				$('#fld_limit_user_role').html(response);
-				$('#fld_limit_user_role_div').show();
-			});
+			if(page_type != 'edit'){
+				app_id = $('input#app').val();
+				$.get(ajaxurl,{action:'wpas_get_roles',type:'user',app_id:app_id}, function(response){
+					$('#fld_limit_user_role').html(response);
+					$('#fld_limit_user_role_div').show();
+				});
+			}
 			$('#fld_is_advanced_div').show();
 			$('#fld_multiple_div').hide();
 		}
@@ -316,7 +320,7 @@ jQuery(document).ready(function($) {
 		$('#fld_required').attr('disabled',false);
 		$('#fld_srequired').attr('disabled',false);
 
-		$(this).changeValidateMsg($(this).val());
+		$(this).changeValidateMsg($(this).val(),'');
         });
 	$.fn.initAttr = function(){
 		/*
@@ -345,6 +349,7 @@ jQuery(document).ready(function($) {
 		$('#fld_uniq_id_div').show();
 		$('#fld_allow_html_div').hide();
 		$('#fld_limit_user_role_div').hide(); */
+		$('#fld_dflt_checked_div').hide();
 		$('#fld_allow_html_div').hide();
 		$('#validation-message').hide();
 		$('#validation-options').hide();
@@ -368,6 +373,7 @@ jQuery(document).ready(function($) {
 		$('#fld_file_ext_div').hide();
 		$('#fld_image_thickbox_div').hide();
 		$('#fld_limit_user_role_div').hide();
+		$('#fld_autoinc_field_div').hide();
 	}
 	$.fn.changeReqMult = function(uniq){
 		if(uniq == 1)
@@ -390,6 +396,23 @@ jQuery(document).ready(function($) {
 			$(this).changeReqMult(0);
 		}
 	});
+	$.fn.showAutoInc = function(type,show){
+		
+		if(show == 'autoinc'){
+			$('#fld_autoinc_field_div').show();
+		}
+		else {
+			$('#fld_autoinc_field_div').hide();
+		}
+		if(type == 'add'){
+			$('#fld_autoinc_start').val(1);
+			$('#fld_autoinc_incr').val(1);
+		}
+	}
+	$('#fld_hidden_func').change(function (){
+		$(this).showAutoInc('add',$(this).val());
+	});
+	
 });
 </script>
 <input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
@@ -591,6 +614,7 @@ jQuery(document).ready(function($) {
 			<option value="now"><?php _e("Now (YYYY-MM-DD HH:mm:ss)","wpas");?></option>
 			<option value="current_time"><?php _e("Current Time (HH:mm:ss)","wpas");?></option>
 			<option value="unique_id"><?php _e("Unique Identifier","wpas");?></option>
+			<option value="autoinc"><?php _e("Sequence","wpas");?></option>
 			</select>
 			<a href="#" style="cursor: help;" title="<?php _e("Sets a default value for the attribute.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
@@ -757,6 +781,24 @@ jQuery(document).ready(function($) {
 		<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
+	</div>
+	<div id="fld_autoinc_field_div" name="fld_autoinc_field_div" style="display:none;">
+	<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Start At Value","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-medium" name="fld_autoinc_start" id="fld_autoinc_start" type="text" placeholder="" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence start at value, set to 1 if empty.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Increment By","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-medium" name="fld_autoinc_incr" id="fld_autoinc_incr" type="text" placeholder="" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence increment by value, set to 1 if empty.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
 	</div>
 	
   </fieldset>

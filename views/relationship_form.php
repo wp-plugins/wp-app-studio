@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
 	</div>
 	</div>
         <div class="control-group row-fluid">
-        <label class="control-label span3"><?php _e("Type","wpas");?></label>
+        <label class="control-label req span3"><?php _e("Type","wpas");?></label>
         <div class="controls span9">
         <select name="rel-type" id="rel-type">
         <option selected="selected" value="one-to-many"><?php _e("One-to-Many","wpas");?></option>

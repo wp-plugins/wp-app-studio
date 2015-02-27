@@ -381,7 +381,7 @@ function wpas_add_notify_form()
 	<div class="controls span9">
 	<textarea id="notify-confirm_msg" name="notify-confirm_msg" class="wpas-std-textarea">
 	</textarea>
-	<a href="#" style="cursor: help;" title="<?php _e("Notification message to be sent. Use Show Tags to customize your message with tags available to your entity.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Notification message to be sent. You can use HTML. You should use <br> or <p> tags for line breaks. Use Show Tags to customize your message with tags available to your entity.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	<div id="notify-user-tags-div" style="padding:10px 0;">
 	<div style="padding:10px;">
@@ -448,7 +448,7 @@ function wpas_add_notify_form()
 	<div class="controls span9">
 	<textarea id="notify-confirm_admin_msg" name="notify-confirm_admin_msg" class="wpas-std-textarea">
 	</textarea>
-	<a href="#" style="cursor: help;" title="<?php _e("Notification message to be sent. Use Show Tags to customize your message with tags available to your entity","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Notification message to be sent. You can use HTML. You should use <br> or <p> tags for line breaks. Use Show Tags to customize your message with tags available to your entity","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	<div id="notify-admin-tags-div" style="padding:10px 0;">
 	<div style="padding:10px;">

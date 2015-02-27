@@ -205,13 +205,15 @@ function wpas_tax_capabilities($app_id,$taxonomies,$myrole)
 	$taxcount = 0;
 	foreach($taxonomies as $keytax => $mytax)
 	{
-		$label = "tax_" . $keytax;
-		$tax_caps[$taxcount]['manage'] = "manage_" . $label;
-		$tax_caps[$taxcount]['edit'] = "edit_" . $label;
-		$tax_caps[$taxcount]['delete'] = "delete_" . $label;
-		$tax_caps[$taxcount]['assign'] = "assign_" . $label;
-		$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
-		$taxcount++;
+		if(empty($mytax['txn-inline'])){
+			$label = "tax_" . $keytax;
+			$tax_caps[$taxcount]['manage'] = "manage_" . $label;
+			$tax_caps[$taxcount]['edit'] = "edit_" . $label;
+			$tax_caps[$taxcount]['delete'] = "delete_" . $label;
+			$tax_caps[$taxcount]['assign'] = "assign_" . $label;
+			$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
+			$taxcount++;
+		}
 	}
 	if(empty($tax_caps))
 	{
@@ -231,7 +233,7 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 	{
 		$label = 'widg_' . $keywidg;
 		$widg_caps[$widgcount]['view'] = "view_" . $label;
-		if($mywidg['widg-type'] == 'dashboard')
+		if($mywidg['widg-type'] == 'dashboard' && $mywidg['widg-wp_dash'] == 1)
 		{
 			$widg_caps[$widgcount]['configure'] = "configure_" . $label;
 		}

@@ -44,6 +44,54 @@ add_filter('wp_kses_allowed_html','wpas_allowed_html',10,2);
 add_action('wp_ajax_wpas_get_layout_tags','wpas_get_layout_tags');
 add_action('wp_ajax_wpas_clear_log_generate', 'wpas_clear_log_generate');
 
+add_action('wp_ajax_wpas_get_inline_ent_attr','wpas_get_inline_ent_attr');
+
+function wpas_get_inline_ent_attr()
+{
+        wpas_is_allowed();
+	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+	$ent_id = isset($_GET['ent_id']) ? $_GET['ent_id'] : '';
+	$values = isset($_GET['values']) ? stripslashes_deep($_GET['values']) : Array();
+	if(empty($app_id) || $ent_id == '')
+	{
+		die(-1);
+	}
+	if(!is_array($values))
+        {
+                $values= Array("$values");
+        }
+	$app = wpas_get_app($app_id);
+	if(!empty($app['entity'][$ent_id]['field'])){
+		foreach($app['entity'][$ent_id]['field'] as $keyfield => $myfield){
+			if(in_array($myfield['fld_name'],Array('blt_content','blt_excerpt')) || $myfield['fld_type'] == 'wysiwyg'){
+				echo '<option value="' . $keyfield . '"';
+				if(in_array($keyfield,$values)){
+					echo ' selected';
+				}
+				echo '>' . $myfield['fld_label'] . '</option>';
+			}
+		}
+		if(isset($app['entity'][$ent_id]['ent-supports_comments']) && $app['entity'][$ent_id]['ent-supports_comments'] == 1)
+		{
+			if(!empty($app['entity'][$ent_id]['ent-com_single_label'])){
+				echo '<option value="cust_comment"';
+				if(in_array('cust_comment',$values)){
+					echo ' selected';
+				}
+				echo '>' . $app['entity'][$ent_id]['ent-com_single_label'] . "</option>";
+			}
+			else {
+				echo '<option value="wp_comment"';
+				if(in_array('wp_comment',$values)){
+					echo ' selected';
+				}
+				echo '>' . __('Builtin Comment','wpas') . '</option>';
+			}
+		}
+	}
+	die();
+}
+
 function wpas_clear_log_generate()
 {
         wpas_is_allowed();
@@ -68,13 +116,25 @@ function wpas_get_layout_tags(){
 	$comp_id_arr = Array();
 	$builtins = Array(
                 'title' => __('Title','wpas'),
+		'entity_id' => __('Entity ID','wpas'),
                 'permalink' => __('Permalink','wpas'),
                 'edit_link' => __('Edit Link','wpas'),
                 'delete_link' => __('Delete Link','wpas'),
                 'excerpt' => __('Excerpt','wpas'),
                 'content' => __('Content','wpas'),
                 'author' => __('Author','wpas'),
+                'mod_author' => __('Modified Author','wpas'),
+		'featured_img_large' => __('Featured Image Large','wpas'),
+		'featured_img_medium' => __('Featured Image Medium','wpas'),
+		'featured_img_thumb' => __('Featured Image Thumbnail','wpas'),
+		'modified_date' => __('Modified Date','wpas'),
+		'modified_time' => __('Modified Time','wpas'),
+		'created_date' => __('Created Date','wpas'),
+		'created_time' => __('Created Time','wpas'),
         );
+	if($type != 'tag-nocount'){
+		$builtins['layout_counter_id'] = __('Layout Counter Id','wpas');
+	}
 	$builtins_user = Array(
                 'user_nicename' => __('User Nicename','wpas'),
                 'user_email' => __('User Email','wpas'),
@@ -83,7 +143,7 @@ function wpas_get_layout_tags(){
                 'user_display_name' => __('User Display Name','wpas'),
                 'user_login' => __('User Login','wpas')
         );
-	if(in_array($type,Array('tag','tag-rel','tag-form','rel','notify-rel')) && isset($comp_id)){
+	if(in_array($type,Array('tag','tag-rel','tag-nocount','tag-form','rel','notify-rel')) && isset($comp_id)){
 		if($type == 'tag-form' && !empty($app['form']))
 		{
 			$comp_id_arr[] = $app['form'][$comp_id]['form-attached_entity'];
@@ -161,7 +221,7 @@ function wpas_get_layout_tags(){
 					}
 				}
 			}
-			if($type == 'tag-rel' && !empty($app['relationship']))
+			if(($type == 'tag-rel' || $type == 'tag-nocount') && !empty($app['relationship']))
 			{
 				foreach($app['relationship'] as $myrelation)
 				{
@@ -227,8 +287,10 @@ function wpas_get_layout_tags(){
 			}
 		}
 		$ret = "<table class='table table-striped'><tr><th colspan=2>";
-		$ret .= __('Use template tags below to customize your layout. Taxonomy tags produce link(s) to the related record(s). For no link tag, add _nl to taxonomy tag. For example, for !#mytag_nl# tag produces a no link version of the tag.','wpas');
+		$ret .= __('Use template tags below to customize your layout. Taxonomy tags produce link(s) to the related record(s). For no link tag, add _nl to taxonomy tag. For example, for !#mytag_nl# tag produces a no link version of the tag. Functions can be used in header and footer sections as well.','wpas');
 		$ret .= '</th></tr>
+			<tr><th>' . __('Functions', 'wpas') . '</th>
+			<td>Translate : <b>!#trans[' . __('Text to translate','wpas') . ']#</b>, </td></tr>
                         <tr><th>' . __('Builtin', 'wpas') . '</th>
                         <td>';
 		foreach($builtins as $key => $value){
@@ -281,6 +343,13 @@ function wpas_allowed_html($allowed,$content){
 		$allowed['button']['data-target'] = true;
 		$allowed['button']['data-dismiss'] = true;
 		$allowed['img']['data-src'] = true;
+		$allowed['iframe']['src'] = true;
+		$allowed['iframe']['frameborder'] = true;
+		$allowed['iframe']['allowfullscreen'] = true;
+		$allowed['div']['data-slide-to'] = true;
+		$allowed['a']['data-slide'] = true;
+		$allowed['div']['data-target'] = true;
+		$allowed['div']['data-interval']=true;
 	}
 	return $allowed;
 }
@@ -774,19 +843,21 @@ function wpas_form_layout_save()
 				}
 			}
 		}
-		foreach($app['taxonomy'] as $keytax => $tax)
-		{
-			if(in_array($entkey,$tax['txn-attach']))
+		if(!empty($app['taxonomy'])){
+			foreach($app['taxonomy'] as $keytax => $tax)
 			{
-				if(!in_array($keytax,$req_taxs))
+				if(in_array($entkey,$tax['txn-attach']))
 				{
-					if($app['form'][$form_id]['form-form_type'] == 'submit' && isset($tax['txn-required']) && $tax['txn-required'] == 1)
+					if(!in_array($keytax,$req_taxs))
 					{
-						$req_taxs[] = $keytax;
-					}
-					elseif($app['form'][$form_id]['form-form_type'] == 'search' && isset($tax['txn-srequired']) && $tax['txn-srequired'] == 1 )
-					{
-						$req_taxs[] = $keytax;
+						if($app['form'][$form_id]['form-form_type'] == 'submit' && isset($tax['txn-required']) && $tax['txn-required'] == 1)
+						{
+							$req_taxs[] = $keytax;
+						}
+						elseif($app['form'][$form_id]['form-form_type'] == 'search' && isset($tax['txn-srequired']) && $tax['txn-srequired'] == 1 )
+						{
+							$req_taxs[] = $keytax;
+						}
 					}
 				}
 			}
@@ -1216,7 +1287,7 @@ function wpas_get_form_layout()
 	die();
 }
 
-function wpas_check_entity_has_email($entities,$ent_id,$myrel='')
+function wpas_check_entity_has_email($entities,$ent_id,$myrel='',$rel_id='')
 {
 	$ent_fld_list = Array();
 	if(!empty($entities[$ent_id]['field']))
@@ -1226,11 +1297,13 @@ function wpas_check_entity_has_email($entities,$ent_id,$myrel='')
 			if($myentfld['fld_type'] == 'email')
 			{
 				$ent_fld['id'] = $ent_id;
+				$ent_fld['ent'] = $entities[$ent_id]['ent-label'];
 				$ent_fld['fld_id'] = $keyfld;
 				$ent_fld['fld'] = $myentfld['fld_label'];
 				if(!empty($myrel))
 				{
 					$ent_fld['rel'] = $myrel;
+					$ent_fld['rel_id'] = $rel_id;
 				}
 				$ent_fld_list[] = $ent_fld;
 			}
@@ -1248,18 +1321,18 @@ function wpas_get_email_rel_list($app,$attach_list)
 		{
 			if($app['relationship'][$krel]['rel-from-name'] == $attach_to)
 			{
-				$ent_email_fld =  wpas_check_entity_has_email($app['entity'],$app['relationship'][$krel]['rel-to-name'],$myrel);
+				$ent_email_fld =  wpas_check_entity_has_email($app['entity'],$app['relationship'][$krel]['rel-to-name'],$myrel,$krel);
 				if(!empty($ent_email_fld))
 				{
-					$check_ents[$krel] = $ent_email_fld;
+					$check_ents[] = $ent_email_fld;
 				}
 			}
 			elseif($app['relationship'][$krel]['rel-to-name'] == $attach_to)
 			{
-				$ent_email_fld =  wpas_check_entity_has_email($app['entity'],$app['relationship'][$krel]['rel-from-name'],$myrel);
+				$ent_email_fld =  wpas_check_entity_has_email($app['entity'],$app['relationship'][$krel]['rel-from-name'],$myrel,$krel);
 				if(!empty($ent_email_fld))
 				{
-					$check_ents[$krel] = $ent_email_fld;
+					$check_ents[] = $ent_email_fld;
 				}
 			}
 		}
@@ -1295,8 +1368,9 @@ function wpas_get_email_attrs()
 			}
 			$return .= ">" . __('All Commenters except current comment author','wpas') . "</option>";
 		}
-		elseif($level != 'rel')
+		if($level != 'rel')
 		{
+			//elseif($level != 'rel')
 			$ent_email = wpas_check_entity_has_email($app['entity'],$attach_to);
 			if(!empty($ent_email))
 			{
@@ -1323,17 +1397,21 @@ function wpas_get_email_attrs()
 		}
 		if(!empty($check_ents))
 		{
-			foreach($check_ents as $krel => $ent)
+			foreach($check_ents as $key => $ent)
 			{
 				foreach($ent as $efld)
 				{
-					$fval = $efld['id'] . "__" . $efld['fld_id'] . "__" . $krel;
+					$fval = $efld['id'] . "__" . $efld['fld_id'] . "__" . $efld['rel_id'];
 					$return .= "<option value='" . $fval . "'"; 
 					if(in_array($fval,$values))
 					{
 						$return .= " selected";
 					}
-					$return .= ">" . $efld['fld'] . " --- " . $efld['rel'] . "</option>"; 	
+					$return .= ">" . $efld['fld'] . "(" . $efld['ent'] . ")";
+					//if($level != 'rel'){
+					 	$return .= " --- " . $efld['rel'];
+					//}
+ 					$return .= "</option>"; 
 				}
 			}
 		}
@@ -1827,11 +1905,11 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 		$values= Array("$values");
 	}
 	$app = wpas_get_app($app_id);
-	if($add_select == 1 && ($type != 'taxonomy' || !empty($chart_ent)))
+	if($add_select == 1 && (!in_array($type,Array('taxonomy','inline_tax')) || !empty($chart_ent)))
 	{
 		$return = "<option value=''>" . __("Please select","wpas") . "</option>";
 	}
-	if($app !== false && !empty($app['entity']) && $type != 'tax')
+	if($app !== false && !empty($app['entity']) && !in_array($type,Array('tax')))
 	{
 		if($type == 'relationship_from' || $type == 'relationship_to')
 		{
@@ -1853,9 +1931,15 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 					$show_ent =1;
 				}
 			}
+			else if($type == 'inline_tax')
+			{
+				if(!empty($myent['ent-inline-ent'])){
+					$show_ent = 1;
+				}
+			}
 			else
 			{
-				if(!empty($myent['field']))
+				if(!empty($myent['field']) && empty($myent['ent-inline-ent']))
 				{
 					$show_ent = 1;
 				}
@@ -1876,6 +1960,7 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 			}		
 			if($show_ent == 1)
 			{
+				var_dump($values);
 				$return .= "<option value='" . $keyent . "'"; 
 				if($selected == 0 && is_array($values) && in_array($keyent,$values))
 				{
@@ -1885,7 +1970,7 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 			}
 		}
 	}
-	elseif($app !== false && !empty($app['taxonomy']) && ($type == 'tax' || $type == 'chart'))
+	elseif($app !== false && !empty($app['taxonomy']) && in_array($type,Array('tax','chart')))
 	{
 		foreach($app['taxonomy'] as $keytxn => $mytxn)
 		{
@@ -1899,6 +1984,9 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 				//		$show_tax = 0;
 					//}
 				}
+			}
+			if(!empty($mytxn['txn-inline'])){
+				$show_tax = 0;
 			}
 			if(!empty($chart_ent))
 			{
@@ -2263,7 +2351,7 @@ function wpas_save_field()
 		$field_form = explode("=",$myget);
 		$pos = strpos($field_form[0],$search_str);
 		$field_form_value = urldecode(str_replace($field_form[0].'=','',$myget));
-		if($field_form[0] == 'help_fld_content')
+		if(in_array($field_form[0], Array('help_fld_content','fld_desc')))
 		{
 			//tinymce field
 			$field_form_value_sanitized = wpautop($field_form_value);
@@ -2354,7 +2442,7 @@ function wpas_save_field()
 			$app = wpas_update_all_layout('attr',$old_field['fld_name'],$field['fld_name'],$app,$app_id);
 		}
 		echo wpas_view_entity($app[$type][$comp_id],$comp_id);
-		echo wpas_view_ent_fields($app[$type][$comp_id]['ent-name']);       
+		echo wpas_view_ent_fields($app[$type][$comp_id]['ent-name'],$app[$type][$comp_id]);       
 		echo '<div id="ent-fld-list-div">';
 		echo wpas_view_ent_fields_list($app[$type][$comp_id]['field']);     
 		echo '</div>';
@@ -2408,7 +2496,7 @@ function wpas_list_fields()
 	if($type == 'entity' && !empty($app['entity'][$comp_id]))
 	{
 		echo wpas_view_entity($app['entity'][$comp_id],$comp_id);
-		echo wpas_view_ent_fields($app['entity'][$comp_id]['ent-name']);    
+		echo wpas_view_ent_fields($app['entity'][$comp_id]['ent-name'],$app[$type][$comp_id]);    
 		echo '<div id="ent-fld-list-div">';
 		if(isset($app[$type][$comp_id]['field']))
 		{
@@ -2819,7 +2907,7 @@ function wpas_save_form()
 	foreach($post_array as $pkey => $comp_form_value)
 	{
 		$pos = strpos($pkey,$search_str);
-		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
+		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','widg-html','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
 		{
 			$comp_form_value_sanitized = wp_kses_post(stripslashes($comp_form_value));
 		}
@@ -2873,17 +2961,24 @@ function wpas_save_form()
 			$admin_new_entity_arr = wpas_admin_entity('ent_' .$comp_id, $comp);
 			$app['role'][0] = array_merge($admin_new_entity_arr,$app['role'][0]);
 		}
-		if(isset($comp['ent-supports_title']) && $comp['ent-supports_title'] == 1)
+		if(isset($comp['ent-inline-ent']) && $comp['ent-inline-ent'] == 1)
 		{
-			$comp['field'][] = Array('fld_name' => 'blt_title','fld_label'=>'Title','fld_type'=>'text','fld_builtin' => 1,'fld_required' => 1);
-		}
-		if(isset($comp['ent-supports_editor']) && $comp['ent-supports_editor'] == 1)
-		{
+			$comp['field'][] = Array('fld_name' => 'blt_title','fld_label'=>'Title','fld_type'=>'text','fld_builtin' => 1,'fld_required' => 1, 'fld_uniq_id' => 1);
 			$comp['field'][] = Array('fld_name' => 'blt_content','fld_label'=>'Content','fld_type'=>'wysiwyg','fld_builtin' => 1);
 		}
-		if(isset($comp['ent-supports_excerpt']) && $comp['ent-supports_excerpt'] == 1)
-		{
-			$comp['field'][] = Array('fld_name' => 'blt_excerpt','fld_label'=>'Excerpt','fld_type'=>'textarea','fld_builtin' => 1);
+		else {	
+			if(isset($comp['ent-supports_title']) && $comp['ent-supports_title'] == 1)
+			{
+				$comp['field'][] = Array('fld_name' => 'blt_title','fld_label'=>'Title','fld_type'=>'text','fld_builtin' => 1,'fld_required' => 1);
+			}
+			if(isset($comp['ent-supports_editor']) && $comp['ent-supports_editor'] == 1)
+			{
+				$comp['field'][] = Array('fld_name' => 'blt_content','fld_label'=>'Content','fld_type'=>'wysiwyg','fld_builtin' => 1);
+			}
+			if(isset($comp['ent-supports_excerpt']) && $comp['ent-supports_excerpt'] == 1)
+			{
+				$comp['field'][] = Array('fld_name' => 'blt_excerpt','fld_label'=>'Excerpt','fld_type'=>'textarea','fld_builtin' => 1);
+			}
 		}
 	}
 	if($comp_type == 'taxonomy')
@@ -2929,7 +3024,7 @@ function wpas_update_form()
 		}
 		$pos = strpos($pkey,$search_str);
 
-		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
+		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','widg-html','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
 		{
 			$comp_form_value_sanitized = wp_kses_post(stripslashes($comp_form_value));
 		}
@@ -2993,7 +3088,7 @@ function wpas_update_form()
                 {
 			$set_builtin['blt_title'] = Array('fld_name' => 'blt_title','fld_label'=>'Title','fld_type'=>'text', 'fld_builtin'=>1, 'fld_required' => 1);
                 }
-		else
+		elseif(empty($comp['ent-inline-ent']))
 		{
 			$unset_builtin[] = 'blt_title';
 		}
@@ -3001,7 +3096,7 @@ function wpas_update_form()
 		{
 			$set_builtin['blt_content'] = Array('fld_name' => 'blt_content','fld_label'=>'Content','fld_type'=>'wysiwyg','fld_builtin' => 1);
 		}
-		else
+		elseif(empty($comp['ent-inline-ent']))
 		{
 			$unset_builtin[] = 'blt_content';
 		}
@@ -3009,7 +3104,7 @@ function wpas_update_form()
 		{
 			$set_builtin['blt_excerpt'] = Array('fld_name' => 'blt_excerpt','fld_label'=>'Excerpt','fld_type'=>'textarea','fld_builtin' => 1);
 		}
-		else
+		elseif(empty($comp['ent-inline-ent']))
 		{
 			$unset_builtin[] = 'blt_excerpt';
 		}

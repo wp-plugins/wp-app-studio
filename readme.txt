@@ -3,160 +3,86 @@ Contributors: emarket-design
 Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 3.8
-Tested up to: 4.1
-Stable tag: 4.2.0
+Tested up to: 4.1.1
+Stable tag: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
-WP App Studio is the World's #1 Visual WordPress Design and Development Platform for building commercial grade apps in the form of plugins. 
+WP App Studio is the #1 Visual Development Tool for building custom post types, fields, taxonomies, views, widgets, forms, notifications, charts ...
 
 ==  Description  == 
 
-WP App Studio(WPAS) is a cost-effective REST API based Visual WordPress Design Development Platform offered as a service(PaaS). Use WP App Studio plugin to interact with the platform; all interactions are done through HTTPS using XML text. No coding required.
+WP App Studio allows you to build fully featured sites without writing a single line of code in the form of WordPress plugins.
 
-WP App Studio AUTOBAHN aims to make WordPress Plugin Development as easy as filling out a couple of forms.
+WP App Studio uses following terminology to describe design concepts:
 
-= What can you do with WPAS 4 AUTOBAHN? =
-* Create a plugin specifically meeting your or your client's needs.
-* Manage your website(s) with WPAS; adding submit forms, search forms, pick from different types of views to display content, create role based content, notifications etc.
-* Install and activate only one plugin in your site; your own. Supplement it with other WP plugins if needed.
-* Bring your own theme. All app displayed content is responsive.
-* Auto Internationalization(I18n) for all apps. Just translate two pot files.
-* Start up a plugin business and sell your WPAS generated plugins (Whitelabel license holders)
-* Finish up projects taking months or weeks to complete in matter of hours in some cases in minutes.
-* Save yourself from tons of headaches and countless hours of trying to find the right answer to get something done.
-* Become an independent producer. If you have an idea, you can go ahead and implement it instead of checking availability of some other resource.
-* Create very advanced plugins like Software Issue Manager ENT without writing a single line of PHP code.
-* Move yourself or your organization to 100% model-based, top-down development eliminating transition costs
-* Save a lot of money in terms of project development costs, time to market costs, resource availability costs etc.
-* Become technology or trends independent. Your apps never become obsolete if that new thing comes up. Just click the Generate button and get your app refreshed.
-* Work on multiple projects at the same time spending more time on your requirements or something unique.
-* Respond to requirement changes like a ninja. Click, click you're done!
+Entity = Custom Post Type
+Attribute = Custom Field
+Taxonomy = Custom Taxonomy
+App = Plugin
 
-> <strong> Get started developing your own plugin without writing a single line of PHP </strong><br>
-> 1. [Purchase ProDev account](https://wpas.emdplugins.com/downloads/pro-dev-app) or [sign up for FreeDev account](https://wpas.emdplugins.com/wpas-freedev-signup/)<br>
-> 2. Download and Install WP App Studio plugin.<br>
->
-> -- FreeDev<br>
-> 3. Design your app and use your activation email to send your app signature for generation.<br>
-> 4. After your is app generated, the download links for app's FreeDev and ProDev versions will be available in the plugin generate page.<br>
-> 5. Download FreeDev version or Purchase and download ProDev version.<br>
-> 6. Enjoy your own plugin.<br>
-> 
-> -- ProDev<br>
-> 3. Design your app and use the email you used to purchase license to send your app signature for generation.<br>
-> 4. After your app is generated, download and activate your plugin.<br>
-> 5. Put your license key in the Licenses tab of your app setting page and activate your license. Your next updates will be through WP Plugins page.<br>
-> 6. Enjoy your own plugin.<br>
->
-= Documentation and Support =
+= Quick Start: =
+1. Download this plugin.
+2. Design your plugin: (Pick and choose from below based on your needs)
+	* Create custom post types (entities) with full WordPress API support and more
+	* Create custom fields (entity attributes) using 35 different types with advanced validations
+	* Advanced filtering capability for created custom post types (entities)
+	* Create custom comments attached to your post types(entities): Separates comments to your post types in a different menu so they are not mixed with other WP comments.
+	* Create single or multiple select custom taxonomies with full WordPress API support and more
+	* Preload taxonomy and custom field default values upon plugin activation
+	* Visually bulk import/export custom post type fields and taxonomy content after plugin generation
+	* Create one-to-many and many-to-many relationships between your custom post types (entities)
+	* Create sidebar and admin dashboard widgets
+	* Create help screens for your custom post type (entity) and custom taxonomy screens
+	* Create Twitter Bootstrap or jQuery UI based responsive forms with advanced components
+	* Create responsive custom content views for your custom post types: Single, Archive, Taxonomy, Search Results, etc
+	* Create advanced charts using Google Visualization API
+	* Create Datagrids using jQuery DataTables supporting many features
+	* Combine multiple views and charts to create an integration view such as frontend pages or dashboards
+	* Create custom email notifications based on any event supported by WordPress API
+	* Limit content access based on custom user roles and capabilities
+	* Create a custom dashboard page including many types views and admin widgets
+	* Automate creating pages for your shortcodes
+	* Add custom admin notices to communicate with your users such as documentation page links and campaign offers
+	* Use summary function such as average, count, sum, etc. of your custom post type field and taxonomy values
+	* Use Visual Shortcode Builder on Page content editor toolbar to display sections of your content on the frontend
+	* Modify WordPress Admin area such as footer, login screen, navigation menus, system mail and many more
+	* Use ever-expanding WPAS extensions to connect external platforms and libraries
+	* All WPAS generated plugins are fully translatable
+	* Create advanced plugins like [Software Issue Manager - Enterprise Edition](https://emdplugins.com/plugins/software-issue-manager-enterprise/)
+	* and more
+3. [Purchase ProDev Full Functionality](https://wpas.emdplugins.com/downloads/pro-dev-app) or [sign up for FreeDev Limited Functionality](https://wpas.emdplugins.com/wpas-freedev-signup/)
+4. Use your activation email to send your app signature for generation.
+5. After your app is generated, download and activate your plugin.
+6. Enjoy your own plugin and update as long as you need for one year.
+7. [1 year free support](https://support.emarketdesign.com) for bug reports, feature requests or platform tips.
+
+[Detailed Comparison of Features: FreeDev vs. ProDev](https://wpas.emdplugins.com/#wpas-tiers)
+ 
+**Watch AUTOBAHN Intoduction Video**
+[youtube https://www.youtube.com/watch?v=9K4uBRkFJEU]
+
+><br><br><strong>[WPAS Plugins](https://emdplugins.com/plugins)</strong><br>
+>Checkout the WP App Studio designed and developed plugins in our store
+><br><br><strong>[WPAS Designs](https://emdplugins.com/designs)</strong><br>
+>Use WP App Studio plugin designs as a template<br>
+>	*To customize the functionality of their corresponding plugins<br>
+>	*To create your own plugin<br>
+
+= Documentation =
  [Extensive documentation](https://wpas.emdplugins.com/articles "WP App Studio 4 AUTOBAHN Documentation") with step by step instructions is available on WPAS site.<br>
 
 = Extensions =
-The following extensions are included(free of charge) in your ProDev apps when you create a connection and choose the desired extension in your app signature.
-* [Incoming Email](https://emdplugins.com/plugins/incoming-email-extension/) extension to pull email content including attachments to your entities.
+Following extensions are sold separately. Create a connection in WP App Studio to use them in ProDev plugins.<br>
+* [Incoming Email](https://emdplugins.com/plugins/incoming-email-extension/) extension to pull email content including attachments to your entities.<br>
+* Inline Entity extension to allow users to insert content of another entity into your primary entity. Categorize and tag your inline entities with inline taxonomies. See screenshot.
 
-**Watch AUTOBAHN Intoduction Video**
-[youtube https://www.youtube.com/watch?v=9K4uBRkFJEU]
-><br><br><strong>WPAS created plugins</strong><br>
->We publish [community editions](https://profiles.wordpress.org/emarket-design/#content-plugins) of our plugins in WordPress repository. The premium edition plugins with extensive documentation and demos are available at [emdplugins.com](https://emdplugins.com)
->Take a look at our demos page for available [app signatures](https://wpas.emdplugins.com/wpas-demos/)<br>
-><br><strong>Support</support><br>
->You can get support( bug reports, feature requests, improvements etc.) on our community and premium plugins at our [support site](https://support.emarketdesign.com) by opening a free support ticket.
+= How does it work? =
+WP App Studio(WPAS) is a cost-effective REST API based Visual WordPress Design Development Platform offered as a service(PaaS). Use WP App Studio plugin to interact with the platform; all interactions are done through HTTPS using XML text.
 
-= FreeDev Tier - Free Plugin Development Features  =
-* Designed to enable you to get hands-on experience with WP App Studio AUTOBAHN at no charge for 12 months after you sign up.
-* Download and use your app in your WordPress installation without any license cost.
-* [1 year free support](https://support.emarketdesign.com) for bug reports, feature requests or platform tips.
-* Create unlimited Entities
-* Create unlimited Taxonomies
-* Create unlimited Entity Attributes
-* Customize your app and send it us, we will build your plugin for 1 year.
-* Every entity comes with default single view; so you can display your entity content in your frontend using your own theme. Use Entity css to customize look and feel.
-* Like any other WPAS app, your app will be fully translatable to your own language.
-* You can upgrade to ProDev anytime you want during this FreeDev period.
-* FreeDev accounts expire after one year.
-* Perfect for nonprofits, learning how WPAS work, or a quick way to get some content out there.
-* Free exclusive App Name and Text Domain reservations for 5 days after app generation.
-* Test things you can not using FreeDev account with [WPAS Playground](https://playground.emarketdesign.com)
-* [Check FreeDev Tier Details](https://wpas.emdplugins.com/#wpas-tiers)
-* [Signup](https://wpas.emdplugins.com/wpas-freedev-signup/) and start rolling
-* We would like to continue this service as long as we could; Donations are very welcome.
-* Give us 5 shiny stars on this page to make us more motivated to produce awesome things for you.
-
-= ProDev Tier - Pro Plugin Development Features =
-* Jump on WPAS 4 AUTOBAHN to get where you need to be; The World's most advanced, full featured Visual WordPress Development Platform
-* Endless possibilities.
-* 1 Year Free Support   (Higher priority)
-* 1 Year Unlimited App Customization
-* 1 Year App Platform updates
-* 1 Year App Plugin updates through WordPress plugin page
-* 1 year free WPAS DocGen service for whitelabel or multisite license holders. DocGen creates app documentation based on your app metadata and dictionary.[See Samples](https://docs.emdplugins.com/)
-* Introductory fixed pricing starting at $99.99 for 1 year platform access.
-* Faster, separate lane for support and development compared to the one allocated to FreeDev.
-* Sell the WPAS plugins you designed on our site and make profit/help solve problems; (Check WPAS site for news)[https://wpas.emdplugings.com].
-* [Compare FreeDev vs. ProDev](https://wpas.emdplugins.com/#wpas-tiers)
-* Create Unlimited Entities		
-* Create Unlimited Entity Attributes with Validation		
-* Create Unlimited Single or Multi Select Taxonomies		
-* Configure Initial Taxonomy Values for App Setup	 	
-* Create Unlimited Custom Comments	 	
-* Create backend view only Private Custom Comments	 	
-* Assign Views to App Setup Pages	 	
-* Create App Dashboard Page	 	
-* Create Unlimited Relationships with optional attributes	 	
-* Create Unlimited Sidebar Widgets	 	
-* Design using no framework, Twitter's Bootstap or jQuery Ui frameworks	 	
-* Design Admin Entity Layout pages using tabs or accordions	 	
-* Create Unlimited Dashboard Widgets	 	
-* Create Unlimited Help Screens	 	
-* Create Unlimited Submit Forms	 	
-* Create Unlimited Search Forms with operators	 	
-* Create Unlimited Single Views	Default	
-* Create Unlimited Taxonomy Views	 	
-* Create Unlimited Archive Views	 	
-* Create Unlimited Datagrid Views	 	
-* Create Unlimited Standard Views	 	
-* Create Unlimited Integration Views	 	
-* Create Unlimited Chart Views	 	
-* Enable Analytics module for Custom reports	 	
-* Import into or export out of entities using CSV files	 	
-* Create and save filters with operators in admin entity lists	 	
-* Sort, enable, disable attributes or change display layout in admin entity lists	 	
-* Integrate with other WordPress plugins or themes using WPAS tags	 	
-* Create Unlimited Notifications for Entity Events	 	
-* Create Unlimited Notifications for Attribute Events	 	
-* Create Unlimited Notifications for Taxonomy Events	 	
-* Create Unlimited Notifications for Relationship Events	 	
-* Create Unlimited Notifications for Commenting Events	 	
-* Create Role based content access for Entities	 	
-* Create Role based content access for Taxonomies	 	
-* Create Role based content access for Widgets	 	
-* Create Role based content access for Forms	 	
-* Create Role based content access for Views	 	
-* Create App Settings	 	
-* All your app names and text domains are exclusive to you (Only you can generate with those names) as long as you have a valid license.
-* Multisite and whitelabel licenses are available.
-* Create advanced plugins like [Software Issue Manager - Enterprise Edition](https://emdplugins.com/plugins/software-issue-manager-enterprise/)
 = Custom Plugin Development =
 If you need a custom app to be developed from scratch or require one of our professional/enterprise apps to be modified based on your own requirements, we offer [consulting services](https://emdplugins.com/support/).
-
-= Translations =
-We have machine-translated WP App Studio in the following languages. We need lead translators to help finish the translations.
-
-* Spanish
-* Arabic
-* Turkish
-* Russian
-* Portuguese
-* Japanese
-* Italian
-* German
-* French
-* Chinese
-
-Please [contact us](http://support.emarketdesign.com "Contact eMarket Design") if you can help.
 
 ==  Installation  == 
 
@@ -184,7 +110,7 @@ The simplest way to install is to click on 'Plugins' then 'Add' and type 'WP App
 == Frequently Asked Questions ==
 = What are the basic requirements of WP App Studio? =
 
-WP App Studio creates a custom made plugin. You must be able to install the generated plugin in your wordpress installation. Your hosting environment must meet minimum [system requirements] [4]</a>. All Api access purchases are subject to our [api access terms and condition of use][1]. 
+WP App Studio creates a custom made plugin. You must be able to install the generated plugin in your WordPress installation. Your hosting environment must meet minimum [system requirements] [4]</a>. All Api access purchases are subject to our [api access terms and condition of use][1]. 
 
 = Do I have to install any other plugin to run WP App Studio plugins? =
 
@@ -238,8 +164,11 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 14. Create datagrids and display them in your app dashboard, wp dashboard, or a page.
 15. Easily insert WPAS components as shortcodes. Use Analytics module for custom reporting.
 16. Create Connections to integrate your ProDev plugin to external apps such incoming email app. In future, we will add Facebook, Twitter, Paypal etc.
+17. Use inline entities in your WPAS ProDev apps to allow users to insert content of another entity into your primary entity. Categorize and tag your inline entities with inline taxonomies. Inline entity extension sold separately.
 
 == Upgrade Notice ==
+= 4.3.0 =
+11 new functionality with misc. defect fixes.
 = 4.2.0 =
 Added Connections menu to WPAS, separate Setting menu for ProDev plugins  and an Incoming Email extension for ProDev account holders, misc bug fixes and improvements
 = 4.1.2 =
@@ -280,7 +209,21 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
-= 4.2.0 (01/15/2014) =
+= 4.3.0 (02/27/2015) =
+* NEW Auto-increment attribute type: use it in place of sequences such as order numbers, component ids etc.
+* NEW Pagination component class for standard view with page navigation enabled: Use Bootstrap class classes for small, medium, large pagination.  
+* NEW Inline Entity Connection type include inline entity content in the primary entity: Custom button with the label of your choice in content, excerpt , all wysiwyg or comments toolbars
+* NEW Built-in tags to be used in view layouts such featured images (small,medium,large), user author first/last/display names and more
+* NEW Admin Dashboard widgets now include full html capability with WYSIWYG editor.
+* NEW Create Custom Messages in place of standard WordPress publish or save messages included as a separate tab in the entity menu.
+* NEW Ability to choose form visitor support status. Visitor are users who do not have publish capability to your entity; can be logged in or not.
+* NEW Add CSS tab in settings menu for app-wide CSS code.
+* NEW Ability to remove Visual Shortcode Builder
+* NEW Ability to add filters for Widgets: you can limit the content displayed your widgets by any taxonomy or widgets such as featured products widgets or on-sale products etc.
+* Added Design, Support, and Debug pages. Removed Playground link which will be discontinued soon.
+* Fixed Misc. defects in WP App Studio plugin and added more rules to catch API exceptions.
+
+= 4.2.0 (01/15/2015) =
 * NEW Added plugin settings menu for ProDev plugins which include separate pages for Glossary, Notifications, Licenses, and Add-ons
 * NEW Added Connection menu for creating mappings from/to external apps and platforms. It will be used to connect your ProDev plugin to external apps. You can use it for importing/exporting entity content to external apps such as incoming email or in future Facebook, Twitter, Google etc.
 * Fixed pending comment counts for ProDev plugins.

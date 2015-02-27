@@ -307,9 +307,11 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 
 	switch ($type) {
 		case 'entity':
-			$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> | </span>
-			<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Attribute","wpas") . '">' . __("Add Attribute","wpas") . '</a> | </span>
-			<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Admin Layout","wpas") . '">' . __("Edit Admin Layout","wpas") . '</a>';
+			$view = '<span id="view" class="' . $type . '"><a href="' . $url['view'] . '" title="' . __("View","wpas") . '">' . __("View","wpas") . '</a> | </span>';
+			if(empty($mylist['ent-inline-ent'])){
+				$view .= '<span id="add_field" class="' . $type . '"><a href="' . $url['add_field'] . '" title="' . __("Add Attribute","wpas") . '">' . __("Add Attribute","wpas") . '</a> | </span>';
+				$view .= '<span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Admin Layout","wpas") . '">' . __("Edit Admin Layout","wpas") . '</a>';
+			}
 			break;
 		case 'form':
 			$view = ' <span id="edit_layout" class="' . $type . '"><a href="' . $url['edit_layout'] . '" title="' . __("Edit Layout","wpas") . '">' . __("Edit Layout","wpas") . '</a>';
@@ -841,13 +843,13 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                         }
                         $count ++;
                 }
-	
 		$paging = paginate_links( array(
                                         'total' => ceil($list_values['count']/10),
                                         'current' => $page,
-                                        'base' => $base .'&%_%',
-                                        'format' => $format . '=%#%',
+                                        'base' => $base . '&' . $format . '=%#%',
+                                        'format' => '%#%',
 					'type' => 'array',
+					'add_args' => true,
                                         ) );
 		if(!empty($paging))
 		{

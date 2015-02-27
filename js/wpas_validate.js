@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
 		var unique;
 		// reserved words for entity and taxonomy
-		var arr_ent = ['post','page','attachment','revision','nav_menu_item'];
+		var arr_ent = ['post','page','attachment','revision','nav_menu_item','comments','license','notifications','incoming_email','single_taxonomy','walker_radio','query','widget','comment_data','comments_list_table','analytics','chart','datagrid','entity'];
 		var arr_txn = ['attachment','attachment_id','author','author_name','calendar','cat','category','category__and','category__in','category__not_in','category_name','comments_per_page','comments_popup','cpage','day','debug','error','exact','feed','hour','link_category','m','minute','monthnum','more','name','nav_menu','nopaging','offset','order','orderby','p','page','page_id','paged','pagename','pb','perm','post','post__in','post__not_in','post_format','post_mime_type','post_status','post_tag','post_type','posts','posts_per_archive_page','posts_per_page','preview','robots','s','search','second','sentence','showposts','static','subpost','subpost_id','tag','tag__and','tag__in','tag__not_in','tag_id','tag_slug__and','tag_slug__in','taxonomy','tb','term','type','w','withcomments','withoutcomments','year'];
 		$.validator.addMethod('noCap', function(value, element) { 
 			if(value.match(/[A-Z]+/) != null)
@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
 			return this.optional(element) || /^[a-z0-9\_]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und);
 		$.validator.addMethod('checkAlphaNumUnderSemiCurly', function(value, element) { 
-			return this.optional(element) || /^[a-z0-9 \;\.\_\{\}]+$/i.test(value);
+			return this.optional(element) || /^[a-z0-9 \;\.\,\_\-\{\}]+$/i.test(value);
 		}, validate_vars.check_alpha_num_und_semi_cur);
 		$.validator.addMethod('checkTaxChar', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9 \.\;\,\_\{\}\[\]]+$/i.test(value);
@@ -443,7 +443,7 @@ jQuery(document).ready(function($) {
 			required:true
 			},
 			'ent-desc': {
-			maxlength:300,
+			maxlength:700,
 			},
 			'ent-menu_name': {
 			maxlength:50,
@@ -593,7 +593,7 @@ jQuery(document).ready(function($) {
 			checkDefault: true,
 			},
 			'fld_desc': {
-			maxlength:300,
+			maxlength:700,
 			},
 			'fld_min_value': {
 			maxlength:15,
@@ -622,6 +622,12 @@ jQuery(document).ready(function($) {
 			'fld_max_file_uploads': {
 			maxlength:5,
 			checkInt: true,
+			},
+			'fld_autoinc_start':{
+			number:true,
+			},
+			'fld_autoinc_incr':{
+			number:true,
 			},
 			},
 			success: function(label) {
@@ -733,6 +739,9 @@ jQuery(document).ready(function($) {
 			checkRelUser:true,
 			},
 			'rel-from-name':{
+			required:true,
+			},              
+			'rel-type':{
 			required:true,
 			},              
 			'rel-to-title':{
@@ -1016,7 +1025,7 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'shc-sc_css':{
-			maxlength:1000,
+			maxlength:2000,
 			},
 			'shc-sc_post_per_page':{
 			maxlength:3,
@@ -1309,6 +1318,15 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'connection-inc_vis_status':{
+			required:true,
+			},
+			'connection-inl_entity':{
+			required:true,
+			},
+			'connection-inl_loc[]':{
+			required:true,
+			},
+			'connection-inl_blabel':{
 			required:true,
 			},
 			},

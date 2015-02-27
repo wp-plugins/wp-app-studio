@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.2
+   Version: 4.3
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "https://wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.2");
+define('WPAS_VERSION', "4.3");
 define('WPAS_DATA_VERSION', "4");
 if(get_option('wpas_version') != WPAS_VERSION)
 {
@@ -198,6 +198,7 @@ require_once("views/role_form.php");
 require_once("views/forms_form.php");
 require_once("views/notify_form.php");
 require_once("views/connection_form.php");
+require_once("views/addon_pages.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
@@ -664,17 +665,21 @@ function wpas_update_data_arr_ver3($app_key,$myapp)
 
 
 function wpas_plugin_menu() {
-	global $hook_app_list, $hook_app_new, $hook_generate;
+	global $hook_app_list, $hook_app_new, $hook_generate, $hook_store, $hook_design, $hook_support, $hook_debug;
 	$icon_url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAB1UlEQVQ4ja2VvU4bQRDHN/AMeYM0Ea8AEd6Zis6RLKWIhCCioEVJoApnhTqkgCABO1MkBR+RIkUKD5HGTVzMTE1BhwSV+XCK9Z259fmsKIy0ze1fv53vcy6xObKn6bcae1J729jvziDbhWfbnEQC0vdA2kPWPZdlU2NhyNZHtj6QtMfBPOlSrkO2PpJSCZrC8uNJP47A2DZ9kBUg/Z1AvzjnYs5yGJAdIOt1ItwahiltJLsD0psUCqRXpVeRdRuC7KZeIlvfs7WApA2kPSBZBNLuCJRstZxDloXBxSUG2yheZv2GpFsFjPW7D9IEtj8F9FBeVSebbR3IXiPpeSWM9NQHaSLZsQ+yAmz3nvTt+F5wzgHLWp1nOQzZbjHou1pY4WmQZpVnQHb0zzDnYjXrYbbh2VqPBgOSr2lLVdqLA30eYfpzIqym+aNl2RSQnUGwNwPo6SRY7ZgiKUaBdnIokv7KC+CDNAdhnnu29RFwkKycO1YeCrSDbMtA2ntYTWBZi31qlwPdwzG9GK6+1sk0kH4uhcH2Y/6w+yyNJPcOguzG2Y+wxn53phA1WF8C244n+YSsexhk1tUszzimul0Jc845IFlssCxULsoxBmQfKmH/Y1W/i78fLDHuE0qyfgAAAABJRU5ErkJggg==";
 	
 	$hook_app_list = add_menu_page('WP App Studio', 'WP App Studio', 'design_wpas', 'wpas_app_list', 'wpas_app_list',$icon_url);
 	$hook_app_new = add_submenu_page( 'wpas_app_list', __('Add New App','wpas'), __('Add New App','wpas'), 'design_wpas', 'wpas_add_new_app', 'wpas_add_new_app');
 	$hook_generate = add_submenu_page( 'wpas_app_list', __('Generate','wpas'), __('Generate','wpas'), 'design_wpas', 'wpas_generate_page', 'wpas_generate_page');
+	$hook_store = add_submenu_page( 'wpas_app_list', __('Plugins','wpas'), __('Plugins','wpas'), 'design_wpas', 'wpas_store_page', 'wpas_store_page');
+	$hook_design = add_submenu_page( 'wpas_app_list', __('Designs','wpas'), __('Designs','wpas'), 'design_wpas', 'wpas_design_page', 'wpas_design_page');
+	$hook_support = add_submenu_page( 'wpas_app_list', __('Support','wpas'), __('Support','wpas'), 'design_wpas', 'wpas_support_page', 'wpas_support_page');
+	$hook_debug = add_submenu_page( 'wpas_app_list', __('Debug','wpas'), __('Debug','wpas'), 'design_wpas', 'wpas_debug_page', 'wpas_debug_page');
 	add_action( 'admin_enqueue_scripts', 'wpas_enqueue_scripts' );
 
 }
 function wpas_enqueue_scripts($hook_suffix){
-	global $hook_app_list, $hook_app_new, $hook_generate, $local_vars,$form_vars, $layout_vars, $validate_vars;
+	global $hook_app_list, $hook_app_new, $hook_generate, $hook_store, $hook_design, $hook_support, $hook_debug, $local_vars,$form_vars, $layout_vars, $validate_vars;
 	if(in_array($hook_suffix,Array($hook_app_list,$hook_app_new)))
 	{
 		$local_vars['nonce_update_field_order'] = wp_create_nonce( 'wpas_update_field_order_nonce' );
@@ -727,6 +732,9 @@ function wpas_enqueue_scripts($hook_suffix){
 		$local_vars['nonce_clear_log_generate'] = wp_create_nonce( 'wpas_clear_log_generate_nonce' );
 		wp_enqueue_script('wpas-gen-js', plugin_dir_url( __FILE__ ) . 'js/wpas-generate.js',array(),false,'');
 		wp_localize_script('wpas-gen-js','wpas_vars',$local_vars);
+	}
+	if(in_array($hook_suffix,Array($hook_store,$hook_design,$hook_support,$hook_debug))){
+		wp_enqueue_style('wpas-addon',plugin_dir_url( __FILE__ ) . 'css/wpas-addon.css');
 	}
 		
 }
