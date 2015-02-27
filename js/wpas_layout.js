@@ -109,7 +109,13 @@ jQuery(document).ready(function() {
 		});
 	});
 	$(document).on('click','.tabgrp-ctr a.edit,.accgrp-ctr a.edit',function(){
-		currentItem = $(this).parent().parent().attr('id').replace('row','title');
+		if($(this).parent().parent().attr('id').search('row') == -1)
+                {
+                        currentItem = $(this).parent().parent().attr('id') + '-title';
+                }
+                else {
+                        currentItem = $(this).parent().parent().attr('id').replace('row','title');
+                }
 		$('#myModal input#title').val('');
 		$('#myModal').modal('show');
 	});

@@ -78,7 +78,7 @@ jQuery(document).ready(function() {
 <div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of a relationship. For example; quantity ordered is an attribute of the relationship between products and orders entities.","wpas"); ?>"><?php _e("HELP","wpas"); ?></a></div>
                 <fieldset>
 <div class="control-group row-fluid">
-      <label class="control-label span3"><?php _e("Name","wpas"); ?></label>
+      <label class="control-label req span3"><?php _e("Name","wpas"); ?></label>
      <div class="controls span9">
      <input name="rel_fld_name" id="rel_fld_name" type="text" placeholder="<?php _e("e.g quantity_ordered","wpas");?>" value="" >
 		<a href="#" style="cursor: help;" title="<?php _e("Single word, no spaces, all lower case. Underscores and dashes allowed","wpas"); ?>">
@@ -86,7 +86,7 @@ jQuery(document).ready(function() {
                                                 </div>
                                                 </div>
                                                 <div class="control-group row-fluid">
-                                                                        <label class="control-label span3"><?php _e("Label","wpas"); ?></label>
+                                                                        <label class="control-label req span3"><?php _e("Label","wpas"); ?></label>
                                                                         <div class="controls span9">
                                                                                 <input name="rel_fld_label" id="rel_fld_label" type="text" placeholder="<?php _e("e.g Quantity Ordered","wpas");?>" value="" > 
                                                                                 			<a href="#" style="cursor: help;" title="<?php _e("This is the name which will appear on the related relationship box of the admin EDIT page of the entity.","wpas"); ?>">
@@ -108,16 +108,6 @@ jQuery(document).ready(function() {
 			<i class="icon-info-sign"></i></a>                                             
                                                                         </div>
                                           </div>
-<div class="control-group row-fluid" id="rel_fld_values_div" style="display:none;">
-                                                                        <label class="control-label span3"><?php _e("Values","wpas"); ?></label>
-                                                                        <div class="controls span9">
-                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="<?php _e("e.g. blue;red;white","wpas"); ?>"></textarea>
-                                                                                <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolan at the end of the values as well.","wpas"); ?>">
-					<i class="icon-info-sign"></i></a>
-
-                                                                        </div>
-                                        </div>
-
 <div class="control-group row-fluid">
 <label class="control-label span3"><?php _e("Description","wpas"); ?></label>
                                                                         <div class="controls span9">
@@ -137,6 +127,15 @@ jQuery(document).ready(function() {
 			<i class="icon-info-sign"></i></a>
                                                         </label>
                                                         </div>
+                                        </div>
+<div class="control-group row-fluid" id="rel_fld_values_div" style="display:none;">
+                                                                        <label class="control-label span3 req"><?php _e("Values","wpas"); ?></label>
+                                                                        <div class="controls span9">
+                                                                                <textarea id="rel_fld_values" name="rel_fld_values" class="input-xlarge" rows="3" placeholder="<?php _e("e.g. blue;red;white","wpas"); ?>"></textarea>
+                                                                                <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option labels for the field. There must be only one semicolon between the values. Optionally, you can define value-label combinations using {Value}Label format. If the predined value does not exist, it is automatically created based on the label.","wpas"); ?>">
+					<i class="icon-info-sign"></i></a>
+
+                                                                        </div>
                                         </div>
                                         <div class="control-group row-fluid">
                                                                         <label class="control-label span3"><?php _e("Default Value","wpas"); ?></label>

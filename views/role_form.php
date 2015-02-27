@@ -8,7 +8,7 @@ function wpas_is_def_role($myrole)
 	}
 	return false;
 }
-function wpas_admin_entity($label)
+function wpas_admin_entity($label,$entity)
 {
 	$admin_role = Array('role-edit_' . $label => 1,
 			'role-delete_' . $label => 1,
@@ -21,6 +21,10 @@ function wpas_admin_entity($label)
 			'role-edit_private_' . $label => 1,
 			'role-edit_published_' . $label => 1,
 			'role-manage_operations_' .$label => 1);
+	if(!empty($entity['ent-com_name']) && $entity['ent-com_type'] == 'custom')
+	{
+		$admin_role['role-manage_' . $entity['ent-com_name'] . "_" . $label] = 1;
+	}
 	return $admin_role;				
 }
 function wpas_admin_taxonomy($label)
@@ -73,12 +77,13 @@ $def_caps = array(
                 'update_plugins',
                 'update_themes',
                 'upload_files',
-		'edit_dashboard'
+		'edit_dashboard',
+		'view_app_dashboard'
 		);
 
 
 $count = 1;
-$html .= '<label class="checkbox inline span12"><b>' . __("Check All","wpas") . '</b>
+$html .= '<label class="checkbox inline"><b>' . __("Check All","wpas") . '</b>
 	<input id="def-all" class="checkall" type="checkbox" value="1" name="def-all" /></label><div id="def">';
 
 foreach($def_caps as $mycap)
@@ -110,6 +115,41 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 	$html ="";
 	$entcount = 0;
 	$ent_caps = Array();
+	$user_rels= Array();
+	$app = wpas_get_app($app_id);
+	if(!empty($app['relationship']))
+	{
+		foreach($app['relationship'] as $keyrel => $myrel)
+		{
+			if($myrel['rel-from-name'] == 'user')
+			{
+				$user_rels[$myrel['rel-to-name']][$keyrel] = $myrel['rel-name'];
+			}
+			elseif($myrel['rel-to-name'] == 'user')
+			{
+				$user_rels[$myrel['rel-from-name']][$keyrel] = $myrel['rel-name'];
+			}
+			else
+			{
+				foreach($entities[$myrel['rel-from-name']]['field'] as $mfield)
+				{
+					if($mfield['fld_type'] == 'user')
+					{
+						$user_rels[$myrel['rel-to-name']][$keyrel] = $myrel['rel-name'];
+						break;
+					}
+				}
+				foreach($entities[$myrel['rel-to-name']]['field'] as $mfield)
+				{
+					if($mfield['fld_type'] == 'user')
+					{
+						$user_rels[$myrel['rel-from-name']][$keyrel] = $myrel['rel-name'];
+						break;
+					}
+				}
+			}
+		}
+	}
 	foreach($entities as $keyent => $myentity)
 	{
 		$show_cap = 0;
@@ -140,7 +180,19 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 			$ent_caps[$entcount]['edit_private'] = "edit_private_" . $label;
 			$ent_caps[$entcount]['edit_published'] = "edit_published_" . $label;
 			$ent_caps[$entcount]['manage_operations'] = "manage_operations_" . $label;
+			if(!empty($myentity['ent-com_name']) && $myentity['ent-com_type'] == 'custom')
+			{
+				$ent_caps[$entcount]['manage_' . $myentity['ent-com_name']] = "manage_" . $myentity['ent-com_name'] . "_" . $label;
+			}
 			$ent_caps[$entcount]['name'] = $myentity['ent-name'];
+			$ent_caps[$entcount]['limitby_author'] = "limitby_author_" . $label;
+			if(!empty($user_rels[$keyent]))
+			{
+				foreach($user_rels[$keyent] as $keyrel => $myuser_rel)
+				{
+					$ent_caps[$entcount]['limitby_' . $myuser_rel] = "limitby_rel_" . $keyrel;
+				}
+			}
 			$entcount++;
 		}
 	}
@@ -153,13 +205,15 @@ function wpas_tax_capabilities($app_id,$taxonomies,$myrole)
 	$taxcount = 0;
 	foreach($taxonomies as $keytax => $mytax)
 	{
-		$label = "tax_" . $keytax;
-		$tax_caps[$taxcount]['manage'] = "manage_" . $label;
-		$tax_caps[$taxcount]['edit'] = "edit_" . $label;
-		$tax_caps[$taxcount]['delete'] = "delete_" . $label;
-		$tax_caps[$taxcount]['assign'] = "assign_" . $label;
-		$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
-		$taxcount++;
+		if(empty($mytax['txn-inline'])){
+			$label = "tax_" . $keytax;
+			$tax_caps[$taxcount]['manage'] = "manage_" . $label;
+			$tax_caps[$taxcount]['edit'] = "edit_" . $label;
+			$tax_caps[$taxcount]['delete'] = "delete_" . $label;
+			$tax_caps[$taxcount]['assign'] = "assign_" . $label;
+			$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
+			$taxcount++;
+		}
 	}
 	if(empty($tax_caps))
 	{
@@ -177,23 +231,23 @@ function wpas_widg_capabilities($app_id,$widgets,$myrole)
 	$widgcount = 0;
 	foreach($widgets as $keywidg => $mywidg)
 	{
-		if($mywidg['widg-type'] == 'dashboard')
+		$label = 'widg_' . $keywidg;
+		$widg_caps[$widgcount]['view'] = "view_" . $label;
+		if($mywidg['widg-type'] == 'dashboard' && $mywidg['widg-wp_dash'] == 1)
 		{
-			$label = 'widg_' . $keywidg;
-			$widg_caps[$widgcount]['view'] = "view_" . $label;
 			$widg_caps[$widgcount]['configure'] = "configure_" . $label;
-			$widg_caps[$widgcount]['name'] = $mywidg['widg-name'];
-			$widgcount++;
 		}
+		$widg_caps[$widgcount]['name'] = $mywidg['widg-name'];
+		$widgcount++;
 	}
 
 	if(empty($widg_caps))
 	{
-		$html = __("Only dashboard widgets can have permissions set.","wpas");
+		$html = __("No widgets defined yet.","wpas");
 	}
 	else
 	{
-		$html = wpas_display_caps($widg_caps,'view','widget',3,$myrole);
+		$html = wpas_display_caps_noacc($widg_caps,'widget',$myrole);
 	}
 	return $html;
 }
@@ -213,7 +267,7 @@ function wpas_form_capabilities($app_id,$forms,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($form_caps,'view','form',2,$myrole);
+		$html = wpas_display_caps_noacc($form_caps,'form',$myrole);
 	}
 	return $html;
 }
@@ -233,8 +287,48 @@ function wpas_view_capabilities($app_id,$views,$myrole)
 	}
 	else
 	{
-		$html = wpas_display_caps($view_caps,'view','view',2,$myrole);
+		$html = wpas_display_caps_noacc($view_caps,'view',$myrole);
 	}
+	return $html;
+}
+function wpas_display_caps_noacc($type_caps,$type_key,$myrole)
+{
+	$html = "";
+	$count = 1;
+	$html .= '<label class="checkbox inline"><b>' . __("Check All","wpas") . '</b><input name="' . esc_attr($type_key) . '-all" id="' . esc_attr($type_key) . '-all" class="checkall" type="checkbox" value="1" /></label><div id="' . $type_key . '" class="well-white">';
+	foreach($type_caps as $mytype_cap)
+	{
+		foreach($mytype_cap as $key => $mycap)
+		{
+			if($key != 'name' && $count == 1)
+			{
+				$html .= '<div class="control-group">';
+			}
+			if($key != 'name')
+			{
+				$html .= '<label class="checkbox inline span4">' . $key . " " . $mytype_cap['name'];
+				$html .= '<input name="role-' . $mycap . '" id="role-' . esc_attr($mycap) . '" type="checkbox" value="1"';
+				if(isset($myrole['role-'.$mycap]) && $myrole['role-'.$mycap] != 0)
+				{
+					$html .= ' checked';
+				}	
+				$html .= '/> </label>';
+				$count ++;
+			}
+			if($key != 'name' && $count == 4)
+			{
+				$html .= "</div>";
+				$count = 1;
+			}
+				
+		}
+	}
+	if($count < 4 && $count != 1)
+	{
+		$html .= "</div>";
+	}
+		
+	$html .= "</div>";
 	return $html;
 }
 function wpas_display_caps($type_caps,$type_key,$type,$pnum,$myrole)
@@ -258,12 +352,12 @@ function wpas_display_caps($type_caps,$type_key,$type,$pnum,$myrole)
 				$html.= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" href="#collapse_' . esc_attr($mycap) . '" data-toggle="collapse" data-parent="#tab-' . $type . '">' . ucfirst($type) . ': ' . esc_html($mytype_cap['name']) . '</a></div><div id="collapse_'. esc_attr($mycap) . '" class="accordion-body ' . $nav_in . ' collapse"><div class="accordion-inner">';
 				if(in_array($type, Array('widget','taxonomy','entity')))
 				{
-					$html .= '<label class="checkbox inline span12"><b>' . __("Check All","wpas") . '</b><input name="' . esc_attr($mytype_cap['name']) . '-all" id="' . esc_attr($mytype_cap['name']) . '-all" class="checkall" type="checkbox" value="1" /></label>';
+					$html .= '<label class="checkbox inline"><b>' . __("Check All","wpas") . '</b><input name="' . esc_attr($mytype_cap['name']) . '-all" id="' . esc_attr($mytype_cap['name']) . '-all" class="checkall" type="checkbox" value="1" /></label>';
 				}
 			}
 			if($count == 1 && $pnum > 2)
 			{
-				$html .= '<div class="control-group" id="' . esc_attr($mytype_cap['name']) . '">';
+				$html .= '<div class="row-fluid" id="' . esc_attr($mytype_cap['name']) . '">';
 			}
 			if($key != 'name')
 			{
@@ -353,7 +447,7 @@ function wpas_add_role_form($app_id,$role_id)
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("A role is a collection of capabilities which enable or disable access to your application's data.","wpas");?>"><?php _e("HELP","wpas"); ?></a></div></div>
 
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Name","wpas");?></label>
+		<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="role-name" id="role-name" type="text" placeholder="<?php _e("e.g. product_owner","wpas");?>"
 		<?php 
@@ -362,12 +456,12 @@ function wpas_add_role_form($app_id,$role_id)
 			 echo ' value="' . esc_attr($myrole['role-name']) . '" ' . $disable;
 		 }
 		?>
-		></input><a href="#" title="<?php _e("Sets a unique name containing only alphanumeric characters and underscores.","wpas");?>" style="cursor: help;">
+	 /><a href="#" title="<?php _e("Sets a unique name containing only alphanumeric characters and underscores.","wpas");?>" style="cursor: help;">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Label","wpas"); ?></label>
+		<label class="control-label req span3"><?php _e("Label","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="role-label" id="role-label" type="text" placeholder="<?php _e("e.g. Product Owner","wpas"); ?>"
 		<?php 
@@ -376,7 +470,7 @@ function wpas_add_role_form($app_id,$role_id)
 			 echo ' value="' . esc_attr($myrole['role-label']) . '" ' . $disable ;
 		 }
 		?>
-		></input><a href="#" title="<?php _e("Sets a role label to represent your role.","wpas");?>" style="cursor: help;">
+		/><a href="#" title="<?php _e("Sets a role label to represent your role.","wpas");?>" style="cursor: help;">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div> 
