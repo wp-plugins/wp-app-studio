@@ -21,7 +21,7 @@ WP App Studio uses following terminology to describe design concepts:
 Entity = Custom Post Type<br>
 Attribute = Custom Field<br>
 Taxonomy = Custom Taxonomy<br>
-App = Plugin
+App = Plugin<br>
 App Signature = Design of your plugin exported to a flat file having .wpas extension
 
 = Quick Start: =
