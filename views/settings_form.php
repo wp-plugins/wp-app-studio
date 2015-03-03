@@ -456,7 +456,7 @@ jQuery(document).ready(function($) {
 		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Visual Shortcode Builder","wpas"); ?>
 			<input name="ao_remove_stdfilter" id="ao_remove_stdfilter" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove standard view filters in WPAS button list on admin edit page screen toolbar.","wpas"); ?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Visual Shortcode Builder allows to display or remove standard view filters in WPAS button list on admin edit page screen toolbar. Check to remove this capability.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -466,7 +466,7 @@ jQuery(document).ready(function($) {
 		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Filters","wpas"); ?>
 			<input type="checkbox" name="ao_remove_colfilter" id="ao_remove_colfilter" value="1">
-			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove filters and columns component.","wpas"); ?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove Filters and Columns component on admin entity list screens.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -476,7 +476,7 @@ jQuery(document).ready(function($) {
 		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Operations","wpas"); ?>
 			<input type="checkbox" name="ao_remove_operations" id="ao_remove_operations" value="1">
-			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove operations page and its button.","wpas"); ?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove Operations page and its button. Operations page is used to visually import/export and reset content of a specific entity and available for admins only.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -486,7 +486,7 @@ jQuery(document).ready(function($) {
 		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Analytics","wpas"); ?>
 			<input type="checkbox" name="ao_remove_analytics" id="ao_remove_analytics" value="1">
-			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove analytics component.","wpas"); ?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove analytics component. Analtics component is used in WPAS button list on admin edit page screen toolbar. to produce summary calculations (SUM, COUNT, MEAN etc.) based on attributes, taxonomies, and relationships.","wpas"); ?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 		</div>
@@ -546,7 +546,7 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Css","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea class="wpas-std-textarea" id="ao_css" name="ao_css"></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("The custom css code to be used when displaying the content. It is handy when you added custom classes in the layout editor and want to add css class definitions. You can leave this field blank and use a common css file for all.","wpas"); ?>">
+		<a href="#" style="cursor: help;" title="<?php _e("Adds app-wide css definitions. You can use this field to insert common CSS definitions.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

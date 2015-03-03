@@ -128,6 +128,8 @@ jQuery(document).ready(function($) {
 		<div class="controls span9">
 		<label class="checkbox"><?php _e("Inline Taxonomy","wpas"); ?>
 		<input name="txn-inline" id="txn-inline" type="checkbox" value="1"/>
+		<a href="#" style="cursor: help;" title="<?php _e("Creates the required configuration to be used in WPAS inline entity connection type. Inline taxonomies can be shared by multiple inline entities. Inline entity connection type is used to create attribute mapping for WPAS Inline Entity extension.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
 		</label>
 		</div>
 		</div>

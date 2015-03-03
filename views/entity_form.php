@@ -33,8 +33,9 @@ jQuery(document).ready(function($) {
 			$('#tabs-4-li').show();
 			$('#tabs-5-li').show();
 			$('#tabs-6-li').show();
-			$('#ent-hierarchical-div').show();
+			$('#ent-hierarchical-div').hide();
 			$('#ent-msg-cust-fields-div').show();
+			$('#ent-hierarchical-div').hide();
 		}	
 		
 	}
@@ -87,10 +88,14 @@ jQuery(document).ready(function($) {
 	$('#ent-advanced-option').click(function() {
 		if($(this).attr('checked'))
 		{
+			$('#ent-hierarchical-div').show();
+			$('#ent-inline-ent_div').show();
 			$('#tabs').show();
 		}
 		else
 		{
+			$('#ent-inline-ent_div').hide();
+			$('#ent-hierarchical-div').hide();
 			$('#tabs').hide();
 		}
 	});
@@ -214,25 +219,6 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		<div class="control-group row-fluid">
-		<label class="control-label span3"></label>
-		<div class="controls span9">
-		<label class="checkbox"><?php _e("Inline Entity","wpas"); ?>
-		<input name="ent-inline-ent" id="ent-inline-ent" type="checkbox" value="1"/>
-		</label>
-		</div>
-		</div>
-		<div class="control-group row-fluid" id='ent-hierarchical-div'>
-		<label class="control-label span3"><?php _e("Hierarchical","wpas"); ?></label>
-		<div class="controls span9">
-		<select name="ent-hierarchical" id="ent-hierarchical" class="input-mini">
-		<option selected="selected" value="0"><?php _e("False","wpas"); ?></option>
-		<option value="1"><?php _e("True","wpas");?></option></select>
-		<a href="#" style="cursor: help;" title="<?php _e("Whether the entity is hierarchical (e.g. page). Allows Parent to be specified.","wpas"); ?>">
-		<i class="icon-info-sign"></i></a> (<?php _e("default: False","wpas"); ?>)
-		</div>
-		</div>
-
-		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Description","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea class="wpas-std-textarea" id="ent-desc" name="ent-desc"></textarea>
@@ -246,6 +232,27 @@ jQuery(document).ready(function($) {
 		<label class="checkbox"><?php _e("Show Advanced Options","wpas"); ?>
 		<input name="ent-advanced-option" id="ent-advanced-option" type="checkbox" value="1"/>
 		</label>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="ent-inline-ent_div" style="display:none;">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Inline Entity","wpas"); ?>
+		<input name="ent-inline-ent" id="ent-inline-ent" type="checkbox" value="1"/>
+		<a href="#" style="cursor: help;" title="<?php _e("Creates the required configuration to be used in WPAS inline entity connection type. Inline entities can not have custom attributes and only support built-in title and content. Inline entity connection type is used to create attribute mapping for WPAS Inline Entity extension.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</label>
+		</div>
+		</div>
+		<?php wpas_modal_confirm_delete(2); ?>
+		<div class="control-group row-fluid" id='ent-hierarchical-div' style="display:none;">
+		<label class="control-label span3"><?php _e("Hierarchical","wpas"); ?></label>
+		<div class="controls span9">
+		<select name="ent-hierarchical" id="ent-hierarchical" class="input-mini">
+		<option selected="selected" value="0"><?php _e("False","wpas"); ?></option>
+		<option value="1"><?php _e("True","wpas");?></option></select>
+		<a href="#" style="cursor: help;" title="<?php _e("Whether the entity is hierarchical (e.g. page). Allows Parent to be specified.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a> (<?php _e("default: False","wpas"); ?>)
 		</div>
 		</div>
 		</div>
@@ -418,7 +425,7 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Pending Submitted","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-msg_pending" id="ent-msg_pending" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
-		<a href="#" style="cursor: help;" title="<?php _e("","wpas"); ?> ">
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when entity pending submitted.","wpas"); ?> ">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
@@ -434,7 +441,7 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Draft Updated","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="ent-msg_draft" id="ent-msg_draft" type="text" placeholder="<?php _e("e.g. Products","wpas"); ?>" value="" />
-		<a href="#" style="cursor: help;" title="<?php _e("Displayes when entity draft updated.","wpas"); ?> ">
+		<a href="#" style="cursor: help;" title="<?php _e("Displays when entity draft updated.","wpas"); ?> ">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

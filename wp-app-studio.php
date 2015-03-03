@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.3
+   Version: 4.3.1
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,13 +14,58 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "https://wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.3");
+define('WPAS_VERSION', "4.3.1");
 define('WPAS_DATA_VERSION', "4");
-if(get_option('wpas_version') != WPAS_VERSION)
+
+require_once("wpas_translate.php");
+require_once("lib/wpas_operations.php");
+require_once("lib/wpas_ajax_funcs.php");
+require_once("views/application_form.php");
+require_once("views/entity_form.php");
+require_once("views/entity_layout_form.php");
+require_once("views/entity_field_form.php");
+require_once("views/taxonomy_form.php");
+require_once("views/settings_form.php");
+require_once("views/relationship_form.php");
+require_once("views/help_form.php");
+require_once("views/relationship_field_form.php");
+require_once("views/help_tab_form.php");
+require_once("views/branding.php");
+require_once("views/generate_form.php");
+require_once("views/import_form.php");
+require_once("views/view_form.php");
+require_once("views/widget_form.php");
+require_once("views/role_form.php");
+require_once("views/forms_form.php");
+require_once("views/notify_form.php");
+require_once("views/connection_form.php");
+require_once("views/addon_pages.php");
+
+load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+
+
+$current_wpas_version = get_option('wpas_version');
+
+if($current_wpas_version != WPAS_VERSION)
 {
-	if(get_option('wpas_version') < '4.1.2') {
+	if($current_wpas_version < '4.1.2') {
                 update_option('wpas_apps_submit',Array());
         }
+	if($current_wpas_version < '4.3.1') {
+		//import demo into app list
+		$dir = opendir(plugin_dir_path( __FILE__ ) .'/demo');
+        	while ( ( $file = readdir( $dir ) ) !== false ) {
+                	if ( $file == '.' || $file == '..' )
+                        	continue;
+			$data = file_get_contents(plugin_dir_path( __FILE__ ) .'/demo/' . $file);
+			$inflated_data = @gzinflate($data);
+			if($inflated_data !== false)
+			{
+				$data = unserialize(base64_decode($inflated_data));
+				wpas_update_app($data,$data['app_id'],'new');
+			}
+		}
+	}
 	update_option('wpas_version',WPAS_VERSION);
 	wpas_add_design_cap();
 }
@@ -176,37 +221,10 @@ function wpas_deactivate ()
       //deletes of options are done in uninstall, delete of plugin
 }
 
-require_once("wpas_translate.php");
-require_once("lib/wpas_operations.php");
-require_once("lib/wpas_ajax_funcs.php");
-require_once("views/application_form.php");
-require_once("views/entity_form.php");
-require_once("views/entity_layout_form.php");
-require_once("views/entity_field_form.php");
-require_once("views/taxonomy_form.php");
-require_once("views/settings_form.php");
-require_once("views/relationship_form.php");
-require_once("views/help_form.php");
-require_once("views/relationship_field_form.php");
-require_once("views/help_tab_form.php");
-require_once("views/branding.php");
-require_once("views/generate_form.php");
-require_once("views/import_form.php");
-require_once("views/view_form.php");
-require_once("views/widget_form.php");
-require_once("views/role_form.php");
-require_once("views/forms_form.php");
-require_once("views/notify_form.php");
-require_once("views/connection_form.php");
-require_once("views/addon_pages.php");
-
-load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-
 
 add_action('admin_menu', 'wpas_plugin_menu');
 add_action( 'admin_init', 'wpas_update' );
 add_action('admin_notices', 'wpas_notices');
-
 
 if(get_option('wpas_data_version') != WPAS_DATA_VERSION)
 {
@@ -953,22 +971,38 @@ function wpas_show_page($app,$page)
 }
 function wpas_modal_confirm_delete($generate=0)
 {
-	echo "<div class=\"modal hide\" id=\"confirmdeleteModal\">
+	if($generate == 2) {
+		$modal_id = "confirmdeleteInlineModal";
+		$delete_mid = "delete-ok-inline";
+		$close_mid = "delete-close-inline";
+		$cancel_mid = "delete-cancel-inline";
+	}
+	else {
+		$modal_id = "confirmdeleteModal";
+		$delete_mid = "delete-ok";
+		$close_mid = "delete-close";
+		$cancel_mid = "delete-cancel";
+	}
+		
+	echo "<div class=\"modal hide\" id=\"" . $modal_id . "\">
                 <div class=\"modal-header\">
-                <button id=\"delete-close\" type=\"button\" class=\"close\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">x</button>
+                <button id=\"" . $close_mid . "\" type=\"button\" class=\"close\" data-dismiss=\"" . $modal_id . "\" aria-hidden=\"true\">x</button>
                 <h3><i class=\"icon-trash icon-red\"></i>" . __("Delete","wpas") . "</h3>
                 </div>
                 <div class=\"modal-body\" style=\"clear:both\">";
 	if($generate == 1){
 		 _e("Are you sure you wish to delete all your generation log history?","wpas");
 	}
+	elseif($generate == 2){
+		 _e("Inline Entities can not have attributes. Checking inline entity option will remove all your existing attributes for this entity. Are you sure?","wpas");
+	}
 	else {
 		 _e("Are you sure you wish to delete?","wpas");
 	}
 	echo "</div>
                 <div class=\"modal-footer\">
-                <button id=\"delete-cancel\" class=\"btn btn-danger\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\">" . __("Cancel","wpas") . "</button> 
-                <button id=\"delete-ok\" data-dismiss=\"confirmdeleteModal\" aria-hidden=\"true\" class=\"btn btn-primary\">" . __("OK","wpas") . "</button>
+                <button id=\"" . $cancel_mid . "\" class=\"btn btn-danger\" data-dismiss=\"" . $modal_id . "\" aria-hidden=\"true\">" . __("Cancel","wpas") . "</button> 
+                <button id=\"" . $delete_mid . "\" data-dismiss=\"" . $modal_id . "\" aria-hidden=\"true\" class=\"btn btn-primary\">" . __("OK","wpas") . "</button>
                 </div>
                 </div>";
 }

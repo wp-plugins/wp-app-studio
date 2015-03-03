@@ -84,7 +84,7 @@ $def_caps = array(
 
 $count = 1;
 $html .= '<label class="checkbox inline"><b>' . __("Check All","wpas") . '</b>
-	<input id="def-all" class="checkall" type="checkbox" value="1" name="def-all" /></label><div id="def">';
+	<input id="def-all" class="checkall" type="checkbox" value="1" name="def-all" /></label><div id="def" class="well-white">';
 
 foreach($def_caps as $mycap)
 {

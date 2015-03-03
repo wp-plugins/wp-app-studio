@@ -164,7 +164,7 @@ jQuery(document).ready(function($) {
 	<option value="inc_email"><?php _e("Incoming Email","wpas");?></option>
 	<option value="inline_entity"><?php _e("Inline Entity","wpas");?></option>
 	</select>
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the type of connection to be created. Incoming email is a connection type you can use to import email messages to your entities.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the type of connection to be created. Incoming email is a connection type you can use to import email messages to your entities. Inline Entity is for using inline entity content in your primary entities.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -285,7 +285,7 @@ jQuery(document).ready(function($) {
 	<div class="controls span9">
 	<select name="connection-inl_entity" id="connection-inl_entity" class="input-medium">
 	</select>
-	<a href="#" style="cursor: help;" title="<?php _e("Sets the primary entity for connection. The selected entity will be used to get/send data from/to external apps or services. It will be used for the dependent selection as well.","wpas");?> ">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the inline entity for connection. Inline entities can not shared by multiple entities.","wpas");?> ">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -295,7 +295,7 @@ jQuery(document).ready(function($) {
 	<select name="connection-inl_loc[]" id="connection-inl_loc" class="input-medium" multiple>
 	<option value="" selected="selected"><?php _e("Please select","wpas");?></option>
 	</select>
-	<a href="#" style="cursor: help;" title="<?php _e("Button location .","wpas");?> ">
+	<a href="#" style="cursor: help;" title="<?php _e("Set the location of the inline entity button; content, excerpt, or comment editors can be used. If you select content, quick tag editor button is added by default.","wpas");?> ">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -303,7 +303,7 @@ jQuery(document).ready(function($) {
 	<label class="control-label req span3"><?php _e("Button Label","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="connection-inl_blabel" id="connection-inl_blabel" type="text" placeholder="<?php _e("e.g. customer_survey","wpas");?>" value="" >
-	<a href="#" style="cursor: help;" title="<?php _e("Unique identifier for connection. Can not contain capital letters, dashes or spaces. Between 3 and 30 characters.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the inline entity button label.","wpas");?>">
 	<i class="icon-info-sign"></i></a>
 	</div>
 	</div>
@@ -311,7 +311,7 @@ jQuery(document).ready(function($) {
 	<label class="control-label span3"><?php _e("Button Icon","wpas");?></label>
 	<div class="controls span9">
 	<input class="input-xlarge" name="connection-inl_bicon" id="connection-inl_bicon" type="text" placeholder="<?php _e("e.g. fa-heart","wpas");?>" value="" >
-	<a href="#" style="cursor: help;" title="<?php _e("Sets a font-awesome icon in the tinymce visual toolbar.","wpas");?>">
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the inline entity button icon. Use cheat-sheet for possible icons.","wpas");?>">
 	<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 	</div>
 	</div>

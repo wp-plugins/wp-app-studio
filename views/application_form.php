@@ -33,6 +33,7 @@ function wpas_update_app($app,$app_key,$type='')
 	if(empty($type))
 	{
 		$app['modified_date']= date('Y-m-d H:i:s');
+		$app['ver']= WPAS_DATA_VERSION;
 	}
 	if($type == 'new_with_date' && !empty($app['app_name']))
 	{
@@ -448,8 +449,8 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['import'] = admin_url('admin.php?page=wpas_app_list&import=1');
                 $format = "apppage";
                 $field_name = "app_name";
-                $other_fields = Array('generate','entities','taxonomies','date','modified_date');
-                $other_labels = Array(__("Name","wpas"),__("Generate","wpas"),__("Entities","wpas"),__("Taxonomies","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $other_fields = Array('version','generate','entities','taxonomies','date','modified_date');
+                $other_labels = Array(__("Name","wpas"),__("Version","wpas"),__("Generate","wpas"),__("Entities","wpas"),__("Taxonomies","wpas"),__("Created","wpas"),__("Modified","wpas"));
                 $list_values['add_new_url'] = admin_url('admin.php?page=wpas_add_new_app');
                 $list_values['icon'] = "icon-cogs";
         }
@@ -580,6 +581,9 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                         {
 				$mylist['entities'] = "";
 				$mylist['taxonomies'] = "";
+				if(isset($mylist['option']['ao_app_version'])){
+					$mylist['version'] = $mylist['option']['ao_app_version'];
+				}
 				$mylist['generate'] = "<div id=\"generate\"><a class=\"btn btn-mini btn-success\" href=\"". admin_url('admin.php?page=wpas_generate_page&app=') . $mylist['app_id'] . "\">Generate</a></div>";
 				if(isset($mylist['entity']))
 				{
@@ -730,7 +734,7 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 			}
 			elseif($list_type == 'form')
 			{
-				if($mylist['form-temp_type'] == 'Pure')
+				if(isset($mylist['form-temp_type']) && $mylist['form-temp_type'] == 'Pure')
 				{
 					$mylist['form-temp_type'] = 'jQuery UI';
 				}

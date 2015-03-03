@@ -14,7 +14,9 @@ function wpas_is_allowed()
 function wpas_remote_request($method,$fields)
 {
 	$args = array(
-		'body' => $fields
+		'body' => $fields,
+		'sslverify'  => false,
+		'timeout'   => 15,
 	);
 
 	if($method == 'check_status')
@@ -65,8 +67,8 @@ function wpas_export()
 		$app = wpas_get_app($_GET['app']);
 		if($app !== false && !empty($app))
 		{
-			$now = date("Y-m-d-H-i-s");
-			$fileName = sanitize_file_name($app['app_name']. "-" . $now .'.wpas');
+			$version = str_replace(".","-",$app['option']['ao_app_version']);
+			$fileName = sanitize_file_name($app['app_name']. "-" . $version .'.wpas');
 			$output = gzdeflate(base64_encode(serialize($app)),9);
 			header("Expires: Mon, 21 Nov 1997 05:00:00 GMT");    // Date in the past
 			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -310,6 +312,7 @@ function wpas_check_valid_generate($myapp)
 	// 11: no textdomain defined
 	// 12: req app settings not empty
 	// 13: more than one entity has user select dropdown
+	// 14: inline entity set but no parent entity
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
@@ -395,6 +398,9 @@ function wpas_check_valid_generate($myapp)
 		case 13:
 			$alert = __("Error: You must have only one entity with User List type attribute.","wpas");
 			break;
+		case 14:
+			$alert = __("Error: You have an inline entity which is not attached to its primary entity. You must have at least one primary entity with attributes in your app.","wpas");
+			break;
 		default:
 			$alert = "";
 			break;
@@ -412,6 +418,8 @@ function wpas_check_entity_field($myapp_entity)
 	$no_unique_key = 0;
 	$generate_error = 0;
 	$user_type = 0;
+	$has_inline_ent = 0;
+	$no_main_ent = 1;
 	$error_loc_name = "";
 	
 	//check if entities have at least one field
@@ -508,6 +516,14 @@ function wpas_check_entity_field($myapp_entity)
 			$error_loc_name = $myentity['ent-label'];
 			break;
 		}
+		if(isset($myentity['ent-inline-ent']) && $myentity['ent-inline-ent'] == 1)
+		{
+			$has_inline_ent = 1;
+		}
+		elseif(!in_array($myentity['ent-name'],Array('page','post'))) {
+			$no_main_ent = 0;
+		}
+			
 	}
 	if($check_field == 0 && $no_post == 0 && $no_page == 0 && $has_entity == 0)
 	{
@@ -532,6 +548,10 @@ function wpas_check_entity_field($myapp_entity)
 	elseif($user_type > 1)
 	{
 		$generate_error = 13;
+	}
+	elseif($has_inline_ent == 1 && $no_main_ent == 1)
+	{
+		$generate_error = 14;
 	}
 	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
 }

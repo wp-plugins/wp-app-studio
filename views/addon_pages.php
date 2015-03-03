@@ -105,7 +105,12 @@ function wpas_debug_page(){
 		$theme      = $theme_data->Name . ' ' . $theme_data->Version;
 	}
 
-	$response = wp_remote_post(WPAS_SSL_URL);
+	$args = array(
+		'sslverify'  => false,
+		'timeout'   => 15,
+	);
+
+	$response = wp_remote_post(WPAS_SSL_URL,$args);
 	if( !is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 		$wpas_remote = 'Works';
 	} else {

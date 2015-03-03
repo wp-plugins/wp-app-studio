@@ -37,7 +37,7 @@ jQuery(document).ready(function($) {
 			return this.optional(element) || /^[a-z][a-z0-9 ]+$/i.test(value);
 		}, validate_vars.check_app_title);
 		$.validator.addMethod('checkAlphaDash', function(value, element) { 
-			return this.optional(element) || /^[a-z\-]+$/i.test(value);
+			return this.optional(element) || /^[a-z][a-z\-]+$/i.test(value);
 		}, validate_vars.check_alpha_dash);
 		$.validator.addMethod('checkAlphaNumDash', function(value, element) { 
 			return this.optional(element) || /^[a-z0-9\-]+$/i.test(value);

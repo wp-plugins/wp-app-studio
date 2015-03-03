@@ -556,7 +556,22 @@ jQuery(document).ready(function($) {
 		$('#confirmdeleteModal').modal('show');
                 return false;
 	});
-
+	$(document).on('click','#ent-inline-ent',function(){
+		if($(this).val() == 0){
+			$('#confirmdeleteInlineModal').modal('show');
+                	return false;
+		}
+	});	
+	$(document).on('click','button#delete-ok-inline',function(){
+		$('#confirmdeleteInlineModal').modal('hide');
+		$('#ent-inline-ent').attr('checked',true);
+                return false;
+	});	
+	$(document).on('click','button#delete-close-inline,button#delete-cancel-inline',function(){
+                $('#confirmdeleteInlineModal').modal('hide');
+                return false;
+        });
+		
 	$(document).on('click','button#delete-ok-field',function(){
 		$('#confirmdeleteModal').modal('hide');
 		field_id = currentDeleteItem.attr('href').replace('#','');
@@ -759,6 +774,8 @@ jQuery(document).ready(function($) {
 				$('#add-ent-field-div input#ent').val(ent_id);
 				$('#add-ent-field-div input#app').val(app_id);
 				$('#tabs').hide();
+				$('#ent-inline-ent_div').hide();
+				$('#ent-hierarchical-div').hide();
 				$('#ent-com_type_div').hide();
 				$('#ent-com_detail_div').hide();
 			}
@@ -1446,6 +1463,7 @@ jQuery(document).ready(function($) {
 				widg_subtype = "";
 				txn_inline =0;
 				inl_entity = "";
+				ent_advanced = 0;
 				$.each(response[0],function (key,value) {
 					if(value != undefined)
 					{
@@ -1834,6 +1852,13 @@ jQuery(document).ready(function($) {
 							if(key == 'ent-inline-ent')
 							{
                         					$(this).setInlineTabs('inline');
+								if(ent_advanced == 1)
+								{
+									$('#ent-hierarchical-div').hide();
+								}
+								else {
+									$('#ent-hierarchical-div').show();
+								}
                 					}
 							if(key == 'txn-inline')
 							{
@@ -1841,6 +1866,9 @@ jQuery(document).ready(function($) {
                 					}
 							if(key == 'ent-advanced-option')
 							{
+								ent_advanced =1;
+								$('#ent-inline-ent_div').show();
+								$('#ent-hierarchical-div').show();
 								$('#tabs').show();
 							}
 							else if(key == 'ent-rewrite')
@@ -2119,6 +2147,7 @@ jQuery(document).ready(function($) {
 									$('#form-font_awesome').attr('disabled',true);
 									$('#form-submit_button_fa_div').show();
 								}
+								$('#'+key).val(value);
 							}
 							else if(key == 'ent-label' || key == 'ent-name' || key == 'rel-name' || key =='form-name'){
 								$('#add-'+myclass+'-div #'+key).val(value);

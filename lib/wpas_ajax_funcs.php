@@ -2353,8 +2353,7 @@ function wpas_save_field()
 		$field_form_value = urldecode(str_replace($field_form[0].'=','',$myget));
 		if(in_array($field_form[0], Array('help_fld_content','fld_desc')))
 		{
-			//tinymce field
-			$field_form_value_sanitized = wpautop($field_form_value);
+			$field_form_value_sanitized = wp_kses_post($field_form_value);
 		}
 		else
 		{
@@ -2853,7 +2852,7 @@ function wpas_save_option_form()
 		}
 		else
 		{
-			$comp_form_value = wpautop($comp_form_value);
+			$comp_form_value = wp_kses_post($comp_form_value);
 		}
 
 		if($pos !== false && $comp_form_value != "")
@@ -3107,6 +3106,12 @@ function wpas_update_form()
 		elseif(empty($comp['ent-inline-ent']))
 		{
 			$unset_builtin[] = 'blt_excerpt';
+		}
+		if(isset($comp['ent-inline-ent']) && $comp['ent-inline-ent'] == 1)
+		{
+			unset($comp['field']);
+			$comp['field'][] = Array('fld_name' => 'blt_title','fld_label'=>'Title','fld_type'=>'text','fld_builtin' => 1,'fld_required' => 1, 'fld_uniq_id' => 1);
+			$comp['field'][] = Array('fld_name' => 'blt_content','fld_label'=>'Content','fld_type'=>'wysiwyg','fld_builtin' => 1);
 		}
 		if(!empty($comp['field']))
 		{

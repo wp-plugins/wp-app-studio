@@ -795,10 +795,10 @@ jQuery(document).ready(function($) {
                </label>
                 </div>
 		<div class="control-group row-fluid" id="shc-pgn_class_div">
-                <label class="control-label span3"><?php _e("Paging Class","wpas"); ?></label>
+                <label class="control-label span3"><?php _e("Pagination Class","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="shc-pgn_class" id="shc-pgn_class" type="text" placeholder="<?php _e("e.g. visible-lg","wpas");?>" value="" >
-                <a title="<?php _e("Add css class to page navigation.","wpas"); ?>" style="cursor: help;" href="#">
+                <a title="<?php _e("Add the specified custom css class to an <ul> element. The class definition can be put in the css field. For example, .pagination-lg for larger blocks or .pagination-sm for smaller blocks.","wpas"); ?>" style="cursor: help;" href="#">
                 <i class="icon-info-sign"></i></a>
                </label>
                 </div>

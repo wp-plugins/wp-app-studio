@@ -283,7 +283,7 @@ function wpas_add_widget_form($app_id)
 		<label class="control-label req span3"><?php _e("Layout","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea id="widg-layout" name="widg-layout" class="wpas-std-textarea"></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("The widget layout defines how the content will be displayed within the widget.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+		<a href="#" style="cursor: help;" title="<?php _e("The widget layout defines how the content will be displayed within the widget. Click Show tags button to customize the content to be returned.","wpas"); ?>"><i class="icon-info-sign"></i></a>
 		<div style="padding:10px 0;">
 		<div style="padding:10px;">
 		<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#widg-layout-tags">Show Tags</button>
@@ -411,8 +411,8 @@ function wpas_add_widget_form($app_id)
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Filter","wpas");?></label>
 		<div class="controls span9">
-		<input class="input-xlarge" name="widg-filter" id="widg-filter" type="text" placeholder="<?php _e("e.g. attr::emd_key::is::12;","wpas");?>" value="" >
-		<a href="#" style="cursor: help;" title="<?php _e("Filter for the widget.","wpas");?>">
+		<textarea class="wpas-std-textarea" name="widg-filter" id="widg-filter" placeholder="<?php _e("e.g. attr::emd_product_featured:is::true;tax::product_cat::is::electronics","wpas");?>" value="" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Set the default filter for the content to be displayed in the widget. You can use widget filters to return for example; featured products, on-sale products etc. You can combine multiple filters with semicolon which triggers AND operator. For example;-attr::emd_product_featured:is::true;tax::product_cat::is::electronics- filter shows the featured products in electronics category.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
