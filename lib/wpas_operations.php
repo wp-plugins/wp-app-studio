@@ -1,6 +1,7 @@
 <?php
 
 add_action( 'admin_init', 'wpas_export');
+add_action( 'admin_init', 'wpas_duplicate');
 
 function wpas_is_allowed()
 {
@@ -13,7 +14,9 @@ function wpas_is_allowed()
 function wpas_remote_request($method,$fields)
 {
 	$args = array(
-		'body' => $fields
+		'body' => $fields,
+		'sslverify'  => false,
+		'timeout'   => 15,
 	);
 
 	if($method == 'check_status')
@@ -39,6 +42,22 @@ function wpas_remote_request($method,$fields)
 	}
 	return false;
 }
+function wpas_duplicate()
+{
+        if(isset($_GET['duplicate']) && $_GET['duplicate'] == 1 && !empty($_GET['app']))
+        {
+		wpas_is_allowed();
+		check_admin_referer('wpas_duplicate');
+		$app = wpas_get_app($_GET['app']);
+		if($app !== false && !empty($app))
+		{
+			$app['app_name'] = $app['app_name'] . " Copy";
+			$app_key = uniqid('',true);
+			$app['app_id'] = $app_key;
+			wpas_update_app($app,$app_key,'new');
+		}
+        }
+}
 function wpas_export()
 {
         if(isset($_GET['export']) && $_GET['export'] == 1 && !empty($_GET['app']))
@@ -48,8 +67,8 @@ function wpas_export()
 		$app = wpas_get_app($_GET['app']);
 		if($app !== false && !empty($app))
 		{
-			$now = date("Y-m-d-H-i-s");
-			$fileName = sanitize_file_name($app['app_name']. "-" . $now .'.wpas');
+			$version = str_replace(".","-",$app['option']['ao_app_version']);
+			$fileName = sanitize_file_name($app['app_name']. "-" . $version .'.wpas');
 			$output = gzdeflate(base64_encode(serialize($app)),9);
 			header("Expires: Mon, 21 Nov 1997 05:00:00 GMT");    // Date in the past
 			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -84,11 +103,15 @@ function wpas_import_app($app_new)
 			if($inflated_data !== false)
 			{
                         	$data = unserialize(base64_decode($inflated_data));
-				if(!isset($data['ver']) || $data['ver'] != WPAS_DATA_VERSION)
+				if(!isset($data['ver']) || $data['ver'] < 3)
 				{
-					$data = wpas_update_data_arr($data['app_id'],$data);
+					$data = wpas_update_data_arr_ver3($data['app_id'],$data);
+					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
 				}
-
+                		elseif($data['ver'] == 3 && !empty($data['widget']))
+                		{
+					$data = wpas_update_data_arr_ver4($data['app_id'],$data);
+				}
 			}
 			else
 			{
@@ -164,46 +187,34 @@ function wpas_import_app($app_new)
 function wpas_generate_app()
 {
         $alert = "";
-	$success = 0;
-	$entity_count = 0;
+	$success = 0;	
+	$email = "";
 	$submits = Array();
-	$app_reg = Array();
 	if(get_option('wpas_passcode_email') !== false)
 	{
-        	$app_reg = unserialize(get_option('wpas_passcode_email'));
+        	$email = get_option('wpas_passcode_email');
 	}
 	if(get_option('wpas_apps_submit') !== false)
 	{
-        	$submits = unserialize(get_option('wpas_apps_submit'));
+        	$submits = get_option('wpas_apps_submit');
 	}
 	
 	if(!empty($_POST) && (empty($_POST['email']) || !is_email($_POST['email'])))
 	{
-		$alert = __("Error: Please enter valid email.","wpas");
-		$success = 0;
-	}
-	elseif(!empty($_POST) && empty($_POST['passcode']))
-	{
-		$alert = __("Error: Please enter passcode.","wpas");
+		$alert = __("Error: Oops! It looks like your email address is not valid. Please enter a new one.","wpas");
 		$success = 0;
 	}
 	elseif(!empty($_POST) && (empty($_POST['app']) || wpas_get_app(sanitize_text_field($_POST['app'])) === false))
 	{
-		$alert = __("Error: Please select an application to generate.","wpas");
+		$alert = __("Error: Please select an app to generate.","wpas");
 		$success = 0;
 	}
         elseif(!empty($_POST))
         {
 		check_admin_referer('wpas_generate_app','wpas_generate_nonce');
-		$passcode = sanitize_text_field($_POST['passcode']);
 		$email = sanitize_email($_POST['email']); 
 		$app_key = sanitize_text_field($_POST['app']);
-		if(isset($_POST['save_passcode']) && $_POST['save_passcode'] == 1)
-		{
-                        $app_reg = Array('passcode' => $passcode,
-					'email' => $email);
-                        update_option('wpas_passcode_email',serialize($app_reg));
-		}
+		update_option('wpas_passcode_email',$email);
 
 		$myapp = wpas_get_app($app_key);
 	
@@ -213,21 +224,19 @@ function wpas_generate_app()
 			$alert = wpas_check_valid_generate($myapp);
 			if(empty($alert))
 			{
-				$entity_count = wpas_get_entity_count($myapp);
 				$postfields = array(
-						'passcode' => $passcode,
 						'email' => $email,
 						'method' => 'check',
-						'entity_count' =>  $entity_count,
+						'app_name' => urlencode($myapp['app_name']),
 						'app_id' => $app_key,
+						'sku' => $myapp['option']['ao_plugin_name'],
 						);
-			
+
 				$xml_check = wpas_remote_request('check',$postfields); 
-	
 
 				if($xml_check === false)
 				{
-					$alert = __("Error: System error, please try again later.","wpas");
+					$alert = sprintf(__('Error: Your server settings are not compatible with WP APP Studio Platform. Please copy the content of your <a href="%s" target="_blank">debug</a> page and include it in your <a href="%s" target="_blank">support ticket</a>.','wpas'),admin_url('admin.php?page=wpas_debug_page'),'https://support.emarketdesign.com');	
 					$success = 0;
 				}
 				elseif(isset($xml_check->error))
@@ -248,7 +257,7 @@ function wpas_generate_app()
 		
 					if($xml_generate === false)
 					{
-						$alert = __("Error: System error, please try again later.","wpas");
+						$alert = sprintf(__('Error: Your server settings are not compatible with WP APP Studio Platform. Please copy the content of your <a href="%s" target="_blank">debug</a> page and include it in your <a href="%s" target="_blank">support ticket</a>.','wpas'),admin_url('admin.php?page=wpas_debug_page'),'https://support.emarketdesign.com');	
 						$success = 0;
 					}
 					elseif(isset($xml_generate->error))
@@ -262,17 +271,15 @@ function wpas_generate_app()
 						if(isset($xml_generate->queue_id))
 						{
 							$queue_id = sanitize_text_field($xml_generate->queue_id);
-							$new_submit['credit_used']= intval ($xml_generate->credit_used);
-							$new_submit['credit_left']= intval ($xml_generate->credit_left);
-							$new_submit['update_left']= intval ($xml_generate->update_left);
 							$new_submit['app_submitted']= $myapp['app_name'];
 							$new_submit['date_submit']= date("Y-m-d H:i:s");
 							$new_submit['queue_id']= $queue_id;
 							$new_submit['status'] = '<a id="check-status" class="btn btn-info btn-mini" href="#'. esc_attr($queue_id) . '">' . __("Refresh","wpas") . '</a>';
 							$new_submit['status_link'] = '';
+							$new_submit['buy_link'] = '';
 							$new_submit['refresh_time'] = time();
 							$submits[] = $new_submit;
-							update_option('wpas_apps_submit',serialize($submits));
+							update_option('wpas_apps_submit',$submits);
 						}
 					}
 				}
@@ -282,7 +289,7 @@ function wpas_generate_app()
 	
         echo '<div class="wpas">';
         wpas_branding_header();
-        echo wpas_generate_page($app_reg,$submits,$alert,$success);
+        echo wpas_display_generate_page($email,$submits,$alert,$success);
         wpas_branding_footer();
         echo '</div>';
 }
@@ -301,11 +308,22 @@ function wpas_check_valid_generate($myapp)
 	// 7: no unique key in entity
 	// 8: search form layout empty
 	// 9: search form not linked to any view
+	// 10: forms not attached to an entity
+	// 11: no textdomain defined
+	// 12: req app settings not empty
+	// 13: more than one entity has user select dropdown
+	// 14: inline entity set but no parent entity
 
 
 	if(!isset($myapp['option']) || empty($myapp['option']))
 	{
 		$generate_error = 1;
+	}
+	elseif(empty($myapp['option']['ao_plugin_name'])){
+		$generate_error = 11;
+	}
+	elseif(empty($myapp['option']['ao_domain']) || empty($myapp['option']['ao_app_sdesc']) || empty($myapp['option']['ao_app_desc']) || empty($myapp['option']['ao_app_version']) || empty($myapp['option']['ao_author']) || empty($myapp['option']['ao_author_url']) || empty($myapp['option']['ao_change_log'])){
+		$generate_error = 12;
 	}
 	elseif(!empty($myapp['entity']))
 	{
@@ -319,12 +337,6 @@ function wpas_check_valid_generate($myapp)
 		$resp_error = wpas_check_search_form($myapp);
 		$generate_error = $resp_error['generate_error'];
 		$error_loc_name = $resp_error['error_loc_name'];
-		if($generate_error == 0)
-		{
-			$resp_error = wpas_check_form_rel_uniq($myapp);
-			$generate_error = $resp_error['generate_error'];
-			$error_loc_name = $resp_error['error_loc_name'];
-		}
 	}
 	if($generate_error == 0 && !empty($myapp['help']))
 	{
@@ -374,82 +386,26 @@ function wpas_check_valid_generate($myapp)
 		case 9:
 			$alert = sprintf(__('Error: You must have a view attached for %s search form.','wpas'),$error_loc_name);
 			break;
+		case 10:
+			$alert = sprintf(__('Error: You must have an entity attached for %s form.','wpas'),$error_loc_name);
+			break;
+		case 11:
+			$alert = __("Error: You must fill out the textdomain field in the application's settings app info tab.","wpas");
+			break;
+		case 12:
+			$alert = __("Error: You must fill out all the required fields in the application's settings app info tab.","wpas");
+			break;
+		case 13:
+			$alert = __("Error: You must have only one entity with User List type attribute.","wpas");
+			break;
+		case 14:
+			$alert = __("Error: You have an inline entity which is not attached to its primary entity. You must have at least one primary entity with attributes in your app.","wpas");
+			break;
 		default:
 			$alert = "";
 			break;
 	}
 	return $alert;	
-}
-function wpas_check_form_rel_uniq($myapp)
-{
-	$generate_error = 0;
-	$error_loc_name = "";
-	foreach($myapp['form'] as $myform)
-	{
-		$myent_ids = Array();
-		if(!empty($myform['form-dependents']))
-		{
-			if(!empty($myform['form-layout']))
-			{
-				foreach($myform['form-layout'] as $myform_layout)
-				{
-					foreach($myform_layout as $myitem)
-					{
-						if(isset($myitem['relent']) && $myitem['obtype'] == 'relent')
-						{
-							if($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-from-name'])
-							{	
-								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-to-name'];
-							}
-							elseif($myitem['entity'] == $myapp['relationship'][$myitem['relent']]['rel-to-name'])
-							{
-								$myent_ids[] = $myapp['relationship'][$myitem['relent']]['rel-from-name'];
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				foreach($myform['form-dependents'] as $rel_dep)
-				{
-					$myrel = $myapp['relationship'][$rel_dep];
-					if($myrel['rel-required'] == 1)
-					{
-						if($myform['form-attached_entity'] == $myrel['rel-from-name'])
-						{
-							$myent_ids[] = $myrel['rel-to-name'];
-						}
-						else
-						{
-							$myent_ids[] = $myrel['rel-from-name'];
-						}
-						break;
-					}
-				}
-					
-			}
-			$unique_key = 0;
-			foreach($myent_ids as $ent_id)
-			{
-				foreach($myapp['entity'][$ent_id]['field'] as $myfields)
-				{
-					if(isset($myfields['fld_uniq_id']) && $myfields['fld_uniq_id'] == 1)
-					{
-						$unique_key = 1;
-						break;
-					}
-				}
-				if($unique_key == 0)
-				{
-					$generate_error = 7;
-					$error_loc_name = $myapp['entity'][$ent_id]['ent-label'];
-					return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
-				}
-			}
-		}
-	}
-	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
 }
 function wpas_check_entity_field($myapp_entity)
 {
@@ -459,12 +415,17 @@ function wpas_check_entity_field($myapp_entity)
 	$has_entity = 0;
 	$empty_panel = 0;
 	$attrs_left = 0;
+	$no_unique_key = 0;
 	$generate_error = 0;
+	$user_type = 0;
+	$has_inline_ent = 0;
+	$no_main_ent = 1;
 	$error_loc_name = "";
 	
 	//check if entities have at least one field
 	foreach($myapp_entity as $myentity)
 	{
+		$unique_key = 0;
 		$ent_attr_count = 0;
 		$layout_attr_count =0;
 		if($myentity['ent-name'] == 'post' && !empty($myentity['field']))
@@ -529,6 +490,14 @@ function wpas_check_entity_field($myapp_entity)
 				{
 					$ent_attr_count++;
 				}
+				if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && $myfield['fld_hidden_func'] == 'unique_id'))
+				{
+					$unique_key = 1;
+				}
+				if($myfield['fld_type'] == 'user')
+				{
+					$user_type++;
+				}
 			}
 		}
 		if(!in_array($myentity['ent-name'],Array('page','post')))
@@ -541,6 +510,20 @@ function wpas_check_entity_field($myapp_entity)
 			$error_loc_name = $myentity['ent-label'];
 			break;
 		}
+		if(!empty($myentity['field']) && $unique_key == 0)
+		{
+			$no_unique_key = 1;
+			$error_loc_name = $myentity['ent-label'];
+			break;
+		}
+		if(isset($myentity['ent-inline-ent']) && $myentity['ent-inline-ent'] == 1)
+		{
+			$has_inline_ent = 1;
+		}
+		elseif(!in_array($myentity['ent-name'],Array('page','post'))) {
+			$no_main_ent = 0;
+		}
+			
 	}
 	if($check_field == 0 && $no_post == 0 && $no_page == 0 && $has_entity == 0)
 	{
@@ -558,19 +541,19 @@ function wpas_check_entity_field($myapp_entity)
 	{
 		$generate_error = 5;
 	}
-	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
-}
-function wpas_get_entity_count($myapp)
-{
-	$entity_count = 0;
-	foreach($myapp['entity'] as $myentity)
+	elseif($no_unique_key == 1)
 	{
-		if(!empty($myentity['field']))
-		{
-			$entity_count ++;
-		}
+		$generate_error = 7;
 	}
-	return $entity_count;
+	elseif($user_type > 1)
+	{
+		$generate_error = 13;
+	}
+	elseif($has_inline_ent == 1 && $no_main_ent == 1)
+	{
+		$generate_error = 14;
+	}
+	return Array('generate_error' => $generate_error, 'error_loc_name' => $error_loc_name);
 }
 function wpas_check_layout_attr($mylayout_panel)
 {
@@ -594,6 +577,12 @@ function wpas_check_search_form($myapp)
 	$error_loc_name = "";
 	foreach($myapp['form'] as $keyform => $myform)
 	{
+		if($myform['form-attached_entity'] == '' || is_null($myform['form-attached_entity']))
+		{
+			$generate_error = 10;
+			$error_loc_name = $myform['form-name'];
+			break;
+		}
 		$form_linked = 0;
 		if($myform['form-form_type'] == 'search' && empty($myform['form-layout']))
 		{
