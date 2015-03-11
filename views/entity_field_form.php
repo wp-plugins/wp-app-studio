@@ -30,7 +30,7 @@ function wpas_view_ent_fields_list($ent_field)
 		{
 			$required = 'N';
 		}
-		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && $myfield['fld_hidden_func'] == 'unique_id'))
+		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && in_array($myfield['fld_hidden_func'],Array('unique_id','autoinc'))))
 		{
 			$uniq_id = 'Y';
 		}

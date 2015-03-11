@@ -1925,6 +1925,7 @@ jQuery(document).ready(function($) {
 							{
 								$('#add-'+myclass+'-div #'+key).val(value);
 								$('#txn-show-in-nav-menus-div').show();
+								$('#txn-show-in-menu-div').show();
 							}
 							else if(key == 'txn-rewrite')
 							{
@@ -2049,6 +2050,7 @@ jQuery(document).ready(function($) {
 							else if(key == 'txn-show_ui')
 							{
 								$('#txn-show-in-nav-menus-div').hide();
+								$('#txn-show-in-menu-div').hide();
 							}
 							else if(key == 'rel-connected-display')
 							{

@@ -72,10 +72,12 @@ jQuery(document).ready(function($) {
 	$('#txn-show_ui').click(function() {
 		if($(this).find('option:selected').val() == 1)
 		{
+                        $('#txn-show-in-menu-div').show();
                         $('#txn-show-in-nav-menus-div').show();
                 }
                 else
                 {
+                        $('#txn-show-in-menu-div').hide();
                         $('#txn-show-in-nav-menus-div').hide();
                 }
         });
@@ -358,13 +360,23 @@ jQuery(document).ready(function($) {
 							<i class="icon-info-sign"></i></a> (<?php _e("default:True","wpas"); ?>)
 						</div>
                     </div>
+                    <div class="control-group row-fluid" id="txn-show-in-menu-div">
+						<label class="control-label span3"><?php _e("Show In Menu","wpas"); ?></label>
+						<div class="controls span9">
+							<select name="txn-show_in_menu" id="txn-show_in_menu" class="input-mini">
+								<option value="1" selected="selected"><?php _e("True","wpas"); ?></option>
+								<option value="0"><?php _e("False","wpas"); ?></option>
+							</select> <a href="#" title="<?php _e("Display taxonomy in the admin menu below the entity it is registered to.","wpas"); ?>" style="cursor: help;">
+							<i class="icon-info-sign"></i></a> (<?php _e("default:True","wpas"); ?>)
+						</div>
+                    </div>
                     <div class="control-group row-fluid" id="txn-show-in-nav-menus-div">
-						<label class="control-label span3"><?php _e("Show In Menus","wpas"); ?></label>
+						<label class="control-label span3"><?php _e("Show In Navigation Menus","wpas"); ?></label>
 						<div class="controls span9">
 							<select name="txn-show_in_nav_menus" id="txn-show_in_nav_menus" class="input-mini">
 								<option value="1" selected="selected"><?php _e("True","wpas"); ?></option>
 								<option value="0"><?php _e("False","wpas"); ?></option>
-							</select> <a href="#" title="<?php _e("True makes this taxonomy available for selection in navigation menus.","wpas"); ?>" style="cursor: help;">
+							</select> <a href="#" title="<?php _e("True makes this taxonomy available for selection in navigation menus under Appearance > Menus link.","wpas"); ?>" style="cursor: help;">
 							<i class="icon-info-sign"></i></a> (<?php _e("default:True","wpas"); ?>)
 						</div>
                     </div>

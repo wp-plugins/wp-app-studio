@@ -1,10 +1,10 @@
 ===  WP App Studio  === 
 Contributors: emarket-design
-Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3
+Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3, users, user mapping
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 4.0
-Tested up to: 4.1.1
-Stable tag: 4.3.1
+Tested up to: 4.2
+Stable tag: 4.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,9 @@ WP App Studio is the #1 Visual Development Tool for building custom post types, 
 
 ==  Description  == 
 
-WP App Studio allows you to build fully featured sites without writing a single line of code in the form of WordPress plugins.
+WP App Studio allows you to build advanced sites in the form of WordPress plugins without writing a single line of PHP code.
+
+WP App Studio Plugin is the tool you use to design your plugin and send it for code generation. Create your own plugin and move on.
 
 = WPAS Terms =
 WP App Studio uses following terminology to describe design concepts:
@@ -22,7 +24,11 @@ Entity = Custom Post Type<br>
 Attribute = Custom Field<br>
 Taxonomy = Custom Taxonomy<br>
 App = Plugin<br>
-App Signature = Design of your plugin exported to a flat file having .wpas extension
+App Signature = Design of your plugin exported to a flat file having .wpas extension <br>
+ProDev = Commercial tier for plugin development with full functionality.<br>
+FreeDev = Free tier for plugin development with limited functionality.<br>
+
+For more info go to [FAQ page] (https://emdplugins.com/frequently-asked-questions-wpas-faq/)
 
 = Quick Start: =
 1. Download this plugin and checkout the preinstalled demo app.
@@ -170,8 +176,11 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 15. Easily insert WPAS components as shortcodes. Use Analytics module for custom reporting.
 16. Create Connections to integrate your ProDev plugin to external apps such incoming email app or platforms like Facebook, Twitter, Paypal etc.
 17. Use inline entities in your WPAS ProDev apps to allow users to insert content of another entity into your primary entity. Categorize and tag your inline entities with inline taxonomies. Inline entity extension sold separately.
+18. NEW with 4.3.2 - Map user field to your entity attributes and use them everywhere.
 
 == Upgrade Notice ==
+= 4.3.2 =
+User mapping, latest comment fix, taxonomy display in menus, and misc bug fixes
 = 4.3.1 =
 Added a demo app for FreeDev accounts and minor fixes.
 = 4.3.0 =
@@ -216,9 +225,16 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
-= 4.3.1 =
+= 4.3.2 (03/11/2015) =
+* NEW User field mapping to entity attributes. See the user mapping screenshot.
+* Fixed Lastest Comment feature which allows to display the name of the user who made the latest comment on an entity and filter based on the latest comment user.
+* NEW Show or hide taxonomies in the admin backend.
+* Fixed misc. bugs
+
+= 4.3.1 (03/03/2015) =
 * NEW FreeDev demo app will be included in every WPAS version which will give you an idea of what you can do with your FreeDev account. We will be including more demos in the future. For ProDev; goto emdplugins.com/designs
 * Minor fixes
+
 = 4.3.0 (02/27/2015) =
 * NEW Auto-increment attribute type: use it in place of sequences such as order numbers, component ids etc.
 * NEW Paginatio CSS class can be specified in standard views: Use Bootstrap class classes for small, medium, large pagination.  
@@ -242,16 +258,20 @@ Fixed minor bugs related to entity layout and capabilities.
 * NEW Create a new connection type of "incoming mail". ProDev plugins can use it to create entity records through incoming email. You can create connections to multiple entities.
 * Fixed ProDev form search operators displaying incorrect operator list for text attributes.
 * Added EXISTS, NOT EXISTS to the ProDev admin area filters for text and boolean attributes.
+
 = 4.1.2 (12/30/2014) =
 * Fixed data corruption issue related to generation history log. 
 * Previous generation log will be deleted upon update to make it compatible with future releases.
 * Added a clear history log button on generation page.
+
 = 4.1.1 (12/30/2014) =
 * Fixed issue with importing WPAS applications: "Attached to Entity" was not imported correctly and left blank for forms.
+
 = 4.1 (12/2/2014) =
 * Fixed misc. bugs for better compatibility with other WordPress plugins.
 * Added admin notices feature to app settings page. Admin notices can be triggered after plugin activation and can be used to display special offers, plugin links, upgrade notices etc. You can create up to 2 notices.
 * Added header and footer textareas for relationship layouts. You can enclose your relationship layout(loop) HTML code with these new header and footer wrappers. The wrappers are available for "To/From Entity connected/related relationships." 
+
 = 4.0 (10/21/2014) =
 * More than 8 months of intense development since WPAS 3
 * Rewrote core to make platform more compliant with WordPress Plugin coding standards and best practices in general.
