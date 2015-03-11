@@ -1,10 +1,12 @@
 <?php
-function wpas_view_ent_fields($ent_name)
+function wpas_view_ent_fields($ent_name,$ent)
 {
-return '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>' . __("Attributes","wpas") . '</h3></div>
-                <div class="span9 field" id="add_field_entity">
-<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>
-</div></div></div>';
+	$html = '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>' . __("Attributes","wpas") . '</h3></div>';
+	if(empty($ent['ent-inline-ent'])){
+		$html .= '<div class="span9 field" id="add_field_entity">
+<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a></div></div></div>';
+	}
+	return $html;
 }
 function wpas_view_ent_fields_list($ent_field)
 {
@@ -28,7 +30,7 @@ function wpas_view_ent_fields_list($ent_field)
 		{
 			$required = 'N';
 		}
-		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && $myfield['fld_hidden_func'] == 'unique_id'))
+		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && in_array($myfield['fld_hidden_func'],Array('unique_id','autoinc'))))
 		{
 			$uniq_id = 'Y';
 		}
@@ -80,7 +82,7 @@ jQuery(document).ready(function($) {
 	var srequired_arr = ['file','image'];
 	var not_uniq_arr = ['file','image','hidden_constant','hidden_function','checkbox','checkbox_list','radio','select','textarea','wysiwyg','password'];
 
-	$.fn.changeValidateMsg = function(myItem){
+	$.fn.changeValidateMsg = function(myItem,page_type){
 		switch(myItem) {
 		case 'email':
 			$('#validation-message').text('<?php _e("Validation Message:","wpas") . ' ' . _e("Please enter a valid email address.","wpas");?>');		
@@ -140,6 +142,11 @@ jQuery(document).ready(function($) {
 			$('#validation-message').text('');		
 			break;
 		}
+		$('#fld_is_filterable_div').show();
+		$('#fld_required_div').show();
+		$('#fld_srequired_div').show();
+		$('#fld_dflt_value_div').show();
+		$('#fld_uniq_id_div').show();
 		if(myItem == 'image')
 		{
 			$('#fld_dflt_value_div').hide();
@@ -213,10 +220,34 @@ jQuery(document).ready(function($) {
 				$('#fld_fa_unchkd_val').attr('placeholder','fa-square-o');
 			}
                 }
+		if(myItem == 'text' || myItem == 'textarea')
+		{
+			$('#fld_allow_html_div').show();
+		}
+		else
+		{
+			$('#fld_allow_html_div').hide();
+		}
 		if(myItem == 'select')
 		{
 			$('#fld_is_advanced_div').show();
 			$('#fld_multiple_div').show();
+		}
+		if(myItem == 'user')
+		{
+			if(page_type != 'edit'){
+				app_id = $('input#app').val();
+				$.get(ajaxurl,{action:'wpas_get_roles',type:'user',app_id:app_id}, function(response){
+					$('#fld_limit_user_role').html(response);
+					$('#fld_limit_user_role_div').show();
+				});
+			}
+			$('#fld_is_advanced_div').show();
+			$('#fld_multiple_div').hide();
+		}
+		else
+		{
+			$('#fld_limit_user_role_div').hide();
 		}
 		if($.inArray(myItem,filterable_arr) != -1)
 		{
@@ -280,6 +311,19 @@ jQuery(document).ready(function($) {
 	}
 
 	$(document).on('change','#fld_type',function(){
+		$(this).initAttr();
+
+		$('#fld_dflt_value').val('');
+		$('#fld_required').attr('checked',false);
+		$('#fld_srequired').attr('checked',false);
+		$('#fld_uniq_id').attr('checked',false);
+		$('#fld_required').attr('disabled',false);
+		$('#fld_srequired').attr('disabled',false);
+
+		$(this).changeValidateMsg($(this).val(),'');
+        });
+	$.fn.initAttr = function(){
+		/*
 		$('#fld_dflt_checked_div').hide();
 		$('#validation-options').hide();		
 		$('#max-file-uploads').hide();		
@@ -295,7 +339,6 @@ jQuery(document).ready(function($) {
 		$('#fld_required_div').show();
 		$('#fld_srequired_div').show();
 		$('#fld_dflt_value_div').show();
-		$('#fld_dflt_value').val('');
 		$('#fld_file_size_div').hide();
 		$('#fld_file_ext_div').hide();
 		$('#fld_multiple_div').hide();
@@ -304,16 +347,37 @@ jQuery(document).ready(function($) {
 		$('#fld_fa_chkd_div').hide();
 		$('#fld_fa_unchkd_div').hide();
 		$('#fld_uniq_id_div').show();
-		$('#fld_required').attr('checked',false);
-		$('#fld_srequired').attr('checked',false);
-		$('#fld_uniq_id').attr('checked',false);
-		$('#fld_required').attr('disabled',false);
-		$('#fld_srequired').attr('disabled',false);
-		$(this).changeValidateMsg($(this).val());
-        });
-
-	$('#fld_uniq_id').click(function () {
-		if($(this).attr('checked')){
+		$('#fld_allow_html_div').hide();
+		$('#fld_limit_user_role_div').hide(); */
+		$('#fld_dflt_checked_div').hide();
+		$('#fld_allow_html_div').hide();
+		$('#validation-message').hide();
+		$('#validation-options').hide();
+		$('#fld_values_div').hide();
+		$('#fld_hidden_func_div').hide();
+		$('#fld_searchable_div').hide();
+		$('#fld_dflt_value_div').hide();
+		$('#max-file-uploads').hide();
+		$('#date-format').hide();
+		$('#time-format').hide();
+		$('#min-max-value').hide();
+		$('#min-max-length').hide();
+		$('#min-max-words').hide();
+		$('#fld_file_size_div').hide();
+		$('#fld_required_div').hide();
+		$('#fld_srequired_div').hide();
+		$('#fld_uniq_id_div').hide();
+		$('#fld_is_filterable_div').hide();
+		$('#fld_multiple_div').hide();
+		$('#fld_is_advanced_div').hide();
+		$('#fld_file_ext_div').hide();
+		$('#fld_image_thickbox_div').hide();
+		$('#fld_limit_user_role_div').hide();
+		$('#fld_autoinc_field_div').hide();
+	}
+	$.fn.changeReqMult = function(uniq){
+		if(uniq == 1)
+		{
 			$('#fld_required').attr('checked',true);
 			$('#fld_required').attr('disabled',true);
 		}
@@ -321,8 +385,34 @@ jQuery(document).ready(function($) {
 		{
 			$('#fld_required').attr('checked',false);
 			$('#fld_required').attr('disabled',false);
-		}			
+		}
+	}			
+	$('#fld_uniq_id').click(function () {
+		if($(this).attr('checked')){
+			$(this).changeReqMult(1);
+		}
+		else
+		{
+			$(this).changeReqMult(0);
+		}
 	});
+	$.fn.showAutoInc = function(type,show){
+		
+		if(show == 'autoinc'){
+			$('#fld_autoinc_field_div').show();
+		}
+		else {
+			$('#fld_autoinc_field_div').hide();
+		}
+		if(type == 'add'){
+			$('#fld_autoinc_start').val(1);
+			$('#fld_autoinc_incr').val(1);
+		}
+	}
+	$('#fld_hidden_func').change(function (){
+		$(this).showAutoInc('add',$(this).val());
+	});
+	
 });
 </script>
 <input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
@@ -333,7 +423,7 @@ jQuery(document).ready(function($) {
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of an entity, for example, Customer Name is an attribute of the entity Customer.","wpas");?>"><?php _e("HELP","wpas");?></a></div></div>
   <fieldset>
   	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Name","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_name" id="fld_name" type="text" placeholder="<?php _e("e.g. product_name","wpas");?>" value="">
 			<a href="#" style="cursor: help;" title="<?php _e("General name for the attribute, single word, no spaces, all lower case. Underscores and dashes allowed","wpas");?>">
@@ -341,7 +431,7 @@ jQuery(document).ready(function($) {
 			</div>
 	</div>
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Label","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Label","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_label" id="fld_label" type="text" placeholder="<?php _e("e.g. Product Name","wpas");?>" value="">
 			<a href="#" style="cursor: help;" title="<?php _e("User friendly name for your attribute. It will appear on the EDIT page of the entity.","wpas");?>">
@@ -351,13 +441,13 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 			<label class="control-label span3"><?php _e("Description","wpas");?></label>
 			<div class="controls span9">
-					<textarea id="fld_desc" name="fld_desc" class="input-xlarge" rows="3" placeholder="<?php _e("Write a brief description on how the attribute will be used.","wpas");?>" ></textarea>
+					<textarea id="fld_desc" name="fld_desc" class="wpas-std-textarea" placeholder="<?php _e("Write a brief description on how the attribute will be used.","wpas");?>" ></textarea>
 					<a href="#" style="cursor: help;" title="<?php _e("Instructions or help-text related to your attribute.","wpas");?>">
 					<i class="icon-info-sign"></i></a>          		
 			</div>
     </div>
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Type","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Type","wpas");?></label>
 			<div class="controls span9">
 					<select name="fld_type" id="fld_type">
 						<option selected="selected" value=""><?php _e("Please select","wpas");?></option>
@@ -401,6 +491,7 @@ jQuery(document).ready(function($) {
 						<option value="checkbox_list" style='padding-left:2em;'><?php _e("Checkbox List","wpas");?></option>
 						<option value="radio" style='padding-left:2em;'><?php _e("Radios","wpas");?></option>
 						<option value="select" style='padding-left:2em;'><?php _e("Select","wpas");?></option>
+						<option value="user" style='padding-left:2em;'><?php _e("User List","wpas");?></option>
 					</select>
 			<a href="#" style="cursor: help;" title="<?php _e("Defines the attribute display and validation type.","wpas");?>">
 			<i class="icon-info-sign"></i></a>      
@@ -447,6 +538,16 @@ jQuery(document).ready(function($) {
 			</label>
 	</div>
 	</div>
+	<div class="control-group" id="fld_allow_html_div" name="fld_allow_html_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Allow Html","wpas");?>
+            <input name="fld_allow_html" id="fld_allow_html" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Allows html tags to be entered. When unchecked html tags are escaped.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
 	<div class="control-group" id="fld_is_advanced_div" name="fld_is_advanced_div" style="display:none;">
     	<label class="control-label span3"></label>
 	<div class="controls span9">
@@ -461,7 +562,7 @@ jQuery(document).ready(function($) {
 			<label class="control-label span3"><?php _e("Maximum File Size","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-large" name="fld_file_size" id="fld_file_size" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="<?php _e("Set maximum file size in kilobytes. exp. 100K. Leave it blank for no limit.","wpas");?> <?php _e("Validation Message:","wpas") . ' ' . _e("Please upload no greater than X kbytes.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Set maximum file size in kilobytes. Only numbers allowed. Leave it blank for no limit.","wpas");?> <?php _e("Validation Message:","wpas") . ' ' . _e("Please upload no greater than X kbytes.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -513,6 +614,7 @@ jQuery(document).ready(function($) {
 			<option value="now"><?php _e("Now (YYYY-MM-DD HH:mm:ss)","wpas");?></option>
 			<option value="current_time"><?php _e("Current Time (HH:mm:ss)","wpas");?></option>
 			<option value="unique_id"><?php _e("Unique Identifier","wpas");?></option>
+			<option value="autoinc"><?php _e("Sequence","wpas");?></option>
 			</select>
 			<a href="#" style="cursor: help;" title="<?php _e("Sets a default value for the attribute.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
@@ -530,7 +632,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="date-format" style="display:none;">
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Date Format","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Date Format","wpas");?></label>
 			<div class="controls span9">
 			<select name="fld_date_format" id="fld_date_format">
 			<option value="" selected="selected"><?php _e("Please select","wpas");?></option>
@@ -630,10 +732,10 @@ jQuery(document).ready(function($) {
 	</div><!--validation-optiond-->
 	</div>
 	<div class="control-group row-fluid" id="fld_values_div" style="display:none;">
-        <label class="control-label span3"><?php _e("Values","wpas");?></label>
+        <label class="control-label span3 req"><?php _e("Values","wpas");?></label>
         <div class="controls span9">
-        <textarea id="fld_values" name="fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue;red;white " ></textarea>
-        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolon at the end of the values as well.","wpas");?>">
+        <textarea id="fld_values" name="fld_values" class="wpas-std-textarea" placeholder="e.g. blue;red;white " ></textarea>
+        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option labels for the field. There must be only one semicolon between the values. Optionally, you can define value-label combinations using {Value}Label format. If the predined value does not exist, it is automatically created based on the label.","wpas");?>">
         <i class="icon-info-sign"></i></a>
         </div>
 </div>
@@ -641,7 +743,7 @@ jQuery(document).ready(function($) {
 			<label class="control-label span3"><?php _e("Default Value","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_dflt_value" id="fld_dflt_value" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value or values for the attribute. Multiple default values can only be set for select with multiple option and checkbox list types.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value(s) for the attribute, separated by a semicolon. Multiple default values can only be set for select with multiple option and checkbox list types. You must enter the value from Values field and not the label.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -660,7 +762,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for selected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
@@ -668,9 +770,37 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
+	<div class="control-group row-fluid" id="fld_limit_user_role_div" name="fld_limit_user_role_div" style="display:none;">
+		<label class="control-label span3"><?php _e("Limit By Role","wpas");?></label>
+		<div class="controls span9">
+		<select id="fld_limit_user_role" name="fld_limit_user_role" multiple>
+		</select>
+		<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	<div id="fld_autoinc_field_div" name="fld_autoinc_field_div" style="display:none;">
+	<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Start At Value","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-medium" name="fld_autoinc_start" id="fld_autoinc_start" type="text" placeholder="" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence start at value, set to 1 if empty.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Increment By","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-medium" name="fld_autoinc_incr" id="fld_autoinc_incr" type="text" placeholder="" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence increment by value, set to 1 if empty.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	</div>
+	
   </fieldset>
 </div>
 

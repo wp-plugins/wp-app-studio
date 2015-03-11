@@ -1,5 +1,9 @@
 <?php
-function wpas_generate_page($app_reg, $submits,$alert,$success)
+function wpas_generate_page()
+{
+	wpas_generate_app();
+}	
+function wpas_display_generate_page($email, $submits,$alert,$success)
 {
 	$apps_options = "<option value=''>" . __("Please select","wpas") . "</option>";
 	$submit_results = "";
@@ -10,7 +14,7 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		foreach($apps as $key => $myapp)
 		{
 			$apps_options .= "<option value='" . esc_attr($key) . "'";
-			if($_GET['app'] == $key)
+			if(!empty($_REQUEST['app']) && $_REQUEST['app'] == $key)
 			{
 				$apps_options .= " selected";
 			}
@@ -46,14 +50,33 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 				{
 					if(strpos($mysubmit['status'],'Error') !== false)
 					{	
-						$mysubmit['status_link'] = "<a href='" . esc_url($mysubmit['status_link']) . "' target='_blank'>" . __("Please open a support ticket","wpas") . "</a>";
+						$mysubmit['status_link'] = "<a class='btn btn-danger btn-mini' href='" . esc_url($mysubmit['status_link']) . "' target='_blank'>" . __("Open a support ticket","wpas") . "</a>";
 					}
 					elseif(strpos($mysubmit['status'],'Success') !== false || strpos($mysubmit['status'],'Change') !== false)
 					{	
-						$mysubmit['status_link'] = "<a href='" . esc_url($mysubmit['status_link']) . "'>" . __("Download","wpas") . "</a>";
+						if(preg_match("/freedev.s3/",$mysubmit['status_link'])){
+							$down_msg = __("Download FreeDev version","wpas");
+							$buy_msg = __("Purchase ProDev version","wpas");
+						}
+						elseif(preg_match('/prodev.s3/',$mysubmit['status_link'])){
+							$down_msg = __("Download ProDev version","wpas");
+							$buy_msg = __("Upgrade your license","wpas");
+						}
+						$mysubmit['status_link'] = "<a class='btn btn-success btn-mini' href='" . esc_url($mysubmit['status_link']) . "'>" . $down_msg . "</a>";
+						if(!empty($mysubmit['buy_link'])){
+							$mysubmit['buy_link'] = "<a class='btn btn-primary btn-mini' target='_blank' href='" . esc_url($mysubmit['buy_link']) . "'>" . $buy_msg . "</a>";
+						}
 					}
 				}
-				$submit_results .= "<tr class='" . $alt . "'><td>" . esc_html($mysubmit['app_submitted']) . "</td><td id='credit-used'>" . intval ($mysubmit['credit_used']) . "</td><td id='credit-left'>" . intval ($mysubmit['credit_left']) . "</td><td id='update-left'>" . intval ($mysubmit['update_left']) . "</td><td id='status'>" . $mysubmit['status'] . "</td><td id='download-link'>" . $mysubmit['status_link'] . "</p></td><td>" . esc_html($mysubmit['date_submit']) . "</td></tr>";
+				$submit_results .= "<tr class='" . $alt . "'><td>" . esc_html($mysubmit['app_submitted']) . "</td>
+				<td id='status'>" . $mysubmit['status'] . "</td>
+				<td id='download-link'>" . $mysubmit['status_link'] . "</p></td>
+				<td id='buy-link'>";
+				if(!empty($mysubmit['buy_link'])){ 
+					$submit_results .= $mysubmit['buy_link'];
+				}
+				$submit_results .= "</p></td>
+				<td>" . esc_html($mysubmit['date_submit']) . "</td></tr>";
 			}
                         $count ++;
 			
@@ -67,7 +90,7 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 	}
 	elseif($success == 1)
 	{
-		$message = "<div class='alert alert-success'>" . __("Your request has been submitted successfully.","wpas") . "</div>";
+		$message = "<div class='alert alert-success'>" . __("We have received your app and started the generation process. It could take 5-10 mins depending on the load. Please come back and check the generation status by clicking on the Refresh button below.","wpas") . "</div>";
 	}
 
 	?>
@@ -86,36 +109,33 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		<fieldset>
 		<?php wp_nonce_field('wpas_generate_app','wpas_generate_nonce'); ?>
 		<div class="well">
+		<div class="alert"><h3>
+		<?php printf(__('<a href="%s" target="_blank">Open a FreeDev account</a> to hop on WP App Studio 4 AUTOBAHN.','wpas'),'https://wpas.emdplugins.com/wpas-freedev-signup/?pk_campaign=wpas&pk_source=plugin&pk_medium=link&pk_content=open-freedev'); ?>
+		</h3>
+		<p><h3><small>
+		<?php _e('If you have one just enter your email and click generate below.','wpas'); ?>
+		</small></h3></p></div>
 		<?php echo $message; ?>
 		<div class="control-group">
 		<label class="control-label"><?php _e("Email","wpas"); ?></label>
 		<div class="controls">
-		<input id="email" name="email" class="input-large" type="text" value="<?php if(isset($app_reg['email'])) { echo $app_reg['email']; }?>">
+		<input id="email" name="email" class="input-large" type="text" value="<?php if(isset($email)) { echo $email; }?>">
 		</div>
 		</div>
 		<div class="control-group">
-		<label class="control-label"><?php _e("Passcode","wpas"); ?></label>
-		<div class="controls">
-		<input id="passcode" name="passcode" class="input-large" type="password" value="<?php if(isset($app_reg['passcode'])) { echo $app_reg['passcode']; } ?>">
-		</div>
-		</div>
-		<div class="control-group">
-		<label class="control-label"><?php _e("Applications","wpas"); ?></label>
+		<label class="control-label"><?php _e("Apps","wpas"); ?></label>
 		<div class="controls">
 		<select id="app" name="app">
 		<?php echo $apps_options; ?>
 		</select>
 		</div>
 		</div>
-		<div class="control-group">
-		<div class="controls">
-		<input id="save_passcode" name="save_passcode" type="checkbox" value="1">
-		<?php _e("Save Passcode","wpas"); ?>
-		</div>
-		</div>
 		<div id="frm-btn" class="control-group">
-		<button id="generate" class="btn  btn-primary pull-right" type="submit">
+		<label class="control-label"></label>
+		<div class="controls">
+		<button id="generate" class="btn btn-primary btn-large" type="submit">
 		<i class="icon-play"></i><?php _e("Generate","wpas"); ?></button>
+		</div>
 		</div>
 		</div>
 		</fieldset>
@@ -127,16 +147,22 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		<div class="row-fluid">
 		<div id='status_error' class='alert alert-error span12' style='display:none;'></div>
 		</div>
+		<?php wpas_modal_confirm_delete(1); ?>
 		<div class="row-fluid">
 		<div class="tablenav top">
 		<div class="alignleft actions">
+		<a id="clear-log" class="btn btn-danger" href="" title="<?php _e("Clear Log","wpas"); ?>"><?php _e("Clear Log History","wpas"); ?></a>
 		</div>
 		<div class="pagination pagination-right">
 		<?php 
 		if($total > 0)
 		{
-			$base = admin_url('admin.php?page=wpas_app_list&generate=1&app=' . $_GET['app']);
-			$base = wp_nonce_url($base,'wpas_generate');
+			if(!empty($_GET['app'])){
+				$base = admin_url('admin.php?page=wpas_generate_page&app=' . $_GET['app']);
+			}
+			else {
+				$base = admin_url('admin.php?page=wpas_generate_page');
+			}
 
 			$paging = paginate_links( array(
 						'total' => ceil($total/10),
@@ -167,12 +193,10 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		</div>
 		<table class="table table-striped table-condensed table-bordered" cellspacing="0">
 		<thead><tr class="theader">
-		<th><?php _e("Application Name","wpas"); ?></th>
-		<th><?php _e("Credit Used","wpas"); ?></th>
-		<th><?php _e("Balance","wpas"); ?></th>
-		<th><?php _e("Update Balance","wpas"); ?></th>
+		<th><?php _e("App Name","wpas"); ?></th>
 		<th><?php _e("Status","wpas"); ?></th>
 		<th><?php _e("Status Link","wpas"); ?></th>
+		<th><?php _e("Purchase Link","wpas"); ?></th>
 		<th><?php _e("Submit Date","wpas"); ?></th>
 		</tr>
 		</thead>
@@ -183,7 +207,5 @@ function wpas_generate_page($app_reg, $submits,$alert,$success)
 		</div>
 		</div>
 		</form>
-
 		<?php
 }
-?>
