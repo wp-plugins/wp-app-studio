@@ -34,16 +34,16 @@ function wpas_add_help_tab_form($app_id)
 		<input type="hidden" id="help_field" name="help_field" value="">
 		<div class="well">
 		<fieldset>
-		<div class="control-group">
-		<label class="control-label"><?php _e("Tab Title","wpas"); ?></label>
-		<div class="controls">
+		<div class="control-group row-fluid">
+		<label class="control-label req span3"><?php _e("Tab Title","wpas"); ?></label>
+		<div class="controls span9">
 		<input name="help_fld_name" class="input-xlarge" id="help_fld_name" type="text" placeholder="<?php _e("This is the name which will appear on the EDIT page","wpas"); ?>" value="" >                            
 		</div>
 		</div>
-		<div class="control-group">
-		<label class="control-label"><?php _e("Tab Content","wpas"); ?></label>
-		<div class="controls">
-		<?php display_tinymce('help_fld_content',''); ?>
+		<div class="control-group row-fluid">
+		<label class="control-label req span3"><?php _e("Tab Content","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea class="wpas-std-textarea" id="help_fld_content" name="help_fld_content"></textarea>
 		</div>
 		</div>
 		</fieldset>
