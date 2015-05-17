@@ -28,7 +28,9 @@ App Signature = Design of your plugin exported to a flat file having .wpas exten
 ProDev = Commercial tier for plugin development with full functionality.<br>
 FreeDev = Free tier for plugin development with limited functionality.<br>
 
-Use FreeDev API access and see how WP App Studio can quicken WordPress Development.
+Watch FreeDev API video and see how WP App Studio can quicken WordPress Development.
+
+[youtube https://www.youtube.com/watch?v=I6JujAg9pQE]
 
 For more info go to [FAQ page] (https://emdplugins.com/frequently-asked-questions-wpas-faq/)
 
