@@ -20,7 +20,7 @@ if(!empty($app_key_list))
 	}
 }
 //delete all history and default data
-$options_to_delete = Array('wpas_default_entities', 'wpas_default_roles', 'wpas_passcode_email', 'wpas_apps_submit','wpas_app_key_list','wpas_version');
+$options_to_delete = Array('wpas_default_entities', 'wpas_default_roles', 'wpas_passcode_email', 'wpas_apps_submit','wpas_app_key_list','wpas_version','wpas_data_version');
 
 foreach($options_to_delete as $option) 
 {
