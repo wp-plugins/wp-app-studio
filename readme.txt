@@ -4,7 +4,7 @@ Tags: charts, admin notices,admin notice,notifications, workflow, custom comment
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 4.0
 Tested up to: 4.2
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,8 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 18. NEW with 4.3.2 - Map user field to your entity attributes and use them everywhere.
 
 == Upgrade Notice ==
+= 4.4.1 =
+Upgrade FreeDev Demo App data
 = 4.4.0 =
 Added Globals menu, added support for CDN based JS and CSS files, Plugin images, attribute name based sorting, and conditional logic for attributes, taxonomies and relationships.
 = 4.3.2 =
@@ -232,6 +234,8 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 4.4.1 (05/17/2015) =
+Upgrade FreeDev Demo App data
 = 4.4.0 (05/16/2015) =
 * NEW Globals menu; for plugin level attributes which can be used in all views, can be set by users in the plugin settings page.
 * NEW CDN based CSS and JS file support for view and widget layouts; user favorite CSS and JS plugin or framework. All files are downloaded and enqueued locally and specific to the view linked.
