@@ -24,6 +24,8 @@ jQuery(document).ready(function($) {
 	var form_id = "";
 	var connection = "";
 	var connection_id = "";
+	var glob = "";
+	var glob_id = "";
 
 	$('#relTab a').click(function (e) {
 		e.preventDefault();
@@ -406,6 +408,16 @@ jQuery(document).ready(function($) {
 			$('ul.breadcrumb').append(app_url);
 			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.role + ' - '+role+'</li>');
 		}
+		else if(type == 'glob')
+		{
+			$('ul.breadcrumb').append(app_url);
+			$('ul.breadcrumb').append('<li id=\"third\"  class=\"active\">' + wpas_vars.glob + ' - '+glob+'</li>');
+		}
+		else if(type == 'add-glob')
+		{      
+			$('ul.breadcrumb').append(app_url);
+			$('ul.breadcrumb').append('<li id=\"third\" class=\"active\">' + wpas_vars.add_new_glob + '</li>');
+		}
 	}
 	$(document).on('click','#edit-field a,#edit-rel-field a,#edit-help-field a',function(){
 		field_id = $(this).attr('href').replace('#','');
@@ -415,6 +427,9 @@ jQuery(document).ready(function($) {
 			type = 'entity';
 			comp_id = ent_id;
 			input_name = 'ent';
+			$('.cond-div').each(function() {
+				$(this).remove();
+			});
 		}
 		else if($(this).parent().attr('id') == 'edit-rel-field')
 		{
@@ -443,7 +458,9 @@ jQuery(document).ready(function($) {
 			$('#fld_name').attr('readonly',false);
 			$('#fld_type').attr('disabled',false);
 			$('#fld_required').attr('disabled',false);
+			cond_att_id = [];
 			$.each(response[0],function (key,value) {
+				console.log('key:'+key+'  val:'+value);
 				if(value != undefined)
 				{
 					if(key == 'fld_limit_user_role')
@@ -464,8 +481,31 @@ jQuery(document).ready(function($) {
 						$('#fld_autoinc_field_div').show();
 						$('#'+key).val(value);
 					}
+					else if(key.match(/fld_cond_attr/))
+					{
+						cond_div_id = key.replace('fld_cond_attr_','');
+						cond_att_id[cond_div_id] = value;
+					}
+					else if(key.match(/fld_cond_sel_value/))
+					{
+						div_id = key.replace('fld_cond_sel_value_','');
+						$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,field_id:field_id,div_id:div_id,attr_val:cond_att_id[div_id],val:value,val_type:'select',from:'fld'}).done(function (response){
+							$('#fld_cond-list').append(response);
+						});
+					}
+					else if(key.match(/fld_cond_value/))
+					{
+						div_id = key.replace('fld_cond_value_','');
+						$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,field_id:field_id,div_id:div_id,attr_val:cond_att_id[div_id],val:value,val_type:'text',from:'fld'}).done(function (response){
+							$('#fld_cond-list').append(response);
+						});
+					}
 					else if(value == 1 && key != 'fld_max_file_uploads')
 					{
+						if(key == 'fld_is_conditional')
+						{
+							$('#conditional-options').show();
+						}
 						if(key == 'fld_uniq_id')
 						{
 							$(this).changeReqMult(1);
@@ -475,8 +515,12 @@ jQuery(document).ready(function($) {
 							$('#fld_name').attr('readonly',true);
 							$('#fld_type').attr('disabled',true);
 							$('#fld_builtin').val(1);
-						}	
-						if($(current_div+' #'+key).attr('type') == 'radio')
+						}
+						if(key == 'fld_dflt_value')
+						{
+							$(current_div+' #'+key).val(value);
+						}
+						else if($(current_div+' #'+key).attr('type') == 'radio')
 						{
 							$('input:radio[name="'+key+'"][value="1"]').attr('checked', true);
 						}
@@ -487,6 +531,10 @@ jQuery(document).ready(function($) {
 					}
 					else if(value == 0)
 					{
+						if(key == 'fld_is_conditional')
+						{
+							$('#conditional-options').hide();
+						}
 						if(key == 'fld_uniq_id')
 						{
 							$(this).changeReqMult(0);
@@ -510,6 +558,7 @@ jQuery(document).ready(function($) {
 						{
 							$(this).initAttr();
 							$(this).changeValidateMsg(value,'edit');
+							$('#conditional-options').hide();
 						}
 						else if(key == 'fld_hidden_func')
 						{
@@ -608,7 +657,7 @@ jQuery(document).ready(function($) {
 		});
 	});	
 
-	$(document).on('click','p#add-option a, p#add-relationship a, p#add-taxonomy a, p#add-help a,p#add-entity a,p#add-shortcode a,p#add-notify a,p#add-connection a,p#add-widget a,p#add-form a,#add-new.entity a,#add-new.relationship a,#add-new.taxonomy a,#add-new.help a,#add-new.shortcode a,#add-new.notify a,#add-new.connection a,#add-new.widg a,#add-new.form a,#add_field.entity a,#add_field.relationship a,#add_field.help a, #add_field_entity a,#add_field_rel a,#add_field_help a',function(){
+	$(document).on('click','p#add-option a, p#add-relationship a, p#add-taxonomy a, p#add-help a,p#add-entity a,p#add-shortcode a,p#add-notify a,p#add-connection a,p#add-widget a,p#add-form a,#add-new.entity a,#add-new.relationship a,#add-new.taxonomy a,#add-new.help a,#add-new.shortcode a,#add-new.notify a,#add-new.connection a,#add-new.widg a,#add-new.form a,#add_field.entity a,#add_field.relationship a,#add_field.help a, #add_field_entity a,#add_field_rel a,#add_field_help a,p#add-glob a,#add-new.glob a',function(){
 		var div_id = $(this).parent().attr('id');
 		var class_id = $(this).parent().attr('class');
 		if(class_id != undefined)
@@ -658,6 +707,7 @@ jQuery(document).ready(function($) {
 				$('#fld_required').attr('disabled',false);
 				$('#fld_builtin').val(0);
 				$(this).initAttr();
+				$('#conditional-options').hide();
 				hiddenvar = 'ent_field';	
 			} 
 			else if($(this).attr('href').match(/#rel/g)) 
@@ -757,6 +807,11 @@ jQuery(document).ready(function($) {
 					button = "form";
 					hiddenvar = 'form';	
 				}
+				else if(div_id == 'add-glob')
+				{
+					button = "glob";
+					hiddenvar = 'glob';	
+				}
 				app = $(this).attr('href').replace('#','');
 				form_name = "#"+button+"-form";
 				$(this).getBreadcrumb(div_id);
@@ -778,6 +833,9 @@ jQuery(document).ready(function($) {
 				$('#ent-hierarchical-div').hide();
 				$('#ent-com_type_div').hide();
 				$('#ent-com_detail_div').hide();
+				$('.cond-div').each(function() {
+					$(this).remove();
+				});
 			}
 			else if(button == 'taxonomy')
 			{
@@ -785,6 +843,10 @@ jQuery(document).ready(function($) {
                 		$.get(ajaxurl,{action:'wpas_get_entities',type:button,app_id:app_id}, function(response)
 				{
 					$('#add-taxonomy-div #txn-attach').html(response);
+				});
+				$('#txn-conditional-options').hide();
+				$('.cond-div').each(function() {
+					$(this).remove();
 				});
 			}
 			else if(button == 'shortcode')
@@ -831,6 +893,10 @@ jQuery(document).ready(function($) {
 				{
 					$('#rel-limit_user_relationship_role').html(response);
 				}); 
+				$('#rel-conditional-options').hide();
+				$('.cond-div').each(function() {
+					$(this).remove();
+				});
                         }
 			else if(button == 'help')
 			{
@@ -870,7 +936,7 @@ jQuery(document).ready(function($) {
 				
 		}
 	});
-	$(document).on('click','p#entity a, p#taxonomy a, p#relationship a, p#help a,p#shortcode a,p#notify a,p#connection a,p#widget a,p#role a,p#form a',function(){
+	$(document).on('click','p#entity a, p#taxonomy a, p#relationship a, p#help a,p#shortcode a,p#notify a,p#connection a,p#widget a,p#role a,p#form a,p#glob a',function(){
                 app = $(this).attr('href').replace('#','');
                 app_id = $('input#app').val();
                 $(this).getBreadcrumb('app');
@@ -947,7 +1013,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$(document).on('click','#save-relationship.btn, #save-taxonomy.btn, #save-entity.btn, #save-help.btn, #save-shortcode.btn, #save-notify.btn, #save-widget.btn,#save-role.btn, #save-form.btn, #save-connection.btn',function(event){
+	$(document).on('click','#save-relationship.btn, #save-taxonomy.btn, #save-entity.btn, #save-help.btn, #save-shortcode.btn, #save-notify.btn, #save-widget.btn,#save-role.btn, #save-form.btn, #save-connection.btn, #save-glob.btn',function(event){
                 event.preventDefault();
 		app_id = $('input#app').val();
 		var btn_id = $(this).attr('id');
@@ -1049,7 +1115,7 @@ jQuery(document).ready(function($) {
                        });
 		}, 'json');
 	});
-	$(document).on('click','#update-taxonomy.btn, #update-entity.btn, #update-relationship.btn, #update-help.btn, #update-shortcode.btn, #update-notify.btn, #update-connection.btn, #update-widget.btn,#update-role.btn, #update-form.btn',function(event){
+	$(document).on('click','#update-taxonomy.btn, #update-entity.btn, #update-relationship.btn, #update-help.btn, #update-shortcode.btn, #update-notify.btn, #update-connection.btn, #update-widget.btn,#update-role.btn, #update-form.btn, #update-glob.btn',function(event){
                 event.preventDefault();
 		var btn_id = $(this).attr('id');
 		
@@ -1108,6 +1174,14 @@ jQuery(document).ready(function($) {
 			var form_name = 'connection-form';
 			var type = 'connection';
 			var show_id = '#list-connection';
+		}
+		else if(btn_id == 'update-glob')
+		{
+			$('#add-glob-div input#app').val(app_id);
+			var comp_id = $('input#glob').val();
+			var form_name = 'glob-form';
+			var type = 'glob';
+			var show_id = '#list-glob';
 		}
 		else if(btn_id == 'update-widget')
 		{
@@ -1200,6 +1274,14 @@ jQuery(document).ready(function($) {
 		if($(this).attr('id') == 'save-entity-field')
 		{
 			var sort_id = ent_id;
+			$.validator.addClassRules({
+				'cond-attr':{
+					required: true
+				},
+				'cond-value':{
+					required: true
+				}
+			});
 		}
 		else if($(this).attr('id') == 'save-relationship-field')
 		{
@@ -1290,7 +1372,7 @@ jQuery(document).ready(function($) {
 
 
 
-	$(document).on('click','span#edit.entity a,span#edit.relationship a,span#edit.taxonomy a,span#edit.shortcode a,span#edit.notify a,span#edit.connection a,span#edit.widget a,span#edit.help a,span#edit.form a,#edit-entity.btn,#edit-relationship.btn,#edit-help.btn,td#edit_td a#txn-name,td#edit_td a#shc-label,td#edit_td a#widg-name,td#edit_td a#form-name,td#edit_td a#notify-name,td#edit_td a#connection-name',function(event){
+	$(document).on('click','span#edit.entity a,span#edit.relationship a,span#edit.taxonomy a,span#edit.shortcode a,span#edit.notify a,span#edit.connection a,span#edit.widget a,span#edit.help a,span#edit.form a,#edit-entity.btn,#edit-relationship.btn,#edit-help.btn,td#edit_td a#txn-name,td#edit_td a#shc-label,td#edit_td a#widg-name,td#edit_td a#form-name,td#edit_td a#notify-name,td#edit_td a#connection-name,span#edit.glob a',function(event){
 		var widg_type = "";
                 app_id = $('#app_form input#app').val();
 		if($(this).parent().attr('class') == 'app')
@@ -1328,6 +1410,11 @@ jQuery(document).ready(function($) {
 			var myclass = 'connection';
                         connection = $(this).html();
 		}
+		else if($(this).attr('id') == 'glob-name')
+		{
+			var myclass = 'glob';
+                        glob = $(this).html();
+		}
 		else
 		{
 			var myclass = $(this).parent().attr('class');
@@ -1337,6 +1424,7 @@ jQuery(document).ready(function($) {
 			form = $(this).closest('#edit_td').find('a#form-name').html();
 			notify = $(this).closest('#edit_td').find('a#notify-name').html();
 			connection = $(this).closest('#edit_td').find('a#connection-name').html();
+			glob = $(this).closest('#edit_td').find('a#glob-name').html();
 		}
 
                 var comp_id = $(this).attr('href').replace('#','');
@@ -1351,6 +1439,9 @@ jQuery(document).ready(function($) {
 		else if(myclass == 'taxonomy')
 		{
 			txn_id = comp_id;
+			$('.cond-div').each(function() {
+				$(this).remove();
+			});
 		}
 		else if(myclass == 'relationship')
 		{
@@ -1361,6 +1452,9 @@ jQuery(document).ready(function($) {
 			$('#reltabs-3-li').hide();
 			$('#reltabs-2-li').hide();
 			$('#rel-limit_user_relationship_role_div').hide();
+			$('.cond-div').each(function() {
+				$(this).remove();
+			});
 		}
 		else if(myclass == 'help')
 		{
@@ -1389,6 +1483,10 @@ jQuery(document).ready(function($) {
 			$('#connection-inc_vis_status_div').hide();
 			$('#connection-inc_email_div').hide();
                         $('#connection-inc_name_div').hide();
+		}
+		else if(myclass == 'glob')
+		{
+			glob_id = comp_id;
 		}
                 app = $('input#app-name').val();
                 $('#app-save').hide();
@@ -1442,6 +1540,10 @@ jQuery(document).ready(function($) {
 				{
 					$('input#connection').val(response[1]);
 				}
+				else if(myclass == 'glob')
+				{
+					$('input#glob').val(response[1]);
+				}
 				menu_selected = "";
 				show_ui = "";
 				rel_type = "";
@@ -1452,6 +1554,7 @@ jQuery(document).ready(function($) {
 				comp_id_to = "";
 				chart_func = "";
 				chart_ent = "";
+				shc_form_id = "";
 				chart_type = "";
 				haxis_type = "";
 				vaxis_type = "";
@@ -1464,7 +1567,11 @@ jQuery(document).ready(function($) {
 				txn_inline =0;
 				inl_entity = "";
 				ent_advanced = 0;
+				shc_label = "";
+				txn_att_id = [];
+				rel_att_id = [];
 				$.each(response[0],function (key,value) {
+					console.log('key'+key+'val:'+value);
 					if(value != undefined)
 					{
 						if(key == 'notify-events')
@@ -1500,6 +1607,11 @@ jQuery(document).ready(function($) {
 								attach_to = value;
 								attach_tax = '';
 							}
+						}
+						else if(key =='glob-type')
+						{
+							$(this).showDef(value);	
+							$('#'+key).val(value);
 						}
 						else if(key == 'connection-type')
 						{
@@ -1590,6 +1702,7 @@ jQuery(document).ready(function($) {
 						else if(key == 'txn-attach' || key == 'widg-attach')
 						{
 							divid = myclass;
+							ent_id = value;
 							if(txn_inline == 1){
 								myclass = 'inline_tax';
 							}
@@ -1599,6 +1712,7 @@ jQuery(document).ready(function($) {
                                 			});
 							if(key == 'widg-attach')
 							{
+								chart_ent = value;
                                                                 $('#add-'+myclass+'-div #'+ key + '_div').show();
                                         			$(this).showWidgTags(app_id,value,widg_subtype);
 
@@ -1660,6 +1774,7 @@ jQuery(document).ready(function($) {
 						}
 						else if(key == 'shc-attach_form' && view_subtype == 'search')
 						{
+							shc_form_id = value;
 							$.get(ajaxurl,{action:'wpas_get_search_forms',app_id:app_id,val:value}, function(response)
 							{
 								$('#shc-attach_form').html(response);
@@ -1672,6 +1787,62 @@ jQuery(document).ready(function($) {
 							$('#shc-rmv_wpasbtn_div').hide();
 							$('#shc-app_dash_div').hide();
 						}
+						else if(key == 'shc-sc_orderby')
+						{
+							app_id = $('input#app').val();
+							$.get(ajaxurl,{action:'wpas_get_orderby_fields',app_id:app_id,ent_id:chart_ent,form_id:shc_form_id,value:value}, function(response)
+							{
+								$('#shc-sc_orderby').html(response);
+							});
+
+						}
+						else if(key == 'widg-orderby')
+						{
+							app_id = $('input#app').val();
+							$.get(ajaxurl,{action:'wpas_get_orderby_fields',app_id:app_id,ent_id:chart_ent,value:value}, function(response)
+							{
+								$('#widg-orderby').html(response);
+							});
+
+						}
+						else if(key.match(/txn-cond_attr/))
+						{
+							txn_div_id = key.replace('txn-cond_attr_','');
+							txn_att_id[txn_div_id] = value;
+						}
+						else if(key.match(/txn-cond_sel_value/))
+						{
+							div_id = key.replace('txn-cond_sel_value_','');
+							$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,field_id:txn_id,div_id:div_id,attr_val:txn_att_id[div_id],val:value,val_type:'select',from:'txn'}).done(function (response){
+								$('#txn-cond-list').append(response);
+							});
+						}
+						else if(key.match(/txn-cond_value/))
+						{
+							div_id = key.replace('txn-cond_value_','');
+							$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,field_id:txn_id,div_id:div_id,attr_val:txn_att_id[div_id],val:value,val_type:'text',from:'txn'}).done(function (response){
+								$('#txn-cond-list').append(response);
+							});
+						}
+						else if(key.match(/rel-cond_attr/))
+						{
+							rel_div_id = key.replace('rel-cond_attr_','');
+							rel_att_id[rel_div_id] = value;
+						}
+						else if(key.match(/rel-cond_sel_value/))
+						{
+							div_id = key.replace('rel-cond_sel_value_','');
+							$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,div_id:div_id,attr_val:rel_att_id[div_id],val:value,val_type:'select',from:'rel'}).done(function (response){
+								$('#rel-cond-list').append(response);
+							});
+						}
+						else if(key.match(/rel-cond_value/))
+						{
+							div_id = key.replace('rel-cond_value_','');
+							$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,div_id:div_id,attr_val:rel_att_id[div_id],val:value,val_type:'text',from:'rel'}).done(function (response){
+								$('#rel-cond-list').append(response);
+							});
+						}
 						else if(key == 'rel-limit_user_relationship_role')
 						{
 							$.get(ajaxurl,{action:'wpas_get_roles',type:'entity',app_id:app_id,value:value}, function(response)
@@ -1682,6 +1853,9 @@ jQuery(document).ready(function($) {
 						else if(key == 'rel-from-name')
 						{
 							comp_id_from = value;
+							if(value != 'user'){
+								ent_id = value;
+							}
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass+'_from',values:value}, function(response)
                                                         {
 								$('#add-'+myclass+'-div #'+ key).html(response);
@@ -1694,6 +1868,9 @@ jQuery(document).ready(function($) {
 						else if(key == 'rel-to-name')
 						{
 							comp_id_to = value;
+							if(value != 'user'){
+								ent_id = value;
+							}
 							$.get(ajaxurl,{action:'wpas_get_entities',app_id:app_id,type:myclass+'_to',values:value}, function(response)
                                                         {
 								$('#add-'+myclass+'-div #'+ key).html(response);
@@ -1756,11 +1933,19 @@ jQuery(document).ready(function($) {
 							}
 							$('#add-'+myclass+'-div #'+key).val(value);
                 				}
+						else if(key == 'shc-label')
+						{
+							shc_label = value;
+							$('#add-'+myclass+'-div #'+key).val(value);
+						}
 						else if(key == 'shc-view_type')
 						{
 							$(this).showShcTabs(value,app_id,0);
 							view_subtype = value;
 							$('#add-'+myclass+'-div #'+key).val(value);
+							if(value == 'integration'){
+								$(this).showShcTags(app_id,0,'integration',shc_label);
+							}
 						}
 						else if(key == 'shc-chart_type')
 						{
@@ -1849,6 +2034,14 @@ jQuery(document).ready(function($) {
 						else if(value == 1)
 						{
 							$('#add-'+myclass+'-div #'+key).attr('checked', true);
+							if(key == 'txn-is_conditional')
+							{
+								$('#txn-conditional-options').show();
+							}
+							if(key == 'rel-is_conditional')
+							{
+								$('#rel-conditional-options').show();
+							}
 							if(key == 'ent-inline-ent')
 							{
                         					$(this).setInlineTabs('inline');
@@ -1993,6 +2186,11 @@ jQuery(document).ready(function($) {
 								$('#'+key).attr('checked',true);
 								$(this).showNotifyTags(app_id,notify_level,'notify-admin-tags',response[0]);
 							}
+							else if(key == 'shc-hier')
+							{
+								$('#'+key).attr('checked',true);
+								$('#shc-hier_vals_div').show();
+							}
 							else
 							{
 								$('#add-'+myclass+'-div #'+key).val(value);
@@ -2001,7 +2199,15 @@ jQuery(document).ready(function($) {
 						else if(value == 0)
 						{
 							$('#add-'+myclass+'-div #'+key).val(value);
-							if(key == 'ent-show_ui')
+							if(key == 'txn-is_conditional')
+							{
+								$('#txn-conditional-options').hide();
+							}
+							else if(key == 'rel-is_conditional')
+							{
+								$('#rel-conditional-options').hide();
+							}
+							else if(key == 'ent-show_ui')
 							{
 								show_ui = 0;
 								$('#ent-show_in_menu_div').hide();
@@ -2089,6 +2295,11 @@ jQuery(document).ready(function($) {
 								$('#shc-app_dash_title_div').hide();
 								$('#shc-app_dash_loc_div').hide();
 							}
+							else if(key == 'shc-hier')
+							{
+								$('#'+key).attr('checked',false);
+								$('#shc-hier_vals_div').hide();
+							}
 						}
 						else{
 							if(key == 'rel-type')
@@ -2151,7 +2362,7 @@ jQuery(document).ready(function($) {
 								}
 								$('#'+key).val(value);
 							}
-							else if(key == 'ent-label' || key == 'ent-name' || key == 'rel-name' || key =='form-name'){
+							else if(key == 'ent-label' || key == 'ent-name' || key == 'rel-name' || key =='form-name' || key == 'glob-name'){
 								$('#add-'+myclass+'-div #'+key).val(value);
 							}
 							else if(key == 'shc-pgn_class')
@@ -2350,6 +2561,51 @@ jQuery(document).ready(function($) {
 			$('#add-form-div #form-dependents').html(response);
 		});
 	});
-
-
+	$(document).on('click','.add-cond',function(){
+		cond_count = 1;
+		list_id = $(this).closest('.cond-div').parent().attr('id');
+		from = list_id.replace('-cond-list','');
+		from = from.replace('_cond-list','');
+		$('.cond-div').each(function() {
+			div_id = $(this).attr('id').replace('cond-','');
+			if(div_id > cond_count){
+				cond_count = div_id;
+			}
+		});
+                app_id = $('input#app').val();
+		if(from == 'fld'){
+			field_id = field_id;
+                	ent_id = $('input#ent').val();
+		}
+		else if(from == 'txn'){
+			field_id = txn_id;
+                	ent_id = $('#txn-attach').find('option:selected').val();
+		}
+		else if(from == 'rel'){
+			field_id = '';
+			if($('#rel-from-name').val() != 'user'){
+                                ent_id = $('#rel-from-name').val();;
+                        }
+                        else {
+                                ent_id = $('#rel-to-name').val();;
+                        }
+		}
+                $.get(ajaxurl,{action:'wpas_get_cond_list',app_id:app_id,ent_id:ent_id,field_id:field_id,cond_count:cond_count,from:from},function(response){
+                        $('#' + list_id).append(response);
+                });
+        });
+	$(document).on('click','.delete-cond',function(){
+		div_id = $(this).closest('.layout-edit-icons').attr('id');
+		rdiv = div_id.replace('add-delete-','');
+		$('#'+rdiv).remove();
+        });
+	$(document).on('click','.cond-attr',function(){
+                app_id = $('input#app').val();
+                ent_id = $('input#ent').val();
+                var type = $('option:selected', this).attr('att-type');
+		list_id = $(this).closest('.cond-div').parent().attr('id').replace('cond-list','');
+		div_id = $(this).attr('id').replace(list_id+'cond_attr_','');
+                $.fn.changeCondVal(list_id,div_id,type,app_id,ent_id,$(this).val(),'');
+                $('#cond-add-delete-'+div_id).show();
+        });
 });

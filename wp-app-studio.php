@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.3.2
+   Version: 4.4.0
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "https://wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.3.2");
+define('WPAS_VERSION', "4.4.0");
 define('WPAS_DATA_VERSION', "4");
 
 require_once("wpas_translate.php");
@@ -40,6 +40,7 @@ require_once("views/forms_form.php");
 require_once("views/notify_form.php");
 require_once("views/connection_form.php");
 require_once("views/addon_pages.php");
+require_once("views/glob_form.php");
 
 load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
@@ -944,6 +945,11 @@ function wpas_show_page($app,$page)
 		echo "</div>";
 		echo "<div id=\"add-role-div\" class=\"group1\" style=\"display: none;\">";
 		wpas_add_role_form($app_key,'');
+		echo "</div>";
+		echo "<div id=\"list-glob\" class=\"group1\" style=\"display: none;\">";
+		echo "</div>";
+		echo "<div id=\"add-glob-div\" class=\"group1\" style=\"display: none;\">";
+		wpas_add_glob_form($app_key);
 		echo "</div>";
 		echo "<div id=\"add-option-div\" class=\"group1\" style=\"display:none;\">";
 		wpas_add_app_option($app_name);

@@ -78,7 +78,18 @@ jQuery(document).ready(function($) {
 			return true;	
 		}, validate_vars.check_reluser);
 		$.validator.addMethod('checkDefault', function(value, element) { 
-			if($(element).attr('id') == 'txn-dflt_value')
+			if($(element).attr('id') == 'glob-dflt')
+			{
+				var glob_type = $('#glob-type').val();
+				if(glob_type == 'checkbox_list' || glob_type == 'multi_select'){
+					var is_multiple = true;
+					var fld_type = 'select';
+				}
+				else {
+					var fld_type = glob_type;
+				}
+			}
+			else if($(element).attr('id') == 'txn-dflt_value')
 			{
 				var is_multiple = $('#txn-display_type').val();
 				var fld_type = 'tax';
@@ -111,6 +122,46 @@ jQuery(document).ready(function($) {
 		}, validate_vars.check_default);
 				
 				
+		$.validator.addMethod('checkJSValues', function(value, element) { 
+			if(value.indexOf(';;') >= 0 && value != '')
+			{
+				return false;
+			}
+			var input = value.split(';');
+			var valid = true;
+			$.each(input, function(key,inp) {
+				inp = $.trim(inp);
+				if(inp.length != 0)
+				{
+					if(inp.match(/https:\/\/libs.emdplugins.com/) == null && 
+						inp.match(/https:\/\/cdnjs.cloudflare.com/) == null &&
+						inp.match(/https:\/\/raw.githubusercontent.com/) == null &&
+						inp.match(/https:\/\/cdn.jsdelivr.net/) == null){
+							return valid = false;
+					}
+				}
+			});
+			return valid;
+		}, validate_vars.check_js_values);
+		$.validator.addMethod('checkImgValues', function(value, element) { 
+			if(value.indexOf(';;') >= 0 && value != '')
+			{
+				return false;
+			}
+			var input = value.split(';');
+			var valid = true;
+			$.each(input, function(key,inp) {
+				inp = $.trim(inp);
+				if(inp.length != 0)
+				{
+					if(inp.match(/\.(jpg|gif|png|jpeg|tiff|svg)$/) == null){
+							return valid = false;
+					}
+				}
+			});
+			return valid;
+		}, validate_vars.check_img_values);
+
 		$.validator.addMethod('checkValues', function(value, element) { 
 			hier = $('#txn-hierarchical').val();
 			if(value.indexOf(';') < 0 && value != '')
@@ -346,6 +397,9 @@ jQuery(document).ready(function($) {
 				break;
 			case 'role':
 				comp_id = $('#' + form_id + ' input#role').val();
+				break;
+			case 'glob':
+				comp_id = $('#' + form_id + ' input#glob').val();
 				break;
 		}
 			
@@ -629,6 +683,13 @@ jQuery(document).ready(function($) {
 			'fld_autoinc_incr':{
 			number:true,
 			},
+			'fld_cond_value':{
+			required:true,
+			},
+			'fld_cond_attr':{
+			required:true,
+			},
+
 			},
 			success: function(label) {
 				label.addClass('valid');
@@ -912,6 +973,9 @@ jQuery(document).ready(function($) {
 			required:true,
 			maxlength:350,
 			},
+			'ao_img':{
+			checkImgValues:true,
+			}
 			},
 			success: function(label) {
 				label.addClass('valid');
@@ -1021,11 +1085,11 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'shc-sc_layout':{
-			maxlength:5000,
+			maxlength:10000,
 			required:true,
 			},
 			'shc-sc_css':{
-			maxlength:2000,
+			maxlength:5000,
 			},
 			'shc-sc_post_per_page':{
 			maxlength:3,
@@ -1063,6 +1127,12 @@ jQuery(document).ready(function($) {
 			checkInt:true,
 			maxlength:4,
 			},
+			'shc-sc_cdnjs':{
+			checkJSValues:true,
+			},
+			'shc-sc_cdncss':{
+			checkJSValues:true,
+			}
 			},
 			success: function(label) {
 				label.addClass('valid');
@@ -1208,6 +1278,9 @@ jQuery(document).ready(function($) {
 			'widg-css':{
 			maxlength:1000,
 			},
+			'widg-cdnjs':{
+			checkJSValues:true,
+			},
 			'widg-post_per_page':{
 			maxlength:3,
 			checkNum:true,
@@ -1335,6 +1408,41 @@ jQuery(document).ready(function($) {
 				$('label.valid').html('<i class=\"icon-check\"></i>');
 			}
 		});
-
-	
+		$('#glob-form').validate(
+		{
+			onfocusout: false,
+			onkeyup: false,
+			onclick: false,
+			ignore: ":hidden",
+			rules: {
+			'glob-name':{
+			minlength:3,
+			maxlength:30,
+			uniqueName:['glob'],
+			noSpace:true,
+			noCap:true,
+			checkAlphaNumUnder: true,
+			required:true,
+			},
+			'glob-label':{
+			required:true,
+			},
+			'glob-type':{
+			required:true,
+			},
+			'glob-values': {
+			maxlength: 21844,
+			checkSemiCo:true,
+			checkAlphaNumUnderSemiCurly: true,
+			required:true,
+			},
+			'glob-dflt':{
+			checkDefault: true,
+			},
+			},
+			success: function(label) {
+				label.addClass('valid');
+				$('label.valid').html('<i class=\"icon-check\"></i>');
+			}
+		});
 });

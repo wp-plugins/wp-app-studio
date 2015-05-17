@@ -4,6 +4,24 @@ function wpas_add_taxonomy_form()
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('#txn-is_conditional').click(function (){
+		$('.cond-value').hide();
+		$('.cond-value').val('');
+		if($(this).attr('checked')){
+			app_id = $('input#app').val();
+			ent_id = $('#txn-attach').find('option:selected').val();
+			txn_id = $('input#txn').val();
+			$('#txn-conditional-options').show();
+			$('#txn-cond_case').val('show');
+			$('#txn-cond_type').val('all');
+			$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,div_id:1,val_type:'none',from:'txn',field_id:txn_id}).done(function (response){
+				$('#txn-cond-list').append(response);
+			});
+		}
+		else {
+			$('#txn-conditional-options').hide();
+		}
+	});
 	$('#txn-inline').click(function (){
 		app_id = $('input#app').val();
 		if($(this).attr('checked')){
@@ -208,6 +226,40 @@ jQuery(document).ready(function($) {
                         <i class="icon-info-sign"></i></a>
                         </div>
         </div>
+	
+	<div class="control-group" id="txn-enable_conditional_div" name="txn-enable_conditional_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Enable Conditional Logic","wpas");?>
+            <input name="txn-is_conditional" id="txn-is_conditional" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute filterable in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div id="txn-conditional-options" class="control-group row-fluid" style="display:none;">
+	<label class="control-label span3"><?php _e("Conditional Logic","wpas");?></label>
+	<div class="controls span9">  
+	<div id="txn-cond">
+	<div class="control-group row-fluid">
+			<label class="control-label span1"></label>
+			<div class="controls span11">
+			<select name="txn-cond_case" id="txn-cond_case" class="input-small">
+			<option value="show"><?php _e('Show','wpas');?></option>
+			<option value="hide"><?php _e('Hide','wpas');?></option></select>
+			<?php _e('This Attribute If ','wpas'); ?>
+			<select name="txn-cond_type" id="txn-cond_type" class="input-small">
+			<option value="all"><?php _e('All','wpas');?></option>
+			<option value="any"><?php _e('Any','wpas');?></option></select>
+			<?php _e('of the below match:','wpas'); ?>
+			</div>
+	</div>
+	<div id="txn-cond-list" style="width:530px;">
+	</div>
+	
+	</div>
+	</div>
+	</div>
 		
 		<div class="control-group row-fluid">
 		<label class="control-label span3"></label>

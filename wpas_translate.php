@@ -37,6 +37,8 @@ $local_vars = Array(
 'pro_download'  => __("Download ProDev version","wpas"),
 'free_buy'  => __("Purchase ProDev version","wpas"),
 'pro_buy'  => __("Upgrade your license","wpas"),
+'glob' => __("Global","wpas"),
+'add_new_glob'  => __("Add New Global","wpas"),
 );
 $form_vars = Array(
 'req_missing_error' => __("Please add all required fields to the form layout.","wpas"),
@@ -71,6 +73,8 @@ $validate_vars = Array(
 'check_version' => __("Must contain only numbers and dots.","wpas"),
 'check_semico' => __("You need to seperate each option value with a semicolon and each option must have a value defined within curly brackets.","wpas"),
 'check_values' => __("You need to seperate each option value with a semicolon and each option must have a value defined within curly  or/and square brackets.","wpas"),
+'check_js_values' => __("You need to seperate file urls with a semicolon and use only files from cdns: cdnjs.cloudflare.com and cdn.jsdelivr.net or raw.githubusercontent.com.","wpas"),
+'check_img_values' => __("You need to seperate file urls with a semicolon and use only files with .jpg, .jpeg, .png, .tiff, .gif, .svg.","wpas"),
 'check_default' => __("You cannot have multiple default values.","wpas"),
 'no_reserved' => __("You cannot use reserved words.","wpas"),
 'check_help' => __("Please select a different attach to or screen type.","wpas"),

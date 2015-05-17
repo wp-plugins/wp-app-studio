@@ -32,6 +32,8 @@ function wpas_add_widget_form($app_id)
 						$('#widg-wdesc_div').hide();
 						$('#widg-layout_div').hide();
 						$('#widg-css_div').hide();
+						$('#widg-js_div').hide();
+						$('#widg-cdnjs_div').hide();
 						$('#widg-post_per_page_div').hide();
 						$('#widg-order_div').hide();
 						$('#widg-orderby_div').hide();
@@ -53,6 +55,10 @@ function wpas_add_widget_form($app_id)
 					ent_id = $('#widg-attach').find('option:selected').val();
 					subtype = $('#widg-side_subtype').find('option:selected').val();
 					dsubtype = $('#widg-dash_subtype').find('option:selected').val();
+					$.get(ajaxurl,{action:'wpas_get_orderby_fields',app_id:app_id,ent_id:ent_id}, function(response)
+					{
+						$('#widg-orderby').html(response);
+					});
 					$(this).showWidgTags(app_id,ent_id,subtype,dsubtype);
 				});
 				$.fn.showWidgTags = function (app_id,ent_id,subtype,dsubtype){
@@ -71,6 +77,8 @@ function wpas_add_widget_form($app_id)
 							$('#widg-attach_div').hide();
 							$('#widg-layout_div').hide();
 							$('#widg-css_div').hide();
+							$('#widg-js_div').hide();
+							$('#widg-cdnjs_div').hide();
 							$('#widg-post_per_page_div').hide();
 							$('#widg-order_div').hide();
 							$('#widg-orderby_div').hide();
@@ -107,6 +115,8 @@ function wpas_add_widget_form($app_id)
 							$('#widg-attach_div').show();
 							$('#widg-layout_div').show();
 							$('#widg-css_div').show();
+							$('#widg-js_div').show();
+							$('#widg-cdnjs_div').show();
 							$('#widg-post_per_page_div').show();
 							$('#widg-order_div').show();
 							$('#widg-orderby_div').show();
@@ -144,6 +154,8 @@ function wpas_add_widget_form($app_id)
 							$('#widg-attach_div').show();
 							$('#widg-layout_div').hide();
 							$('#widg-css_div').hide();
+							$('#widg-js_div').hide();
+							$('#widg-cdnjs_div').hide();
 							$('#widg-post_per_page_div').show();
 							$('#widg-order_div').show();
 							$('#widg-orderby_div').hide();
@@ -164,6 +176,8 @@ function wpas_add_widget_form($app_id)
 							$('#widg-attach_div').hide();
 							$('#widg-layout_div').hide();
 							$('#widg-css_div').hide();
+							$('#widg-js_div').hide();
+							$('#widg-cdnjs_div').hide();
 							$('#widg-post_per_page_div').hide();
 							$('#widg-order_div').hide();
 							$('#widg-orderby_div').hide();
@@ -300,6 +314,22 @@ function wpas_add_widget_form($app_id)
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
+		<div class="control-group row-fluid" id="widg-js_div" style="display:none;">
+		<label class="control-label span3"><?php _e("Js","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea class="wpas-std-textarea" id="widg-js" name="widg-js"></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("The custom JavaScript code which will be enqueued to the view. Do not include script tags.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="widg-cdnjs_div" style="display:none;">
+		<label class="control-label span3"><?php _e("CDN JS","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea id="widg-cdnjs" name="widg-cdnjs" class="wpas-std-textarea" placeholder=" YOU MUST USE HTTPS e.g. https://cdnjs.cloudflare.com/ajax/libs/Readmore.js/2.0.5/readmore.min.js;https://cdn.jsdelivr.net/ace/1.1.9/min/ace.js" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated JavaScript file urls starting with https. We only accept files from the following sources; cdnjs.cloudflare.com and cdn.jsdelivr.net or raw.githubusercontent.com. All files will be downloaded and merged before getting locally enqueued to the view they are linked to.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
 		<div class="control-group row-fluid" id="widg-wp_dash_div" style="display:none;">
 		<label class="control-label span3"></label>
 		<div class="controls span9">
@@ -356,15 +386,6 @@ function wpas_add_widget_form($app_id)
 		<label class="control-label span3"><?php _e("Sort Retrieved By ","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="widg-orderby" id="widg-orderby" class="input-small">
-		<option value="date" selected="selected"><?php _e("Date","wpas"); ?></option>
-		<option value="ID"><?php _e("ID","wpas"); ?></option>
-		<option value="author"><?php _e("Author","wpas"); ?></option>
-		<option value="title"><?php _e("Title","wpas"); ?></option>
-		<option value="parent"><?php _e("Post parent id","wpas"); ?></option>
-		<option value="modified"><?php _e("Last modified date","wpas"); ?></option>
-		<option value="rand"><?php _e("Random","wpas"); ?></option>
-		<option value="comment_count"><?php _e("Number of comments","wpas"); ?></option>
-		<option value="none"><?php _e("None","wpas"); ?></option>
 		</select>
 		<a href="#" style="cursor: help;" title="<?php _e("Allows sorting of retrieved content by a parameter selected. Defaults to date.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>
@@ -411,8 +432,8 @@ function wpas_add_widget_form($app_id)
 		<div class="control-group row-fluid">
 		<label class="control-label span3"><?php _e("Filter","wpas");?></label>
 		<div class="controls span9">
-		<textarea class="wpas-std-textarea" name="widg-filter" id="widg-filter" placeholder="<?php _e("e.g. attr::emd_product_featured:is::true;tax::product_cat::is::electronics","wpas");?>" value="" ></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("Set the default filter for the content to be displayed in the widget. You can use widget filters to return for example; featured products, on-sale products etc. You can combine multiple filters with semicolon which triggers AND operator. For example;-attr::emd_product_featured:is::true;tax::product_cat::is::electronics- filter shows the featured products in electronics category.","wpas");?>">
+		<textarea class="wpas-std-textarea" name="widg-filter" id="widg-filter" placeholder="<?php _e("e.g. attr::emd_product_featured::is::1;tax::product_cat::is::electronics","wpas");?>" value="" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Set the default filter for the content to be displayed in the widget. You can use widget filters to return for example; featured products, on-sale products etc. You can combine multiple filters with semicolon which triggers AND operator. For example;-attr::emd_product_featured::is::1;tax::product_cat::is::electronics- filter shows the featured products in electronics category. The easiest way to create filters is to use the WPAS button on a page toolbar of the generated app to design a filter and then copy paste the required part here. ","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

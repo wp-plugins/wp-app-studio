@@ -633,8 +633,8 @@ jQuery(document).ready(function($) {
                 <label class="control-label req span3"><?php _e("Icon Class","wpas"); ?></label>
                 <div class="controls span9">
                 <input class="input-small" name="ent-menu_icon_dash" id="ent-menu_icon_dash" type="text" placeholder="<?php _e("exp; camera","wpas");?>"/>
-                <a href="#" style="cursor: help;" title="<?php _e("Enter the class of the icon  which will be displayed on the menu bar of the entity","wpas"); ?>"><i class="icon-info-sign"></i></a>
-                <a target="_blank" href="https://wpas.emdplugins.com/articles/supported-icons/dashicons">Cheatsheet</a>
+                <a href="#" style="cursor: help;" title="<?php _e("Enter the class of the icon  which will be displayed on the menu bar of the entity. See the dashicon section of the supported icons page by clicking on the cheatsheet link.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+                <a target="_blank" href="https://wpas.emdplugins.com/articles/supported-icons/">Cheatsheet</a>
                 </div>
                 </div>															
                 <div class="control-group row-fluid" id="ent-menu_icon_base64_div" style="display:none;">

@@ -39,12 +39,280 @@ add_action('wp_ajax_wpas_check_app_dash', 'wpas_check_app_dash');
 add_action('wp_ajax_wpas_get_notify_attach','wpas_get_notify_attach');
 
 add_filter('wp_kses_allowed_html','wpas_allowed_html',10,2);
+add_filter('safe_style_css','wpas_safe_style_css');
 
 
 add_action('wp_ajax_wpas_get_layout_tags','wpas_get_layout_tags');
 add_action('wp_ajax_wpas_clear_log_generate', 'wpas_clear_log_generate');
 
 add_action('wp_ajax_wpas_get_inline_ent_attr','wpas_get_inline_ent_attr');
+add_action('wp_ajax_wpas_get_default_vals','wpas_get_default_vals');
+add_action('wp_ajax_wpas_get_orderby_fields','wpas_get_orderby_fields');
+add_action('wp_ajax_wpas_get_cond_list','wpas_get_cond_list');
+add_action('wp_ajax_wpas_get_cond_div','wpas_get_cond_div');
+
+
+function wpas_get_cond_div()
+{
+        wpas_is_allowed();
+	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+	$ent_id = isset($_GET['ent_id']) ? $_GET['ent_id'] : '';
+	$field_id = isset($_GET['field_id']) ? $_GET['field_id'] : '';
+	$from = isset($_GET['from']) ? $_GET['from'] : '';
+	$count = isset($_GET['div_id']) ? $_GET['div_id'] : '';
+	$attr_val = isset($_GET['attr_val']) ? $_GET['attr_val'] : '';
+	$val = isset($_GET['val']) ? $_GET['val'] : '';
+	$val_type = isset($_GET['val_type']) ? $_GET['val_type'] : '';
+	if($from == 'txn' || $from == 'rel'){
+		$from = $from . '-';
+	}
+	else {
+		$from = $from . '_';
+	}
+	if(is_array($ent_id)){
+		$ent_id = $ent_id[0];
+	}
+       	$ret = '<div class="control-group row-fluid cond-div" id="cond-' . $count . '">
+                        <label class="control-label span1"></label>
+                        <div class="controls span10">
+                        <select name="' . $from . 'cond_attr_' . $count . '" id="' . $from . 'cond_attr_' . $count . '" class="input-medium cond-attr">
+			<option value="">' . __('Please select','wpas') . '</option>';
+	if($from == 'fld_'){
+		$ret .= wpas_entity_fields('cond',$app_id,$ent_id,$attr_val,$field_id);
+	}
+	else {
+		$ret .= wpas_entity_fields('cond',$app_id,$ent_id,$attr_val);
+	}
+	if($attr_val == ''){
+		if($from == 'txn-'){
+			$ret .= wpas_entity_types($app_id,'cond',Array(),"",$field_id);
+		}
+		else {
+			$ret .= wpas_entity_types($app_id,'cond',Array());
+		}
+	}
+	else {
+		if($from == 'txn-'){
+			$ret .= wpas_entity_types($app_id,'cond',$attr_val,"",$field_id);
+		}
+		else {
+			$ret .= wpas_entity_types($app_id,'cond',$attr_val);
+		}
+	}
+        $ret .= '</select>
+                        <select name="' . $from . 'cond_check_' . $count . '" id="' . $from . 'cond_check_' . $count . '" class="input-small">
+                        <option value="is">' .  __('Is','wpas') . '</option>
+                        <option value="is_not">' . __('Is Not','wpas') . '</option>
+                        <option value="greater">' . __('Greater Than','wpas') . '</option>
+                        <option value="less">' . __('Less Than','wpas') . '</option>
+                        <option value="contains">' . __('Contains','wpas') . '</option>
+                        <option value="starts">' . __('Starts With','wpas') . '</option>
+                        <option value="ends">' . __('Ends With','wpas') . '</option>
+                        </select>';
+	
+	if($val_type == 'none'){
+		$ret .= '<input name="' . $from . 'cond_value_' . $count . '" id="' . $from . 'cond_value_' . $count . '" type="text" class="input-medium cond-value" style="display:none;margin-left:3px;"></input>';
+             	$ret .= '<select name="' . $from . 'cond_sel_value_' . $count . '" id="' . $from . 'cond_sel_value_' . $count . '" class="input-medium cond-value" style="display:none;margin-left:3px;"></select>';
+	}
+	elseif($val_type != 'select'){
+		$ret .= '<input name="' . $from . 'cond_value_' . $count . '" id="' . $from . 'cond_value_' . $count . '" type="text" class="input-medium cond-value" value="'.  $val . '" style="margin-left:3px;"></input>';
+             	$ret .= '<select name="' . $from . 'cond_sel_value_' . $count . '" id="' . $from . 'cond_sel_value_' . $count . '" class="input-medium cond-value" style="display:none;margin-left:3px;">';
+		$ret .= '</select>';
+	}
+	else {
+		$ret .= '<input name="' . $from . 'cond_value_' . $count . '" id="' . $from . 'cond_value_' . $count . '" type="text" class="input-medium cond-value" style="display:none;margin-left:3px;"></input>';
+             	$ret .= '<select name="' . $from . 'cond_sel_value_' . $count . '" id="' . $from . 'cond_sel_value_' . $count . '" class="input-medium cond-value" style="margin-left:3px;">';
+		if(preg_match('/attr-/',$attr_val)){
+			$ret .= wpas_get_default_vals($app_id,$ent_id,str_replace('attr-','',$attr_val),$val);
+		}
+		elseif(preg_match('/tax-/',$attr_val)){
+			$ret .= wpas_get_tax_values($app_id,str_replace('tax-','',$attr_val),$val,'cond');
+		}
+		$ret .= '</select>';
+	}
+        $ret .= '</div>
+		<div id="cond-add-delete-' . $count . '" class="layout-edit-icons">
+		<a class="add-cond"><i class="icon-plus-sign"></i></a>
+		<a class="delete-cond"><i class="icon-minus-sign"></i></a>
+		</div>
+        </div>';
+	echo $ret;	
+	die();
+}
+	
+
+function wpas_get_cond_list()
+{
+        wpas_is_allowed();
+	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+	$ent_id = isset($_GET['ent_id']) ? $_GET['ent_id'] : '';
+	$field_id = isset($_GET['field_id']) ? $_GET['field_id'] : '';
+	$from = isset($_GET['from']) ? $_GET['from'] : '';
+	$cond_count = isset($_GET['cond_count']) ? $_GET['cond_count'] : '';
+	$count = $cond_count + 1;
+	if($from == 'txn' || $from == 'rel'){
+		$from = $from . '-';
+	}
+	else {
+		$from = $from . '_';
+	}
+       	$ret = '<div class="control-group row-fluid cond-div" id="cond-' . $count . '">
+                        <label class="control-label span1"></label>
+                        <div class="controls span10">
+                        <select name="' . $from . 'cond_attr_' . $count . '" id="' . $from . 'cond_attr_' . $count . '" class="input-medium cond-attr">
+			<option value="">' . __('Please select','wpas') . '</option>';
+	if($from == 'fld_'){
+		$ret .= wpas_entity_fields('cond',$app_id,$ent_id,'',$field_id);
+	}
+	else {
+		$ret .= wpas_entity_fields('cond',$app_id,$ent_id,'');
+	}
+	if($from == 'txn-'){		
+		$ret .= wpas_entity_types($app_id,'cond',Array(),'',$field_id);
+	}
+	else {
+		$ret .= wpas_entity_types($app_id,'cond',Array());
+	}
+        $ret .= '</select>
+                        <select name="' . $from . 'cond_check_' . $count . '" id="' . $from . 'cond_check_' . $count . '" class="input-small">
+                        <option value="is">' .  __('Is','wpas') . '</option>
+                        <option value="is_not">' . __('Is Not','wpas') . '</option>
+                        <option value="greater">' . __('Greater Than','wpas') . '</option>
+                        <option value="less">' . __('Less Than','wpas') . '</option>
+                        <option value="contains">' . __('Contains','wpas') . '</option>
+                        <option value="starts">' . __('Starts With','wpas') . '</option>
+                        <option value="ends">' . __('Ends With','wpas') . '</option>
+                        </select>
+                        <input name="' . $from . 'cond_value_' . $count . '" id="' . $from . 'cond_value_' . $count . '" type="text" class="input-medium cond-value" style="margin-left:3px;"></input>
+                        <select name="' . $from . 'cond_sel_value_' . $count . '" id="' . $from . 'cond_sel_value_' . $count . '" class="input-medium cond-value" style="display:none;margin-left:3px;"></select>
+                        </div>
+                        <div id="cond-add-delete-' . $count . '" class="layout-edit-icons">
+                        <a class="add-cond"><i class="icon-plus-sign"></i></a>
+                        <a class="delete-cond"><i class="icon-minus-sign"></i></a>
+                        </div>
+        </div>';
+	echo $ret;	
+	die();
+}
+
+function wpas_get_orderby_fields()
+{
+        wpas_is_allowed();
+	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+	$ent_id = isset($_GET['ent_id']) ? $_GET['ent_id'] : '';
+	$form_id = isset($_GET['form_id']) ? $_GET['form_id'] : '';
+	$value = isset($_GET['value']) ? $_GET['value'] : '';
+	if(empty($app_id) || ($ent_id == '' && $form_id == ''))
+	{
+		die(-1);
+	}
+	$app = wpas_get_app($app_id);
+	if($form_id != ''){
+		$ent_id = $app['form'][$form_id]['form-attached_entity'];
+	}
+	$blt_options= Array('date' => __('Date','wpas'),
+			  'ID' => __('ID','wpas'),
+			'author' => __('Author','wpas'),
+			'title' => __('Title','wpas'),
+			'parent' => __('Post parent id','wpas'),
+			'modified' => __('Last modified date','wpas'),  
+			'rand' => __('Random','wpas'),
+			'comment_count' => __('Number of comments','wpas'),
+			'none' => __('None','wpas')
+			);
+	$ret = '';
+	//$ret = '<option value="" style="font-style:italic;font-weight:bold;">' . __('Builtin','wpas') . '</option>';
+	foreach($blt_options as $boptkey => $boptval){
+		$ret .= '<option value="' . $boptkey . '"';
+		if($value == $boptkey)
+		{
+			$ret .= ' selected';
+		}		
+		$ret .= ' >' . $boptval . '</option>';
+	}
+	//$ret .= '<option value="" style="font-style:italic;font-weight:bold;">' . __('Attributes','wpas') . '</option>';
+	$ret .= wpas_entity_fields('order',$app_id,$ent_id,$value);
+	echo $ret;
+	die();
+}
+function wpas_safe_style_css($allowed_attr)
+{
+	$allowed_attr[] = 'display';
+	$allowed_attr[] = 'background-image';
+	return $allowed_attr;
+}
+	
+
+function wpas_get_default_vals($app_id='',$ent_id='',$att_id='',$value='')
+{
+        wpas_is_allowed();
+	$result_ret = 1;
+	$ret = '';
+	if($app_id == '' && $ent_id == '' && $att_id == '')
+	{
+		$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+		$ent_id = isset($_GET['ent_id']) ? $_GET['ent_id'] : '';
+		$att_id = isset($_GET['att_id']) ? $_GET['att_id'] : '';
+		$value = isset($_GET['value']) ? $_GET['value'] : '';
+		$result_ret = 0;
+	}
+
+	if(empty($app_id) || $ent_id == '' || $att_id == '')
+	{
+		die(-1);
+	}
+	
+	$app = wpas_get_app($app_id);
+	if(!empty($app['entity'][$ent_id]['field'][$att_id]) && $app['entity'][$ent_id]['field'][$att_id]['fld_type'] == 'checkbox'){
+		$ret .= "<option value='checked'";
+		if($value == 'checked'){
+			$ret .= " selected";
+		}
+		$ret .= ">" . __('Checked','wpas') . "</option>";
+		if($value == 'unchecked'){
+			$ret .= " selected";
+		}
+		$ret .= "<option value='unchecked'>" . __('Unchecked','wpas') . "</option>";
+	}
+	elseif(!empty($app['entity'][$ent_id]['field'][$att_id]['fld_values'])){
+		$fld_values = explode(";",$app['entity'][$ent_id]['field'][$att_id]['fld_values']);
+		foreach($fld_values as $myval){
+			$myval = trim($myval);
+			if(strlen($myval) != 0) {
+				preg_match('/\{(.*)\}(.*)/',$myval,$matches);
+                                if(empty($matches))
+                                {
+                                        $myval_key = str_replace(" ","_",trim($myval));
+                                        $myval_key = preg_replace("/[^A-Za-z0-9_]/", "",$myval_key);
+					$ret .= "<option value='" . $myval_key . "'";
+					if($value == $myval_key){
+						$ret .= " selected";
+					}
+					$ret .= ">" . trim($myval) . "</option>";
+                                }
+                                else
+                                {
+                                        if(isset($matches[1]))
+                                        {
+                                                $myval_key = str_replace(" ","_",trim($matches[1]));
+                                                $myval_key = preg_replace("/[^A-Za-z0-9_]/", "",$myval_key);
+						$ret .= "<option value='" . $myval_key . "'";
+						if($value == $myval_key){
+							$ret .= " selected";
+						}
+						$ret .= ">" . trim($matches[2]) . "</option>";
+                                        }
+                                }
+			}
+		}
+	}
+	if($result_ret == 1){
+		return $ret;
+	}
+	echo $ret;
+	die();
+}
+	
 
 function wpas_get_inline_ent_attr()
 {
@@ -97,7 +365,7 @@ function wpas_clear_log_generate()
         wpas_is_allowed();
         check_ajax_referer('wpas_clear_log_generate_nonce','nonce');
         update_option('wpas_apps_submit',Array());
-	echo add_query_arg(array('page'=>'wpas_generate_page'), admin_url('admin.php'));
+	echo esc_url(add_query_arg(array('page'=>'wpas_generate_page'), admin_url('admin.php')));
 	die();
 }
 
@@ -107,232 +375,279 @@ function wpas_get_layout_tags(){
 	$type = isset($_GET['type']) ? $_GET['type'] : '';
 	$comp_id = isset($_GET['comp_id']) ? $_GET['comp_id'] : '';
 	$rel_id = isset($_GET['rel_id']) ? $_GET['rel_id'] : '';
+	$shc = isset($_GET['shc']) ? $_GET['shc'] : '';
 	$ret = '';
-	if(empty($app_id) || $comp_id == '' || empty($type))
+	$shortcodes = Array();
+	if(($type != 'integration' && (empty($app_id) || $comp_id == '')) || empty($type))
 	{
 		die(-1);
 	}
 	$app = wpas_get_app($app_id);
-	$comp_id_arr = Array();
-	$builtins = Array(
-                'title' => __('Title','wpas'),
-		'entity_id' => __('Entity ID','wpas'),
-                'permalink' => __('Permalink','wpas'),
-                'edit_link' => __('Edit Link','wpas'),
-                'delete_link' => __('Delete Link','wpas'),
-                'excerpt' => __('Excerpt','wpas'),
-                'content' => __('Content','wpas'),
-                'author' => __('Author','wpas'),
-                'mod_author' => __('Modified Author','wpas'),
-		'featured_img_large' => __('Featured Image Large','wpas'),
-		'featured_img_medium' => __('Featured Image Medium','wpas'),
-		'featured_img_thumb' => __('Featured Image Thumbnail','wpas'),
-		'modified_date' => __('Modified Date','wpas'),
-		'modified_time' => __('Modified Time','wpas'),
-		'created_date' => __('Created Date','wpas'),
-		'created_time' => __('Created Time','wpas'),
-        );
-	if($type != 'tag-nocount'){
-		$builtins['layout_counter_id'] = __('Layout Counter Id','wpas');
-	}
-	$builtins_user = Array(
-                'user_nicename' => __('User Nicename','wpas'),
-                'user_email' => __('User Email','wpas'),
-                'user_url' => __('User URL','wpas'),
-                'user_registered' => __('User Registered','wpas'),
-                'user_display_name' => __('User Display Name','wpas'),
-                'user_login' => __('User Login','wpas')
-        );
-	if(in_array($type,Array('tag','tag-rel','tag-nocount','tag-form','rel','notify-rel')) && isset($comp_id)){
-		if($type == 'tag-form' && !empty($app['form']))
-		{
-			$comp_id_arr[] = $app['form'][$comp_id]['form-attached_entity'];
-		}
-		elseif($type == 'rel')
-		{
-			if($comp_id == 'user')
-			{
-				$builtins = array_merge($builtins,$builtins_user);
+	if($type == 'integration'){
+		if(!empty($app['shortcode'])){
+			foreach($app['shortcode'] as $myview){
+				if(in_array($myview['shc-view_type'],Array('integration','std','chart','datagrid')) && $shc != $myview['shc-label']){ 
+					$shortcodes[$myview['shc-label']] = $myview['shc-label'];
+				}
 			}
+		}	
+		$ret = "<table class='table table-striped'><tr><th colspan=2>";
+		$ret .= __('Use template tags below to customize your layout.','wpas');
+		$ret .= '</th></tr>
+			<tr><th>' . __('Functions', 'wpas') . '</th>
+			<td>Translate : <b>!#trans[' . __('Text to translate','wpas') . ']#</b>, Control If: <b>!#control-if[Condition,True Value,False Value]#</b></td></tr>';
+		if(!empty($shortcodes)){
+                        $ret .= '<tr><th>' . __('Shortcodes', 'wpas') . '</th><td>';
+			foreach($shortcodes as $key => $value){
+				$ret .= $value . ": <b>!#shortcode[" . $key . "]#</b>, ";
+			}
+                	$ret .= '</td></tr>';
+		}
+		if(!empty($app['glob'])){
+			$ret .= '<tr><th>' . __('Globals', 'wpas') . '</th><td>';
+			foreach($app['glob'] as $myglob){
+				$ret .= $myglob['glob-label'] . ": <b>!#" . $myglob['glob-name'] . "#</b>, ";
+			}
+                	$ret .= '</td></tr>';
+		}
+		$ret .= '</table>';
+	}
+	else {
+		$comp_id_arr = Array();
+		$builtins = Array(
+			'title' => __('Title','wpas'),
+			'entity_id' => __('Entity ID','wpas'),
+			'permalink' => __('Permalink','wpas'),
+			'edit_link' => __('Edit Link','wpas'),
+			'delete_link' => __('Delete Link','wpas'),
+			'excerpt' => __('Excerpt','wpas'),
+			'content' => __('Content','wpas'),
+			'author' => __('Author','wpas'),
+			'mod_author' => __('Modified Author','wpas'),
+			'featured_img_large' => __('Featured Image Large','wpas'),
+			'featured_img_medium' => __('Featured Image Medium','wpas'),
+			'featured_img_thumb' => __('Featured Image Thumbnail','wpas'),
+			'featured_img_url' => __('Featured Image URL','wpas'),
+			'modified_date' => __('Modified Date','wpas'),
+			'modified_datetime' => __('Modified DateTime','wpas'),
+			'modified_time' => __('Modified Time','wpas'),
+			'created_date' => __('Created Date','wpas'),
+			'created_time' => __('Created Time','wpas'),
+			'created_datetime' => __('Created DateTime','wpas'),
+		);
+		if($type != 'tag-nocount'){
+			$builtins['layout_counter_id'] = __('Layout Counter Id','wpas');
+		}
+		$builtins_user = Array(
+			'user_nicename' => __('User Nicename','wpas'),
+			'user_email' => __('User Email','wpas'),
+			'user_url' => __('User URL','wpas'),
+			'user_registered' => __('User Registered','wpas'),
+			'user_display_name' => __('User Display Name','wpas'),
+			'user_login' => __('User Login','wpas')
+		);
+		if(in_array($type,Array('tag','tag-rel','tag-nocount','tag-form','rel','notify-rel')) && isset($comp_id)){
+			if($type == 'tag-form' && !empty($app['form']))
+			{
+				$comp_id_arr[] = $app['form'][$comp_id]['form-attached_entity'];
+			}
+			elseif($type == 'rel')
+			{
+				if($comp_id == 'user')
+				{
+					$builtins = array_merge($builtins,$builtins_user);
+				}
+				else
+				{
+					$comp_id_arr[] = $comp_id;
+				}
+			}
+			elseif($type == 'notify-rel' && !empty($app['relationship'][$comp_id]))
+			{
+				if($app['relationship'][$comp_id]['rel-from-name'] == 'user')
+				{
+					$builtins = array_merge($builtins,$builtins_user);
+				}
+				else
+				{
+					$comp_id_arr[] = $app['relationship'][$comp_id]['rel-from-name'];
+				}
+				if($app['relationship'][$comp_id]['rel-to-name'] == 'user')
+				{
+					$builtins = array_merge($builtins,$builtins_user);
+				}
+				else
+				{
+					$comp_id_arr[] = $app['relationship'][$comp_id]['rel-to-name'];
+				}
+			}	
 			else
 			{
 				$comp_id_arr[] = $comp_id;
 			}
-		}
-		elseif($type == 'notify-rel' && !empty($app['relationship'][$comp_id]))
-		{
-			if($app['relationship'][$comp_id]['rel-from-name'] == 'user')
+			foreach($comp_id_arr as $cid)
 			{
-				$builtins = array_merge($builtins,$builtins_user);
-			}
-			else
-			{
-				$comp_id_arr[] = $app['relationship'][$comp_id]['rel-from-name'];
-			}
-			if($app['relationship'][$comp_id]['rel-to-name'] == 'user')
-			{
-				$builtins = array_merge($builtins,$builtins_user);
-			}
-			else
-			{
-				$comp_id_arr[] = $app['relationship'][$comp_id]['rel-to-name'];
-			}
-		}	
-		else
-		{
-			$comp_id_arr[] = $comp_id;
-		}
-		foreach($comp_id_arr as $cid)
-		{
-			if(!empty($app['entity'][$cid]))
-			{
-				if(!empty($app['entity'][$cid]['ent-taxonomy_category']) && $app['entity'][$cid]['ent-taxonomy_category'] == 1)
+				if(!empty($app['entity'][$cid]))
 				{
-					$blt_tax['blt_tax_cat'] = __('Categories','wpas');
-					$blt_tax['blt_tax_cat_NL'] = __('Categories NL','wpas');
-				}
-				if(!empty($app['entity'][$cid]['ent-taxonomy_post_tag']) && $app['entity'][$cid]['ent-taxonomy_post_tag'] == 1)
-				{
-					$blt_tax['blt_tax_tag'] = __('Tags','wpas');
-					$blt_tax['blt_tax_tag_NL'] = __('Tags NL','wpas');
-				}
-				if(!empty($app['entity'][$cid]['field']))
-				{
-					foreach($app['entity'][$cid]['field'] as $myfield)
+					if(!empty($app['entity'][$cid]['ent-taxonomy_category']) && $app['entity'][$cid]['ent-taxonomy_category'] == 1)
 					{
-						if(empty($myfield['fld_builtin']))
-						{
-							$comp_attrs['ent_'.$myfield['fld_name']] =  $myfield['fld_label'];
-						}
+						$blt_tax['blt_tax_cat'] = __('Categories','wpas');
+						$blt_tax['blt_tax_cat_NL'] = __('Categories NL','wpas');
 					}
-				}
-			}
-			if(!empty($app['taxonomy']))
-			{
-				foreach($app['taxonomy'] as $tkey => $mytax)
-				{
-					foreach($mytax['txn-attach'] as $mytxn_attach)
+					if(!empty($app['entity'][$cid]['ent-taxonomy_post_tag']) && $app['entity'][$cid]['ent-taxonomy_post_tag'] == 1)
 					{
-						if($mytxn_attach == $cid)
-						{
-							$tax_attrs['tax_'.$mytax['txn-name']] =  $mytax['txn-label'];
-							$tax_attrs['tax_'.$mytax['txn-name'] . '_NL'] =  $mytax['txn-label'] . " NL";
-						}
+						$blt_tax['blt_tax_tag'] = __('Tags','wpas');
+						$blt_tax['blt_tax_tag_NL'] = __('Tags NL','wpas');
 					}
-				}
-			}
-			if(($type == 'tag-rel' || $type == 'tag-nocount') && !empty($app['relationship']))
-			{
-				foreach($app['relationship'] as $myrelation)
-				{
-					if(isset($myrelation['rel-connected-display']) && $myrelation['rel-connected-display'] == 1)
+					if(!empty($app['entity'][$cid]['field']))
 					{
-						if($myrelation['rel-from-name'] == $cid && !empty($myrelation['rel-con_from_layout']))
+						foreach($app['entity'][$cid]['field'] as $myfield)
 						{
-							if(!empty($myrelation['rel-connected-display-from-title']))
+							if(empty($myfield['fld_builtin']))
 							{
-								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-from-title'];
-							}
-							else
-							{
-								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-to-name']]['ent-label'];
-							}		
-						}
-						elseif($myrelation['rel-to-name'] == $cid && !empty($myrelation['rel-con_to_layout']))
-						{
-							if(!empty($myrelation['rel-connected-display-to-title']))
-							{
-								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-to-title'];
-							}
-							else
-							{
-								$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-from-name']]['ent-label'];
-							}
-								
-						}
-					}
-					if($myrelation['rel-type'] == 'many-to-many' && isset($myrelation['rel-related-display']) && $myrelation['rel-related-display'] == 1)
-					{
-						if($myrelation['rel-from-name'] == $cid && !empty($myrelation['rel-rel_from_layout']))
-						{
-							if(!empty($myrelation['rel-related-display-to-title']))
-							{
-								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-to-title'];
-							}
-							else
-							{
-								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-to-name']]['ent-label'];
-							}
-						}
-						elseif($myrelation['rel-to-name'] == $cid && !empty($myrelation['rel-rel_to_layout']))
-						{
-							if(!empty($myrelation['rel-related-display-from-title']))
-							{
-								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-from-title'];
-							}
-							else
-							{
-								$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-from-name']]['ent-label'];
+								$comp_attrs['ent_'.$myfield['fld_name']] =  $myfield['fld_label'];
+								if($myfield['fld_type'] == 'image'){
+									$comp_attrs['ent_'.$myfield['fld_name'].'_url_1'] =  $myfield['fld_label'] . "URL";
+								}
 							}
 						}
 					}
 				}
-			}
-			if($type == 'rel' && $rel_id != '' && !empty($app['relationship'][$rel_id]['field']))
-			{
-				foreach($app['relationship'][$rel_id]['field'] as $myfield)
+				if(!empty($app['taxonomy']))
 				{
-					$rel_fld_attrs['rel_'.$myfield['rel_fld_name']] =  $myfield['rel_fld_label'];
+					foreach($app['taxonomy'] as $tkey => $mytax)
+					{
+						foreach($mytax['txn-attach'] as $mytxn_attach)
+						{
+							if($mytxn_attach == $cid)
+							{
+								$tax_attrs['tax_'.$mytax['txn-name']] =  $mytax['txn-label'];
+								$tax_attrs['tax_'.$mytax['txn-name'] . '_NL'] =  $mytax['txn-label'] . " NL";
+							}
+						}
+					}
+				}
+				if(($type == 'tag-rel' || $type == 'tag-nocount') && !empty($app['relationship']))
+				{
+					foreach($app['relationship'] as $myrelation)
+					{
+						if(isset($myrelation['rel-connected-display']) && $myrelation['rel-connected-display'] == 1)
+						{
+							if($myrelation['rel-from-name'] == $cid && !empty($myrelation['rel-con_from_layout']))
+							{
+								if(!empty($myrelation['rel-connected-display-from-title']))
+								{
+									$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-from-title'];
+								}
+								else
+								{
+									$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-to-name']]['ent-label'];
+								}		
+							}
+							elseif($myrelation['rel-to-name'] == $cid && !empty($myrelation['rel-con_to_layout']))
+							{
+								if(!empty($myrelation['rel-connected-display-to-title']))
+								{
+									$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $myrelation['rel-connected-display-to-title'];
+								}
+								else
+								{
+									$rel_attrs['entrelcon_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-from-name']]['ent-label'];
+								}
+									
+							}
+						}
+						if($myrelation['rel-type'] == 'many-to-many' && isset($myrelation['rel-related-display']) && $myrelation['rel-related-display'] == 1)
+						{
+							if($myrelation['rel-from-name'] == $cid && !empty($myrelation['rel-rel_from_layout']))
+							{
+								if(!empty($myrelation['rel-related-display-to-title']))
+								{
+									$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-to-title'];
+								}
+								else
+								{
+									$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-to-name']]['ent-label'];
+								}
+							}
+							elseif($myrelation['rel-to-name'] == $cid && !empty($myrelation['rel-rel_to_layout']))
+							{
+								if(!empty($myrelation['rel-related-display-from-title']))
+								{
+									$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $myrelation['rel-related-display-from-title'];
+								}
+								else
+								{
+									$rel_attrs['entrelrltd_' . $myrelation['rel-name']] = $app['entity'][$myrelation['rel-from-name']]['ent-label'];
+								}
+							}
+						}
+					}
+				}
+				if($type == 'rel' && $rel_id != '' && !empty($app['relationship'][$rel_id]['field']))
+				{
+					foreach($app['relationship'][$rel_id]['field'] as $myfield)
+					{
+						$rel_fld_attrs['rel_'.$myfield['rel_fld_name']] =  $myfield['rel_fld_label'];
+					}
 				}
 			}
-		}
-		$ret = "<table class='table table-striped'><tr><th colspan=2>";
-		$ret .= __('Use template tags below to customize your layout. Taxonomy tags produce link(s) to the related record(s). For no link tag, add _nl to taxonomy tag. For example, for !#mytag_nl# tag produces a no link version of the tag. Functions can be used in header and footer sections as well.','wpas');
-		$ret .= '</th></tr>
-			<tr><th>' . __('Functions', 'wpas') . '</th>
-			<td>Translate : <b>!#trans[' . __('Text to translate','wpas') . ']#</b>, </td></tr>
-                        <tr><th>' . __('Builtin', 'wpas') . '</th>
-                        <td>';
-		foreach($builtins as $key => $value){
-			$ret .= $value . ": <b>!#" . $key . "#</b>, ";
-		}
-                $ret .= '</td></tr>';
-		if(!empty($blt_tax)){
-                        $ret .= '<tr><th>' . __('WP Builtin Taxonomies', 'wpas') . '</th><td>';
-			foreach($blt_tax as $key => $value){
+			$ret = "<table class='table table-striped'><tr><th colspan=2>";
+			$ret .= __('Use template tags below to customize your layout. Taxonomy tags produce link(s) to the related record(s). For no link tag, add _nl to taxonomy tag. For example, for !#mytag_nl# tag produces a no link version of the tag. Functions can be used in header and footer sections as well.','wpas');
+			$ret .= '</th></tr>
+				<tr><th>' . __('Functions', 'wpas') . '</th>
+				<td>Translate : <b>!#trans[' . __('Text to translate','wpas') . ']#</b>, <a href="https://wpas.emdplugins.com/articles/formatting-date-and-time/" target="_blank">Date Format:</a> <b>!#date-format[\'' . __('Format','wpas') . '\',' . __('Attribute Date Tag','wpas') . ']#</b>, <a href="https://wpas.emdplugins.com/articles/formatting-date-and-time/" target="_blank">Human Time Diff to Now:</a> <b>!#human-diff[' . __('Attribute Date Tag','wpas') . ']#</b>, <a href="https://wpas.emdplugins.com/articles/formatting-date-and-time/" target="_blank">Human Time Diff:</a> <b>!#human-diff[' . __('Attribute Date Tag From','wpas') . ',' . __('Attribute Date Tag To','wpas') . ']#</b>, Control If: <b>!#control-if[Condition,True Value,False Value]#</b></td></tr>
+				<tr><th>' . __('Builtin', 'wpas') . '</th>
+				<td>';
+			foreach($builtins as $key => $value){
 				$ret .= $value . ": <b>!#" . $key . "#</b>, ";
 			}
 			$ret .= '</td></tr>';
-		}
-		if(!empty($comp_attrs)){
-                        $ret .= '<tr><th>' . __('Attributes', 'wpas') . '</th><td>';
-			foreach($comp_attrs as $key => $value){
-				$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+			if(!empty($app['glob'])){
+				$ret .= '<tr><th>' . __('Globals', 'wpas') . '</th><td>';
+				foreach($app['glob'] as $myglob){
+					$ret .= $myglob['glob-label'] . ": <b>!#" . $myglob['glob-name'] . "#</b>, ";
+				}
+				$ret .= '</td></tr>';
 			}
-			$ret .= '</td></tr>';
-		}
-		if(!empty($tax_attrs)){
-                        $ret .= '<tr><th>' . __('Taxonomies', 'wpas') . '</th><td>';
-			foreach($tax_attrs as $key => $value){
-				$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+			if(!empty($blt_tax)){
+				$ret .= '<tr><th>' . __('WP Builtin Taxonomies', 'wpas') . '</th><td>';
+				foreach($blt_tax as $key => $value){
+					$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+				}
+				$ret .= '</td></tr>';
 			}
-			$ret .= '</td></tr>';
-		}
-		if(!empty($rel_attrs)){
-                        $ret .= '<tr><th>' . __('Relationships', 'wpas') . '</th><td>';
-			foreach($rel_attrs as $key => $value){
-				$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+			if(!empty($comp_attrs)){
+				$ret .= '<tr><th>' . __('Attributes', 'wpas') . '</th><td>';
+				foreach($comp_attrs as $key => $value){
+					$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+				}
+				$ret .= '</td></tr>';
 			}
-			$ret .= '</td></tr>';
-		}
-		if(!empty($rel_fld_attrs)){
-                        $ret .= '<tr><th>' . __('Relationship Attributes', 'wpas') . '</th><td>';
-			foreach($rel_fld_attrs as $key => $value){
-				$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+			if(!empty($tax_attrs)){
+				$ret .= '<tr><th>' . __('Taxonomies', 'wpas') . '</th><td>';
+				foreach($tax_attrs as $key => $value){
+					$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+				}
+				$ret .= '</td></tr>';
 			}
-			$ret .= '</td></tr>';
+			if(!empty($rel_attrs)){
+				$ret .= '<tr><th>' . __('Relationships', 'wpas') . '</th><td>';
+				foreach($rel_attrs as $key => $value){
+					$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+				}
+				$ret .= '</td></tr>';
+			}
+			if(!empty($rel_fld_attrs)){
+				$ret .= '<tr><th>' . __('Relationship Attributes', 'wpas') . '</th><td>';
+				foreach($rel_fld_attrs as $key => $value){
+					$ret .= $value . ": <b>!#" . $key . "#</b>, ";
+				}
+				$ret .= '</td></tr>';
+			}
+				
+			$ret .= '</table>';
 		}
-		$ret .= '</table>';
 	}
 	echo $ret;
         die();
@@ -346,10 +661,18 @@ function wpas_allowed_html($allowed,$content){
 		$allowed['iframe']['src'] = true;
 		$allowed['iframe']['frameborder'] = true;
 		$allowed['iframe']['allowfullscreen'] = true;
-		$allowed['div']['data-slide-to'] = true;
 		$allowed['a']['data-slide'] = true;
+		$allowed['a']['data-parent'] = true;
+		$allowed['a']['data-toggle'] = true;
+		$allowed['a']['aria-expanded'] = true;
+		$allowed['a']['aria-controls'] = true;
 		$allowed['div']['data-target'] = true;
+		$allowed['div']['role'] = true;
+		$allowed['div']['data-slide-to'] = true;
 		$allowed['div']['data-interval']=true;
+		$allowed['div']['style']=true;
+		$allowed['div']['tabindex']=true;
+		$allowed['input']['placeholder']=true;
 	}
 	return $allowed;
 }
@@ -555,17 +878,19 @@ function wpas_get_ent_fields()
 	echo json_encode($return);
 	die();
 }
-function wpas_entity_fields($type,$app_id,$ent_id,$value)
+function wpas_entity_fields($type,$app_id,$ent_id,$value,$curr_id='')
 {
 	$return = "";
 	$date_types = Array('date','datetime','time');
 	$hidden_date_types = Array('date_mm_dd_yyyy','date_dd_mm_yyyy','current_year','current_month','current_month_num','current_day','now','current_time');
 	$num_types = Array('decimal','integer');
 	$not_allowed_types = Array('password','textarea','wysiwyg','file','image','hidden_function');
+	$not_allowed_order_types = Array('password','textarea','wysiwyg','file','image','hidden_function','color');
 	$not_allowed_all = Array('password');
 	$body_types =  Array('textarea','wysiwyg');
 	$attach_types = Array('file','image');
 	$name_types = Array('text','letters_only','letters_with_punc');
+	$not_cond_types = Array('date','datetime','time','file','image','hidden_function');
 	if($type == 'date')
 	{
 		$post_dates = Array("post_date"=> __('Post Date','wpas'),"post_date_gmt"=>__('Post Date GMT','wpas'),"post_modified"=>__('Post Modified','wpas'),"post_modified_gmt"=>__('Post Modified GMT','wpas'));
@@ -595,7 +920,11 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 		foreach($app['entity'][$ent_id]['field'] as $keyfield => $myfield)
 		{	
 			$show_field = 0;
-			if(($type == 'all' || $type == 'notify') && !in_array($myfield['fld_type'],$not_allowed_all))
+			if($type == 'order' && (!in_array($myfield['fld_type'],$not_allowed_order_types) && empty($myfield['fld_builtin'])))
+			{
+				$show_field = 1;
+			}
+			elseif(($type == 'all' || $type == 'notify') && !in_array($myfield['fld_type'],$not_allowed_all))
 			{
 				$show_field = 1;
 			}
@@ -635,6 +964,10 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 			{
 				$show_field = 1;
 			}
+			else if($type == 'cond' && !in_array($myfield['fld_type'],$not_cond_types) && $curr_id != $keyfield && empty($myfield['fld_builtin']))
+			{
+				$show_field = 1;
+			}
 			
 			if($show_field == 1)
 			{
@@ -646,7 +979,14 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 				{
 					$keyfield = $keyfield . "__" . $ent_id;
 				}
-				$return .= "<option value='" . $keyfield . "'";
+				$return .= "<option value='";
+				if($type == 'cond'){
+					$return .= "attr-" . $keyfield . "'";
+					$return .= " att-type='" . $myfield['fld_type'] . "'";
+				}
+				else{
+					$return .= $keyfield . "'";
+				}
 				if($type == 'pdate')
 				{	
 					if(!empty($value) && in_array($keyfield,$value))
@@ -656,7 +996,11 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 				}
 				else
 				{
-					if((!is_array($value) && $keyfield == $value) || (is_array($value) && in_array($keyfield,$value)))
+					if($type == 'cond')
+					{
+						$keyfield = 'attr-' . $keyfield;
+					}	
+					if((!is_array($value) && $value != "" && $keyfield == $value) || (is_array($value) && in_array($keyfield,$value)))
 					{
 						$return .= " selected";
 					}
@@ -669,18 +1013,26 @@ function wpas_entity_fields($type,$app_id,$ent_id,$value)
 }	
 	
 
-function wpas_get_tax_values()
+function wpas_get_tax_values($app_id,$tax_id,$value='',$type='')
 {
-
 	wpas_is_allowed();
-	$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
-	$tax_id = isset($_GET['tax_id']) ? $_GET['tax_id'] : '';
-	$value = isset($_GET['value']) ? $_GET['value'] : '';
+	$result_ret = 1;
+	if($app_id == '' && $tax_id == '')
+        {
+		$app_id = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+		$tax_id = isset($_GET['tax_id']) ? $_GET['tax_id'] : '';
+		$value = isset($_GET['value']) ? $_GET['value'] : '';
+		$type = isset($_GET['type']) ? $_GET['type'] : '';
+		$result_ret = 0;
+        }
+	$return = '';
 	if($app_id == null)
 	{
 		die(-1);
 	}
-	$return = "<select><option value=''>" . __("Apply to all","wpas") . "</option>";
+	if($type != 'cond'){
+		$return = "<select><option value=''>" . __("Apply to all","wpas") . "</option>";
+	}
 	$app = wpas_get_app($app_id);
         if($app !== false && !empty($app['taxonomy'][$tax_id]['txn-values']))
         {
@@ -691,7 +1043,7 @@ function wpas_get_tax_values()
 			if(empty($matches))
 			{
 				$tval = str_replace("$","",$tax_val);
-                        }
+			}
 			elseif(!empty($matches[1]))
 			{
 				$tval = str_replace("$","",$matches[1]);
@@ -704,7 +1056,15 @@ function wpas_get_tax_values()
 			$return .= ">" . $tval . "</option>";
 		}
 	}
-	$return .= "</select>";
+	else if($type == 'cond'){
+		$return = "<option value=''>" . __("Please define values","wpas") . "</option>";
+	}
+	if($type != 'cond'){
+		$return .= "</select>";
+	}
+	if($result_ret == 1){
+		return $return;
+	}
 	echo $return;
 	die();
 }
@@ -1801,6 +2161,19 @@ function wpas_check_unique()
 				}
 			}
 			break;
+		case 'glob':
+			if(!empty($app['glob']))
+			{
+				foreach($app['glob'] as $key => $myglob)
+				{
+					if($name == $myglob['glob-name'] && ($comp_id == null || $key != $comp_id))
+					{
+						$response = false;
+						break;
+					}
+				}
+			}
+			break;
 	}
 	echo $response;
 	die();
@@ -1909,7 +2282,7 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 	{
 		$return = "<option value=''>" . __("Please select","wpas") . "</option>";
 	}
-	if($app !== false && !empty($app['entity']) && !in_array($type,Array('tax')))
+	if($app !== false && !empty($app['entity']) && !in_array($type,Array('tax','cond')))
 	{
 		if($type == 'relationship_from' || $type == 'relationship_to')
 		{
@@ -1960,8 +2333,11 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 			}		
 			if($show_ent == 1)
 			{
-				var_dump($values);
+				//var_dump($values);
 				$return .= "<option value='" . $keyent . "'"; 
+				if($myent['ent-hierarchical'] == 1){
+					$return .= " hier=1";
+				}
 				if($selected == 0 && is_array($values) && in_array($keyent,$values))
 				{
 					$return .= " selected";
@@ -1970,7 +2346,7 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 			}
 		}
 	}
-	elseif($app !== false && !empty($app['taxonomy']) && in_array($type,Array('tax','chart')))
+	elseif($app !== false && !empty($app['taxonomy']) && in_array($type,Array('tax','chart','cond')))
 	{
 		foreach($app['taxonomy'] as $keytxn => $mytxn)
 		{
@@ -1995,13 +2371,24 @@ function wpas_entity_types($app_id,$type,$values="",$subtype="",$tax_id="",$char
 					$show_tax = 0;
 				}
 			}
+			if($type == 'cond' && $tax_id != ''){
+				if($tax_id == $keytxn){
+					$show_tax = 0;
+				}
+			}
 			if($show_tax == 1)
 			{
 				if(!empty($chart_ent) && $add_select == 0)
 				{
 					$keytxn = $keytxn . "__tax";
 				}
+				elseif($type == 'cond'){
+					$keytxn = "tax-" . $keytxn;
+				}
 				$return .= "<option value='" . $keytxn . "'"; 
+				if($type == 'cond'){
+					$return .= " att-type='tax'";
+				}
 				if(in_array($keytxn,$values))
 				{
 					$return .= " selected";
@@ -2906,9 +3293,33 @@ function wpas_save_form()
 	foreach($post_array as $pkey => $comp_form_value)
 	{
 		$pos = strpos($pkey,$search_str);
-		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','widg-html','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
+		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','widg-html','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt','shc-sc_js')))
 		{
-			$comp_form_value_sanitized = wp_kses_post(stripslashes($comp_form_value));
+			if(in_array($pkey, Array('shc-sc_layout','widg-layout','shc-layout_footer','shc-layout_header','rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout'))){
+				global $allowedposttags,$allowedtags;
+				if(preg_match_all('/data-[a-zA-Z-]*/',$comp_form_value,$matches))
+				{
+					foreach($matches[0] as $data_tag){
+						$allowedposttags['div'][$data_tag]=true;
+						$allowedposttags['input'][$data_tag]=true;
+						$allowedposttags['nav'][$data_tag]=true;
+						$allowedposttags['a'][$data_tag]=true;
+						$allowedposttags['table'][$data_tag]=true;
+						$allowedposttags['tr'][$data_tag]=true;
+						$allowedposttags['td'][$data_tag]=true;
+						$allowedposttags['th'][$data_tag]=true;
+					}
+				}
+				if(preg_match_all('/aria-[a-zA-Z-]*/',$comp_form_value,$matches))
+				{
+					foreach($matches[0] as $data_tag){
+						$allowedposttags['div'][$data_tag]=true;
+						$allowedposttags['button'][$data_tag]=true;
+					}
+				}
+			}
+			$allowedposttags['div']['style']=true;
+			$comp_form_value_sanitized = html_entity_decode(wp_kses_post(stripslashes($comp_form_value)),ENT_QUOTES);
 		}
 		elseif(!is_array($comp_form_value))
 		{
@@ -3014,7 +3425,7 @@ function wpas_update_form()
 	$search_str = wpas_get_search_string($type);
 	$comp_type = $type;
 	$comp = Array();
-	$types = Array('ent','txn','rel','help','shc','widget','role','form','notify','connection');
+	$types = Array('ent','txn','rel','help','shc','widget','role','form','notify','connection','glob');
 	foreach($post_array as $pkey => $comp_form_value)
 	{
 		if(in_array($pkey,$types))
@@ -3023,9 +3434,27 @@ function wpas_update_form()
 		}
 		$pos = strpos($pkey,$search_str);
 
-		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','widg-html','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt')))
+		if(in_array($pkey, Array('rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout','shc-sc_layout','shc-layout_header','shc-layout_footer','widg-layout','widg-html','help-screen_sidebar','help_fld_content','form-form_desc','form-not_loggedin_msg','notify-confirm_msg','notify-confirm_admin_msg','form-result_msg','form-result_footer_msg','form-confirm_success_txt','form-confirm_error_txt','shc-sc_js')))
 		{
-			$comp_form_value_sanitized = wp_kses_post(stripslashes($comp_form_value));
+			if(in_array($pkey, Array('shc-sc_layout','widg-layout','shc-layout_footer','shc-layout_header','rel-con_from_header','rel-con_from_footer','rel-con_from_layout','rel-con_to_header','rel-con_to_footer','rel-con_to_layout','rel-rel_from_header','rel-rel_from_footer','rel-rel_from_layout','rel-rel_to_header','rel-rel_to_footer','rel-rel_to_layout'))){
+				global $allowedposttags,$allowedtags;
+				if(preg_match_all('/data-[a-zA-Z-]*/',$comp_form_value,$matches))
+				{
+					foreach($matches[0] as $data_tag){
+						$allowedposttags['div'][$data_tag]=true;
+						$allowedposttags['input'][$data_tag]=true;
+						$allowedposttags['nav'][$data_tag]=true;
+						$allowedposttags['a'][$data_tag]=true;
+						$allowedposttags['table'][$data_tag]=true;
+						$allowedposttags['tr'][$data_tag]=true;
+						$allowedposttags['td'][$data_tag]=true;
+						$allowedposttags['th'][$data_tag]=true;
+					}
+				}
+			}
+			$allowedposttags['div']['style']=true;
+			//$comp_form_value_sanitized = html_entity_decode(wp_kses_post(stripslashes($comp_form_value)),ENT_QUOTES);
+			$comp_form_value_sanitized = html_entity_decode(wp_kses_post($comp_form_value),ENT_QUOTES);
 		}
 		elseif(!is_array($comp_form_value))
 		{
@@ -3225,6 +3654,9 @@ function wpas_get_search_string($type)
 			break;
 		case 'connection':
 			$search_str = 'connection-';
+			break;
+		case 'glob':
+			$search_str = 'glob-';
 			break;
 		default:
 			$search_str = "ent-";

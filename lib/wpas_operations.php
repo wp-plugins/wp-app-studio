@@ -1,5 +1,4 @@
 <?php
-
 add_action( 'admin_init', 'wpas_export');
 add_action( 'admin_init', 'wpas_duplicate');
 
@@ -55,6 +54,8 @@ function wpas_duplicate()
 			$app_key = uniqid('',true);
 			$app['app_id'] = $app_key;
 			wpas_update_app($app,$app_key,'new');
+			$return_page = admin_url('admin.php?page=wpas_app_list');
+			wp_redirect($return_page);
 		}
         }
 }

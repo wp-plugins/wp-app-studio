@@ -1,10 +1,10 @@
 ===  WP App Studio  === 
 Contributors: emarket-design
-Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3, users, user mapping
+Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3, users, user mapping,conditional logic,form dependency,form elements
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 4.0
 Tested up to: 4.2
-Stable tag: 4.3.2
+Stable tag: 4.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,8 @@ App = Plugin<br>
 App Signature = Design of your plugin exported to a flat file having .wpas extension <br>
 ProDev = Commercial tier for plugin development with full functionality.<br>
 FreeDev = Free tier for plugin development with limited functionality.<br>
+
+Use FreeDev API access and see how WP App Studio can quicken WordPress Development.
 
 For more info go to [FAQ page] (https://emdplugins.com/frequently-asked-questions-wpas-faq/)
 
@@ -52,6 +54,7 @@ For more info go to [FAQ page] (https://emdplugins.com/frequently-asked-question
 	* Limit content access based on custom user roles and capabilities
 	* Create a custom dashboard page including many types views and admin widgets
 	* Automate creating pages for your shortcodes
+	* Create advanced conditional logic for hidding and showing attributes, taxonomies, and relationships.
 	* Add custom admin notices to communicate with your users such as documentation page links and campaign offers
 	* Use summary function such as average, count, sum, etc. of your custom post type field and taxonomy values
 	* Use Visual Shortcode Builder on Page content editor toolbar to display sections of your content on the frontend
@@ -179,6 +182,8 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 18. NEW with 4.3.2 - Map user field to your entity attributes and use them everywhere.
 
 == Upgrade Notice ==
+= 4.4.0 =
+Added Globals menu, added support for CDN based JS and CSS files, Plugin images, attribute name based sorting, and conditional logic for attributes, taxonomies and relationships.
 = 4.3.2 =
 User mapping, latest comment fix, taxonomy display in menus, and misc bug fixes
 = 4.3.1 =
@@ -225,6 +230,19 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 4.4.0 (05/16/2015) =
+* NEW Globals menu; for plugin level attributes which can be used in all views, can be set by users in the plugin settings page.
+* NEW CDN based CSS and JS file support for view and widget layouts; user favorite CSS and JS plugin or framework. All files are downloaded and enqueued locally and specific to the view linked.
+* NEW Added support for attribute based sorting in view and widget filters
+* NEW Added **Visible in the Admin List** option in the attributes which can be used to not to display some attributes in the admin entity lists. It is useful for entities with the significant number of attributes which may clutter the limited space.
+* NEW Added hierarchical display option in views; when checked the entity parent-child relationships are displayed in the format you specify in the layout. It is very useful for sitemap like displays.
+* NEW Added full conditional logic support for attributes, taxonomies, and relationships to show or hide the whole input based on the user input. Can be used in the submit forms and admin entity editor. Can apply to ALL or ANY of the conditions specified.
+* NEW Plugin level image file support specified in the settings menu. Use IMGDIR/filename format to point to the image file in your view layouts. The files are download locally to the img directory. We only support HTTPS protocol at this time.
+* NEW Added the following tag functions which can be used in the view layouts:
+- Date format - formats the date attributes
+- Human time diff - displays the date attribute in a human readable format
+- Control-if - apply if and else logic to the attributes
+* Fixed misc. bugs in the WPAS plugin and made cosmetic improvements.
 = 4.3.2 (03/11/2015) =
 * NEW User field mapping to entity attributes. See the user mapping screenshot.
 * Fixed Lastest Comment feature which allows to display the name of the user who made the latest comment on an entity and filter based on the latest comment user.

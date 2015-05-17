@@ -2,17 +2,23 @@
 function wpas_add_shortcode_form($app_id)
 {
 	?>
-<script type="text/javascript">
+<script type="text/JavaScript">
 jQuery(document).ready(function($) {
         $('#shc-view_type').click(function() {
 		app_id = jQuery('input#app').val();
 		var selected_type = $(this).find('option:selected').val();
 		$(this).showShcTabs(selected_type,app_id,1);
+		if(selected_type == 'integration'){
+			$(this).showShcTags(app_id,0,'integration','');
+		}
 	});
         $('#shc-attach').click(function() {
 		shc_type = $('#shc-view_type').find('option:selected').val();
 		app_id = $('input#app').val();
 		ent_id = $(this).find('option:selected').val();
+		if(shc_type == 'std' && $(this).find('option:selected').attr('hier') == 1){
+			$('#shc-hier_div').show();
+		}
 		if(shc_type == 'datagrid')
 		{
 			$.get(ajaxurl,{action:'wpas_get_table_cols',app_id:app_id,chart_ent:ent_id}, function(response){
@@ -21,12 +27,29 @@ jQuery(document).ready(function($) {
 			$('#shc-table_div').show();
 		}
 		else if($.inArray(shc_type,['single','archive','tax']) != -1 && ent_id != ''){
-			$(this).showShcTags(app_id,ent_id,'tag-nocount');
+			$(this).showShcTags(app_id,ent_id,'tag-nocount','');
 		}
 		else if(shc_type != 'chart' && ent_id != ''){
-			$(this).showShcTags(app_id,ent_id,'tag-rel');
+			$(this).showShcTags(app_id,ent_id,'tag-rel','');
+		}
+		if($.inArray(shc_type,['datagrid','std']) != -1 && ent_id != ''){
+			$.get(ajaxurl,{action:'wpas_get_orderby_fields',app_id:app_id,ent_id:ent_id}, function(response)
+			{
+				$('#shc-sc_orderby').html(response);
+			});
 		}
 	});
+	$('#shc-hier').click(function(){
+		if($(this).attr('checked'))
+		{
+			$('#shc-sc_pagenav_div').hide();
+			$('#shc-hier_vals_div').show();
+		}
+		else {
+			$('#shc-sc_pagenav_div').show();
+			$('#shc-hier_vals_div').hide();
+		}
+	});	
 	$('#shc-sc_pagenav').click(function(){
 		if($(this).attr('checked'))
 		{
@@ -40,10 +63,14 @@ jQuery(document).ready(function($) {
         $('#shc-attach_form').click(function() {
 		app_id = $('input#app').val();
 		comp_id = $(this).find('option:selected').val();
-		$(this).showShcTags(app_id,comp_id,'tag-form');
+		$(this).showShcTags(app_id,comp_id,'tag-form','');
+		$.get(ajaxurl,{action:'wpas_get_orderby_fields',app_id:app_id,form_id:comp_id}, function(response)
+		{
+			$('#shc-sc_orderby').html(response);
+		});
 	});
-	$.fn.showShcTags = function (app_id,comp_id,type){
-		$.get(ajaxurl,{action:'wpas_get_layout_tags',type:type,app_id:app_id,comp_id:comp_id}, function(response){
+	$.fn.showShcTags = function (app_id,comp_id,type,shc){
+		$.get(ajaxurl,{action:'wpas_get_layout_tags',type:type,app_id:app_id,comp_id:comp_id,shc:shc}, function(response){
 			$('#shc-layout-tags').html(response);
 			$('#shc-layout-tags').show();
 		});
@@ -56,6 +83,8 @@ jQuery(document).ready(function($) {
 			case 'std':
 				$('#shc-theme_type_div').show();
 				$('#shc-sc_pagenav_div').show();
+				$('#shc-hier_div').show();
+				$('#shc-hier_vals_div').hide();
 				$('#shctabs-2-li').show();
 				if(get_vals == 1)
 				{
@@ -81,6 +110,8 @@ jQuery(document).ready(function($) {
 			case 'search':
 				$('#shc-theme_type_div').hide();
 				$('#shc-sc_pagenav_div').show();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shctabs-2-li').show();
 				if(get_vals == 1)
 				{
@@ -106,6 +137,8 @@ jQuery(document).ready(function($) {
 			case 'single':
 				$('#shc-theme_type_div').show();
 				$('#shc-sc_pagenav_div').hide();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				if(get_vals == 1)
 				{
 					$.get(ajaxurl,{action:'wpas_get_entities',type:'shortcode',app_id:app_id,subtype:selected_type}, function(response)
@@ -131,6 +164,8 @@ jQuery(document).ready(function($) {
 			case 'archive':
 				$('#shc-theme_type_div').show();
 				$('#shc-sc_pagenav_div').hide();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shctabs-2-li').hide();
 				if(get_vals == 1)
 				{
@@ -156,6 +191,8 @@ jQuery(document).ready(function($) {
 			case 'tax':
 				$('#shc-theme_type_div').show();
 				$('#shc-sc_pagenav_div').hide();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shctabs-2-li').hide();
 				if(get_vals == 1)
 				{
@@ -193,6 +230,8 @@ jQuery(document).ready(function($) {
                         	$('#shc-app_dash_div').show();
 				$('#shc-theme_type_div').hide();
 				$('#shc-sc_pagenav_div').hide();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_form_div').hide();
                         	$('#shc-layout_header_div').hide();
@@ -206,6 +245,8 @@ jQuery(document).ready(function($) {
 			case 'datagrid':
 				$('#shc-theme_type_div').show();
 				$('#shc-sc_pagenav_div').show();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shctabs-2-li').show();
 				if(get_vals == 1)
 				{
@@ -231,6 +272,8 @@ jQuery(document).ready(function($) {
 			case 'integration':
 				$('#shc-theme_type_div').show();
 				$('#shc-sc_pagenav_div').hide();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shctabs-2-li').hide();
 				$('#shc-attach_div').hide();
 				$('#shc-attach_tax_div').hide();
@@ -240,7 +283,7 @@ jQuery(document).ready(function($) {
                         	$('#shc-app_dash_div').show();
                         	$('#shc-layout_header_div').hide();
                         	$('#shc-layout_footer_div').hide();
-				$('#show-tags-div').hide();
+				$('#show-tags-div').show();
                         	$('#shc-layout_div').show();
                         	$('#shc-sc_css_div').show();
 				$('#shc-chart_div').hide();
@@ -258,6 +301,8 @@ jQuery(document).ready(function($) {
 
 				$('#shc-theme_type_div').hide();
 				$('#shc-sc_pagenav_div').hide();
+				$('#shc-hier_div').hide();
+				$('#shc-hier_vals_div').hide();
 				$('#shc-attach_form_div').hide();
 				$('#shc-attach_tax_div').hide();
 				$('#shc-attach_div').hide();
@@ -786,6 +831,44 @@ jQuery(document).ready(function($) {
 		</div>
 		</div>
 		</div>
+		<div class="control-group row-fluid" id="shc-hier_div" style="display:none;">
+                <label class="control-label span3"></label>
+                <label class="checkbox span9"><?php _e("Enable hierarchical display.","wpas"); ?>
+                <input type="checkbox" value="1" id="shc-hier" name="shc-hier">
+                <a title="<?php _e("Enables hierarchical display.","wpas"); ?>" style="cursor: help;" href="#">
+                <i class="icon-info-sign"></i></a>
+               </label>
+                </div>
+		<div id="shc-hier_vals_div" style="display:none;">
+		<div class="control-group row-fluid">
+                <label class="control-label span3"></label>
+                <label class="span9"><?php _e("Hierarchical list type","wpas"); ?>
+		<select name="shc-hier_list" id="shc-hier_list" class="input-medium">
+		<option value="ol" selected>Ordered List</option>
+		<option value="ul">Unordered List</option>
+		<option value="none">None</option>
+		</select>
+                <a title="<?php _e("Select the list type which will be used to display hierarchical elements. When using hierarchical display, ul, ol, and li tags are not necessary if -None- option is not selected. In -None- display type, you must enter the ul or ol tags in the header section, in layouts all markup is wrapped inside li tag.","wpas"); ?>" style="cursor: help;" href="#">
+                <i class="icon-info-sign"></i></a>
+               </label>
+                </div>
+		<div class="control-group row-fluid">
+                <label class="control-label span3"></label>
+                <label class="span9"><?php _e("Hierarchical display root class","wpas"); ?>
+		<input class="input-small" name="shc-hier_class" id="shc-hier_class" type="text" placeholder="<?php _e("e.g. stacked","wpas");?>" value="" >
+                <a title="<?php _e("Sets the root class of the unordered or ordered list in hierarchical display.","wpas"); ?>" style="cursor: help;" href="#">
+                <i class="icon-info-sign"></i></a>
+               </label>
+                </div>
+		<div class="control-group row-fluid">
+                <label class="control-label span3"></label>
+                <label class="span9"><?php _e("Hierarchical display depth","wpas"); ?>
+		<input class="input-small" name="shc-hier_depth" id="shc-hier_depth" type="text" placeholder="<?php _e("e.g. 3","wpas");?>" value="" >
+                <a title="<?php _e("Sets the hierarchical display depth. Leave it blank to display all.","wpas"); ?>" style="cursor: help;" href="#">
+                <i class="icon-info-sign"></i></a>
+               </label>
+                </div>
+                </div>
 		<div class="control-group row-fluid" id="shc-sc_pagenav_div">
                 <label class="control-label span3"></label>
                 <label class="checkbox span9"><?php _e("Enable paged navigation.","wpas"); ?>
@@ -798,7 +881,7 @@ jQuery(document).ready(function($) {
                 <label class="control-label span3"><?php _e("Pagination Class","wpas"); ?></label>
 		<div class="controls span9">
 		<input class="input-xlarge" name="shc-pgn_class" id="shc-pgn_class" type="text" placeholder="<?php _e("e.g. visible-lg","wpas");?>" value="" >
-                <a title="<?php _e("Add the specified custom css class to an <ul> element. The class definition can be put in the css field. For example, .pagination-lg for larger blocks or .pagination-sm for smaller blocks.","wpas"); ?>" style="cursor: help;" href="#">
+                <a title="<?php _e("Add the specified custom CSS class to ul element. The class definition can be put in the CSS field. For example, .pagination-lg for larger blocks or .pagination-sm for smaller blocks.","wpas"); ?>" style="cursor: help;" href="#">
                 <i class="icon-info-sign"></i></a>
                </label>
                 </div>
@@ -854,7 +937,7 @@ jQuery(document).ready(function($) {
 		<label class="control-label req span3"><?php _e("Layout","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea id="shc-sc_layout" name="shc-sc_layout" class="wpas-std-textarea"></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single record of your view. You can also edit the source code, add entity attributes, taxonomies.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+		<a href="#" style="cursor: help;" title="<?php _e("Sets the layout of a single record which can include the view tags available in the tag collapse. If the view type is standard, the layout defines your loop. If the hierarchial display is enabled, the layout displays all parent-child relationships in the format set in the hierarchial list type dropdown. ","wpas"); ?>"><i class="icon-info-sign"></i></a>
 		<div id="show-tags-div" style="padding:10px 0;">
 		<div style="padding:10px;">
 		<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#shc-layout-tags">Show Tags</button>
@@ -1081,7 +1164,31 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Css","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea class="wpas-std-textarea" id="shc-sc_css" name="shc-sc_css"></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("The custom css code to be used when displaying the content. It is handy when you added custom classes in the layout editor and want to add css class definitions. You can leave this field blank and use a common css file for all.","wpas"); ?>">
+		<a href="#" style="cursor: help;" title="<?php _e("The custom CSS code to be used when displaying the content. It is handy when you added custom classes in the layout editor and want to add CSS class definitions. You can leave this field blank and use a common CSS file for all.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="shc-sc_js_div">
+		<label class="control-label span3"><?php _e("Js","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea class="wpas-std-textarea" id="shc-sc_js" name="shc-sc_js"></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("The custom JavaScript code which will be enqueued to the view. Do not include script tags.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="shc-sc_cdnjs_div">
+		<label class="control-label span3"><?php _e("CDN JS","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea id="shc-sc_cdnjs" name="shc-sc_cdnjs" class="wpas-std-textarea" placeholder=" YOU MUST USE HTTPS e.g. https://cdnjs.cloudflare.com/ajax/libs/example.js/2.0.5/example.min.js;https://cdn.jsdelivr.net/example/1.1.9/min/example.min.js" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated JavaScript file urls starting with https. We only accept files from the following sources; cdnjs.cloudflare.com and cdn.jsdelivr.net or raw.githubusercontent.com. All files will be downloaded and merged before getting locally enqueued to the view they are linked to.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="shc-sc_cdncss_div">
+		<label class="control-label span3"><?php _e("CDN CSS","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea id="shc-sc_cdncss" name="shc-sc_cdncss" class="wpas-std-textarea" placeholder=" YOU MUST USE HTTPS e.g. https://cdnjs.cloudflare.com/ajax/libs/example/2.0.5/example.min.css;https://cdn.jsdelivr.net/example/1.1.9/min/example.min.css" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated CSS file urls starting with https. We only accept files from the following sources; cdnjs.cloudflare.com and cdn.jsdelivr.net or raw.githubusercontent.com. All files will be downloaded and merged before getting locally enqueued to the view they are linked to.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
@@ -1110,15 +1217,6 @@ jQuery(document).ready(function($) {
 		<label class="control-label span3"><?php _e("Sort Retrieved Posts By","wpas"); ?></label>
 		<div class="controls span9">
 		<select name="shc-sc_orderby" id="shc-sc_orderby" class="input-small">
-		<option value="date" selected="selected"><?php _e("Date","wpas"); ?></option>
-		<option value="ID"><?php _e("ID","wpas"); ?></option>
-		<option value="author"><?php _e("Author","wpas"); ?></option>
-		<option value="title"><?php _e("Title","wpas"); ?></option>
-		<option value="parent"><?php _e("Post parent id","wpas"); ?></option>
-		<option value="modified"><?php _e("Last modified date","wpas"); ?></option>
-		<option value="rand"><?php _e("Random","wpas"); ?></option>
-		<option value="comment_count"><?php _e("Number of comments","wpas"); ?></option>
-		<option value="none"><?php _e("None","wpas"); ?></option>
 		</select>
 		<a href="#" style="cursor: help;" title="<?php _e("Allows sorting of retrieved content by a parameter selected. Defaults to date.","wpas"); ?>">
 		<i class="icon-info-sign"></i></a>

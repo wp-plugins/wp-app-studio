@@ -113,7 +113,6 @@ jQuery(document).ready(function($) {
 		<li><a href="#tab7" data-toggle="tab"><?php _e("Footer","wpas"); ?></a></li>
 		<li><a href="#tab8" data-toggle="tab"><?php _e("Mail","wpas"); ?></a></li>
 		<li><a href="#tab9" data-toggle="tab"><?php _e("Misc","wpas"); ?></a></li>
-		<li><a href="#tab10" data-toggle="tab"><?php _e("Css","wpas"); ?></a></li>
 	</ul>
 	<input type="hidden" value="" name="app" id="app">	
 	<div class="tab-content">
@@ -535,18 +534,24 @@ jQuery(document).ready(function($) {
                         </select>
                         <a href="#" style="cursor: help;" title="<?php _e("Allows to set a jQuery UI theme for the frontend and backend.","wpas"); ?>">
                         <i class="icon-info-sign"></i> </a></td>
-                        <?php //<td><img id="theme_url" name="theme_url" src="http://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td> ?>
+                        <td><img id="theme_url" name="theme_url" src="https://jqueryui.com/resources/images/themeGallery/theme_90_smoothness.png"></td>
                         </tr>
 		</table>
 		</div>
 		</div>
-	</div>
-	<div class="tab-pane" id="tab10">
 		<div class="control-group row-fluid">
-		<label class="control-label span3"><?php _e("Css","wpas"); ?></label>
+		<label class="control-label span1"><?php _e("Css","wpas"); ?></label>
 		<div class="controls span9">
 		<textarea class="wpas-std-textarea" id="ao_css" name="ao_css"></textarea>
 		<a href="#" style="cursor: help;" title="<?php _e("Adds app-wide css definitions. You can use this field to insert common CSS definitions.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid">
+		<label class="control-label span1"><?php _e("Images","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea id="ao_img" name="ao_img" class="wpas-std-textarea" placeholder=" YOU MUST USE .jpg,.png .jpeg, .gif, .tiff, .svg" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated image file urls starting with https. All files will available locally. You can point to the files using IMGDIR constant. Exp; IMGDIR/example.png.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

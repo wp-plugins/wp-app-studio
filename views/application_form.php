@@ -109,11 +109,11 @@ function wpas_nav($app_name,$option="")
 {
 	if(is_array($option))
 	{
-                $option_link = '<p id="update-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-picture"></i>' . __("Update","wpas") . '</a></p>';
+                $option_link = '<p id="update-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-building"></i>' . __("Update","wpas") . '</a></p>';
 	}
 	else
 	{
-                $option_link = '<p id="add-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-picture"></i>' . __("Add New","wpas") . '</a></p>';
+                $option_link = '<p id="add-option"><a href="#' .esc_attr($app_name) .'"><i class="icon-building"></i>' . __("Add New","wpas") . '</a></p>';
 	}
         ?>
                 <div class="row-fluid"><div id="was-nav" class="span2">
@@ -229,9 +229,20 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <div class="accordion-group">
                 <div class="accordion-heading">
-                <a class="accordion-toggle" href="#collapse11" data-parent="#was-nav" data-toggle="collapse"><i class="icon-picture icon-large"></i><?php _e("Settings","wpas");?></a>
+                <a class="accordion-toggle" href="#collapse11" data-parent="#was-nav" data-toggle="collapse"><i class="icon-globe icon-large"></i><?php _e("Globals","wpas");?></a>
                 </div>
                 <div id="collapse11" class="accordion-body collapse">
+                <div class="accordion-inner">
+                <p id="add-glob"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-globe"></i><?php _e("Add New","wpas");?></a></p>
+                <p id="glob"><a href="#<?php echo esc_attr($app_name); ?>"><i class="icon-reorder"></i><?php _e("List All","wpas");?></a></p>
+                </div>
+                </div>
+                </div>                
+                <div class="accordion-group">
+                <div class="accordion-heading">
+                <a class="accordion-toggle" href="#collapse12" data-parent="#was-nav" data-toggle="collapse"><i class="icon-building icon-large"></i><?php _e("Settings","wpas");?></a>
+                </div>
+                <div id="collapse12" class="accordion-body collapse">
                 <div class="accordion-inner">
 		<?php echo $option_link; ?>
                 </div>
@@ -564,6 +575,17 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['type'] = 'form';
                 $list_values['icon'] = "icon-list-alt";
                 $add_field_tag = "#form";
+        }
+	elseif($list_type == 'glob')
+        {
+                $base = admin_url('admin.php?page=wpas_add_new_app&view=glob&app=' . $app_id);
+                $list_values['title'] = __("Globals","wpas");
+                $format = "globpage";
+                $field_name = "glob-name";
+                $other_fields = Array("glob-label","glob-type","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Label","wpas"),__("Type","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $list_values['icon'] = "icon-globe";
+                $add_field_tag = "#glob";
         }
         $return_list = wpas_list_html($list_values);
         if($list_values['count'] == 0)

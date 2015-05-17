@@ -4,6 +4,28 @@
         ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('#rel-is_conditional').click(function (){
+		$('.cond-value').hide();
+		$('.cond-value').val('');
+		if($(this).attr('checked')){
+			app_id = $('input#app').val();
+			if($('#rel-from-name').val() != 'user'){
+				ent_id = $('#rel-from-name').val();;
+			}
+			else {
+				ent_id = $('#rel-to-name').val();;
+			}
+			$('#rel-conditional-options').show();
+			$('#rel-cond_case').val('show');
+			$('#rel-cond_type').val('all');
+			$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,div_id:1,val_type:'none',from:'rel'}).done(function (response){
+				$('#rel-cond-list').append(response);
+			});
+		}
+		else {
+			$('#rel-conditional-options').hide();
+		}
+	});
 	$.fn.showRelTags = function (app_id,comp_id,div_id,rel_id){
 		$.get(ajaxurl,{action:'wpas_get_layout_tags',type:'rel',app_id:app_id,comp_id:comp_id,rel_id:rel_id}, function(response){
 			$('#'+div_id).html(response);
@@ -144,6 +166,39 @@ jQuery(document).ready(function($) {
         </select><a href="#" title="<?php _e("Pick the type of relationship between TO and FROM entity. In a one-to-many relationship, each record in the related to entity can be related to many records in the relating entity. For example, in a customer to an invoice relationship each customer can have many invoices but each invoice can only be generated for a single customer. In a many-to-many relationship, one or more records in a entity can be related to 0, 1 or many records in another entity. For example, Each customer can order many products and each product can be ordered by many customers.","wpas");?>" style="cursor: help;"> <i class="icon-info-sign"></i></a>
         </div>
         </div>
+	<div class="control-group" id="rel-enable_conditional_div" name="rel-enable_conditional_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Enable Conditional Logic","wpas");?>
+            <input name="rel-is_conditional" id="rel-is_conditional" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute filterable in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div id="rel-conditional-options" class="control-group row-fluid" style="display:none;">
+	<label class="control-label span3"><?php _e("Conditional Logic","wpas");?></label>
+	<div class="controls span9">  
+	<div id="rel-cond">
+	<div class="control-group row-fluid">
+			<label class="control-label span1"></label>
+			<div class="controls span11">
+			<select name="rel-cond_case" id="rel-cond_case" class="input-small">
+			<option value="show"><?php _e('Show','wpas');?></option>
+			<option value="hide"><?php _e('Hide','wpas');?></option></select>
+			<?php _e('This Attribute If ','wpas'); ?>
+			<select name="rel-cond_type" id="rel-cond_type" class="input-small">
+			<option value="all"><?php _e('All','wpas');?></option>
+			<option value="any"><?php _e('Any','wpas');?></option></select>
+			<?php _e('of the below match:','wpas'); ?>
+			</div>
+	</div>
+	<div id="rel-cond-list" style="width:530px;">
+	</div>
+	
+	</div>
+	</div>
+	</div>
        <div class="control-group row-fluid">
         <label class="control-label span3"></label>
         <div class="controls span9">

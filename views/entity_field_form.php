@@ -74,7 +74,8 @@ function wpas_add_ent_field_form($app_id,$ent_id)
 <script type="text/javascript">
 jQuery(document).ready(function($) {
         var options_arr = ['checkbox_list','radio','select'];
-	var filterable_arr = ['textarea','wysiwyg','file','image'];
+	var filterable_arr = ['wysiwyg','file','image'];
+	var listable_arr = ['wysiwyg','textarea'];
 	var min_max_value_arr = ['decimal','digits_only','integer'];
 	var min_max_length_arr = ['text','letters_with_punc','alphanumeric','letters_only','no_whitespace','textarea','password'];
 	var min_max_words_arr = ['textarea'];
@@ -143,6 +144,7 @@ jQuery(document).ready(function($) {
 			break;
 		}
 		$('#fld_is_filterable_div').show();
+		$('#fld_list_visible_div').show();
 		$('#fld_required_div').show();
 		$('#fld_srequired_div').show();
 		$('#fld_dflt_value_div').show();
@@ -254,6 +256,11 @@ jQuery(document).ready(function($) {
                         $('#fld_is_filterable_div').hide();
 			$('#fld_is_filterable').attr('checked',false);
 		}
+		if($.inArray(myItem,listable_arr) != -1)
+		{
+			$('#fld_list_visible_div').hide();
+			$('#fld_list_visible').attr('checked',false);
+		}
 		if($.inArray(myItem,required_arr) != -1)
 		{
                         $('#fld_required_div').hide();
@@ -289,6 +296,8 @@ jQuery(document).ready(function($) {
                         $('#fld_srequired').attr('checked',false);
                         $('#fld_is_filterable_div').hide();
 			$('#fld_is_filterable').attr('checked',false);
+			$('#fld_list_visible_div').hide();
+			$('#fld_list_visible').attr('checked',false);
 			$('#fld_dflt_value_div').hide();
 			$('#fld_dflt_value').val('');
 		}
@@ -350,6 +359,8 @@ jQuery(document).ready(function($) {
 		$('#fld_allow_html_div').hide();
 		$('#fld_limit_user_role_div').hide(); */
 		$('#fld_dflt_checked_div').hide();
+		$('#fld_fa_chkd_div').hide();
+		$('#fld_fa_unchkd_div').hide();
 		$('#fld_allow_html_div').hide();
 		$('#validation-message').hide();
 		$('#validation-options').hide();
@@ -368,6 +379,7 @@ jQuery(document).ready(function($) {
 		$('#fld_srequired_div').hide();
 		$('#fld_uniq_id_div').hide();
 		$('#fld_is_filterable_div').hide();
+		$('#fld_list_visible_div').hide();
 		$('#fld_multiple_div').hide();
 		$('#fld_is_advanced_div').hide();
 		$('#fld_file_ext_div').hide();
@@ -412,7 +424,49 @@ jQuery(document).ready(function($) {
 	$('#fld_hidden_func').change(function (){
 		$(this).showAutoInc('add',$(this).val());
 	});
-	
+	$('#fld_is_conditional').click(function (){
+		$('.cond-value').hide();
+		$('.cond-value').val('');
+		if($(this).attr('checked')){
+			app_id = $('input#app').val();
+			ent_id = $('input#ent').val();
+			$('#conditional-options').show();
+			$('#fld_cond_case').val('show');
+			$('#fld_cond_type').val('all');
+			$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,div_id:1,val_type:'none',from:'fld'}).done(function (response){
+				$('#fld_cond-list').append(response);
+			});
+		}
+		else {
+			$('#conditional-options').hide();
+		}
+	});
+	$.fn.changeCondVal = function(list_id,div_id,type,app_id,ent_id,att_id,value){
+                if($.inArray(type,['select','checkbox_list','radio','checkbox']) != -1)
+		{
+			att_id = att_id.replace('attr-','');
+			$('#' + list_id + 'cond_value_' + div_id).val('');
+			$('#' + list_id + 'cond_value_' + div_id).hide();
+			$.get(ajaxurl,{action:'wpas_get_default_vals',app_id:app_id,ent_id:ent_id,att_id:att_id,value:value}).done(function(response){
+			$('#' + list_id + 'cond_sel_value_'+ div_id).html(response);
+			$('#' + list_id + 'cond_sel_value_'+ div_id).show();
+			});
+		}
+		else if(type == 'tax'){
+			att_id = att_id.replace('tax-','');
+			$('#' + list_id + 'cond_value_' + div_id).val('');
+			$('#' + list_id + 'cond_value_' + div_id).hide();
+			$.get(ajaxurl,{action:'wpas_get_tax_values',app_id:app_id,tax_id:att_id,value:value,type:'cond'}, function(response){
+				$('#' + list_id + 'cond_sel_value_'+ div_id).html(response);
+				$('#' + list_id + 'cond_sel_value_'+ div_id).show();
+			});
+		}
+		else {
+			$('#' + list_id + 'cond_value_' + div_id).show();
+			$('#' + list_id + 'cond_sel_value_' + div_id + ' :selected').val('');
+			$('#' + list_id + 'cond_sel_value_' + div_id).hide();
+		}
+	}
 });
 </script>
 <input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
@@ -528,6 +582,16 @@ jQuery(document).ready(function($) {
 			</label>
 	</div>
 	</div>
+	<div class="control-group" id="fld_list_visible_div" name="fld_list_visible_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Visible in Admin List","wpas");?>
+            <input name="fld_list_visible" id="fld_list_visible" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute visible in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
 	<div class="control-group" id="fld_is_filterable_div" name="fld_is_filterable_div">
     	<label class="control-label span3"></label>
 	<div class="controls span9">
@@ -587,9 +651,9 @@ jQuery(document).ready(function($) {
 	<div class="control-group" id="fld_image_thickbox_div" name="fld_image_thickbox_div" style="display:none;">
     	<label class="control-label span3"></label>
 	<div class="controls span9">
-			<label class="checkbox"><?php _e("Thickbox","wpas");?>
+			<label class="checkbox"><?php _e("Advanced","wpas");?>
             <input name="fld_image_thickbox" id="fld_image_thickbox" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="<?php _e("Sets thickbox option.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Displays media dialog box shows up when set. The standard is browser file upload dialog.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>
@@ -643,7 +707,7 @@ jQuery(document).ready(function($) {
 			<option value="yy/mm/dd"><?php _e("YYYY/MM/DD","wpas");?></option>
 			<option value="dd/mm/yy"><?php _e("DD/MM/YYYY","wpas");?></option>
 			</select>
-			<a href="#" style="cursor: help;" title="<?php _e("Select a date format.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Select a date format which will be used in the admin entity list and as a default in the frontend views.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -798,6 +862,39 @@ jQuery(document).ready(function($) {
 		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence increment by value, set to 1 if empty.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
+	</div>
+	</div>
+	<div class="control-group" id="enable_conditional_div" name="enable_conditional_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Enable Conditional Logic","wpas");?>
+            <input name="fld_is_conditional" id="fld_is_conditional" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute filterable in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div id="conditional-options" class="control-group row-fluid" style="display:none;">
+	<label class="control-label span3"><?php _e("Conditional Logic","wpas");?></label>
+	<div class="controls span9">  
+	<div id="cond">
+	<div class="control-group row-fluid">
+			<label class="control-label span1"></label>
+			<div class="controls span11">
+			<select name="fld_cond_case" id="fld_cond_case" class="input-small">
+			<option value="show"><?php _e('Show','wpas');?></option>
+			<option value="hide"><?php _e('Hide','wpas');?></option></select>
+			<?php _e('This Attribute If ','wpas'); ?>
+			<select name="fld_cond_type" id="fld_cond_type" class="input-small">
+			<option value="all"><?php _e('All','wpas');?></option>
+			<option value="any"><?php _e('Any','wpas');?></option></select>
+			<?php _e('of the below match:','wpas'); ?>
+			</div>
+	</div>
+	<div id="fld_cond-list" style="width:530px;">
+	</div>
+	
+	</div>
 	</div>
 	</div>
 	
