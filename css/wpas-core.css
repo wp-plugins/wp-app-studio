@@ -3865,13 +3865,13 @@ position: static;
 }
 @media (max-width: 767px)  {
 .wpas body {
-padding-left: 20px;
-    padding-right: 20px;
+padding-left: 10px;
+    padding-right: 10px;
 }
 .wpas .navbar-fixed-top,
 .wpas .navbar-fixed-bottom {
-margin-left: -20px;
-    margin-right: -20px;
+margin-left: -10px;
+    margin-right: -10px;
 }
 .wpas .container-fluid {
 padding: 0;
@@ -4162,7 +4162,7 @@ width: 32px;
 }
 @media (min-width: 1200px)  {
 .wpas .row {
-margin-left: -30px;
+margin-left: -15px;
     *zoom: 1;
 }
 .wpas .row:before,
@@ -4175,7 +4175,7 @@ clear: both;
 }
 .wpas [class*="span"] {
 float: left;
-    margin-left: 30px;
+    margin-left: 15px;
 }
 .wpas .container,
 .wpas .navbar-fixed-top .container,

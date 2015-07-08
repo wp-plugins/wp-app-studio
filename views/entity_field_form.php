@@ -1,78 +1,12 @@
 <?php
-function wpas_view_ent_fields($ent_name)
-{
-return '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>' . __("Attributes","wpas") . '</h3></div>
-                <div class="span9 field" id="add_field_entity">
-<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>
-</div></div></div>';
-}
-function wpas_view_ent_fields_list($ent_field)
-{
-	$ret = '<div id="field-title"><div class="row-fluid"><div class="span1"></div>
-        <div id="field-name" class="span3">' . __("Name","wpas") . '</div>
-        <div id="field-label" class="span3">' . __("Label","wpas") . '</div>
-        <div class="span2">' . __("Type","wpas") . '</div>
-        <div class="span1">' . __("Req","wpas") . '</div>
-        <div class="span1">' . __("Unique","wpas") . '</div>
-	<div class="span1"><div id="edit-field"></div><div id="delete-field"></div></div>
-	</div></div>';
-	$ret_fields = '<ul id="fields-sort" class="sortable ui-sortable">';
-	$ret_builtin = '<ul id="builtin-fields-sort">';
-        foreach($ent_field as $key => $myfield)
-        {
-		if(isset($myfield['fld_required']) && $myfield['fld_required'] == 1)
-		{
-			$required = 'Y';
-		}
-		else
-		{
-			$required = 'N';
-		}
-		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && $myfield['fld_hidden_func'] == 'unique_id'))
-		{
-			$uniq_id = 'Y';
-		}
-		else
-		{
-			$uniq_id = 'N';
-		}
-		if(isset($myfield['fld_builtin']) && $myfield['fld_builtin'] == 1)
-		{
-			$ret_builtin .= '<li id="' . esc_attr($key) . '"><div class="field-blt-row"><div class="row-fluid">
-			<div class="span1"></div>
-			<div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
-			<div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
-			<div class="span2">' . esc_html($myfield['fld_type']) . '</div>
-			<div class="span1">' . $required . '</div>
-			<div class="span1">' . $uniq_id . '</div>
-			<div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
-			</div></div></div></li>';
-		}
-		else
-		{
-			$ret_fields .= '<li id="' . esc_attr($key) . '"><div class="field-row"><div class="row-fluid">
-			<div class="span1">' . '<i class="icon-sort"></i></div>
-			<div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
-			<div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
-			<div class="span2">' . esc_html($myfield['fld_type']) . '</div>
-			<div class="span1">' . $required . '</div>
-			<div class="span1">' . $uniq_id . '</div>
-			<div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
-			<div id="delete-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></div></li>';
-		}
-	}
-        $ret .= $ret_builtin . '</ul>';
-        $ret .= $ret_fields . '</ul>';
-	return $ret;
-}
-
 function wpas_add_ent_field_form($app_id,$ent_id)
 {
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
         var options_arr = ['checkbox_list','radio','select'];
-	var filterable_arr = ['textarea','wysiwyg','file','image'];
+	var filterable_arr = ['wysiwyg','file','image'];
+	var listable_arr = ['wysiwyg','textarea'];
 	var min_max_value_arr = ['decimal','digits_only','integer'];
 	var min_max_length_arr = ['text','letters_with_punc','alphanumeric','letters_only','no_whitespace','textarea','password'];
 	var min_max_words_arr = ['textarea'];
@@ -80,7 +14,7 @@ jQuery(document).ready(function($) {
 	var srequired_arr = ['file','image'];
 	var not_uniq_arr = ['file','image','hidden_constant','hidden_function','checkbox','checkbox_list','radio','select','textarea','wysiwyg','password'];
 
-	$.fn.changeValidateMsg = function(myItem){
+	$.fn.changeValidateMsg = function(myItem,page_type){
 		switch(myItem) {
 		case 'email':
 			$('#validation-message').text('<?php _e("Validation Message:","wpas") . ' ' . _e("Please enter a valid email address.","wpas");?>');		
@@ -140,6 +74,14 @@ jQuery(document).ready(function($) {
 			$('#validation-message').text('');		
 			break;
 		}
+		$('#fld_is_filterable_div').show();
+		$('#fld_list_visible_div').show();
+		$('#fld_required_div').show();
+		$('#fld_srequired_div').show();
+		$('#fld_dflt_value_div').show();
+		$('#fld_dflt_value').datetimepicker("destroy");
+		$('#fld_uniq_id_div').show();
+		$('#fld_map_div').hide();
 		if(myItem == 'image')
 		{
 			$('#fld_dflt_value_div').hide();
@@ -213,15 +155,44 @@ jQuery(document).ready(function($) {
 				$('#fld_fa_unchkd_val').attr('placeholder','fa-square-o');
 			}
                 }
+		if(myItem == 'text' || myItem == 'textarea')
+		{
+			$('#fld_allow_html_div').show();
+		}
+		else
+		{
+			$('#fld_allow_html_div').hide();
+		}
 		if(myItem == 'select')
 		{
 			$('#fld_is_advanced_div').show();
 			$('#fld_multiple_div').show();
 		}
+		if(myItem == 'user')
+		{
+			if(page_type != 'edit'){
+				app_id = $('input#app').val();
+				$.get(ajaxurl,{action:'wpas_get_roles',type:'user',app_id:app_id}, function(response){
+					$('#fld_limit_user_role').html(response);
+					$('#fld_limit_user_role_div').show();
+				});
+			}
+			$('#fld_is_advanced_div').show();
+			$('#fld_multiple_div').hide();
+		}
+		else
+		{
+			$('#fld_limit_user_role_div').hide();
+		}
 		if($.inArray(myItem,filterable_arr) != -1)
 		{
                         $('#fld_is_filterable_div').hide();
 			$('#fld_is_filterable').attr('checked',false);
+		}
+		if($.inArray(myItem,listable_arr) != -1)
+		{
+			$('#fld_list_visible_div').hide();
+			$('#fld_list_visible').attr('checked',false);
 		}
 		if($.inArray(myItem,required_arr) != -1)
 		{
@@ -258,6 +229,8 @@ jQuery(document).ready(function($) {
                         $('#fld_srequired').attr('checked',false);
                         $('#fld_is_filterable_div').hide();
 			$('#fld_is_filterable').attr('checked',false);
+			$('#fld_list_visible_div').hide();
+			$('#fld_list_visible').attr('checked',false);
 			$('#fld_dflt_value_div').hide();
 			$('#fld_dflt_value').val('');
 		}
@@ -267,7 +240,31 @@ jQuery(document).ready(function($) {
 			$('#fld_dflt_value_div').hide();
 			$('#fld_dflt_value').val('');
 		}
-		
+		if(myItem == 'map')
+		{
+			$('#fld_uniq_id_div').hide();
+			$('#fld_required_div').hide();
+			$('#fld_srequired_div').hide();
+                        $('#fld_required').attr('checked',false);
+                        $('#fld_srequired').attr('checked',false);
+                        $('#fld_is_filterable_div').hide();
+			$('#fld_is_filterable').attr('checked',false);
+			$('#fld_list_visible_div').hide();
+			$('#fld_list_visible').attr('checked',false);
+			$('#fld_dflt_value_div').hide();
+			$('#fld_dflt_value').val('');
+			$('#enable_conditional_div').hide();
+			if(page_type != 'edit'){
+				app_id = $('input#app').val();
+				ent_id = $('input#ent').val();
+				$.get(ajaxurl,{action:'wpas_get_ent_fields',type:'map',app_id:app_id,ent_id:ent_id}, function(response){
+					$('#fld_map_attached').html(response['pre']+response['list']);
+					$('#fld_map_marker_title').html(response['pre']+response['list']);
+					$('#fld_map_info_window').html(response['pre']+response['list']);
+					$('#fld_map_div').show();
+				}, 'json');
+			}
+		}	
 		
 		if($('#validation-message').text() == '')
                 {
@@ -280,6 +277,19 @@ jQuery(document).ready(function($) {
 	}
 
 	$(document).on('change','#fld_type',function(){
+		$(this).initAttr();
+
+		$('#fld_dflt_value').val('');
+		$('#fld_required').attr('checked',false);
+		$('#fld_srequired').attr('checked',false);
+		$('#fld_uniq_id').attr('checked',false);
+		$('#fld_required').attr('disabled',false);
+		$('#fld_srequired').attr('disabled',false);
+
+		$(this).changeValidateMsg($(this).val(),'');
+        });
+	$.fn.initAttr = function(){
+		/*
 		$('#fld_dflt_checked_div').hide();
 		$('#validation-options').hide();		
 		$('#max-file-uploads').hide();		
@@ -295,7 +305,6 @@ jQuery(document).ready(function($) {
 		$('#fld_required_div').show();
 		$('#fld_srequired_div').show();
 		$('#fld_dflt_value_div').show();
-		$('#fld_dflt_value').val('');
 		$('#fld_file_size_div').hide();
 		$('#fld_file_ext_div').hide();
 		$('#fld_multiple_div').hide();
@@ -304,16 +313,41 @@ jQuery(document).ready(function($) {
 		$('#fld_fa_chkd_div').hide();
 		$('#fld_fa_unchkd_div').hide();
 		$('#fld_uniq_id_div').show();
-		$('#fld_required').attr('checked',false);
-		$('#fld_srequired').attr('checked',false);
-		$('#fld_uniq_id').attr('checked',false);
-		$('#fld_required').attr('disabled',false);
-		$('#fld_srequired').attr('disabled',false);
-		$(this).changeValidateMsg($(this).val());
-        });
-
-	$('#fld_uniq_id').click(function () {
-		if($(this).attr('checked')){
+		$('#fld_allow_html_div').hide();
+		$('#fld_limit_user_role_div').hide(); */
+		$('#fld_dflt_checked_div').hide();
+		$('#fld_fa_chkd_div').hide();
+		$('#fld_fa_unchkd_div').hide();
+		$('#fld_allow_html_div').hide();
+		$('#validation-message').hide();
+		$('#validation-options').hide();
+		$('#fld_values_div').hide();
+		$('#fld_hidden_func_div').hide();
+		$('#fld_searchable_div').hide();
+		$('#fld_dflt_value_div').hide();
+		$('#max-file-uploads').hide();
+		$('#date-format').hide();
+		$('#time-format').hide();
+		$('#min-max-value').hide();
+		$('#min-max-length').hide();
+		$('#min-max-words').hide();
+		$('#fld_file_size_div').hide();
+		$('#fld_required_div').hide();
+		$('#fld_srequired_div').hide();
+		$('#fld_uniq_id_div').hide();
+		$('#fld_is_filterable_div').hide();
+		$('#fld_list_visible_div').hide();
+		$('#fld_multiple_div').hide();
+		$('#fld_is_advanced_div').hide();
+		$('#fld_file_ext_div').hide();
+		$('#fld_image_thickbox_div').hide();
+		$('#fld_limit_user_role_div').hide();
+		$('#fld_autoinc_field_div').hide();
+		$('#fld_map_div').hide();
+	}
+	$.fn.changeReqMult = function(uniq){
+		if(uniq == 1)
+		{
 			$('#fld_required').attr('checked',true);
 			$('#fld_required').attr('disabled',true);
 		}
@@ -321,8 +355,76 @@ jQuery(document).ready(function($) {
 		{
 			$('#fld_required').attr('checked',false);
 			$('#fld_required').attr('disabled',false);
-		}			
+		}
+	}			
+	$('#fld_uniq_id').click(function () {
+		if($(this).attr('checked')){
+			$(this).changeReqMult(1);
+		}
+		else
+		{
+			$(this).changeReqMult(0);
+		}
 	});
+	$.fn.showAutoInc = function(type,show){
+		
+		if(show == 'autoinc'){
+			$('#fld_autoinc_field_div').show();
+		}
+		else {
+			$('#fld_autoinc_field_div').hide();
+		}
+		if(type == 'add'){
+			$('#fld_autoinc_start').val(1);
+			$('#fld_autoinc_incr').val(1);
+		}
+	}
+	$('#fld_hidden_func').change(function (){
+		$(this).showAutoInc('add',$(this).val());
+	});
+	$('#fld_is_conditional').click(function (){
+		$('.cond-value').hide();
+		$('.cond-value').val('');
+		if($(this).attr('checked')){
+			app_id = $('input#app').val();
+			ent_id = $('input#ent').val();
+			$('#conditional-options').show();
+			$('#fld_cond_case').val('show');
+			$('#fld_cond_type').val('all');
+			$.get(ajaxurl,{action:'wpas_get_cond_div',app_id:app_id,ent_id:ent_id,div_id:1,val_type:'none',from:'fld'}).done(function (response){
+				$('#fld_cond-list').append(response);
+			});
+		}
+		else {
+			$('#conditional-options').hide();
+		}
+	});
+	$.fn.changeCondVal = function(list_id,div_id,type,app_id,ent_id,att_id,value){
+                if($.inArray(type,['select','checkbox_list','radio','checkbox']) != -1)
+		{
+			att_id = att_id.replace('attr-','');
+			$('#' + list_id + 'cond_value_' + div_id).val('');
+			$('#' + list_id + 'cond_value_' + div_id).hide();
+			$.get(ajaxurl,{action:'wpas_get_default_vals',app_id:app_id,ent_id:ent_id,att_id:att_id,value:value}).done(function(response){
+			$('#' + list_id + 'cond_sel_value_'+ div_id).html(response);
+			$('#' + list_id + 'cond_sel_value_'+ div_id).show();
+			});
+		}
+		else if(type == 'tax'){
+			att_id = att_id.replace('tax-','');
+			$('#' + list_id + 'cond_value_' + div_id).val('');
+			$('#' + list_id + 'cond_value_' + div_id).hide();
+			$.get(ajaxurl,{action:'wpas_get_tax_values',app_id:app_id,tax_id:att_id,value:value,type:'cond'}, function(response){
+				$('#' + list_id + 'cond_sel_value_'+ div_id).html(response);
+				$('#' + list_id + 'cond_sel_value_'+ div_id).show();
+			});
+		}
+		else {
+			$('#' + list_id + 'cond_value_' + div_id).show();
+			$('#' + list_id + 'cond_sel_value_' + div_id + ' :selected').val('');
+			$('#' + list_id + 'cond_sel_value_' + div_id).hide();
+		}
+	}
 });
 </script>
 <input type="hidden" id="app" name="app" value="<?php echo $app_id; ?>">
@@ -333,7 +435,7 @@ jQuery(document).ready(function($) {
 	<div class="row-fluid"><div class="alert alert-info pull-right"><i class="icon-info-sign"></i><a data-placement="bottom" href="#" rel="tooltip" title="<?php _e("An attribute is a property or descriptor of an entity, for example, Customer Name is an attribute of the entity Customer.","wpas");?>"><?php _e("HELP","wpas");?></a></div></div>
   <fieldset>
   	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Name","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Name","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_name" id="fld_name" type="text" placeholder="<?php _e("e.g. product_name","wpas");?>" value="">
 			<a href="#" style="cursor: help;" title="<?php _e("General name for the attribute, single word, no spaces, all lower case. Underscores and dashes allowed","wpas");?>">
@@ -341,7 +443,7 @@ jQuery(document).ready(function($) {
 			</div>
 	</div>
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Label","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Label","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_label" id="fld_label" type="text" placeholder="<?php _e("e.g. Product Name","wpas");?>" value="">
 			<a href="#" style="cursor: help;" title="<?php _e("User friendly name for your attribute. It will appear on the EDIT page of the entity.","wpas");?>">
@@ -351,13 +453,13 @@ jQuery(document).ready(function($) {
 	<div class="control-group row-fluid">
 			<label class="control-label span3"><?php _e("Description","wpas");?></label>
 			<div class="controls span9">
-					<textarea id="fld_desc" name="fld_desc" class="input-xlarge" rows="3" placeholder="<?php _e("Write a brief description on how the attribute will be used.","wpas");?>" ></textarea>
+					<textarea id="fld_desc" name="fld_desc" class="wpas-std-textarea" placeholder="<?php _e("Write a brief description on how the attribute will be used.","wpas");?>" ></textarea>
 					<a href="#" style="cursor: help;" title="<?php _e("Instructions or help-text related to your attribute.","wpas");?>">
 					<i class="icon-info-sign"></i></a>          		
 			</div>
     </div>
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Type","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Type","wpas");?></label>
 			<div class="controls span9">
 					<select name="fld_type" id="fld_type">
 						<option selected="selected" value=""><?php _e("Please select","wpas");?></option>
@@ -401,12 +503,46 @@ jQuery(document).ready(function($) {
 						<option value="checkbox_list" style='padding-left:2em;'><?php _e("Checkbox List","wpas");?></option>
 						<option value="radio" style='padding-left:2em;'><?php _e("Radios","wpas");?></option>
 						<option value="select" style='padding-left:2em;'><?php _e("Select","wpas");?></option>
+						<option value="user" style='padding-left:2em;'><?php _e("User List","wpas");?></option>
+						<option value="" style='font-style:italic;font-weight:bold;'><?php _e("Misc","wpas");?></option>
+						<option value="map" style='padding-left:2em;'><?php _e("Map","wpas");?></option>
 					</select>
 			<a href="#" style="cursor: help;" title="<?php _e("Defines the attribute display and validation type.","wpas");?>">
 			<i class="icon-info-sign"></i></a>      
 			<span id="validation-message" class="label label-info" style="display:none;"> </span>
 			</div>
 	  </div>
+	<div id="fld_map_div" name="fld_map_div">
+	<div class="control-group">
+		<label class="control-label req span3"><?php _e("Attached Address","wpas");?></label>
+		<div class="controls span9">
+			<select name="fld_map_attached" id="fld_map_attached">
+			</select>
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the address attribute for the map.","wpas");?>">
+			<i class="icon-info-sign"></i></a>      
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label span3"><?php _e("Marker Title","wpas");?></label>
+		<div class="controls span9">
+			<select name="fld_map_marker_title" id="fld_map_marker_title">
+			</select>
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the marker title attribute for the map.","wpas");?>">
+			<i class="icon-info-sign"></i></a>      
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label span3"><?php _e("Info Window","wpas");?></label>
+		<div class="controls span9">
+			<select name="fld_map_info_window" id="fld_map_info_window">
+			</select>
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the info window attribute for the map.","wpas");?>">
+			<i class="icon-info-sign"></i></a>      
+		</div>
+	</div>
+	</div>
+	
+	
 	<div class="control-group" id="fld_uniq_id_div" name="fld_uniq_id_div">
     <label class="control-label span3"></label>
 	<div class="controls span9">
@@ -437,12 +573,32 @@ jQuery(document).ready(function($) {
 			</label>
 	</div>
 	</div>
+	<div class="control-group" id="fld_list_visible_div" name="fld_list_visible_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Visible in Admin List","wpas");?>
+            <input name="fld_list_visible" id="fld_list_visible" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute visible in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
 	<div class="control-group" id="fld_is_filterable_div" name="fld_is_filterable_div">
     	<label class="control-label span3"></label>
 	<div class="controls span9">
 			<label class="checkbox"><?php _e("Filterable","wpas");?>
             <input name="fld_is_filterable" id="fld_is_filterable" type="checkbox" value="1"/>
 			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute filterable in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div class="control-group" id="fld_allow_html_div" name="fld_allow_html_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Allow Html","wpas");?>
+            <input name="fld_allow_html" id="fld_allow_html" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Allows html tags to be entered. When unchecked html tags are escaped.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>
@@ -461,7 +617,7 @@ jQuery(document).ready(function($) {
 			<label class="control-label span3"><?php _e("Maximum File Size","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-large" name="fld_file_size" id="fld_file_size" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="<?php _e("Set maximum file size in kilobytes. exp. 100K. Leave it blank for no limit.","wpas");?> <?php _e("Validation Message:","wpas") . ' ' . _e("Please upload no greater than X kbytes.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Set maximum file size in kilobytes. Only numbers allowed. Leave it blank for no limit.","wpas");?> <?php _e("Validation Message:","wpas") . ' ' . _e("Please upload no greater than X kbytes.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -486,9 +642,9 @@ jQuery(document).ready(function($) {
 	<div class="control-group" id="fld_image_thickbox_div" name="fld_image_thickbox_div" style="display:none;">
     	<label class="control-label span3"></label>
 	<div class="controls span9">
-			<label class="checkbox"><?php _e("Thickbox","wpas");?>
+			<label class="checkbox"><?php _e("Advanced","wpas");?>
             <input name="fld_image_thickbox" id="fld_image_thickbox" type="checkbox" value="1"/>
-			<a href="#" style="cursor: help;" title="<?php _e("Sets thickbox option.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Displays media dialog box shows up when set. The standard is browser file upload dialog.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</label>
 	</div>
@@ -513,6 +669,7 @@ jQuery(document).ready(function($) {
 			<option value="now"><?php _e("Now (YYYY-MM-DD HH:mm:ss)","wpas");?></option>
 			<option value="current_time"><?php _e("Current Time (HH:mm:ss)","wpas");?></option>
 			<option value="unique_id"><?php _e("Unique Identifier","wpas");?></option>
+			<option value="autoinc"><?php _e("Sequence","wpas");?></option>
 			</select>
 			<a href="#" style="cursor: help;" title="<?php _e("Sets a default value for the attribute.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
@@ -530,7 +687,7 @@ jQuery(document).ready(function($) {
 	</div>
 	<div id="date-format" style="display:none;">
 	<div class="control-group row-fluid">
-			<label class="control-label span3"><?php _e("Date Format","wpas");?></label>
+			<label class="control-label req span3"><?php _e("Date Format","wpas");?></label>
 			<div class="controls span9">
 			<select name="fld_date_format" id="fld_date_format">
 			<option value="" selected="selected"><?php _e("Please select","wpas");?></option>
@@ -541,7 +698,7 @@ jQuery(document).ready(function($) {
 			<option value="yy/mm/dd"><?php _e("YYYY/MM/DD","wpas");?></option>
 			<option value="dd/mm/yy"><?php _e("DD/MM/YYYY","wpas");?></option>
 			</select>
-			<a href="#" style="cursor: help;" title="<?php _e("Select a date format.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Select a date format which will be used in the admin entity list and as a default in the frontend views.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -630,10 +787,10 @@ jQuery(document).ready(function($) {
 	</div><!--validation-optiond-->
 	</div>
 	<div class="control-group row-fluid" id="fld_values_div" style="display:none;">
-        <label class="control-label span3"><?php _e("Values","wpas");?></label>
+        <label class="control-label span3 req"><?php _e("Values","wpas");?></label>
         <div class="controls span9">
-        <textarea id="fld_values" name="fld_values" class="input-xlarge" rows="3" placeholder="e.g. blue;red;white " ></textarea>
-        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option values for the field. There must be only one semicolon between the values. You can not put a semicolon at the end of the values as well.","wpas");?>">
+        <textarea id="fld_values" name="fld_values" class="wpas-std-textarea" placeholder="e.g. blue;red;white " ></textarea>
+        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option labels for the field. There must be only one semicolon between the values. Optionally, you can define value-label combinations using {Value}Label format. If the predined value does not exist, it is automatically created based on the label.","wpas");?>">
         <i class="icon-info-sign"></i></a>
         </div>
 </div>
@@ -641,7 +798,7 @@ jQuery(document).ready(function($) {
 			<label class="control-label span3"><?php _e("Default Value","wpas");?></label>
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_dflt_value" id="fld_dflt_value" type="text" placeholder="" value="" >
-			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value or values for the attribute. Multiple default values can only be set for select with multiple option and checkbox list types.","wpas");?>">
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the default value(s) for the attribute, separated by a semicolon. Multiple default values can only be set for select with multiple option and checkbox list types. You must enter the value from Values field and not the label.","wpas");?>">
 			<i class="icon-info-sign"></i></a>
 			</div>
 	</div>
@@ -660,7 +817,7 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_chkd_val" id="fld_fa_chkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for selected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
 	<div class="control-group row-fluid" id="fld_fa_unchkd_div" name="fld_fa_unchkd_div" style="display:none;">
@@ -668,9 +825,70 @@ jQuery(document).ready(function($) {
 			<div class="controls span9">
 			<input class="input-xlarge" name="fld_fa_unchkd_val" id="fld_fa_unchkd_val" type="text" placeholder="" value="" >
 			<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
-			<i class="icon-info-sign"></i></a><a href="http://emarketdesign.com/documentation/wp-app-studio-documentation/cheatsheet/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
+			<i class="icon-info-sign"></i></a><a href="https://wpas.emdplugins.com/articles/supported-icons/" target="_blank"><?php _e("Cheatsheet","wpas");?></a>
 			</div>
 	</div>
+	<div class="control-group row-fluid" id="fld_limit_user_role_div" name="fld_limit_user_role_div" style="display:none;">
+		<label class="control-label span3"><?php _e("Limit By Role","wpas");?></label>
+		<div class="controls span9">
+		<select id="fld_limit_user_role" name="fld_limit_user_role" multiple>
+		</select>
+		<a href="#" style="cursor: help;" title="<?php _e("Sets font awesome web font icon class for unselected values.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	<div id="fld_autoinc_field_div" name="fld_autoinc_field_div" style="display:none;">
+	<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Start At Value","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-medium" name="fld_autoinc_start" id="fld_autoinc_start" type="text" placeholder="" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence start at value, set to 1 if empty.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	<div class="control-group row-fluid">
+		<label class="control-label span3"><?php _e("Increment By","wpas");?></label>
+		<div class="controls span9">
+		<input class="input-medium" name="fld_autoinc_incr" id="fld_autoinc_incr" type="text" placeholder="" value="" >
+		<a href="#" style="cursor: help;" title="<?php _e("Sets sequence increment by value, set to 1 if empty.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+	</div>
+	</div>
+	<div class="control-group" id="enable_conditional_div" name="enable_conditional_div">
+    	<label class="control-label span3"></label>
+	<div class="controls span9">
+			<label class="checkbox"><?php _e("Enable Conditional Logic","wpas");?>
+            <input name="fld_is_conditional" id="fld_is_conditional" type="checkbox" value="1"/>
+			<a href="#" style="cursor: help;" title="<?php _e("Makes the attribute filterable in admin list page of the entity.","wpas");?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+	</div>
+	</div>
+	<div id="conditional-options" class="control-group row-fluid" style="display:none;">
+	<label class="control-label span3"><?php _e("Conditional Logic","wpas");?></label>
+	<div class="controls span9">  
+	<div id="cond">
+	<div class="control-group row-fluid">
+			<label class="control-label span1"></label>
+			<div class="controls span11">
+			<select name="fld_cond_case" id="fld_cond_case" class="input-small">
+			<option value="show"><?php _e('Show','wpas');?></option>
+			<option value="hide"><?php _e('Hide','wpas');?></option></select>
+			<?php _e('This Attribute If ','wpas'); ?>
+			<select name="fld_cond_type" id="fld_cond_type" class="input-small">
+			<option value="all"><?php _e('All','wpas');?></option>
+			<option value="any"><?php _e('Any','wpas');?></option></select>
+			<?php _e('of the below match:','wpas'); ?>
+			</div>
+	</div>
+	<div id="fld_cond-list" style="width:530px;">
+	</div>
+	
+	</div>
+	</div>
+	</div>
+	
   </fieldset>
 </div>
 

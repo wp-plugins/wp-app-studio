@@ -27,6 +27,10 @@ jQuery(document).ready(function($) {
 					$('#errorModalForm .modal-body').html(form_vars.size_error);
 					$('#errorModalForm').modal('show'); //size err total not 12
 					break;
+				case '6':
+					$('#errorModalForm .modal-body').html(form_vars.multiple_button_error);
+					$('#errorModalForm').modal('show'); //multiple submit buttons
+					break;
 			}
 				
 		});
@@ -51,6 +55,21 @@ jQuery(document).ready(function($) {
                 {
 			select_label = $(this).find('option:selected').text();
 			$(this).closest('.form-'+type).find('#field-label'+label_id).text(select_label);
+			if($(this).find('option:selected').val() == 'submit')
+			{
+				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('elmt hidden-fld').addClass('btn-std');
+				$(this).closest('.form-inside .row-fluid').find('.add-element').show();
+			}
+			else if($(this).find('option:selected').attr('ftype') == 'hidden')
+			{
+				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('elmt btn-std').addClass('hidden-fld');
+				$(this).closest('.form-inside .row-fluid').find('.add-element').hide();
+			}	
+			else
+			{
+				$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass('btn-std hidden-fld').addClass('elmt');
+				$(this).closest('.form-inside .row-fluid').find('.add-element').show();
+			}
 		}
 	});
 	$(document).on('click','.form-element-size',function(){
@@ -60,7 +79,8 @@ jQuery(document).ready(function($) {
                 if($(this).find('option:selected').val() != '')
                 {
 			spansize = $(this).find('option:selected').val();
-			$(this).closest('.form-'+type).find('#field-label'+label_id).attr('class','span'+spansize);
+			var rclass = $(this).closest('.form-'+type).find('#field-label'+label_id).attr('class').match(/span\d+/);
+			$(this).closest('.form-'+type).find('#field-label'+label_id).removeClass(''+rclass+'').addClass('span'+spansize);
 		}
 	});
 	$(document).on('click','.add-element,.delete-element',function(){
@@ -80,8 +100,10 @@ jQuery(document).ready(function($) {
 		//field-labels
 		if(id_vars[0] == 'add')
 		{
-			$(this).closest('.form-'+type).find('#field-labels #field-label'+spancount).attr("class",'span'+spansize);
-			$(this).closest('.form-'+type).find('#field-labels').append('<div id="field-label'+count+'" class="span1"></div>');
+			var rclass = $(this).closest('.form-'+type).find('#field-labels #field-label'+spancount).attr("class").match(/span\d+/);
+			$(this).closest('.form-'+type).find('#field-labels #field-label'+spancount).removeClass(''+rclass+'').addClass('span'+spansize);
+				
+			$(this).closest('.form-'+type).find('#field-labels').append('<div id="field-label'+count+'" class="span1 elmt"></div>');
 		}	
 		else if(id_vars[0] == 'delete')
 		{
@@ -137,6 +159,7 @@ jQuery(document).ready(function($) {
 					switch(drag_id)
 					{
 					case 'form-hr':
+						type_val = '<hr>';
 						break;
 					case 'form-text':
 						$.get(ajaxurl,{action:'wpas_get_form_text_html',field_count:field_count},function(response){
@@ -156,7 +179,7 @@ jQuery(document).ready(function($) {
 					{
 						div_html += "<a class='edit'><i class='icon-edit pull-left'></i></a>";
 					}
-					div_html += "</div><div class='row-fluid span10' id='field-labels'>";
+					div_html += "</div><div class='span10' id='field-labels'>";
 					div_html += "<div id='field-label1' class='span12'>" + type_val + "</div>";
 					div_html += "</div><div class='span1 layout-edit-icons'>";
 					div_html += "<a class='delete'><i class='icon-trash pull-right'></i></a></div></div>";
