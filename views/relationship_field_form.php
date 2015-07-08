@@ -1,46 +1,4 @@
 <?php
-function wpas_view_rel_fields($rel_name)
-{
-return '<div id="title-bar"><div class="row-fluid"><h4 class="span3"><i class="icon-columns"></i>' . __("Attributes","wpas") . '</h3>
-                <div class="span9 field" id="add_field_rel">
-<a class="btn btn-info  pull-right" href="#rel'. esc_attr($rel_name) . '" class="add-new" >
-<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>
-</div></div></div>';
-}
-function wpas_view_rel_fields_list($rel_field)
-{
-	$ret = '<div id="field-title"><div class="row-fluid"><div class="span1"></div>
-        <div id="field-name" class="span3">' . __("Name","wpas") . '</div>
-        <div id="field-label" class="span3">' . __("Label","wpas") . '</div>
-        <div class="span2">' . __("Type","wpas") . '</div>
-        <div class="span1">' . __("Required","wpas") . '</div>
-        <div id="edit-field" class="span1"></div>
-        <div id="delete-field" class="span1"></div>
-        </div></div>';
-        $ret .= '<ul id="fields-sort" class="sortable ui-sortable">';
-        foreach($rel_field as $key => $myfield)
-        {
-		if(isset($myfield['rel_fld_required']) && $myfield['rel_fld_required'] == 1)
-                {
-                        $required = __("Y","wpas");
-                }
-                else
-                {
-                        $required = __("N","wpas");
-                }
-
-                $ret .= '<li id="' . $key . '"><div class="field-row"><div class="row-fluid">
-                        <div class="span1"><i class="icon-sort"></i></div>
-			<div class="span3" class="field-name">' . esc_html($myfield['rel_fld_name']) . '</div>
-                        <div class="span3" class="field-label">' . esc_html($myfield['rel_fld_label']) . '</div>
-                        <div class="span2">' . esc_html($myfield['rel_fld_type']) . '</div>
-			<div class="span1">' . $required . '</div>
-                        <div class="span1" id="edit-rel-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
-                        <div class="span1" id="delete-rel-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></li>';
-        }
-        $ret .= '</ul>';
-	return $ret;
-}
 function wpas_add_rel_field_form($app_id)
 {
 ?>

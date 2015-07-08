@@ -473,6 +473,16 @@ jQuery(document).ready(function($) {
 		<div class="row-fluid">
 		<label class="control-label span1"></label>
 		<div class="control-group">
+			<label class="checkbox"><?php _e("Remove PDF/CSV Export in Filters","wpas"); ?>
+			<input type="checkbox" name="ao_remove_csvpdf" id="ao_remove_csvpdf" value="1">
+			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove export filter results to pdf or csv file on admin entity list screens.","wpas"); ?>">
+			<i class="icon-info-sign"></i></a>
+			</label>
+		</div>
+		</div>
+		<div class="row-fluid">
+		<label class="control-label span1"></label>
+		<div class="control-group">
 			<label class="checkbox"><?php _e("Remove Operations","wpas"); ?>
 			<input type="checkbox" name="ao_remove_operations" id="ao_remove_operations" value="1">
 			<a href="#" style="cursor: help;" title="<?php _e("Allows to display or remove Operations page and its button. Operations page is used to visually import/export and reset content of a specific entity and available for admins only.","wpas"); ?>">

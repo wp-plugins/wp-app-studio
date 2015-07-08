@@ -90,11 +90,13 @@ jQuery(document).ready(function($) {
 		{
 			$('#ent-hierarchical-div').show();
 			$('#ent-inline-ent_div').show();
+			$('#ent-sortable_div').show();
 			$('#tabs').show();
 		}
 		else
 		{
 			$('#ent-inline-ent_div').hide();
+			$('#ent-sortable_div').hide();
 			$('#ent-hierarchical-div').hide();
 			$('#tabs').hide();
 		}
@@ -231,6 +233,16 @@ jQuery(document).ready(function($) {
 		<div class="controls span9">
 		<label class="checkbox"><?php _e("Show Advanced Options","wpas"); ?>
 		<input name="ent-advanced-option" id="ent-advanced-option" type="checkbox" value="1"/>
+		</label>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="ent-sortable_div" style="display:none;">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Enable Sortable","wpas"); ?>
+		<input name="ent-sortable" id="ent-sortable" type="checkbox" value="1"/>
+		<a href="#" style="cursor: help;" title="<?php _e("Makes entity drag and drop sortable in admin list page.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
 		</label>
 		</div>
 		</div>

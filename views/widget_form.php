@@ -34,6 +34,7 @@ function wpas_add_widget_form($app_id)
 						$('#widg-css_div').hide();
 						$('#widg-js_div').hide();
 						$('#widg-cdnjs_div').hide();
+						$('#widg-cdncss_div').hide();
 						$('#widg-post_per_page_div').hide();
 						$('#widg-order_div').hide();
 						$('#widg-orderby_div').hide();
@@ -79,6 +80,7 @@ function wpas_add_widget_form($app_id)
 							$('#widg-css_div').hide();
 							$('#widg-js_div').hide();
 							$('#widg-cdnjs_div').hide();
+							$('#widg-cdncss_div').hide();
 							$('#widg-post_per_page_div').hide();
 							$('#widg-order_div').hide();
 							$('#widg-orderby_div').hide();
@@ -117,6 +119,7 @@ function wpas_add_widget_form($app_id)
 							$('#widg-css_div').show();
 							$('#widg-js_div').show();
 							$('#widg-cdnjs_div').show();
+							$('#widg-cdncss_div').show();
 							$('#widg-post_per_page_div').show();
 							$('#widg-order_div').show();
 							$('#widg-orderby_div').show();
@@ -156,6 +159,7 @@ function wpas_add_widget_form($app_id)
 							$('#widg-css_div').hide();
 							$('#widg-js_div').hide();
 							$('#widg-cdnjs_div').hide();
+							$('#widg-cdncss_div').hide();
 							$('#widg-post_per_page_div').show();
 							$('#widg-order_div').show();
 							$('#widg-orderby_div').hide();
@@ -178,6 +182,7 @@ function wpas_add_widget_form($app_id)
 							$('#widg-css_div').hide();
 							$('#widg-js_div').hide();
 							$('#widg-cdnjs_div').hide();
+							$('#widg-cdncss_div').hide();
 							$('#widg-post_per_page_div').hide();
 							$('#widg-order_div').hide();
 							$('#widg-orderby_div').hide();
@@ -293,19 +298,35 @@ function wpas_add_widget_form($app_id)
                 <i class="icon-info-sign"></i></a>
                 </div>
                 </div>
-		<div class="control-group row-fluid" id="widg-layout_div" style="display:none;">
-		<label class="control-label req span3"><?php _e("Layout","wpas"); ?></label>
-		<div class="controls span9">
-		<textarea id="widg-layout" name="widg-layout" class="wpas-std-textarea"></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("The widget layout defines how the content will be displayed within the widget. Click Show tags button to customize the content to be returned.","wpas"); ?>"><i class="icon-info-sign"></i></a>
-		<div style="padding:10px 0;">
-		<div style="padding:10px;">
-		<button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#widg-layout-tags">Show Tags</button>
-		</div>
-		<div id="widg-layout-tags" class="collapse"></div>
-		</div>
-		</div>
-		</div>
+		<div id="widg-layout_div" style="display:none;">
+                <div class="control-group row-fluid">
+                <label class="control-label span3"><?php _e("Header","wpas"); ?></label>
+                <div class="controls span9">
+                <textarea id="widg-layout_header" name="widg-layout_header" class="wpas-std-textarea"></textarea>
+                <a href="#" style="cursor: help;" title="<?php _e("It defines the header content of the widget. The header content is static and displayed on the top section of your widget's content.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+                </div>
+                </div>
+                <div class="control-group row-fluid">
+                <label class="control-label req span3"><?php _e("Layout","wpas"); ?></label>
+                <div class="controls span9">
+                <textarea id="widg-layout" name="widg-layout" class="wpas-std-textarea"></textarea>
+                <a href="#" style="cursor: help;" title="<?php _e("The widget layout defines how the content will be displayed within the widget. Click Show tags button to customize the content to be returned.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+                <div style="padding:10px 0;">
+                <div style="padding:10px;">
+                <button type="button" class="btn btn-mini btn-info" data-toggle="collapse" data-target="#widg-layout-tags">Show Tags</button>
+                </div>
+                <div id="widg-layout-tags" class="collapse in"><?php _e("Please select an entity to view tags.","wpas"); ?></div>
+                </div>
+                </div>
+                </div>
+                <div class="control-group row-fluid">
+                <label class="control-label span3"><?php _e("Footer","wpas"); ?></label>
+                <div class="controls span9">
+                <textarea id="widg-layout_footer" name="widg-layout_footer" class="wpas-std-textarea"></textarea>
+                <a href="#" style="cursor: help;" title="<?php _e("It defines the footer content of the widget. The footer content is static and displayed on the bottom section of your widget's content.","wpas"); ?>"><i class="icon-info-sign"></i></a>
+                </div>
+                </div>
+                </div>
 		<div class="control-group row-fluid" id="widg-css_div" style="display:none;">
 		<label class="control-label span3"><?php _e("Css ","wpas"); ?></label>
 		<div class="controls span9">
@@ -327,6 +348,14 @@ function wpas_add_widget_form($app_id)
 		<div class="controls span9">
 		<textarea id="widg-cdnjs" name="widg-cdnjs" class="wpas-std-textarea" placeholder=" YOU MUST USE HTTPS e.g. https://cdnjs.cloudflare.com/ajax/libs/Readmore.js/2.0.5/readmore.min.js;https://cdn.jsdelivr.net/ace/1.1.9/min/ace.js" ></textarea>
 		<a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated JavaScript file urls starting with https. We only accept files from the following sources; cdnjs.cloudflare.com and cdn.jsdelivr.net or raw.githubusercontent.com. All files will be downloaded and merged before getting locally enqueued to the view they are linked to.","wpas");?>">
+		<i class="icon-info-sign"></i></a>
+		</div>
+		</div>
+		<div class="control-group row-fluid" id="widg-cdncss_div" style="display:none;">
+		<label class="control-label span3"><?php _e("CDN CSS","wpas"); ?></label>
+		<div class="controls span9">
+		<textarea id="widg-cdncss" name="widg-cdncss" class="wpas-std-textarea" placeholder=" YOU MUST USE HTTPS e.g. https://cdnjs.cloudflare.com/ajax/libs/example/2.0.5/example.min.css;https://cdn.jsdelivr.net/example/1.1.9/min/example.min.css" ></textarea>
+		<a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated CSS file urls starting with https. We only accept files from the following sources; cdnjs.cloudflare.com and cdn.jsdelivr.net or raw.githubusercontent.com. All files will be downloaded and merged before getting locally enqueued to the view they are linked to.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>
@@ -433,7 +462,7 @@ function wpas_add_widget_form($app_id)
 		<label class="control-label span3"><?php _e("Filter","wpas");?></label>
 		<div class="controls span9">
 		<textarea class="wpas-std-textarea" name="widg-filter" id="widg-filter" placeholder="<?php _e("e.g. attr::emd_product_featured::is::1;tax::product_cat::is::electronics","wpas");?>" value="" ></textarea>
-		<a href="#" style="cursor: help;" title="<?php _e("Set the default filter for the content to be displayed in the widget. You can use widget filters to return for example; featured products, on-sale products etc. You can combine multiple filters with semicolon which triggers AND operator. For example;-attr::emd_product_featured::is::1;tax::product_cat::is::electronics- filter shows the featured products in electronics category. The easiest way to create filters is to use the WPAS button on a page toolbar of the generated app to design a filter and then copy paste the required part here. ","wpas");?>">
+		<a href="#" style="cursor: help;" title="<?php _e("Set the default filter for the content to be displayed in the widget. You can use widget filters to return for example; featured products, on-sale products etc. You can combine multiple filters with semicolon which triggers AND operator. For example;-attr::emd_product_featured::is::1;tax::product_cat::is::electronics- filter shows the featured products in electronics category. The easiest way to create filters is to use the WPAS button on a page toolbar of the generated app to design a filter and then copy paste the required part here. Please note that we emd_ prefix vs. WPAS ent_ for attributes.","wpas");?>">
 		<i class="icon-info-sign"></i></a>
 		</div>
 		</div>

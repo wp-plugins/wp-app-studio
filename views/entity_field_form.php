@@ -1,73 +1,4 @@
 <?php
-function wpas_view_ent_fields($ent_name,$ent)
-{
-	$html = '<div id="title-bar"><div class="row-fluid"><div class="span3"><i class="icon-columns icon-large pull-left"></i><h4>' . __("Attributes","wpas") . '</h3></div>';
-	if(empty($ent['ent-inline-ent'])){
-		$html .= '<div class="span9 field" id="add_field_entity">
-<a class="btn btn-info  pull-right" href="#ent'. esc_attr($ent_name) . '" class="add-new" ><i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a></div></div></div>';
-	}
-	return $html;
-}
-function wpas_view_ent_fields_list($ent_field)
-{
-	$ret = '<div id="field-title"><div class="row-fluid"><div class="span1"></div>
-        <div id="field-name" class="span3">' . __("Name","wpas") . '</div>
-        <div id="field-label" class="span3">' . __("Label","wpas") . '</div>
-        <div class="span2">' . __("Type","wpas") . '</div>
-        <div class="span1">' . __("Req","wpas") . '</div>
-        <div class="span1">' . __("Unique","wpas") . '</div>
-	<div class="span1"><div id="edit-field"></div><div id="delete-field"></div></div>
-	</div></div>';
-	$ret_fields = '<ul id="fields-sort" class="sortable ui-sortable">';
-	$ret_builtin = '<ul id="builtin-fields-sort">';
-        foreach($ent_field as $key => $myfield)
-        {
-		if(isset($myfield['fld_required']) && $myfield['fld_required'] == 1)
-		{
-			$required = 'Y';
-		}
-		else
-		{
-			$required = 'N';
-		}
-		if(isset($myfield['fld_uniq_id']) && $myfield['fld_uniq_id'] == 1 || ($myfield['fld_type'] == 'hidden_function' && in_array($myfield['fld_hidden_func'],Array('unique_id','autoinc'))))
-		{
-			$uniq_id = 'Y';
-		}
-		else
-		{
-			$uniq_id = 'N';
-		}
-		if(isset($myfield['fld_builtin']) && $myfield['fld_builtin'] == 1)
-		{
-			$ret_builtin .= '<li id="' . esc_attr($key) . '"><div class="field-blt-row"><div class="row-fluid">
-			<div class="span1"></div>
-			<div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
-			<div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
-			<div class="span2">' . esc_html($myfield['fld_type']) . '</div>
-			<div class="span1">' . $required . '</div>
-			<div class="span1">' . $uniq_id . '</div>
-			<div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
-			</div></div></div></li>';
-		}
-		else
-		{
-			$ret_fields .= '<li id="' . esc_attr($key) . '"><div class="field-row"><div class="row-fluid">
-			<div class="span1">' . '<i class="icon-sort"></i></div>
-			<div class="span3" id="field-name">' . esc_html($myfield['fld_name']) . '</div>
-			<div class="span3" id="field-label">' . esc_html($myfield['fld_label']) . '</div>
-			<div class="span2">' . esc_html($myfield['fld_type']) . '</div>
-			<div class="span1">' . $required . '</div>
-			<div class="span1">' . $uniq_id . '</div>
-			<div class="span1"><div id="edit-field"><a href="#' . esc_attr($key) . '">' . __("Edit","wpas") . '</a></div>
-			<div id="delete-field"><a href="#' . esc_attr($key) . '">' . __("Delete","wpas") . '</a></div></div></div></div></li>';
-		}
-	}
-        $ret .= $ret_builtin . '</ul>';
-        $ret .= $ret_fields . '</ul>';
-	return $ret;
-}
-
 function wpas_add_ent_field_form($app_id,$ent_id)
 {
 ?>
@@ -148,7 +79,9 @@ jQuery(document).ready(function($) {
 		$('#fld_required_div').show();
 		$('#fld_srequired_div').show();
 		$('#fld_dflt_value_div').show();
+		$('#fld_dflt_value').datetimepicker("destroy");
 		$('#fld_uniq_id_div').show();
+		$('#fld_map_div').hide();
 		if(myItem == 'image')
 		{
 			$('#fld_dflt_value_div').hide();
@@ -307,7 +240,31 @@ jQuery(document).ready(function($) {
 			$('#fld_dflt_value_div').hide();
 			$('#fld_dflt_value').val('');
 		}
-		
+		if(myItem == 'map')
+		{
+			$('#fld_uniq_id_div').hide();
+			$('#fld_required_div').hide();
+			$('#fld_srequired_div').hide();
+                        $('#fld_required').attr('checked',false);
+                        $('#fld_srequired').attr('checked',false);
+                        $('#fld_is_filterable_div').hide();
+			$('#fld_is_filterable').attr('checked',false);
+			$('#fld_list_visible_div').hide();
+			$('#fld_list_visible').attr('checked',false);
+			$('#fld_dflt_value_div').hide();
+			$('#fld_dflt_value').val('');
+			$('#enable_conditional_div').hide();
+			if(page_type != 'edit'){
+				app_id = $('input#app').val();
+				ent_id = $('input#ent').val();
+				$.get(ajaxurl,{action:'wpas_get_ent_fields',type:'map',app_id:app_id,ent_id:ent_id}, function(response){
+					$('#fld_map_attached').html(response['pre']+response['list']);
+					$('#fld_map_marker_title').html(response['pre']+response['list']);
+					$('#fld_map_info_window').html(response['pre']+response['list']);
+					$('#fld_map_div').show();
+				}, 'json');
+			}
+		}	
 		
 		if($('#validation-message').text() == '')
                 {
@@ -386,6 +343,7 @@ jQuery(document).ready(function($) {
 		$('#fld_image_thickbox_div').hide();
 		$('#fld_limit_user_role_div').hide();
 		$('#fld_autoinc_field_div').hide();
+		$('#fld_map_div').hide();
 	}
 	$.fn.changeReqMult = function(uniq){
 		if(uniq == 1)
@@ -546,12 +504,45 @@ jQuery(document).ready(function($) {
 						<option value="radio" style='padding-left:2em;'><?php _e("Radios","wpas");?></option>
 						<option value="select" style='padding-left:2em;'><?php _e("Select","wpas");?></option>
 						<option value="user" style='padding-left:2em;'><?php _e("User List","wpas");?></option>
+						<option value="" style='font-style:italic;font-weight:bold;'><?php _e("Misc","wpas");?></option>
+						<option value="map" style='padding-left:2em;'><?php _e("Map","wpas");?></option>
 					</select>
 			<a href="#" style="cursor: help;" title="<?php _e("Defines the attribute display and validation type.","wpas");?>">
 			<i class="icon-info-sign"></i></a>      
 			<span id="validation-message" class="label label-info" style="display:none;"> </span>
 			</div>
 	  </div>
+	<div id="fld_map_div" name="fld_map_div">
+	<div class="control-group">
+		<label class="control-label req span3"><?php _e("Attached Address","wpas");?></label>
+		<div class="controls span9">
+			<select name="fld_map_attached" id="fld_map_attached">
+			</select>
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the address attribute for the map.","wpas");?>">
+			<i class="icon-info-sign"></i></a>      
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label span3"><?php _e("Marker Title","wpas");?></label>
+		<div class="controls span9">
+			<select name="fld_map_marker_title" id="fld_map_marker_title">
+			</select>
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the marker title attribute for the map.","wpas");?>">
+			<i class="icon-info-sign"></i></a>      
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label span3"><?php _e("Info Window","wpas");?></label>
+		<div class="controls span9">
+			<select name="fld_map_info_window" id="fld_map_info_window">
+			</select>
+			<a href="#" style="cursor: help;" title="<?php _e("Sets the info window attribute for the map.","wpas");?>">
+			<i class="icon-info-sign"></i></a>      
+		</div>
+	</div>
+	</div>
+	
+	
 	<div class="control-group" id="fld_uniq_id_div" name="fld_uniq_id_div">
     <label class="control-label span3"></label>
 	<div class="controls span9">

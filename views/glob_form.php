@@ -10,7 +10,9 @@ jQuery(document).ready(function($) {
 		switch(type){
 			case 'textarea':
 			case 'wysiwyg':
+				$('#glob-req-div').show();
 				$('#glob-dflt-div').hide();
+				$('#glob-dflt-ta-div').show();
 				$('#glob-values-div').hide();
 				$('#glob-dflt-checked-div').hide();
 				break;
@@ -18,17 +20,29 @@ jQuery(document).ready(function($) {
 			case 'multi_select':
 			case 'radio':
 			case 'select':
+				$('#glob-req-div').show();
 				$('#glob-dflt-div').show();
+				$('#glob-dflt-ta-div').hide();
 				$('#glob-values-div').show();
 				$('#glob-dflt-checked-div').hide();
 				break;
 			case 'checkbox':
+				$('#glob-req-div').show();
 				$('#glob-dflt-checked-div').show();
 				$('#glob-dflt-div').hide();
+				$('#glob-dflt-ta-div').hide();
+				$('#glob-values-div').hide();
+				break;
+			case 'map':
+				$('#glob-req-div').hide();
+				$('#glob-dflt-div').hide();
+				$('#glob-dflt-ta-div').hide();
 				$('#glob-values-div').hide();
 				break;
 			default:
+				$('#glob-req-div').show();
 				$('#glob-dflt-div').show();
+				$('#glob-dflt-ta-div').hide();
 				$('#glob-values-div').hide();
 				$('#glob-dflt-checked-div').hide();
 				break;
@@ -82,12 +96,13 @@ jQuery(document).ready(function($) {
 		<option value="radio"><?php _e("Radios","wpas");?></option>
 		<option value="select"><?php _e("Select","wpas");?></option>
 		<option value="multi_select"><?php _e("MultiSelect","wpas");?></option>
+		<option value="map"><?php _e("Map","wpas");?></option>
 	</select>
 	<a href="#" style="cursor: help;" title="<?php _e("Defines how the global attribute will be displayed.","wpas");?>">
 	<i class="icon-info-sign"></i></a>      
 	</div>
 	</div>
-	<div class="control-group">
+	<div class="control-group" id="glob-req-div" style="display:none;">
 	<label class="control-label span3"></label>
 	<div class="controls span9">
 	<label class="checkbox"><?php _e("Required","wpas");?>
@@ -101,10 +116,18 @@ jQuery(document).ready(function($) {
         <label class="control-label span3 req"><?php _e("Values","wpas");?></label>
         <div class="controls span9">
         <textarea id="glob-values" name="glob-values" class="wpas-std-textarea" placeholder="e.g. blue;red;white " ></textarea>
-        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option labels for the field. There must be only one semicolon between the values. Optionally, you can define value-label combinations using {Value}Label format. If the predined value does not exist, it is automatically created based on the label.","wpas");?>">
+        <a href="#" style="cursor: help;" title="<?php _e("Enter semicolon separated option labels for the global. There must be only one semicolon between the values. Optionally, you can define value-label combinations using {Value}Label format. If the predined value does not exist, it is automatically created based on the label.","wpas");?>">
         <i class="icon-info-sign"></i></a>
         </div>
 </div>
+	<div class="control-group row-fluid" id="glob-dflt-ta-div" style="display:none;">
+	<label class="control-label span3"><?php _e("Default Value","wpas");?></label>
+	<div class="controls span9">
+	<textarea name="glob-dflt-ta" id="glob-dflt-ta"></textarea>
+	<a href="#" style="cursor: help;" title="<?php _e("Sets the default value(s) for the global, separated by a semicolon. Multiple default values can only be set for select with multiple option and checkbox list types. You must enter the value from Values field and not the label.","wpas");?>">
+	<i class="icon-info-sign"></i></a>
+	</div>
+	</div>
 	<div class="control-group row-fluid" id="glob-dflt-div" style="display:none;">
 	<label class="control-label span3"><?php _e("Default Value","wpas");?></label>
 	<div class="controls span9">

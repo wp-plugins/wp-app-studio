@@ -1,10 +1,10 @@
 ===  WP App Studio  === 
 Contributors: emarket-design
-Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3, users, user mapping,conditional logic,form dependency,form elements
+Tags: charts, admin notices,admin notice,notifications, workflow, custom comments, comments, datagrid, Twitter's Bootstrap, Bootstrap, admin,cck, cms, CPT, custom, custom post types, Post, post type, tax, taxonomy,entity, types, content types, custom fields, custom taxonomies, database, framework,connections, one-to-many, many-to-many, relationships, user relationships,fields, metabox, metabox tabs, metabox accordions, layouts, metaboxes, options, pages, posts, sorting, tabs, ultimate,filters,column filters,advanced,custom related posts, custom relations, post, related, related posts,client sites, clients, docs, documentation, help,Contextual Help, dashboard, dashboard widget, guide, Help guide, Help menu, featured image, sidebar, simple, widget, widget-only, content access, capability, editor, permission, role, security, user permissions,role manager, user access, user control, user role, access-control, import, synchronize, batch, csv, excel, importer, plugin, spreadsheet,exporting, exports, json, reporting, reports,shortcodes, shortcode,member, members,pointers, Tooltips,website tours,tours, i18n,multilingual,translation,translatable, l10n, language, localization,mo file, plugin, po file, po-mo,jquery, jquery-ui, jQuery, jQuery UI, theme, admin themes, admin-theme, administration theme,admin-bar, custom admin, customize wp admin,login screen,custom login, admin menu,brand, brand login, customize, login, login page, multisite, mail, custom mail, contact form, contact forms, custom form, custom forms, form, form builder, form creation, form creator, form manager, forms, input, web forms, saas, views, pop3, imap, email, incoming email, create posts via email, IMAP, POP3, users, user mapping,conditional logic,form dependency,form elements,map , google map, map custom field, post types order, custom taxonomies order,sortable post types, sortable taxonomies
 Donate link: https://emarketdesign.com/donate-emarket-design/
 Requires at least: 4.0
-Tested up to: 4.2
-Stable tag: 4.4.1
+Tested up to: 4.3.0
+Stable tag: 4.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,16 @@ WP App Studio is the #1 Visual Development Tool for building custom post types, 
 WP App Studio allows you to build advanced sites in the form of WordPress plugins without writing a single line of PHP code.
 
 WP App Studio Plugin is the tool you use to design your plugin and send it for code generation. Create your own plugin and move on.
+
+<strong>What separates WP App Studio from others</strong>
+
+* WPAS creates custom plugins that do not have any dependencies to any other plugins, frameworks, can work stand-alone or extend each other
+* WPAS supports both HTML elements and advanced components from well-known open source libraries and frameworks (jQuery UI, Bootstrap etc.)
+* There is a complete separation of PHP code and its design which makes WPAS plugins code agnostic
+* You can purchase plugin designs and create something new or modify them to make your own
+* All WPAS plugins are upgradable like any other WordPress plugin from Plugins page
+* WPAS is very cost-effective. Compare it to custom site or plugin development in terms of resources used and time to market
+* WPAS generated code is compliant with WordPress coding standards, well tested by thousands of users, and continuously improved
 
 = WPAS Terms =
 WP App Studio uses following terminology to describe design concepts:
@@ -184,6 +194,8 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 18. NEW with 4.3.2 - Map user field to your entity attributes and use them everywhere.
 
 == Upgrade Notice ==
+= 4.5.0 =
+Drag and drop functionality for ProDev plugins, improvements and bug fixes
 = 4.4.1 =
 Upgrade FreeDev Demo App data
 = 4.4.0 =
@@ -234,8 +246,20 @@ Hardened overall plugin security and added connected/related relationship type c
 Fixed minor bugs related to entity layout and capabilities.
 
 == Changelog ==
+= 4.5.0 (07/08/2015) =
+* Changed the look and feel of sorting functionality in ent attributes, help tabs and rel attributes. It better matches the rest of the plugin screens
+* NEW Added global attribute sorting. Global attributes are displayed in the setting page of your ProDev plugin
+* NEW Added map attribute type to entity and global attributes with required attached address field and optional marker title and info window
+* NEW Added menu order option to sorting dropdowns in views and widgets. ProDev plugin owners can use this option to allow users to display data based on drag-and-drop sorting
+* NEW Added text, textarea and wysiwyg global types to form layouts. ProDev plugin owners can allow users to display text or html in the forms. Exp; terms and conditions display
+* NEW Added widget layout header and footer for entity widgets. Exp; you can display media or list groups in your widgets
+* NEW Added option to entities and taxonomies to make them drag-and-drop sortable. ProDev owners can allow users to set any entity and taxonomy drag-and-drop sortable
+* NEW Added inline entity and inline taxonomy to role capabilities. If you use these extensions, you can now set specific capabilities for your custom roles
+* NEW Added option to export filter results to PDF or CSV file on admin entity list screens for all or filtered results
+* NEW Added user email option for notifications if entity has user attribute. Previously, ProDev owners had to create extra attribute for email. Now, user registration email can be used instead
+
 = 4.4.1 (05/17/2015) =
-Upgrade FreeDev Demo App data
+* Upgraded FreeDev Demo App data to the new version
 = 4.4.0 (05/16/2015) =
 * NEW Globals menu; for plugin level attributes which can be used in all views, can be set by users in the plugin settings page.
 * NEW CDN based CSS and JS file support for view and widget layouts; user favorite CSS and JS plugin or framework. All files are downloaded and enqueued locally and specific to the view linked.

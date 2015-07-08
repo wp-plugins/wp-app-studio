@@ -689,6 +689,9 @@ jQuery(document).ready(function($) {
 			'fld_cond_attr':{
 			required:true,
 			},
+			'fld_map_attached':{
+			required:true,
+			},
 
 			},
 			success: function(label) {
@@ -1281,6 +1284,9 @@ jQuery(document).ready(function($) {
 			'widg-cdnjs':{
 			checkJSValues:true,
 			},
+			'widg-cdncss':{
+			checkJSValues:true,
+			},
 			'widg-post_per_page':{
 			maxlength:3,
 			checkNum:true,
@@ -1400,6 +1406,9 @@ jQuery(document).ready(function($) {
 			required:true,
 			},
 			'connection-inl_blabel':{
+			required:true,
+			},
+			'connection-youtube_video_id':{
 			required:true,
 			},
 			},

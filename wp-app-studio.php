@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) OR exit;
    Plugin Name: Wp App Studio
    Plugin URI: http://emarketdesign.com
    Description: Wp App Studio is a design and development tool for building commercial grade WordPress plugins. No coding required.
-   Version: 4.4.1
+   Version: 4.5
    Author: eMarket Design LLC
    Author URI: http://emarketdesign.com
    License: GPLv2 or later
@@ -14,7 +14,7 @@ register_deactivation_hook( __FILE__, 'wpas_deactivate' );
 
 define('WPAS_URL', "https://wpas.emdplugins.com");
 define('WPAS_SSL_URL', "https://api.emarketdesign.com");
-define('WPAS_VERSION', "4.4.1");
+define('WPAS_VERSION', "4.5");
 define('WPAS_DATA_VERSION', "4");
 
 require_once("wpas_translate.php");
@@ -701,7 +701,6 @@ function wpas_enqueue_scripts($hook_suffix){
 	global $hook_app_list, $hook_app_new, $hook_generate, $hook_store, $hook_design, $hook_support, $hook_debug, $local_vars,$form_vars, $layout_vars, $validate_vars;
 	if(in_array($hook_suffix,Array($hook_app_list,$hook_app_new)))
 	{
-		$local_vars['nonce_update_field_order'] = wp_create_nonce( 'wpas_update_field_order_nonce' );
 		$local_vars['nonce_delete_field'] = wp_create_nonce( 'wpas_delete_field_nonce' );
 		$local_vars['nonce_delete'] = wp_create_nonce( 'wpas_delete_nonce' );
 		$local_vars['nonce_save_form'] = wp_create_nonce( 'wpas_save_form_nonce' );

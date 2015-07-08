@@ -251,71 +251,91 @@ function wpas_nav($app_name,$option="")
                 </div>
                 <?php
 }
-function wpas_list_html($list_values)
+function wpas_list_html($list_values,$part)
 {
-        $ret =  '<form action="" method="post"><div id="title-bar">
-		<div class="row-fluid">
-		<h4 class="span3"><i class="' . $list_values['icon'] . '"></i>' .  $list_values['title'] . '</h4>';
-	if($list_values['type'] == 'app')
-	{
-		$ret .= '<div class="pull-right ' . $list_values['type'] . '" id="add-new">
-			<a class="btn btn-warning  pull-left" href="' .  wp_nonce_url($list_values['import'],'wpas_import') . '" class="import">
-			<i class="icon-signin"></i>' . __("Import","wpas") . '</a>
-       			<a class="btn btn-info  pull-right add-new" href="' . esc_url($list_values['add_new_url'])  . '">
-			<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
+	if($part == 'pre'){
+		$ret =  '<form action="" method="post"><div id="title-bar">
+			<div class="row-fluid">
+			<h4 class="span3"><i class="' . $list_values['icon'] . '"></i>' .  $list_values['title'] . '</h4>';
+		if($list_values['type'] == 'app')
+		{
+			$ret .= '<div class="pull-right ' . $list_values['type'] . '" id="add-new">
+				<a class="btn btn-warning  pull-left" href="' .  wp_nonce_url($list_values['import'],'wpas_import') . '" class="import">
+				<i class="icon-signin"></i>' . __("Import","wpas") . '</a>
+				<a class="btn btn-info  pull-right add-new" href="' . esc_url($list_values['add_new_url'])  . '">
+				<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
+		}
+		else
+		{
+			$ret .= '<div class="span9 ' . $list_values['type'] . '" id="add-new">
+				<a class="btn btn-info  pull-right add-new" href="' . esc_url($list_values['add_new_url']) . '">
+				<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
+		}
+		$ret .= '</div>
+			</div>
+			</div>';
+		if(isset($list_values['app_name']))
+		{
+			$ret .= '<input type="hidden" name="app-name" id="app-name" value="' . esc_attr($list_values['app_name']). '">';
+		}
+		$ret .= '<ul class="subsubsub">
+			<li class="all">All<span class="count">(' . intval ($list_values['count']) . ')</span></li>
+			</ul>';
 	}
-	else
-	{
-		$ret .= '<div class="span9 ' . $list_values['type'] . '" id="add-new">
-			<a class="btn btn-info  pull-right add-new" href="' . esc_url($list_values['add_new_url']) . '">
-			<i class="icon-plus-sign"></i>' . __("Add New","wpas") . '</a>';
+	else {
+		$ret = '<div class="tablenav top">
+			<div class="alignleft actions ' . $list_values['type'] . '">
+				<select name="action" class="' . $list_values['type'] . '">
+				<option selected="selected" value="-1">' . __("Bulk Actions","wpas") . '</option>
+				<option value="delete">' . __("Delete","wpas") . '</option>
+				</select>
+				<input id="doaction" class="btn  btn-primary" type="submit" value="' . __("Apply","wpas") . '">
+			</div>
+			<div class="pagination pagination-right"> ';
 	}
-	$ret .= '</div>
-		</div>
-		</div>';
-	if(isset($list_values['app_name']))
-	{
-                $ret .= '<input type="hidden" name="app-name" id="app-name" value="' . esc_attr($list_values['app_name']). '">';
-	}
-        $ret .= '<ul class="subsubsub">
-                <li class="all">All<span class="count">(' . intval ($list_values['count']) . ')</span></li>
-                </ul>
-                <div class="tablenav top">
-                <div class="alignleft actions ' . $list_values['type'] . '">
-                        <select name="action" class="' . $list_values['type'] . '">
-                        <option selected="selected" value="-1">' . __("Bulk Actions","wpas") . '</option>
-                        <option value="delete">' . __("Delete","wpas") . '</option>
-                        </select>
-                        <input id="doaction" class="btn  btn-primary" type="submit" value="' . __("Apply","wpas") . '">
-                </div>
-                <div class="pagination pagination-right"> ';
 	return $ret;
 }
-function wpas_list_table($labels)
+function wpas_list_table($labels,$list_type,$builtin=0)
 {
 
 	$others = "";
 
 	foreach($labels as $mylabel)
 	{
-	$others .= '<th class="manage-column column-name"><span>' . $mylabel . '</span></th>';
+		$others .= '<th class="manage-column column-name"><span>' . $mylabel . '</span></th>';
 	}
 
-	$ret =  '<table class="table table-striped table-condensed table-bordered" cellspacing="0">
-	<thead><tr class="theader">
-	<th id="cb" class="manage-column column-cb check-column" scope="col">
-	<input type="checkbox"></th>' . $others;
+	$bl = '';
+	if($builtin == 1){
+		$bl = '-bl';
+	}
+	$ret =  '<table class="table table-striped table-condensed table-bordered ' . $list_type . $bl . '" cellspacing="0">
+	<thead><tr class="theader">';
+	if($builtin == 0){
+		$ret .= '<th id="cb" class="manage-column column-cb check-column" scope="col">
+		<input type="checkbox"></th>';
+	}
+	else {
+		$ret .= '<th></th>';
+	}
+	$ret .= $others;
 
-	$ret .='</thead>
-	<tbody id="the-list">';
+	$ret .='</thead>';
+	$ret .= '<tbody id="the-list"';
+	if(in_array($list_type,Array('glob','entity_fields','rel_fields','help_fields')) && $builtin == 0 ){
+		$ret .= '  class="ui-sortable"';
+	}
+	$ret .= '>';
 	return $ret;
 }
-function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fields)
+function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fields,$builtin=0)
 {
 	$view = "";
 	$others = "";
 	$view_url = $url['view'];
 	$url_title = "View";
+	$edit_id = "edit";
+	$delete_id = "delete";
 
 	switch ($type) {
 		case 'entity':
@@ -345,6 +365,18 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 				| <span id="export" class="' . $type . '"><a href="' . wp_nonce_url($url['export'],'wpas_export') . '" title="' . __("Export","wpas") . '">' . __("Export","wpas") . '</a>';
 			$view_url = $url['edit_url'];
 			$url_title = "Edit";
+			break;
+		case 'entity_fields':
+			$edit_id = "edit-field";
+			$delete_id = "delete-field";
+			break;
+		case 'rel_fields':
+			$edit_id = "edit-rel-field";
+			$delete_id = "delete-rel-field";
+			break;
+		case 'help_fields':
+			$edit_id = "edit-help-field";
+			$delete_id = "delete-help-field";
 			break;
 	}
 
@@ -383,10 +415,16 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	{
 		$mylist[$field_name] = $mylist['help-tax'];
 	}
-	$ret = '<tr valign="top" class="'. $alt . '">
-	<th class="check-column" scope="row">
-	<input type="checkbox" value="' .$key_list .'" name="checkbox[]">
-	</th><td class="post-title page-title column-title" id="edit_td"><strong>
+	$ret = '<tr valign="top" class="'. $alt . '" id="' . $type . '_' . $key_list . '">';
+	if($builtin == 0){
+		$ret .= '<th class="check-column" scope="row">
+		<input type="checkbox" value="' .$key_list .'" name="checkbox[]">
+		</th>';
+	}
+	else {
+		$ret .= '<th></th>';
+	}
+	$ret .= '<td class="post-title page-title column-title" id="edit_td"><strong>
 	<a class="row-title" id="' . $field_name . '" title="' . $url_title . '" href="' .  $view_url . '">' . esc_html($mylist[$field_name]) . '</a></strong>
 	<div class="row-actions">';
 	if($type == 'entity' && in_array($mylist['ent-name'],Array("post","page")))
@@ -398,18 +436,32 @@ function wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$type,$other_fiel
 	}
 	else
 	{
-	$ret .='<span id="edit" class="' . $type . '"><a title="' . __("Edit","wpas") . '" href="' . $url['edit_url'] . '">' . __("Edit","wpas") . '</a> | </span>';
-	$ret .= '<span id="delete" class="' . $type . '"><a href="' . $url['delete_url'] . '" title="' . __("Delete","wpas") . '">' . __("Delete","wpas") . '</a>  | </span>';
+		$ret .='<span id="' . $edit_id . '" class="' . $type . '"><a title="' . __("Edit","wpas") . '" href="' . $url['edit_url'] . '">' . __("Edit","wpas") . '</a> | </span>';
+		if($builtin == 0){
+			$ret .= '<span id="' . $delete_id . '" class="' . $type . '"><a href="' . $url['delete_url'] . '" title="' . __("Delete","wpas") . '">' . __("Delete","wpas") . '</a>  | </span>';
+		}
 	}
 	$ret .= $view . '
 	</span></div></td>' . $others; 
 	$ret .='</tr>';
 	return $ret;
 }
-function wpas_list($list_type,$app,$app_id=0,$page=1)
+function wpas_list($list_type,$app,$app_id=0,$page=1,$comp_id='')
 {
 	$list_array = Array();
-	if($list_type != 'app' && !empty($app))
+	if($list_type == 'entity_fields' && !empty($app['entity'][$comp_id]['field'])){
+		$list_array = $app['entity'][$comp_id]['field'];
+		$app_name = $app['app_name'];
+	}
+	elseif($list_type == 'rel_fields' && !empty($app['relationship'][$comp_id]['field'])){
+		$list_array = $app['relationship'][$comp_id]['field'];
+		$app_name = $app['app_name'];
+	}
+	elseif($list_type == 'help_fields' && !empty($app['help'][$comp_id]['field'])){
+		$list_array = $app['help'][$comp_id]['field'];
+		$app_name = $app['app_name'];
+	}
+	elseif($list_type != 'app' && !empty($app))
 	{
 		if(!empty($app[$list_type]))
 		{
@@ -422,10 +474,12 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 		$list_array = $app;
 		$app_name = "";
 	}
+	$has_builtin = 0;
         $return_list = "";
         $paging = Array();
         $paging_html  = "";
 	$div_table = "";
+	$builtin_table = "";
 	$edit_url = "#";
         $list_values = Array();
         $list_values['count'] = 0;
@@ -587,7 +641,41 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
                 $list_values['icon'] = "icon-globe";
                 $add_field_tag = "#glob";
         }
-        $return_list = wpas_list_html($list_values);
+	elseif($list_type == 'entity_fields')
+        {
+                $list_values['title'] = __("Attributes","wpas");
+                $field_name = "fld_name";
+                $other_fields = Array("fld_label","fld_type","fld_required","fld_uniq_id","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Label","wpas"),__("Type","wpas"),__("Req","wpas"),__("Unique","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $list_values['icon'] = "icon-columns";
+                $add_field_tag = "#ent_fields";
+        	$list_values['add_new_url'] = "#ent" . esc_attr($app['entity'][$comp_id]['ent-name']);
+        }
+	elseif($list_type == 'rel_fields')
+        {
+                $list_values['title'] = __("Attributes","wpas");
+                $field_name = "rel_fld_name";
+                $other_fields = Array("rel_fld_label","rel_fld_type","rel_fld_required","date","modified_date");
+                $other_labels = Array(__("Name","wpas"),__("Label","wpas"),__("Type","wpas"),__("Req","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $list_values['icon'] = "icon-columns";
+                $add_field_tag = "#rel_fields";
+        	$list_values['add_new_url'] = "#rel" . esc_attr($app['relationship'][$comp_id]['rel-name']);
+        }
+	elseif($list_type == 'help_fields')
+        {
+                $list_values['title'] = __("Tabs","wpas");
+                $field_name = "help_fld_name";
+                $other_fields = Array("date","modified_date");
+                $other_labels = Array(__("Title","wpas"),__("Created","wpas"),__("Modified","wpas"));
+                $list_values['icon'] = "icon-columns";
+                $add_field_tag = "#help_fields";
+		if(isset($app['help'][$comp_id]['help-entity'])){
+        		$list_values['add_new_url'] = "#help" . esc_attr($app['entity'][$app['help'][$comp_id]['help-entity']]['ent-label']);
+		}
+		elseif(isset($app['help'][$comp_id]['help-tax'])){
+        		$list_values['add_new_url'] = "#help" . esc_attr($app['taxonomy'][$app['help'][$comp_id]['help-tax']]['txn-label']);
+		}
+        }
         if($list_values['count'] == 0)
         {
 		$col_count = count($other_labels) + 1;
@@ -842,6 +930,34 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 						break;
 				}
 			}
+			elseif($list_type == 'entity_fields')
+			{
+				if(isset($mylist['fld_required']) && $mylist['fld_required'] == 1)
+				{
+					$mylist['fld_required'] = 'Y';
+				}
+				else {
+					$mylist['fld_required'] = 'N';
+				}
+				if(isset($mylist['fld_uniq_id']) && $mylist['fld_uniq_id'] == 1 || ($mylist['fld_type'] == 'hidden_function' && in_array($mylist['fld_hidden_func'],Array('unique_id','autoinc'))))
+				{
+					$mylist['fld_uniq_id'] = 'Y';
+				}
+				else
+				{
+					$mylist['fld_uniq_id'] = 'N';
+				}
+			}
+			elseif($list_type == 'rel_fields')
+			{
+				if(isset($mylist['rel_fld_required']) && $mylist['rel_fld_required'] == 1)
+				{
+					$mylist['rel_fld_required'] = 'Y';
+				}
+				else {
+					$mylist['rel_fld_required'] = 'N';
+				}
+			}
                         $url['edit_url'] = $edit_url . $key_list;
                         $url['delete_url'] = "#" . $key_list;
                         $url['view'] = "#" . $key_list;
@@ -858,44 +974,58 @@ function wpas_list($list_type,$app,$app_id=0,$page=1)
 			{
                         	$url['export'] = $export_url . $key_list;
 			}
-                        if($count < ($page * 10) && $count >= ($page-1)*10)
+                        if(in_array($list_type,Array('glob','entity_fields','rel_fields','help_fields')) || (!in_array($list_type,Array('glob','entity_fields','rel_fields','help_fields')) && $count < ($page * 10) && $count >= ($page-1)*10))
                         {
                                 $alt = "";
                                 if($count %2)
                                 {
                                         $alt = "alternate";
                                 }
-                                $div_table .= wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$list_type,$other_fields);
+				if($list_type == 'entity_fields' && isset($mylist['fld_builtin']) && $mylist['fld_builtin'] == 1){
+					$has_builtin = 1;
+                                	$builtin_table .= wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$list_type,$other_fields,1);
+				}
+				else {
+                                	$div_table .= wpas_list_row($url,$key_list,$mylist,$field_name,$alt,$list_type,$other_fields,0);
+				}
                         }
                         $count ++;
                 }
-		$paging = paginate_links( array(
-                                        'total' => ceil($list_values['count']/10),
-                                        'current' => $page,
-                                        'base' => $base . '&' . $format . '=%#%',
-                                        'format' => '%#%',
-					'type' => 'array',
-					'add_args' => true,
-                                        ) );
-		if(!empty($paging))
-		{
-			$paging_html = "<ul>";
-			foreach($paging as $key_paging => $my_paging)
+		if(!in_array($list_type , Array('glob','entity_fields','rel_fields','help_fields'))){
+			$paging = paginate_links( array(
+						'total' => ceil($list_values['count']/10),
+						'current' => $page,
+						'base' => $base . '&' . $format . '=%#%',
+						'format' => '%#%',
+						'type' => 'array',
+						'add_args' => true,
+						) );
+			if(!empty($paging))
 			{
-				$paging_html .= "<li";
-				if(($page == 1 && $key_paging == 0) || ($page > 1 && $page == $key_paging))
+				$paging_html = "<ul>";
+				foreach($paging as $key_paging => $my_paging)
 				{
-					$paging_html .= " class='active'";
+					$paging_html .= "<li";
+					if(($page == 1 && $key_paging == 0) || ($page > 1 && $page == $key_paging))
+					{
+						$paging_html .= " class='active'";
+					}
+					$paging_html .= ">" . $my_paging . "</li>";
 				}
-				$paging_html .= ">" . $my_paging . "</li>";
+				$paging_html .= "</ul>";
 			}
-			$paging_html .= "</ul>";
 		}
 
                 //$div_table .= "</tbody></table>";
         }
+        $return_list = wpas_list_html($list_values,'pre');
+	if($has_builtin == 1){
+		$return_list .= wpas_list_table($other_labels,$list_type,1); //builtin table
+		$return_list .= $builtin_table . "</tbody></table>";
+	}
+        $return_list .= wpas_list_html($list_values,'end');
         $return_list .= $paging_html . "</div><br class=\"clear\"></div>";
-        $return_list .= wpas_list_table($other_labels);
+        $return_list .= wpas_list_table($other_labels,$list_type);
         $return_list .= $div_table . "</tbody></table></form>";
         return $return_list;
 }

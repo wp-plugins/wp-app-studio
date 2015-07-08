@@ -81,6 +81,9 @@ jQuery(document).ready(function($) {
                 if($(this).attr('checked'))
                 {
 			$('#txntabs').show();
+			$('#mytxnTab a:first').tab('show');
+			$('#txntabs-2').removeClass('fade active');
+			$('#txntabs-1').addClass('active');
                 }
                 else
                 {
@@ -143,6 +146,16 @@ jQuery(document).ready(function($) {
                     <i class="icon-info-sign"></i></a>
                     </div>
                 </div>
+		<div class="control-group row-fluid">
+		<label class="control-label span3"></label>
+		<div class="controls span9">
+		<label class="checkbox"><?php _e("Enable Sortable","wpas"); ?>
+		<input name="txn-sortable" id="txn-sortable" type="checkbox" value="1"/>
+		<a href="#" style="cursor: help;" title="<?php _e("Makes taxonomy drag and drop sortable in admin list page.","wpas"); ?>">
+		<i class="icon-info-sign"></i></a>
+		</label>
+		</div>
+		</div>
 		<div class="control-group row-fluid">
 		<label class="control-label span3"></label>
 		<div class="controls span9">

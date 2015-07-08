@@ -118,6 +118,10 @@ function wpas_form_container($layout,$app,$form_id)
 							$layout_html .= " hidden-fld";
 							$is_hidden = 1;
 						} 
+						elseif(!empty($layout[$i][$j]['glb']))
+						{
+							$layout_html .= " glb-fld";
+						}
 						else
 						{
 							$layout_html .= " elmt";
@@ -154,6 +158,12 @@ function wpas_form_container($layout,$app,$form_id)
 									$myrel = $app['relationship'][$layout[$i][$j]['relent']];
 						 			$layout_html .= esc_html(wpas_get_rel_full_name($myrel,$app));
 									$connector='rel';
+									break;
+								case 'glb':
+									if(isset($layout[$i][$j]['glb'])){
+										 $layout_html .= esc_html($app['glob'][$layout[$i][$j]['glb']]['glob-label']);
+										$connector = 'glb';
+									}
 									break;
 								case 'btn-std':
 									$layout_html .= "Submit Button";

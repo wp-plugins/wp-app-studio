@@ -162,6 +162,11 @@ function wpas_entity_capabilities($app_id,$entities,$myrole)
 				$show_cap = 1;
 			}
 		}
+		elseif(isset($myentity['ent-inline-ent']) && $myentity['ent-inline-ent'] == 1)
+		{
+			$label = 'ent_' . $keyent;
+			$show_cap = 1;
+		}
 		if($myentity['ent-name'] == 'page' || $myentity['ent-name'] == 'post')
 		{
 			$label = $myentity['ent-name'] ."s";
@@ -205,15 +210,13 @@ function wpas_tax_capabilities($app_id,$taxonomies,$myrole)
 	$taxcount = 0;
 	foreach($taxonomies as $keytax => $mytax)
 	{
-		if(empty($mytax['txn-inline'])){
-			$label = "tax_" . $keytax;
-			$tax_caps[$taxcount]['manage'] = "manage_" . $label;
-			$tax_caps[$taxcount]['edit'] = "edit_" . $label;
-			$tax_caps[$taxcount]['delete'] = "delete_" . $label;
-			$tax_caps[$taxcount]['assign'] = "assign_" . $label;
-			$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
-			$taxcount++;
-		}
+		$label = "tax_" . $keytax;
+		$tax_caps[$taxcount]['manage'] = "manage_" . $label;
+		$tax_caps[$taxcount]['edit'] = "edit_" . $label;
+		$tax_caps[$taxcount]['delete'] = "delete_" . $label;
+		$tax_caps[$taxcount]['assign'] = "assign_" . $label;
+		$tax_caps[$taxcount]['name'] = $mytax['txn-name'];
+		$taxcount++;
 	}
 	if(empty($tax_caps))
 	{

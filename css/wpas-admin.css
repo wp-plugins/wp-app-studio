@@ -586,3 +586,14 @@ background-color: #FFF;
 	*/
 	#shc-layout-tags td:before { content: attr(data-title); }
 }
+#field-labels .glb-fld {
+    background-color: #F2F0F0;
+    border: 3px double #808080;
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 5px;
+    text-align: center;
+}
+.ui-sortable tr:hover {
+        cursor: move;
+}
