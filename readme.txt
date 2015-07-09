@@ -192,6 +192,7 @@ The WP App Studio apps are licensed as GPLv2 or later.[See licenses page for det
 16. Create Connections to integrate your ProDev plugin to external apps such incoming email app or platforms like Facebook, Twitter, Paypal etc.
 17. Use inline entities in your WPAS ProDev apps to allow users to insert content of another entity into your primary entity. Categorize and tag your inline entities with inline taxonomies. Inline entity extension sold separately.
 18. NEW with 4.3.2 - Map user field to your entity attributes and use them everywhere.
+19. NEW with 4.5.0 - Map attribute type can be used display and configure maps in your ProDev plugins
 
 == Upgrade Notice ==
 = 4.5.0 =
